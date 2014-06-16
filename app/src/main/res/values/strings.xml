@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+/**
+* By: JaySoyer
+*
+* Licensed under the Apache License, Version 2.0 (the "License");
+* you may not use this file except in compliance with the License.
+* You may obtain a copy of the License at
+*
+*      http://www.apache.org/licenses/LICENSE-2.0
+*
+* Unless required by applicable law or agreed to in writing, software
+* distributed under the License is distributed on an "AS IS" BASIS,
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+* See the License for the specific language governing permissions and
+* limitations under the License.
+*/
+-->
+<resources>
+
+	<string name="app_name">Advanced Adapters</string>
+	<string name="activity_array_baseadapter">Array BaseAdapter</string>
+	<string name="activity_simplearray_baseadapter">SimpleArray BaseAdapter</string>
+
+	<!-- Content Description Text -->
+	<string name="cd_rating_icon">Rating Icon</string>
+
+	<!-- Titles, Headings, etc -->
+	<string name="title_add">Add</string>
+	<string name="title_clear">Clear</string>
+	<string name="title_contains">Contains</string>
+	<string name="title_dialog_add_movies">Add Movie(s) To List</string>
+	<string name="title_dialog_contains_movies">Does List Contain?</string>
+	<string name="title_dialog_insert_movies">Insert Movie(s) At Location</string>
+	<string name="title_insert">Insert</string>
+	<string name="title_remove">Remove Selected</string>
+	<string name="title_reset">Reset</string>
+	<string name="title_retain">Retain Selected</string>
+	<string name="title_screen_info">Screen Info</string>
+	<string name="title_search">Search</string>
+	<string name="title_sort">Sort</string>
+
+	<!-- Button Text -->
+	<string name="btn_add">Add One</string>
+	<string name="btn_add_all_col">Add as Collection</string>
+	<string name="btn_add_all_var">Add as Vararg</string>
+	<string name="btn_contains">Contains One</string>
+	<string name="btn_contains_all">Contains All</string>
+	<string name="btn_insert_end">At End</string>
+	<string name="btn_insert_random">At Random</string>
+	<string name="btn_insert_start">At Start</string>
+
+</resources>
