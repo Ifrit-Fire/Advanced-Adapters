@@ -26,9 +26,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 
-/**
- * TODO: Write this
- */
 public abstract class SimpleArrayBaseAdapter<T> extends BaseAdapter {
 	/** LayoutInflater created from the constructing context */
 	private LayoutInflater mInflater;

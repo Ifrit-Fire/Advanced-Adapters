@@ -61,7 +61,7 @@
     </content>
     <orderEntry type="jdk" jdkName="Android API 19 Platform" jdkType="Android SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="module" module-name="lib" />
+    <orderEntry type="module" module-name="lib" exported="" />
   </component>
 </module>
 

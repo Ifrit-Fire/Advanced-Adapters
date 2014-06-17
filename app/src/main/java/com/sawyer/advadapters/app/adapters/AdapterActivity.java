@@ -35,12 +35,6 @@ import com.sawyer.advadapters.app.dialogs.InsertDialogFragment;
 import java.util.List;
 import java.util.Random;
 
-//TODO: License Apache
-//TODO: Attribute ArrayAdapter source from Android
-//TODO:	Attribute: http://thenounproject.com/term/crop/11553/
-//TODO: Create Screen Info
-//TODO: Implement Up Navigation to sublcassed activities
-//TODO: Get App Logo
 public abstract class AdapterActivity extends Activity implements AddDialogFragment.EventListener, SearchView.OnQueryTextListener {
 	protected static final String TAG_BASE_ADAPTER_FRAG = "Tag Base Adapter Frag";
 
