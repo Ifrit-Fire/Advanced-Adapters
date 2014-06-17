@@ -30,6 +30,7 @@ import com.sawyer.advadapters.app.data.MovieContent;
 import com.sawyer.advadapters.app.data.MovieItem;
 import com.sawyer.advadapters.app.dialogs.AddDialogFragment;
 import com.sawyer.advadapters.app.dialogs.ContainsDialogFragment;
+import com.sawyer.advadapters.app.dialogs.InfoDialogFragment;
 import com.sawyer.advadapters.app.dialogs.InsertDialogFragment;
 
 import java.util.List;
@@ -41,10 +42,12 @@ public abstract class AdapterActivity extends Activity implements AddDialogFragm
 	private static final String TAG_ADD_DIALOG_FRAG = "Tag Add Dialog Frag";
 	private static final String TAG_CONTAINS_DIALOG_FRAG = "Tag Contains Dialog Frag";
 	private static final String TAG_INSERT_DIALOG_FRAG = "Tag Insert Dialog Frag";
+	private static final String TAG_INFO_DIALOG_FRAG = "Tag Info Dialog Frag";
 
 	private AddDialogFragment mAddDialog;
 	private ContainsDialogFragment mContainsDialog;
 	private InsertDialogFragment mInsertDialog;
+	private InfoDialogFragment mInfoDialogFragment;
 
 	protected void clear() {
 	}
@@ -56,6 +59,10 @@ public abstract class AdapterActivity extends Activity implements AddDialogFragm
 	protected boolean containsMovieCollection(List<MovieItem> movies) {
 		return false;
 	}
+
+	protected abstract String getInfoDialogMessage();
+
+	protected abstract String getInfoDialogTitle();
 
 	protected abstract int getListCount();
 
@@ -81,6 +88,8 @@ public abstract class AdapterActivity extends Activity implements AddDialogFragm
 				mInsertDialog.setEventListener(new InsertDialogFragEventListener());
 			}
 		}
+
+		mInfoDialogFragment = (InfoDialogFragment) manager.findFragmentByTag(TAG_INFO_DIALOG_FRAG);
 	}
 
 	private void initViews() {
@@ -150,7 +159,7 @@ public abstract class AdapterActivity extends Activity implements AddDialogFragm
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		getMenuInflater().inflate(R.menu.main, menu);
+		getMenuInflater().inflate(R.menu.adapters, menu);
 
 		MenuItem item = menu.findItem(R.id.menu_action_search);
 		if (item != null) {
@@ -180,6 +189,14 @@ public abstract class AdapterActivity extends Activity implements AddDialogFragm
 
 		case R.id.menu_action_sort:
 			sort();
+			return true;
+
+		case R.id.menu_action_info:
+			if (mInfoDialogFragment != null) {
+				mInfoDialogFragment.dismiss();
+			}
+			mInfoDialogFragment = InfoDialogFragment.newInstance(getInfoDialogTitle(), getInfoDialogMessage());
+			mInfoDialogFragment.show(getFragmentManager(), TAG_INFO_DIALOG_FRAG);
 			return true;
 
 		default:

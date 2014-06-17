@@ -117,7 +117,7 @@ public abstract class ListAdapterFragment<T extends Parcelable> extends ListFrag
 		@Override
 		public boolean onCreateActionMode(ActionMode mode, Menu menu) {
 			MenuInflater inflater = mode.getMenuInflater();
-			inflater.inflate(R.menu.main_context, menu);
+			inflater.inflate(R.menu.cab_adapters, menu);
 			mode.setTitle(mCheckedItems.size() + " Selected");
 			return true;
 		}

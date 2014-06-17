@@ -46,6 +46,16 @@ public class SimpleArrayBaseAdapterActivity extends AdapterActivity {
 	}
 
 	@Override
+	protected String getInfoDialogMessage() {
+		return null;
+	}
+
+	@Override
+	protected String getInfoDialogTitle() {
+		return null;
+	}
+
+	@Override
 	protected int getListCount() {
 		return mListFragment.getListAdapter().getCount();
 	}

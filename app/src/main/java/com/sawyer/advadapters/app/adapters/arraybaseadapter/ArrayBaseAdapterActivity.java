@@ -46,6 +46,16 @@ public class ArrayBaseAdapterActivity extends AdapterActivity {
 	}
 
 	@Override
+	protected String getInfoDialogMessage() {
+		return getString(R.string.info_array_baseadapter_message);
+	}
+
+	@Override
+	protected String getInfoDialogTitle() {
+		return getString(R.string.info_array_baseadapter_title);
+	}
+
+	@Override
 	protected int getListCount() {
 		return mListFragment.getListAdapter().getCount();
 	}

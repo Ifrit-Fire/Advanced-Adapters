@@ -27,18 +27,21 @@
 
 	<!-- Titles, Headings, etc -->
 	<string name="title_add">Add</string>
-	<string name="title_clear">Clear</string>
 	<string name="title_contains">Contains</string>
 	<string name="title_dialog_add_movies">Add Movie(s) To List</string>
 	<string name="title_dialog_contains_movies">Does List Contain?</string>
 	<string name="title_dialog_insert_movies">Insert Movie(s) At Location</string>
 	<string name="title_insert">Insert</string>
-	<string name="title_remove">Remove Selected</string>
-	<string name="title_reset">Reset</string>
-	<string name="title_retain">Retain Selected</string>
 	<string name="title_screen_info">Screen Info</string>
-	<string name="title_search">Search</string>
-	<string name="title_sort">Sort</string>
+
+	<!-- Menu Text -->
+	<string name="menu_clear">Clear</string>
+	<string name="menu_info">Info</string>
+	<string name="menu_remove">Remove Selected</string>
+	<string name="menu_reset">Reset</string>
+	<string name="menu_retain">Retain Selected</string>
+	<string name="menu_search">Search</string>
+	<string name="menu_sort">Sort</string>
 
 	<!-- Button Text -->
 	<string name="btn_add">Add One</string>

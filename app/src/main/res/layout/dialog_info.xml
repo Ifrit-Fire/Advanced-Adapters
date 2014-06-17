@@ -16,8 +16,15 @@
  * limitations under the License.
  */
 -->
-<menu
-	xmlns:tools="http://schemas.android.com/tools"
-	tools:context="com.sawyer.advadapters.app.MainActivity">
+<ScrollView
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent">
 
-</menu>
+	<TextView
+		android:id="@android:id/message"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:padding="@dimen/spacing_normal">
+	</TextView>
+</ScrollView>

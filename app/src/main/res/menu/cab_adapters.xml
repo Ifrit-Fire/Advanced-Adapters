@@ -20,11 +20,11 @@
 	<item
 		android:id="@+id/menu_context_remove"
 		android:icon="@drawable/ic_action_content_discard"
-		android:title="@string/title_remove"/>
+		android:title="@string/menu_remove"/>
 
 	<item
 		android:id="@+id/menu_context_retain"
 		android:icon="@drawable/ic_action_retain"
-		android:title="@string/title_retain"/>
+		android:title="@string/menu_retain"/>
 
 </menu>
