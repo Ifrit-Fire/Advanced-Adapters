@@ -16,18 +16,39 @@
 package com.sawyer.advadapters.app.dialogs;
 
 import android.app.Dialog;
+import android.app.DialogFragment;
+import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-class Util {
+import com.sawyer.advadapters.app.R;
+
+/**
+ * Customized dialog fragment that handles styling the dialog to a specific look
+ */
+abstract class CustomDialogFragment extends DialogFragment {
+	public CustomDialogFragment() {
+		setStyle(STYLE_NORMAL, R.style.AppTheme_Dialog);
+	}
+
+	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+		setTitleBarColor();    //Done outside of onCreateDialog to ensure dialog's setContentView occurred
+		return null;
+	}
+
 	/**
 	 * Will apply an orange color to a dialog's title bar divider. Yes this is quite hackish and may
 	 * not work on all devices. However its crash safe. Just make sure the dialog has already set
 	 * it's content view.
-	 *
-	 * @param dialog Holo dialog with an already instantiate view hierarchy to style title divider
 	 */
-	static void setTitleBarColor(Dialog dialog) {
+	private void setTitleBarColor() {
+		Dialog dialog = getDialog();
+		if (dialog == null) {
+			return;
+		}
+
 		View v = dialog.findViewById(android.R.id.title);
 		if (v != null && v.getParent() instanceof ViewGroup) {
 			ViewGroup vg = (ViewGroup) v.getParent();

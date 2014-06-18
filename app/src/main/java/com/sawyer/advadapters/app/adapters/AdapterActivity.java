@@ -76,14 +76,16 @@ public abstract class AdapterActivity extends Activity implements AddDialogFragm
 		}
 
 		if (isContainsDialogEnabled()) {
-			mContainsDialog = (ContainsDialogFragment) manager.findFragmentByTag(TAG_CONTAINS_DIALOG_FRAG);
+			mContainsDialog = (ContainsDialogFragment) manager
+					.findFragmentByTag(TAG_CONTAINS_DIALOG_FRAG);
 			if (mContainsDialog != null) {
 				mContainsDialog.setEventListener(new ContainsDialogFragEventListener());
 			}
 		}
 
 		if (isInsertDialogEnabled()) {
-			mInsertDialog = (InsertDialogFragment) manager.findFragmentByTag(TAG_INSERT_DIALOG_FRAG);
+			mInsertDialog = (InsertDialogFragment) manager
+					.findFragmentByTag(TAG_INSERT_DIALOG_FRAG);
 			if (mInsertDialog != null) {
 				mInsertDialog.setEventListener(new InsertDialogFragEventListener());
 			}
@@ -192,11 +194,7 @@ public abstract class AdapterActivity extends Activity implements AddDialogFragm
 			return true;
 
 		case R.id.menu_action_info:
-			if (mInfoDialogFragment != null) {
-				mInfoDialogFragment.dismiss();
-			}
-			mInfoDialogFragment = InfoDialogFragment.newInstance(getInfoDialogTitle(), getInfoDialogMessage());
-			mInfoDialogFragment.show(getFragmentManager(), TAG_INFO_DIALOG_FRAG);
+			showInfoDialog();
 			return true;
 
 		default:
@@ -225,6 +223,15 @@ public abstract class AdapterActivity extends Activity implements AddDialogFragm
 	protected void reset() {
 	}
 
+	protected void showInfoDialog() {
+		if (mInfoDialogFragment != null) {
+			mInfoDialogFragment.dismiss();
+		}
+		mInfoDialogFragment = InfoDialogFragment
+				.newInstance(getInfoDialogTitle(), getInfoDialogMessage());
+		mInfoDialogFragment.show(getFragmentManager(), TAG_INFO_DIALOG_FRAG);
+	}
+
 	protected void sort() {
 	}
 
@@ -239,7 +246,9 @@ public abstract class AdapterActivity extends Activity implements AddDialogFragm
 		public void onContainsMovieClick(MovieItem movie) {
 			mContainsDialog.dismiss();
 			boolean result = containsMovie(movie);
-			String message = (result ? "Adapter contains movie:" : "Adapter does not contain:") + "\n" + movie.title;
+			String message =
+					(result ? "Adapter contains movie:" : "Adapter does not contain:") + "\n" +
+					movie.title;
 			Toast.makeText(AdapterActivity.this, message, Toast.LENGTH_SHORT).show();
 		}
 
@@ -248,7 +257,8 @@ public abstract class AdapterActivity extends Activity implements AddDialogFragm
 			mContainsDialog.dismiss();
 			boolean result = containsMovieCollection(movies);
 			StringBuilder builder = new StringBuilder();
-			builder.append(result ? "Adapter contains all movies:" : "Adapter does not contain all movies:");
+			builder.append(
+					result ? "Adapter contains all movies:" : "Adapter does not contain all movies:");
 			for (MovieItem movie : movies) {
 				builder.append("\n").append(movie.title);
 			}
@@ -277,13 +287,15 @@ public abstract class AdapterActivity extends Activity implements AddDialogFragm
 		}
 
 		@Override
-		public void onInsertMovieCollectionClick(List<MovieItem> movies, InsertDialogFragment.InsertLocation insertLocation) {
+		public void onInsertMovieCollectionClick(List<MovieItem> movies,
+												 InsertDialogFragment.InsertLocation insertLocation) {
 			mInsertDialog.dismiss();
 			insertMovieCollection(movies, getPosition(insertLocation));
 		}
 
 		@Override
-		public void onInsertSingleMovieClick(MovieItem movie, InsertDialogFragment.InsertLocation insertLocation) {
+		public void onInsertSingleMovieClick(MovieItem movie,
+											 InsertDialogFragment.InsertLocation insertLocation) {
 			mInsertDialog.dismiss();
 			insertSingleMovie(movie, getPosition(insertLocation));
 		}

@@ -16,8 +16,9 @@
 package com.sawyer.advadapters.app.dialogs;
 
 import android.app.Dialog;
-import android.app.DialogFragment;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.sawyer.advadapters.app.R;
@@ -25,7 +26,7 @@ import com.sawyer.advadapters.app.R;
 /**
  * Renders a dialog for displaying information to the user. Pretty much an AlertDialog
  */
-public class InfoDialogFragment extends DialogFragment {
+public class InfoDialogFragment extends CustomDialogFragment {
 	private static final String STATE_TITLE = "State title";
 	private static final String STATE_MESSAGE = "State message";
 
@@ -34,7 +35,6 @@ public class InfoDialogFragment extends DialogFragment {
 
 	public static InfoDialogFragment newInstance(String title, String message) {
 		InfoDialogFragment frag = new InfoDialogFragment();
-		frag.setStyle(STYLE_NORMAL, R.style.AppTheme_Dialog);
 
 		Bundle bundle = new Bundle();
 		bundle.putString(STATE_TITLE, title);
@@ -57,10 +57,18 @@ public class InfoDialogFragment extends DialogFragment {
 		Dialog dialog = super.onCreateDialog(savedInstanceState);
 		dialog.setContentView(R.layout.dialog_info);
 		dialog.setTitle(mTitle);
-		Util.setTitleBarColor(dialog);
 
 		TextView tv = (TextView) dialog.findViewById(android.R.id.message);
 		tv.setText(mMessage);
+		Button btn = (Button) dialog.findViewById(android.R.id.button1);
+		btn.setOnClickListener(new OnOkClickListener());
 		return dialog;
+	}
+
+	private class OnOkClickListener implements View.OnClickListener {
+		@Override
+		public void onClick(View v) {
+			dismiss();
+		}
 	}
 }

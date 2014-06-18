@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<string name="key_pref_viewed_array_baseadapter">Key Viewed ArrayBaseAdapter</string>
+	<bool name="default_pref_viewed_array_baseadapter">false</bool>
+</resources>

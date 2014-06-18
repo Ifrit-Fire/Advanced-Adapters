@@ -46,11 +46,12 @@
 	<!-- Button Text -->
 	<string name="btn_add">Add One</string>
 	<string name="btn_add_all_col">Add as Collection</string>
-	<string name="btn_add_all_var">Add as Vararg</string>
+	<string name="btn_add_all_var">Add as Vararg</string>df
 	<string name="btn_contains">Contains One</string>
 	<string name="btn_contains_all">Contains All</string>
 	<string name="btn_insert_end">At End</string>
 	<string name="btn_insert_random">At Random</string>
 	<string name="btn_insert_start">At Start</string>
+	<string name="btn_ok">Ok</string>
 
 </resources>

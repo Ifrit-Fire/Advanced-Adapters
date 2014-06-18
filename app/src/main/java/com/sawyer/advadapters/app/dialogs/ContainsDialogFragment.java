@@ -16,7 +16,6 @@
 package com.sawyer.advadapters.app.dialogs;
 
 import android.app.Dialog;
-import android.app.DialogFragment;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -32,7 +31,7 @@ import java.util.List;
  * Renders a dialog with all the options possible for checking a list for contends it may contain.
  * Implement the {@link EventListener} in order to receive back dialog results.
  */
-public class ContainsDialogFragment extends DialogFragment {
+public class ContainsDialogFragment extends CustomDialogFragment {
 	private static final String STATE_MOVIE_1 = "State Movie 1";
 	private static final String STATE_MOVIE_2 = "State Movie 2";
 
@@ -42,7 +41,6 @@ public class ContainsDialogFragment extends DialogFragment {
 
 	public static ContainsDialogFragment newInstance(MovieItem movie1, MovieItem movie2) {
 		ContainsDialogFragment frag = new ContainsDialogFragment();
-		frag.setStyle(STYLE_NORMAL, R.style.AppTheme_Dialog);
 
 		Bundle bundle = new Bundle();
 		bundle.putParcelable(STATE_MOVIE_1, movie1);
@@ -65,7 +63,6 @@ public class ContainsDialogFragment extends DialogFragment {
 		Dialog dialog = super.onCreateDialog(savedInstanceState);
 		dialog.setContentView(R.layout.dialog_contains);
 		dialog.setTitle(R.string.title_dialog_contains_movies);
-		Util.setTitleBarColor(dialog);
 
 		Button btn = (Button) dialog.findViewById(R.id.movie_single_btn);
 		btn.setOnClickListener(new OnContainsSingleClickListener());

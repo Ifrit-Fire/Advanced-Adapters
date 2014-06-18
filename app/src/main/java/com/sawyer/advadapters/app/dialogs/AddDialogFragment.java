@@ -16,7 +16,6 @@
 package com.sawyer.advadapters.app.dialogs;
 
 import android.app.Dialog;
-import android.app.DialogFragment;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -33,7 +32,7 @@ import java.util.List;
  * Implement the {@link EventListener} in order to receive back dialog results. Toggling the Varargs
  * option on and off is possible through the listener.
  */
-public class AddDialogFragment extends DialogFragment {
+public class AddDialogFragment extends CustomDialogFragment {
 	private static final String STATE_MOVIE_1 = "State Movie 1";
 	private static final String STATE_MOVIE_2 = "State Movie 2";
 
@@ -43,7 +42,6 @@ public class AddDialogFragment extends DialogFragment {
 
 	public static AddDialogFragment newInstance(MovieItem movie1, MovieItem movie2) {
 		AddDialogFragment frag = new AddDialogFragment();
-		frag.setStyle(STYLE_NORMAL, R.style.AppTheme_Dialog);
 
 		Bundle bundle = new Bundle();
 		bundle.putParcelable(STATE_MOVIE_1, movie1);
@@ -66,7 +64,6 @@ public class AddDialogFragment extends DialogFragment {
 		Dialog dialog = super.onCreateDialog(savedInstanceState);
 		dialog.setContentView(R.layout.dialog_add);
 		dialog.setTitle(R.string.title_dialog_add_movies);
-		Util.setTitleBarColor(dialog);
 
 		Button btn = (Button) dialog.findViewById(R.id.movie_single_btn);
 		btn.setOnClickListener(new OnAddSingleClickListener());

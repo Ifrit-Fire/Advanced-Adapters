@@ -16,7 +16,6 @@
 package com.sawyer.advadapters.app.dialogs;
 
 import android.app.Dialog;
-import android.app.DialogFragment;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,7 +32,7 @@ import java.util.List;
  * Renders a dialog with all the options possible for inserting items into one of the adapters.
  * Implement the {@link EventListener} interface in order to receive back the dialog results.
  */
-public class InsertDialogFragment extends DialogFragment {
+public class InsertDialogFragment extends CustomDialogFragment {
 	private static final String STATE_MOVIE_1 = "State Movie 1";
 	private static final String STATE_MOVIE_2 = "State Movie 2";
 
@@ -43,7 +42,6 @@ public class InsertDialogFragment extends DialogFragment {
 
 	public static InsertDialogFragment newInstance(MovieItem movie1, MovieItem movie2) {
 		InsertDialogFragment frag = new InsertDialogFragment();
-		frag.setStyle(STYLE_NORMAL, R.style.AppTheme_Dialog);
 
 		Bundle bundle = new Bundle();
 		bundle.putParcelable(STATE_MOVIE_1, movie1);
@@ -66,7 +64,6 @@ public class InsertDialogFragment extends DialogFragment {
 		Dialog dialog = super.onCreateDialog(savedInstanceState);
 		dialog.setContentView(R.layout.dialog_insert);
 		dialog.setTitle(R.string.title_dialog_insert_movies);
-		Util.setTitleBarColor(dialog);
 
 		ViewGroup vg = (ViewGroup) dialog.findViewById(R.id.movie_single_button_bar);
 		Button btn = (Button) vg.findViewById(R.id.movie_insert_start_btn);

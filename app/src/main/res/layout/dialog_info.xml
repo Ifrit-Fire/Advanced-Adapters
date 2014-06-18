@@ -16,15 +16,38 @@
  * limitations under the License.
  */
 -->
-<ScrollView
+<RelativeLayout
+	style="?android:buttonBarStyle"
 	xmlns:android="http://schemas.android.com/apk/res/android"
 	android:layout_width="match_parent"
 	android:layout_height="match_parent">
 
-	<TextView
-		android:id="@android:id/message"
+	<ScrollView
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
-		android:padding="@dimen/spacing_normal">
-	</TextView>
-</ScrollView>
+		android:layout_above="@+id/container">
+
+		<TextView
+			android:id="@android:id/message"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:padding="@dimen/spacing_normal">
+		</TextView>
+
+	</ScrollView>
+
+	<FrameLayout
+		android:id="@+id/container"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_alignParentBottom="true"
+		android:background="@color/btn_flat_background">
+
+		<Button
+			android:id="@android:id/button1"
+			style="?android:buttonBarButtonStyle"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:text="@string/btn_ok"/>
+	</FrameLayout>
+</RelativeLayout>
