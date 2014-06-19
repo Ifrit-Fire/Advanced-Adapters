@@ -16,16 +16,19 @@
  * limitations under the License.
  */
 -->
-<RelativeLayout
+<LinearLayout
 	style="?android:buttonBarStyle"
 	xmlns:android="http://schemas.android.com/apk/res/android"
 	android:layout_width="match_parent"
-	android:layout_height="match_parent">
+	android:layout_height="wrap_content"
+	android:orientation="vertical">
 
+	<!-- Weight ensures button doesn't disappear when text extends passed it's view bounds.
+	 	Otherwise, ScrollView extends the entire height of the view before scrolling kicks in -->
 	<ScrollView
 		android:layout_width="match_parent"
-		android:layout_height="match_parent"
-		android:layout_above="@+id/container">
+		android:layout_height="0dp"
+		android:layout_weight="1">
 
 		<TextView
 			android:id="@android:id/message"
@@ -37,10 +40,8 @@
 	</ScrollView>
 
 	<FrameLayout
-		android:id="@+id/container"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		android:layout_alignParentBottom="true"
 		android:background="@color/btn_flat_background">
 
 		<Button
@@ -48,6 +49,6 @@
 			style="?android:buttonBarButtonStyle"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:text="@string/btn_ok"/>
+			android:text="@android:string/ok"/>
 	</FrameLayout>
-</RelativeLayout>
+</LinearLayout>

@@ -26,6 +26,18 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 
+/**
+ * A <i>trimmed</i> down version of the {@link ArrayBaseAdapter} which is similarly backed by an
+ * {@link ArrayList} of arbitrary objects. By default this class will delegate view generation to
+ * subclasses.
+ * <p/>
+ * Designed to be a simple version of it's cousin {@link ArrayBaseAdapter}, it removes some of the
+ * more "convenience" method calls while adding support for insertion. The biggest difference is the
+ * lack of filtering. As a result, there is no need for <code>synchronized</code> blocks which may
+ * help those worried about performance.
+ * <p/>
+ * If filtering is required, it's strongly recommended to use the {@link ArrayBaseAdapter} instead.
+ */
 public abstract class SimpleArrayBaseAdapter<T> extends BaseAdapter {
 	/** LayoutInflater created from the constructing context */
 	private LayoutInflater mInflater;
@@ -128,7 +140,8 @@ public abstract class SimpleArrayBaseAdapter<T> extends BaseAdapter {
 	 *
 	 * @return a {@link android.view.View} corresponding to the data at the specified position.
 	 */
-	public View getDropDownView(LayoutInflater inflater, int position, View convertView, ViewGroup parent) {
+	public View getDropDownView(LayoutInflater inflater, int position, View convertView,
+								ViewGroup parent) {
 		return getView(inflater, position, convertView, parent);
 	}
 
@@ -165,7 +178,8 @@ public abstract class SimpleArrayBaseAdapter<T> extends BaseAdapter {
 		return mObjects.indexOf(item);
 	}
 
-	public abstract View getView(LayoutInflater inflater, int position, View convertView, ViewGroup parent);
+	public abstract View getView(LayoutInflater inflater, int position, View convertView,
+								 ViewGroup parent);
 
 	@Override
 	public final View getView(int position, View convertView, ViewGroup parent) {

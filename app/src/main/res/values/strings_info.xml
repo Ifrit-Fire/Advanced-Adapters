@@ -33,9 +33,23 @@
 		\t- LayoutInflater passed to all view creation methods.\n
 		\t- Resolves many outstanding filtering issues\n
 		\n
-		If filtering is not required, it\'s strongly recommended to use the SimpleArrayBaseAdapter
-		instead. Because the filtering process occurs on a background thread, all mutating methods
-		are internally synchronized. This ensures a thread safe environment for write operations.
+		Because the filtering process occurs on a background thread, all mutating methods are
+		internally synchronized. This ensures a thread safe environment for write operations. If
+		filtering is not required, it\'s strongly recommended to use the SimpleArrayBaseAdapter
+		instead.
+	</string>
+
+	<string name="info_simplearray_baseadapter_title">SimpleArray BaseAdapter</string>
+	<string name="info_simplearray_baseadapter_message">
+		A trimmed down version of the ArrayBaseAdapter which is similarly backed by an ArrayList of
+		arbitrary objects. By default this class will delegate view generation to subclasses.\n
+ 		\n
+		Designed to be a simple version of it\'s cousin ArrayBaseAdapter, it removes some of the more
+		"convenience" method calls while adding support for insertion. The biggest difference is the
+		lack of filtering. As a result, there is no need for synchronized blocks which may help
+		those worried about performance.\n
+		\n
+ 		If filtering is required, it\'s strongly recommended to use the ArrayBaseAdapter instead.
 	</string>
 
 </resources>

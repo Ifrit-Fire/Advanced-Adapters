@@ -18,9 +18,7 @@ package com.sawyer.advadapters.app.adapters.arraybaseadapter;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
-import android.os.Bundle;
 
-import com.sawyer.advadapters.app.Prefs;
 import com.sawyer.advadapters.app.R;
 import com.sawyer.advadapters.app.adapters.AdapterActivity;
 import com.sawyer.advadapters.app.data.MovieContent;
@@ -123,16 +121,6 @@ public class ArrayBaseAdapterActivity extends AdapterActivity {
 
 		if (fragment instanceof MovieArrayAdapterFragment) {
 			mListFragment = (MovieArrayAdapterFragment) fragment;
-		}
-	}
-
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-
-		if (!Prefs.hasViewedArrayBaseAdapterInfo()) {
-			showInfoDialog();
-			Prefs.setViewedArrayBaseAdapterInfo(true);
 		}
 	}
 

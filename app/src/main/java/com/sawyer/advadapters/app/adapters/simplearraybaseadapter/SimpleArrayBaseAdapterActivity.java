@@ -47,12 +47,12 @@ public class SimpleArrayBaseAdapterActivity extends AdapterActivity {
 
 	@Override
 	protected String getInfoDialogMessage() {
-		return null;
+		return getString(R.string.info_simplearray_baseadapter_message);
 	}
 
 	@Override
 	protected String getInfoDialogTitle() {
-		return null;
+		return getString(R.string.info_simplearray_baseadapter_title);
 	}
 
 	@Override
@@ -64,7 +64,8 @@ public class SimpleArrayBaseAdapterActivity extends AdapterActivity {
 	protected void initFrags() {
 		super.initFrags();
 		FragmentManager manager = getFragmentManager();
-		mListFragment = (MovieSimpleArrayAdapterFragment) manager.findFragmentByTag(TAG_BASE_ADAPTER_FRAG);
+		mListFragment = (MovieSimpleArrayAdapterFragment) manager
+				.findFragmentByTag(TAG_BASE_ADAPTER_FRAG);
 		if (mListFragment == null) {
 			mListFragment = MovieSimpleArrayAdapterFragment.newInstance();
 			FragmentTransaction transaction = manager.beginTransaction();

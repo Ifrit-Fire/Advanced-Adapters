@@ -15,21 +15,20 @@
  */
 package com.sawyer.advadapters.app;
 
+import android.app.Activity;
 import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
 
 public class Prefs {
-	private static final SharedPreferences PREF = PreferenceManager
-			.getDefaultSharedPreferences(App.context());
-
-	public static boolean hasViewedArrayBaseAdapterInfo() {
-		return PREF.getBoolean(App.context().getString(R.string.key_pref_viewed_array_baseadapter),
-							   App.getBoolean(R.bool.default_pref_viewed_array_baseadapter));
+	public static boolean hasViewedAdapterInfo(Activity activity) {
+		SharedPreferences pref = activity.getPreferences(Activity.MODE_PRIVATE);
+		return pref.getBoolean(activity.getString(R.string.key_pref_viewed_adapter),
+							   App.getBoolean(R.bool.default_pref_viewed_adapter));
 	}
 
-	public static void setViewedArrayBaseAdapterInfo(boolean hasViewed) {
-		SharedPreferences.Editor editor = PREF.edit();
-		editor.putBoolean(App.context().getString(R.string.key_pref_viewed_array_baseadapter),
+	public static void setViewedAdapterInfo(Activity activity, boolean hasViewed) {
+		SharedPreferences pref = activity.getPreferences(Activity.MODE_PRIVATE);
+		SharedPreferences.Editor editor = pref.edit();
+		editor.putBoolean(activity.getString(R.string.key_pref_viewed_adapter),
 						  hasViewed);
 		editor.apply();
 	}

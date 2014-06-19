@@ -25,6 +25,7 @@ import android.widget.Button;
 import android.widget.SearchView;
 import android.widget.Toast;
 
+import com.sawyer.advadapters.app.Prefs;
 import com.sawyer.advadapters.app.R;
 import com.sawyer.advadapters.app.data.MovieContent;
 import com.sawyer.advadapters.app.data.MovieItem;
@@ -157,6 +158,11 @@ public abstract class AdapterActivity extends Activity implements AddDialogFragm
 
 		initFrags();
 		initViews();
+
+		if (!Prefs.hasViewedAdapterInfo(this)) {
+			showInfoDialog();
+			Prefs.setViewedAdapterInfo(this, true);
+		}
 	}
 
 	@Override
@@ -223,7 +229,7 @@ public abstract class AdapterActivity extends Activity implements AddDialogFragm
 	protected void reset() {
 	}
 
-	protected void showInfoDialog() {
+	private void showInfoDialog() {
 		if (mInfoDialogFragment != null) {
 			mInfoDialogFragment.dismiss();
 		}

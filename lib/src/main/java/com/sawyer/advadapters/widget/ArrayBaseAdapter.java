@@ -33,17 +33,18 @@ import java.util.List;
 
 /**
  * A custom abstract {@link BaseAdapter} that is backed by an {@link ArrayList} of arbitrary
- * objects.  By default this class expects subclasses to handle view generation and defining the
- * filtering logic. The methods for performing this will be enforced with subclasses.
+ * objects.  By default this class delegates view generation and defining the
+ * filtering logic to subclasses.
  * <p/>
  * Designed to be a more flexible and customizable solution then Android's ArrayAdapter class. It
  * provides extra features such as: supporting additional {@link ArrayList} methods, resolves
  * outstanding filtering bugs, makes smarter use of {@link #notifyDataSetChanged()}, and
  * conveniently passes along a layout inflater for view creation.
  * <p/>
- * If filtering is not required, it's strongly recommended to use the {@link SimpleArrayBaseAdapter}
- * instead.  Because of the background filtering process, all methods which mutates the underlying
- * data are internally synchronized. This ensures a thread safe environment for write operations.
+ * Because of the background filtering process, all methods which mutates the underlying data are
+ * internally synchronized. This ensures a thread safe environment for write operations.  If
+ * filtering is not required, it's strongly recommended to use the {@link SimpleArrayBaseAdapter}
+ * instead.
  */
 public abstract class ArrayBaseAdapter<T> extends BaseAdapter implements Filterable {
 	/**
@@ -97,7 +98,7 @@ public abstract class ArrayBaseAdapter<T> extends BaseAdapter implements Filtera
 	 */
 	public ArrayBaseAdapter(Context activity, T[] objects) {
 		List<T> list = Arrays.asList(objects);
-		if (list instanceof ArrayList) {
+		if (list instanceof ArrayList) {    //Should always be true...but just in case implementation changes
 			init(activity, (ArrayList<T>) list);
 		} else {
 			init(activity, new ArrayList<>(list));
@@ -226,7 +227,8 @@ public abstract class ArrayBaseAdapter<T> extends BaseAdapter implements Filtera
 	 *
 	 * @return a {@link android.view.View} corresponding to the data at the specified position.
 	 */
-	public View getDropDownView(LayoutInflater inflater, int position, View convertView, ViewGroup parent) {
+	public View getDropDownView(LayoutInflater inflater, int position, View convertView,
+								ViewGroup parent) {
 		return getView(inflater, position, convertView, parent);
 	}
 
@@ -312,7 +314,8 @@ public abstract class ArrayBaseAdapter<T> extends BaseAdapter implements Filtera
 		return mObjects.indexOf(item);
 	}
 
-	public abstract View getView(LayoutInflater inflater, int position, View convertView, ViewGroup parent);
+	public abstract View getView(LayoutInflater inflater, int position, View convertView,
+								 ViewGroup parent);
 
 	@Override
 	public final View getView(int position, View convertView, ViewGroup parent) {

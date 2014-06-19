@@ -52,6 +52,5 @@
 	<string name="btn_insert_end">At End</string>
 	<string name="btn_insert_random">At Random</string>
 	<string name="btn_insert_start">At Start</string>
-	<string name="btn_ok">Ok</string>
 
 </resources>
