@@ -15,6 +15,7 @@
  */
 package com.sawyer.advadapters.app.adapters;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.app.FragmentManager;
 import android.os.Bundle;
@@ -66,6 +67,11 @@ public abstract class AdapterActivity extends Activity implements AddDialogFragm
 	protected abstract String getInfoDialogTitle();
 
 	protected abstract int getListCount();
+
+	private void initActionBar() {
+		ActionBar actionBar = getActionBar();
+		actionBar.setDisplayHomeAsUpEnabled(true);
+	}
 
 	protected void initFrags() {
 		FragmentManager manager = getFragmentManager();
@@ -158,6 +164,7 @@ public abstract class AdapterActivity extends Activity implements AddDialogFragm
 
 		initFrags();
 		initViews();
+		initActionBar();
 
 		if (!Prefs.hasViewedAdapterInfo(this)) {
 			showInfoDialog();
@@ -201,6 +208,10 @@ public abstract class AdapterActivity extends Activity implements AddDialogFragm
 
 		case R.id.menu_action_info:
 			showInfoDialog();
+			return true;
+
+		case android.R.id.home:
+			finish();
 			return true;
 
 		default:
