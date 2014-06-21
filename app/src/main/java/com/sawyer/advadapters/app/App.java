@@ -17,8 +17,12 @@ package com.sawyer.advadapters.app;
 
 import android.app.Application;
 import android.content.Context;
+import android.content.pm.PackageManager;
+import android.util.Log;
 
 public class App extends Application {
+	private static final String TAG = App.class.getPackage().getName();
+
 	private static Context sContext;
 
 	public static Context context() {
@@ -27,6 +31,31 @@ public class App extends Application {
 
 	public static boolean getBoolean(int resId) {
 		return sContext.getResources().getBoolean(resId);
+	}
+
+	public static int getVersionCode() {
+		int versionCode;
+
+		try {
+			versionCode = sContext.getPackageManager()
+								  .getPackageInfo(sContext.getPackageName(), 0).versionCode;
+		} catch (PackageManager.NameNotFoundException e) {
+			Log.e(TAG, "No package info found");
+			versionCode = -1;
+		}
+		return versionCode;
+	}
+
+	public static String getVersionName() {
+		String versionName;
+		try {
+			versionName = sContext.getPackageManager()
+								  .getPackageInfo(sContext.getPackageName(), 0).versionName;
+		} catch (PackageManager.NameNotFoundException e) {
+			Log.e(TAG, "No version name found");
+			versionName = "Error";
+		}
+		return versionName;
 	}
 
 	@Override

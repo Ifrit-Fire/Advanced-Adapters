@@ -16,6 +16,23 @@
 * limitations under the License.
 */
 -->
-<resources>
-	<dimen name="activity_horizontal_margin">64dp</dimen>
-</resources>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+			xmlns:tools="http://schemas.android.com/tools"
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
+			android:padding="@dimen/spacing_normal"
+			tools:context="com.sawyer.advadapters.app.AboutActivity">
+
+	<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:orientation="vertical">
+
+		<include layout="@layout/merge_about_about"/>
+
+		<include layout="@layout/merge_about_license"/>
+
+		<include layout="@layout/merge_about_credits"/>
+
+	</LinearLayout>
+</ScrollView>

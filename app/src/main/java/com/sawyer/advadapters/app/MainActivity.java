@@ -20,6 +20,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
@@ -57,9 +59,26 @@ public class MainActivity extends ListActivity {
 	}
 
 	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		getMenuInflater().inflate(R.menu.main, menu);
+		return super.onCreateOptionsMenu(menu);
+	}
+
+	@Override
 	protected void onListItemClick(ListView l, View v, int position, long id) {
 		Intent intent = (Intent) getListAdapter().getItem(position);
 		startActivity(intent);
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case R.id.menu_action_about:
+			Intent intent = new Intent(this, AboutActivity.class);
+			startActivity(intent);
+			return true;
+		}
+		return super.onOptionsItemSelected(item);
 	}
 
 	private class DemoAdapter extends SimpleArrayBaseAdapter<Intent> {
@@ -68,7 +87,8 @@ public class MainActivity extends ListActivity {
 		}
 
 		@Override
-		public View getView(LayoutInflater inflater, int position, View convertView, ViewGroup parent) {
+		public View getView(LayoutInflater inflater, int position, View convertView,
+							ViewGroup parent) {
 			if (convertView == null) {
 				convertView = inflater.inflate(android.R.layout.simple_list_item_1, parent, false);
 			}

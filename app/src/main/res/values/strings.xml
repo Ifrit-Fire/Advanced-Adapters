@@ -26,6 +26,7 @@
 	<string name="cd_rating_icon">Rating Icon</string>
 
 	<!-- Titles, Headings, etc -->
+	<string name="title_about">About</string>
 	<string name="title_add">Add</string>
 	<string name="title_contains">Contains</string>
 	<string name="title_dialog_add_movies">Add Movie(s) To List</string>
@@ -35,6 +36,7 @@
 	<string name="title_screen_info">Screen Info</string>
 
 	<!-- Menu Text -->
+	<string name="menu_about">About</string>
 	<string name="menu_clear">Clear</string>
 	<string name="menu_info">Info</string>
 	<string name="menu_remove">Remove Selected</string>
