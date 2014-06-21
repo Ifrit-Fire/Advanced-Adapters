@@ -17,6 +17,8 @@ package com.sawyer.advadapters.app.data;
 
 import android.util.SparseArray;
 
+import org.json.JSONArray;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -39,7 +41,10 @@ public class MovieContent {
 	public static Map<Integer, MovieItem> ITEM_MAP = new HashMap<>();    //TODO: Research HashMap Adapter
 
 	/** A sparse array of sample (movie) items */
-	public static SparseArray<MovieItem> ITEM_SPARSE = new SparseArray<>();    //TODO: Research a SparseArray Adapter
+	public static SparseArray<MovieItem> ITEM_SPARSE = new SparseArray<>();    //TODO: Research SparseArray Adapter
+
+	/** A JSON array of sample (movie) items */
+	public static JSONArray ITEM_JSON = new JSONArray();    //TODO: Research JSONArray Adapter
 
 	static {
 		addItem(newMovie("Primer", 2004, true));
@@ -88,6 +93,7 @@ public class MovieContent {
 		ITEM_SET.add(item);
 		ITEM_MAP.put(item.year, item);
 		ITEM_SPARSE.put(item.barcode(), item);
+		ITEM_JSON.put(item);
 	}
 
 	private static MovieItem newMovie(String title, int year, boolean isRecommended) {

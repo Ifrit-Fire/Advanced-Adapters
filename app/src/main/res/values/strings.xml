@@ -18,7 +18,7 @@
 -->
 <resources>
 
-	<string name="app_name">Advanced Adapters</string>
+	<string name="app_name">Advanced Adapters Demo</string>
 	<string name="activity_array_baseadapter">Array BaseAdapter</string>
 	<string name="activity_simplearray_baseadapter">SimpleArray BaseAdapter</string>
 
