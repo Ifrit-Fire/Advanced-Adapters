@@ -20,21 +20,20 @@
 			  xmlns:tools="http://schemas.android.com/tools"
 			  android:layout_width="match_parent"
 			  android:layout_height="match_parent"
+			  android:divider="?android:dividerHorizontal"
 			  android:orientation="vertical"
+			  android:showDividers="middle"
 			  tools:context="com.sawyer.advadapters.app.adapters.AdapterActivity">
 
 	<LinearLayout
 		android:id="@+id/button_action_container"
-		style="?android:buttonBarStyle"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		android:background="@color/btn_flat_background"
 		android:gravity="center"
 		android:orientation="horizontal">
 
 		<Button
 			android:id="@+id/button_add_random"
-			style="?android:buttonBarButtonStyle"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:layout_weight="1"
@@ -42,7 +41,6 @@
 
 		<Button
 			android:id="@+id/button_contain"
-			style="?android:buttonBarButtonStyle"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:layout_weight="1"
@@ -50,7 +48,6 @@
 
 		<Button
 			android:id="@+id/button_insert_random"
-			style="?android:buttonBarButtonStyle"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:layout_weight="1"

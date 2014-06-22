@@ -19,10 +19,20 @@
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
 
 	<style name="AppTheme" parent="android:Theme.Holo.Light">
+		<!--Buttons-->
+		<item name="android:buttonBarStyle">@style/ButtonBarStyle</item>
+		<item name="android:buttonStyle">@style/ButtonStyle</item>
+		<item name="android:imageButtonStyle">@style/ImageButtonStyle</item>
+
+		<!--Misc-->
+		<item name="android:selectableItemBackground">@drawable/item_background_orange</item>
+		<item name="android:activatedBackgroundIndicator">@drawable/activated_background_orange</item>
+		<item name="android:listChoiceBackgroundIndicator">@drawable/list_selector_orange</item>
 
 	</style>
 
 	<style name="AppTheme.Dialog" parent="android:Theme.Holo.Light.Dialog">
+		<item name="android:buttonBarStyle">@style/ButtonBarStyle</item>
 		<item name="android:windowTitleStyle">@style/WindowTitleStyle.Orange</item>
 	</style>
 

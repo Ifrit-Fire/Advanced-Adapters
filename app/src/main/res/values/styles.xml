@@ -17,6 +17,19 @@
  */
 -->
 <resources>
+	<!--Buttons-->
+	<style name="ButtonBarStyle" parent="android:Holo.Light.ButtonBar">
+		<item name="android:background">@color/btn_flat_background</item>
+	</style>
+
+	<style name="ButtonStyle" parent="android:Widget.Holo.Light.Button">
+		<item name="android:background">@drawable/btn_default_orange</item>
+	</style>
+
+	<style name="ImageButtonStyle" parent="android:Widget.Holo.Light.ImageButton">
+		<item name="android:background">@drawable/btn_default_orange</item>
+	</style>
+
 	<!--Based on DialogWindowTitle.Holo.Light-->
 	<style name="WindowTitleStyle">
 		<item name="android:maxLines">1</item>
