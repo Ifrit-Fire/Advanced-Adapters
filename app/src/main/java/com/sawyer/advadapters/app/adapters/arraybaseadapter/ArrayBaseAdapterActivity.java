@@ -27,7 +27,7 @@ import com.sawyer.advadapters.app.data.MovieItem;
 import java.util.List;
 
 public class ArrayBaseAdapterActivity extends AdapterActivity {
-	private MovieArrayAdapterFragment mListFragment;
+	private ArrayBaseAdapterFragment mListFragment;
 
 	@Override
 	protected void clear() {
@@ -64,14 +64,24 @@ public class ArrayBaseAdapterActivity extends AdapterActivity {
 	protected void initFrags() {
 		super.initFrags();
 		FragmentManager manager = getFragmentManager();
-		mListFragment = (MovieArrayAdapterFragment) manager
+		mListFragment = (ArrayBaseAdapterFragment) manager
 				.findFragmentByTag(TAG_BASE_ADAPTER_FRAG);
 		if (mListFragment == null) {
-			mListFragment = MovieArrayAdapterFragment.newInstance();
+			mListFragment = ArrayBaseAdapterFragment.newInstance();
 			FragmentTransaction transaction = manager.beginTransaction();
 			transaction.replace(R.id.frag_container, mListFragment, TAG_BASE_ADAPTER_FRAG);
 			transaction.commit();
 		}
+	}
+
+	@Override
+	protected void insertMovieCollection(List<MovieItem> movies, int position) {
+		//Not supported
+	}
+
+	@Override
+	protected void insertSingleMovie(MovieItem movie, int position) {
+		//Not supported
 	}
 
 	@Override
@@ -85,8 +95,18 @@ public class ArrayBaseAdapterActivity extends AdapterActivity {
 	}
 
 	@Override
+	protected boolean isContainsAllEnabled() {
+		return true;
+	}
+
+	@Override
 	protected boolean isContainsDialogEnabled() {
 		return true;
+	}
+
+	@Override
+	protected boolean isInsertDialogEnabled() {
+		return false;
 	}
 
 	@Override
@@ -119,8 +139,8 @@ public class ArrayBaseAdapterActivity extends AdapterActivity {
 	public void onAttachFragment(Fragment fragment) {
 		super.onAttachFragment(fragment);
 
-		if (fragment instanceof MovieArrayAdapterFragment) {
-			mListFragment = (MovieArrayAdapterFragment) fragment;
+		if (fragment instanceof ArrayBaseAdapterFragment) {
+			mListFragment = (ArrayBaseAdapterFragment) fragment;
 		}
 	}
 

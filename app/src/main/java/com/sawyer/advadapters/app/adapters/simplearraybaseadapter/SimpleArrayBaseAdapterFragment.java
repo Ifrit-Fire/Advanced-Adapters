@@ -26,11 +26,11 @@ import com.sawyer.advadapters.app.data.MovieItem;
 import java.util.ArrayList;
 import java.util.Set;
 
-public class MovieSimpleArrayAdapterFragment extends ListAdapterFragment<MovieItem> {
+public class SimpleArrayBaseAdapterFragment extends ListAdapterFragment<MovieItem> {
 	private static final String STATE_LIST = "State List";
 
-	public static MovieSimpleArrayAdapterFragment newInstance() {
-		return new MovieSimpleArrayAdapterFragment();
+	public static SimpleArrayBaseAdapterFragment newInstance() {
+		return new SimpleArrayBaseAdapterFragment();
 	}
 
 	@Override
@@ -43,8 +43,19 @@ public class MovieSimpleArrayAdapterFragment extends ListAdapterFragment<MovieIt
 		if (adapter instanceof MovieSimpleArrayBaseAdapter) {
 			super.setListAdapter(adapter);
 		} else {
-			throw new ClassCastException("Adapter must be of type " + MovieSimpleArrayBaseAdapter.class.getSimpleName());
+			throw new ClassCastException(
+					"Adapter must be of type " + MovieSimpleArrayBaseAdapter.class.getSimpleName());
 		}
+	}
+
+	@Override
+	protected boolean isRemoveItemsEnabled() {
+		return true;
+	}
+
+	@Override
+	protected boolean isRetainItemsEnabled() {
+		return true;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -53,7 +64,8 @@ public class MovieSimpleArrayAdapterFragment extends ListAdapterFragment<MovieIt
 		super.onCreate(savedInstanceState);
 
 		if (savedInstanceState != null) {
-			ArrayList<MovieItem> list = (ArrayList<MovieItem>) savedInstanceState.getSerializable(STATE_LIST);
+			ArrayList<MovieItem> list = (ArrayList<MovieItem>) savedInstanceState
+					.getSerializable(STATE_LIST);
 			setListAdapter(new MovieSimpleArrayBaseAdapter(getActivity(), list));
 		} else {
 			setListAdapter(new MovieSimpleArrayBaseAdapter(getActivity()));

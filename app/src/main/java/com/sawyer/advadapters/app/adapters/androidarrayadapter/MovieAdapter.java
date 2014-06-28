@@ -13,35 +13,38 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.sawyer.advadapters.app.adapters.simplearraybaseadapter;
+package com.sawyer.advadapters.app.adapters.androidarrayadapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.sawyer.advadapters.app.R;
 import com.sawyer.advadapters.app.data.MovieItem;
-import com.sawyer.advadapters.widget.SimpleArrayBaseAdapter;
 
 import java.util.List;
 
-class MovieSimpleArrayBaseAdapter extends SimpleArrayBaseAdapter<MovieItem> {
+class MovieAdapter extends ArrayAdapter<MovieItem> {
+	private LayoutInflater mInflater;
 
-	MovieSimpleArrayBaseAdapter(Context activity) {
-		super(activity);
+	MovieAdapter(Context activity) {
+		super(activity, R.layout.item_movie1);
+		init();
 	}
 
-	MovieSimpleArrayBaseAdapter(Context activity, List<MovieItem> list) {
-		super(activity, list);
+	MovieAdapter(Context activity, List<MovieItem> list) {
+		super(activity, R.layout.item_movie1, list);
+		init();
 	}
 
 	@Override
-	public View getView(LayoutInflater inflater, int position, View convertView, ViewGroup parent) {
+	public View getView(int position, View convertView, ViewGroup parent) {
 		if (convertView == null) {
-			convertView = inflater.inflate(R.layout.item_movie1, parent, false);
+			convertView = mInflater.inflate(R.layout.item_movie1, parent, false);
 			convertView.setTag(R.id.title, convertView.findViewById(R.id.title));
 			convertView.setTag(R.id.subtitle, convertView.findViewById(R.id.subtitle));
 			convertView.setTag(R.id.icon, convertView.findViewById(R.id.icon));
@@ -59,5 +62,9 @@ class MovieSimpleArrayBaseAdapter extends SimpleArrayBaseAdapter<MovieItem> {
 				(movie.isRecommended) ? R.drawable.ic_rating_good : R.drawable.ic_rating_bad);
 
 		return convertView;
+	}
+
+	private void init() {
+		mInflater = LayoutInflater.from(getContext());
 	}
 }

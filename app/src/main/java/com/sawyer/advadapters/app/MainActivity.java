@@ -27,6 +27,7 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.sawyer.advadapters.app.adapters.androidarrayadapter.AndroidAdapterActivity;
 import com.sawyer.advadapters.app.adapters.arraybaseadapter.ArrayBaseAdapterActivity;
 import com.sawyer.advadapters.app.adapters.simplearraybaseadapter.SimpleArrayBaseAdapterActivity;
 import com.sawyer.advadapters.widget.SimpleArrayBaseAdapter;
@@ -40,8 +41,9 @@ public class MainActivity extends ListActivity {
 
 	private List<Intent> createIntentList() {
 		List<Intent> intents = new ArrayList<>();
+		Intent intent;
 
-		Intent intent = new Intent(this, ArrayBaseAdapterActivity.class);
+		intent = new Intent(this, ArrayBaseAdapterActivity.class);
 		intent.putExtra(EXTRA_INTENT_NAME, getString(R.string.activity_array_baseadapter));
 		intents.add(intent);
 
@@ -52,9 +54,19 @@ public class MainActivity extends ListActivity {
 		return intents;
 	}
 
+	private void initHeaders() {
+		ListView lv = getListView();
+		View v = getLayoutInflater().inflate(R.layout.item_simple_list_header_1, lv, false);
+		TextView tv = (TextView) v.findViewById(android.R.id.text1);
+		tv.setText(R.string.activity_android_arrayadapter);
+		v.setOnClickListener(new OnAndroidHeaderClickListener());
+		lv.addHeaderView(v);
+	}
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		initHeaders();
 		setListAdapter(new DemoAdapter(this, createIntentList()));
 	}
 
@@ -66,8 +78,11 @@ public class MainActivity extends ListActivity {
 
 	@Override
 	protected void onListItemClick(ListView l, View v, int position, long id) {
-		Intent intent = (Intent) getListAdapter().getItem(position);
-		startActivity(intent);
+		position -= l.getHeaderViewsCount();
+		if (position >= 0) {
+			Intent intent = (Intent) getListAdapter().getItem(position);
+			startActivity(intent);
+		}
 	}
 
 	@Override
@@ -77,8 +92,9 @@ public class MainActivity extends ListActivity {
 			Intent intent = new Intent(this, AboutActivity.class);
 			startActivity(intent);
 			return true;
+		default:
+			return super.onOptionsItemSelected(item);
 		}
-		return super.onOptionsItemSelected(item);
 	}
 
 	private class DemoAdapter extends SimpleArrayBaseAdapter<Intent> {
@@ -97,6 +113,15 @@ public class MainActivity extends ListActivity {
 			tv.setText(getItem(position).getStringExtra(EXTRA_INTENT_NAME));
 
 			return convertView;
+		}
+	}
+
+	private class OnAndroidHeaderClickListener implements View.OnClickListener {
+		@Override
+		public void onClick(View v) {
+			Intent intent = new Intent(MainActivity.this, AndroidAdapterActivity.class);
+			intent.putExtra(EXTRA_INTENT_NAME, getString(R.string.activity_android_arrayadapter));
+			startActivity(intent);
 		}
 	}
 }

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.sawyer.advadapters.app.adapters.simplearraybaseadapter;
+package com.sawyer.advadapters.app.adapters.androidarrayadapter;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
@@ -26,8 +26,8 @@ import com.sawyer.advadapters.app.data.MovieItem;
 
 import java.util.List;
 
-public class SimpleArrayBaseAdapterActivity extends AdapterActivity {
-	private SimpleArrayBaseAdapterFragment mListFragment;
+public class AndroidAdapterActivity extends AdapterActivity {
+	private AndroidAdapterFragment mListFragment;
 
 	@Override
 	protected void clear() {
@@ -37,22 +37,24 @@ public class SimpleArrayBaseAdapterActivity extends AdapterActivity {
 
 	@Override
 	protected boolean containsMovie(MovieItem movie) {
-		return mListFragment.getListAdapter().contains(movie);
+		return (mListFragment.getListAdapter().getPosition(movie) != -1);
 	}
 
 	@Override
 	protected boolean containsMovieCollection(List<MovieItem> movies) {
-		return mListFragment.getListAdapter().containsAll(movies);
+		//Not supported
+		return false;
 	}
 
 	@Override
 	protected String getInfoDialogMessage() {
-		return getString(R.string.info_simplearray_baseadapter_message);
+		return getString(R.string.info_android_arrayadapter_message) +
+			   getString(R.string.info_android_arrayAdapter_url);
 	}
 
 	@Override
 	protected String getInfoDialogTitle() {
-		return getString(R.string.info_simplearray_baseadapter_title);
+		return getString(R.string.info_android_arrayadapter_title);
 	}
 
 	@Override
@@ -64,10 +66,10 @@ public class SimpleArrayBaseAdapterActivity extends AdapterActivity {
 	protected void initFrags() {
 		super.initFrags();
 		FragmentManager manager = getFragmentManager();
-		mListFragment = (SimpleArrayBaseAdapterFragment) manager
+		mListFragment = (AndroidAdapterFragment) manager
 				.findFragmentByTag(TAG_BASE_ADAPTER_FRAG);
 		if (mListFragment == null) {
-			mListFragment = SimpleArrayBaseAdapterFragment.newInstance();
+			mListFragment = AndroidAdapterFragment.newInstance();
 			FragmentTransaction transaction = manager.beginTransaction();
 			transaction.replace(R.id.frag_container, mListFragment, TAG_BASE_ADAPTER_FRAG);
 			transaction.commit();
@@ -76,12 +78,12 @@ public class SimpleArrayBaseAdapterActivity extends AdapterActivity {
 
 	@Override
 	protected void insertMovieCollection(List<MovieItem> movies, int position) {
-		mListFragment.getListAdapter().insertAll(position, movies);
+		//Not supported
 	}
 
 	@Override
 	protected void insertSingleMovie(MovieItem movie, int position) {
-		mListFragment.getListAdapter().insert(position, movie);
+		//Not supported
 	}
 
 	@Override
@@ -91,12 +93,12 @@ public class SimpleArrayBaseAdapterActivity extends AdapterActivity {
 
 	@Override
 	public boolean isAddVarargsEnabled() {
-		return false;
+		return true;
 	}
 
 	@Override
 	protected boolean isContainsAllEnabled() {
-		return true;
+		return false;
 	}
 
 	@Override
@@ -106,12 +108,12 @@ public class SimpleArrayBaseAdapterActivity extends AdapterActivity {
 
 	@Override
 	protected boolean isInsertDialogEnabled() {
-		return true;
+		return false;
 	}
 
 	@Override
 	protected boolean isSearchViewEnabled() {
-		return false;
+		return true;
 	}
 
 	@Override
@@ -129,30 +131,40 @@ public class SimpleArrayBaseAdapterActivity extends AdapterActivity {
 	}
 
 	@Override
+	public void onAddVarargsMovieClick(MovieItem... movies) {
+		super.onAddVarargsMovieClick(movies);
+		mListFragment.getListAdapter().addAll(movies);
+		updateActionBar();
+	}
+
+	@Override
 	public void onAttachFragment(Fragment fragment) {
 		super.onAttachFragment(fragment);
 
-		if (fragment instanceof SimpleArrayBaseAdapterFragment) {
-			mListFragment = (SimpleArrayBaseAdapterFragment) fragment;
+		if (fragment instanceof AndroidAdapterFragment) {
+			mListFragment = (AndroidAdapterFragment) fragment;
 		}
 	}
 
 	@Override
 	public boolean onQueryTextChange(String newText) {
-		return false;
+		mListFragment.getListAdapter().getFilter().filter(newText);
+		return true;
 	}
 
 	@Override
 	public boolean onQueryTextSubmit(String query) {
-		return false;
+		mListFragment.getListAdapter().getFilter().filter(query);
+		return true;
 	}
 
 	@Override
 	protected void reset() {
-		mListFragment.getListAdapter().setNotifyOnChange(false);
-		mListFragment.getListAdapter().clear();
-		mListFragment.getListAdapter().addAll(MovieContent.ITEM_LIST);
-		mListFragment.getListAdapter().notifyDataSetChanged();
+		MovieAdapter adapter = mListFragment.getListAdapter();
+		adapter.setNotifyOnChange(false);
+		adapter.clear();
+		adapter.addAll(MovieContent.ITEM_LIST.subList(0, 4));
+		adapter.notifyDataSetChanged();
 		updateActionBar();
 	}
 

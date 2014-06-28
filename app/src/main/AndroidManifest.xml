@@ -19,6 +19,9 @@
 			android:name=".adapters.simplearraybaseadapter.SimpleArrayBaseAdapterActivity"
 			android:label="@string/activity_simplearray_baseadapter">
 		</activity>
+		<activity
+			android:name=".adapters.androidarrayadapter.AndroidAdapterActivity"
+			android:label="@string/activity_android_arrayadapter"></activity>
 
 		<activity
 			android:name=".MainActivity"

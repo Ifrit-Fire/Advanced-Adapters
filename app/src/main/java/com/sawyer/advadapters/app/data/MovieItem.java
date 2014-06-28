@@ -80,6 +80,11 @@ public class MovieItem implements Comparable<MovieItem>, Parcelable {
 	}
 
 	@Override
+	public String toString() {
+		return ((title == null ? "" : title) + " " + year + " " + isRecommended);
+	}
+
+	@Override
 	public void writeToParcel(Parcel dest, int flags) {
 		dest.writeString(title);
 		dest.writeInt(year);

@@ -69,12 +69,19 @@ public class ContainsDialogFragment extends CustomDialogFragment {
 		TextView tv = (TextView) dialog.findViewById(R.id.movie_single_txt);
 		tv.setText("- " + mMovieItems[0].title);
 
+		int containsVisibility = View.VISIBLE;
+		if (mEventListener != null && !mEventListener.isContainsAllEnabled()) {
+			containsVisibility = View.GONE;
+		}
 		btn = (Button) dialog.findViewById(R.id.movies_collection_btn);
 		btn.setOnClickListener(new OnContainsCollectionClickListener());
+		btn.setVisibility(containsVisibility);
 		tv = (TextView) dialog.findViewById(R.id.movie_collection1_txt);
 		tv.setText("- " + mMovieItems[0].title);
+		tv.setVisibility(containsVisibility);
 		tv = (TextView) dialog.findViewById(R.id.movie_collection2_txt);
 		tv.setText("- " + mMovieItems[1].title);
+		tv.setVisibility(containsVisibility);
 
 		return dialog;
 	}
@@ -84,6 +91,8 @@ public class ContainsDialogFragment extends CustomDialogFragment {
 	}
 
 	public interface EventListener {
+		public boolean isContainsAllEnabled();
+
 		public void onContainsMovieClick(MovieItem movie);
 
 		public void onContainsMovieCollectionClick(List<MovieItem> movies);

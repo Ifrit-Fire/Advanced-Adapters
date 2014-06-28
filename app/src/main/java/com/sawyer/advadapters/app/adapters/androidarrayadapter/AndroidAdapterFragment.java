@@ -13,10 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.sawyer.advadapters.app.adapters.arraybaseadapter;
+package com.sawyer.advadapters.app.adapters.androidarrayadapter;
 
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 
@@ -24,27 +26,46 @@ import com.sawyer.advadapters.app.adapters.ListAdapterFragment;
 import com.sawyer.advadapters.app.data.MovieItem;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
-public class MovieArrayAdapterFragment extends ListAdapterFragment<MovieItem> {
+public class AndroidAdapterFragment extends ListAdapterFragment<MovieItem> {
 	private static final String STATE_LIST = "State List";
 
-	public static MovieArrayAdapterFragment newInstance() {
-		return new MovieArrayAdapterFragment();
+	public static AndroidAdapterFragment newInstance() {
+		return new AndroidAdapterFragment();
 	}
 
 	@Override
-	public MovieArrayBaseAdapter getListAdapter() {
-		return (MovieArrayBaseAdapter) super.getListAdapter();
+	public MovieAdapter getListAdapter() {
+		return (MovieAdapter) super.getListAdapter();
 	}
 
 	@Override
 	public void setListAdapter(ListAdapter adapter) {
-		if (adapter instanceof MovieArrayBaseAdapter) {
+		if (adapter instanceof MovieAdapter) {
 			super.setListAdapter(adapter);
 		} else {
-			throw new ClassCastException("Adapter must be of type " + MovieArrayBaseAdapter.class.getSimpleName());
+			throw new ClassCastException(
+					"Adapter must be of type " +
+					MovieAdapter.class.getSimpleName()
+			);
 		}
+	}
+
+	@Override
+	protected boolean isRemoveItemsEnabled() {
+		return true;
+	}
+
+	@Override
+	protected boolean isRetainItemsEnabled() {
+		return false;
+	}
+
+	@Override
+	public void onActivityCreated(Bundle savedInstanceState) {
+		super.onActivityCreated(savedInstanceState);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -53,11 +74,18 @@ public class MovieArrayAdapterFragment extends ListAdapterFragment<MovieItem> {
 		super.onCreate(savedInstanceState);
 
 		if (savedInstanceState != null) {
-			ArrayList<MovieItem> list = (ArrayList<MovieItem>) savedInstanceState.getSerializable(STATE_LIST);
-			setListAdapter(new MovieArrayBaseAdapter(getActivity(), list));
+			List<MovieItem> list = (ArrayList<MovieItem>) savedInstanceState
+					.getSerializable(STATE_LIST);
+			setListAdapter(new MovieAdapter(getActivity(), list));
 		} else {
-			setListAdapter(new MovieArrayBaseAdapter(getActivity()));
+			setListAdapter(new MovieAdapter(getActivity()));
 		}
+	}
+
+	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+							 Bundle savedInstanceState) {
+		return super.onCreateView(inflater, container, savedInstanceState);
 	}
 
 	@Override
@@ -69,27 +97,34 @@ public class MovieArrayAdapterFragment extends ListAdapterFragment<MovieItem> {
 		newMovie.title = new StringBuilder(oldMovie.title).reverse().toString();
 		newMovie.year = oldMovie.year;
 		newMovie.isRecommended = !oldMovie.isRecommended;
-		getListAdapter().update(position, newMovie);
+		getListAdapter().setNotifyOnChange(false);
+		getListAdapter().remove(oldMovie);
+		getListAdapter().insert(newMovie, position);
+		getListAdapter().notifyDataSetChanged();
 	}
 
 	@Override
 	protected void onRemoveItemsClicked(Set<MovieItem> items) {
-		if (items.size() == 1) {
-			getListAdapter().remove(items.iterator().next());
-		} else {
-			getListAdapter().removeAll(items);
+		getListAdapter().setNotifyOnChange(false);
+		for (MovieItem item : items) {
+			getListAdapter().remove(item);
 		}
+		getListAdapter().notifyDataSetChanged();
 	}
 
 	@Override
 	protected void onRetainItemsClicked(Set<MovieItem> items) {
-		getListAdapter().retainAll(items);
+		//Not supported
 	}
 
 	@Override
 	public void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
 
-		outState.putSerializable(STATE_LIST, getListAdapter().getList());
+		ArrayList<MovieItem> list = new ArrayList<>();
+		for (int index = 0; index < getListAdapter().getCount(); ++index) {
+			list.add(getListAdapter().getItem(index));
+		}
+		outState.putSerializable(STATE_LIST, list);
 	}
 }

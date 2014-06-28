@@ -29,7 +29,7 @@ import com.sawyer.advadapters.widget.ArrayBaseAdapter;
 import java.util.List;
 import java.util.Locale;
 
-public class MovieArrayBaseAdapter extends ArrayBaseAdapter<MovieItem> {
+class MovieArrayBaseAdapter extends ArrayBaseAdapter<MovieItem> {
 
 	MovieArrayBaseAdapter(Context activity) {
 		super(activity);

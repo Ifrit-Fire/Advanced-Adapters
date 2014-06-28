@@ -38,6 +38,11 @@ import com.sawyer.advadapters.app.dialogs.InsertDialogFragment;
 import java.util.List;
 import java.util.Random;
 
+/**
+ * Abstract class that establishes a structure for supporting all sorts of Adapter functionality.
+ * Will adjust UI based on what subclasses enable/disable.  Subclasses should only need worrying
+ * about hooking up the adapter to the required methods needing implementing.
+ */
 public abstract class AdapterActivity extends Activity implements AddDialogFragment.EventListener, SearchView.OnQueryTextListener {
 	protected static final String TAG_BASE_ADAPTER_FRAG = "Tag Base Adapter Frag";
 
@@ -51,16 +56,11 @@ public abstract class AdapterActivity extends Activity implements AddDialogFragm
 	private InsertDialogFragment mInsertDialog;
 	private InfoDialogFragment mInfoDialogFragment;
 
-	protected void clear() {
-	}
+	protected abstract void clear();
 
-	protected boolean containsMovie(MovieItem movie) {
-		return false;
-	}
+	protected abstract boolean containsMovie(MovieItem movie);
 
-	protected boolean containsMovieCollection(List<MovieItem> movies) {
-		return false;
-	}
+	protected abstract boolean containsMovieCollection(List<MovieItem> movies);
 
 	protected abstract String getInfoDialogMessage();
 
@@ -70,6 +70,7 @@ public abstract class AdapterActivity extends Activity implements AddDialogFragm
 
 	private void initActionBar() {
 		ActionBar actionBar = getActionBar();
+		if (actionBar == null) throw new AssertionError("No actionbar?");
 		actionBar.setDisplayHomeAsUpEnabled(true);
 	}
 
@@ -115,32 +116,22 @@ public abstract class AdapterActivity extends Activity implements AddDialogFragm
 		btn.setVisibility(isInsertDialogEnabled() ? View.VISIBLE : View.GONE);
 	}
 
-	protected void insertMovieCollection(List<MovieItem> movies, int position) {
-	}
+	protected abstract void insertMovieCollection(List<MovieItem> movies, int position);
 
-	protected void insertSingleMovie(MovieItem movie, int position) {
-	}
+	protected abstract void insertSingleMovie(MovieItem movie, int position);
 
-	protected boolean isAddDialogEnabled() {
-		return false;
-	}
+	protected abstract boolean isAddDialogEnabled();
 
 	@Override
-	public boolean isAddVarargsEnabled() {
-		return false;
-	}
+	public abstract boolean isAddVarargsEnabled();
 
-	protected boolean isContainsDialogEnabled() {
-		return false;
-	}
+	protected abstract boolean isContainsAllEnabled();
 
-	protected boolean isInsertDialogEnabled() {
-		return false;
-	}
+	protected abstract boolean isContainsDialogEnabled();
 
-	protected boolean isSearchViewEnabled() {
-		return false;
-	}
+	protected abstract boolean isInsertDialogEnabled();
+
+	protected abstract boolean isSearchViewEnabled();
 
 	@Override
 	public void onAddMovieCollectionClick(List<MovieItem> movies) {
@@ -237,8 +228,7 @@ public abstract class AdapterActivity extends Activity implements AddDialogFragm
 		return result;
 	}
 
-	protected void reset() {
-	}
+	protected abstract void reset();
 
 	private void showInfoDialog() {
 		if (mInfoDialogFragment != null) {
@@ -249,8 +239,7 @@ public abstract class AdapterActivity extends Activity implements AddDialogFragm
 		mInfoDialogFragment.show(getFragmentManager(), TAG_INFO_DIALOG_FRAG);
 	}
 
-	protected void sort() {
-	}
+	protected abstract void sort();
 
 	@SuppressWarnings("ConstantConditions")
 	protected void updateActionBar() {
@@ -259,6 +248,11 @@ public abstract class AdapterActivity extends Activity implements AddDialogFragm
 	}
 
 	private class ContainsDialogFragEventListener implements ContainsDialogFragment.EventListener {
+		@Override
+		public boolean isContainsAllEnabled() {
+			return AdapterActivity.this.isContainsAllEnabled();
+		}
+
 		@Override
 		public void onContainsMovieClick(MovieItem movie) {
 			mContainsDialog.dismiss();

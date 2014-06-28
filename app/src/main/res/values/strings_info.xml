@@ -20,9 +20,9 @@
 	<!--About Screen - About Heading-->
 	<string name="info_about_title">About</string>
 	<string name="info_about_message">
-		\t\tInitially created as a way to test the Advanced Adapters library, this app now serves as a
+		\t\tInitially created as a way to test the Advanced-Adapters library, this app now serves as a
 		demonstration of all available adapters and their associating features found within it. The
-		Advanced Adapters library spawned out of frustration in having to constantly re-write a new
+		Advanced-Adapters library spawned out of frustration in having to constantly re-write a new
 		adapter for various apps I\'ve worked on over the years. Needing a custom solution proved far
 		more common then needing the generic ArrayAdapter provided by Android. While their version
 		serves a basic generic purpose, it\'s filtering inconsistencies/bugs became a pain to deal
@@ -30,6 +30,26 @@
 		filtering.
 	</string>
 	<string name="info_about_url">https://github.com/JaySoyer/Advanced-Adapters</string>
+
+	<!--Info Dialog - Android's ArrayAdapter-->
+	<string name="info_android_arrayadapter_title">Android\'s ArrayAdapter</string>
+	<string name="info_android_arrayadapter_message">
+		A large motivation to create the Advanced-Adapter library was to fix the problems found in
+		Android\'s provided ArrayAdapter. The following is a demonstration of their adapter in action
+		to see just how easy it is to break.  Mostly the problems revolve around the filter. Try
+		doing this:\n
+		\n
+		\t - Perform a search\n
+		\t - Close the search view\n
+		\t - Attempt to add a new movie\n
+		\t - Behold…nothing is added.\n
+		\n
+		The demo is now permanently in a bad state.  You\'ll need to back out and return to be back
+		in a good state. As soon as the ArrayAdapter performs one search, the Adapter can longer be
+		mutated without seeing problems. Can you found any other problems? Head on over to the wiki
+		to find out more issues.\n\n
+	</string>
+	<string name="info_android_arrayAdapter_url">https://github.com/JaySoyer/Advanced-Adapters/wiki/</string>
 
 	<!--Info Dialog - ArrayBaseAdapter-->
 	<string name="info_array_baseadapter_title">Array BaseAdapter</string>
@@ -57,11 +77,11 @@
 	<string name="info_credits_title">Credits</string>
 	<string name="info_credits_message_library">
 		\t\tThough heavily modified, Android\'s ArrayAdapter served as the foundational code for
-		the Advanced Adapters library.
+		the Advanced-Adapters library.
 	</string>
 	<string name="info_credits_message_android_url">https://source.android.com/license.html</string>
 	<string name="info_credits_message_demo">
-		The following was used to help build the Advanced Adapters Demo app:
+		The following was used to help build the Advanced-Adapters Demo app:
 	</string>
 	<string name="info_credits_message_retain_url">http://thenounproject.com/term/crop/11553</string>
 	<string name="info_credits_message_plug_url">http://thenounproject.com/term/plug/33432</string>
@@ -69,7 +89,7 @@
 	<!--About Screen - License Heading-->
 	<string name="info_license_title">License</string>
 	<string name="info_license_message">
-		\t\tThis demo app and the Advanced Adapters library are both under the Apache License v2.0.
+		\t\tThis demo app and the Advanced-Adapters library are both under the Apache License v2.0.
 		You may not use either app or library except in compliance with the License. You may obtain
 		a copy of the License at:
 	</string>

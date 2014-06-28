@@ -35,6 +35,12 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * Abstract ListFragment which enables multiple modal mode and handles all the relating CAB logic.
+ * All work in processing CAB actions is delegated down to subclasses.
+ *
+ * @param <T> Parcelable object. Needed for allowing onSavedInstance to work
+ */
 public abstract class ListAdapterFragment<T extends Parcelable> extends ListFragment {
 	private static final String STATE_CAB_CHECKED_ITEMS = "State Cab Checked Items";
 
@@ -53,17 +59,23 @@ public abstract class ListAdapterFragment<T extends Parcelable> extends ListFrag
 		super.onCreate(savedInstanceState);
 
 		if (savedInstanceState != null) {
-			mCheckedItems.addAll((ArrayList<T>) savedInstanceState.getParcelableArrayList(STATE_CAB_CHECKED_ITEMS));
+			mCheckedItems.addAll((ArrayList<T>) savedInstanceState
+					.getParcelableArrayList(STATE_CAB_CHECKED_ITEMS));
 		}
 	}
 
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+							 Bundle savedInstanceState) {
 		ListView lv = (ListView) inflater.inflate(R.layout.listview, container, false);
 		lv.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
 		lv.setMultiChoiceModeListener(new OnCabMultiChoiceModeListener());
 		return lv;
 	}
+
+	protected abstract boolean isRetainItemsEnabled();
+
+	protected abstract boolean isRemoveItemsEnabled();
 
 	@Override
 	public void onSaveInstanceState(Bundle outState) {
@@ -73,11 +85,9 @@ public abstract class ListAdapterFragment<T extends Parcelable> extends ListFrag
 		outState.putParcelableArrayList(STATE_CAB_CHECKED_ITEMS, list);
 	}
 
-	protected void onRemoveItemsClicked(Set<T> items) {
-	}
+	protected abstract void onRemoveItemsClicked(Set<T> items);
 
-	protected void onRetainItemsClicked(Set<T> items) {
-	}
+	protected abstract void onRetainItemsClicked(Set<T> items);
 
 	private class OnCabMultiChoiceModeListener implements AbsListView.MultiChoiceModeListener {
 		@Override
@@ -119,6 +129,15 @@ public abstract class ListAdapterFragment<T extends Parcelable> extends ListFrag
 			MenuInflater inflater = mode.getMenuInflater();
 			inflater.inflate(R.menu.cab_adapters, menu);
 			mode.setTitle(mCheckedItems.size() + " Selected");
+
+			MenuItem item = menu.findItem(R.id.menu_context_remove);
+			if (item != null) {
+				item.setVisible(isRemoveItemsEnabled());
+			}
+			item = menu.findItem(R.id.menu_context_retain);
+			if (item != null) {
+				item.setVisible(isRetainItemsEnabled());
+			}
 			return true;
 		}
 
@@ -129,7 +148,8 @@ public abstract class ListAdapterFragment<T extends Parcelable> extends ListFrag
 
 		@SuppressWarnings({"unchecked", "SuspiciousMethodCalls"})
 		@Override
-		public void onItemCheckedStateChanged(ActionMode mode, int position, long id, boolean checked) {
+		public void onItemCheckedStateChanged(ActionMode mode, int position, long id,
+											  boolean checked) {
 			if (checked) {
 				mCheckedItems.add((T) getListAdapter().getItem(position));
 			} else {
