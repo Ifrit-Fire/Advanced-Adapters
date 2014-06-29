@@ -1,6 +1,6 @@
 Advanced-Adapters
 =================
-Advanced-Adapters is a suite of adapters to designed to provide better alternaties to Android's ArrayAdapter. For some time now, their adapter has been plagued with filtering issues, which this open source project.  In fact, it was the primary drive to creating this suite of adapters.  The following list are some of the advantages to using this suite:
+Advanced-Adapters is a suite of adapters to designed to provide better alternaties to Android's ArrayAdapter. For some time now, their adapter has been plagued with filtering issues, which this open source project.  In fact, it was the primary drive to creating this suite of adapters. The following list are some of the advantages to using this suite:
 - Additional methods for supporting more ArrayList APIs.
 - Slightly smarter use of notifyDataSetChanged().
 - LayoutInflater passed to all view creation methods.
@@ -13,8 +13,32 @@ Currently, this suite provides two different adapters.  More will be coming in t
 
 Example
 =======
-Of course for those just skimming thru, here's a quick example of using the ArrayBaseAdapter.
+Of course for those just skimming thru, here's a quick example of using the ArrayBaseAdapter.  For now, every adapter is just an abstract class that requires subclassing. This may or may not change in the future.  It's more or less just like using Android's ArrayAdapter.
+```java
+public class MovieAdapter extends ArrayBaseAdapter<MovieItem> {
+	MovieAdapter(Context activity) {
+		super(activity);
+	}
 	
+	@Override
+	public View getView(LayoutInflater inflater, int position, View convertView, ViewGroup parent) {
+		if (convertView == null) {
+			//Infalte your view
+		}
+
+		//Fill your view with data
+
+		return convertView;
+	}
+	
+	//Easily customize your filtered results here.  Too easy!
+	@Override
+	public boolean isFilteredBy(MovieItem movie, CharSequence constraint) {
+		return movie.title.toLowerCase(Locale.US).contains(constraint.toString().toLowerCase(Locale.US));
+	}
+}
+```
+Thats it!
 
 Adding To Your Project
 ======================
