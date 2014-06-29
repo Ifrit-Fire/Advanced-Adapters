@@ -1,5 +1,5 @@
-Advanced-Adapters	![logo][1]
-=================
+<p align="center"><img src="https://raw.githubusercontent.com/JaySoyer/Advanced-Adapters/master/app/src/main/logo.png" width="256px" height="256px"/></p>
+# Advanced-Adapters
 Advanced-Adapters is a suite of adapters to designed to provide better alternaties to Android's ArrayAdapter. For some time now, their adapter has been plagued with filtering issues, which this open source project.  In fact, it was the primary drive to creating this suite of adapters. The following list are some of the advantages to using this suite:
 - Additional methods for supporting more ArrayList APIs.
 - Slightly smarter use of notifyDataSetChanged().
@@ -12,8 +12,7 @@ Currently, this suite provides two different adapters.  More will be coming in t
 - SimpleArrayBaseAdapter
 
 
-Example
-=======
+### Example
 Of course for those just skimming thru, here's a quick example of using the ArrayBaseAdapter.  For now, every adapter is just an abstract class that requires subclassing. This may or may not change in the future.  It's more or less just like using Android's ArrayAdapter.
 ```java
 public class MovieAdapter extends ArrayBaseAdapter<MovieItem> {
@@ -41,15 +40,13 @@ public class MovieAdapter extends ArrayBaseAdapter<MovieItem> {
 ```
 Thats it!
 
-Adding To Your Project
-======================
+### Adding To Your Project
 All adapters are found within the `lib` directory.  Each adapter is a standalone class file which you can copy and paste into your eclipse project.  If using Android Studio, you can import the module directly into your app instead.
 
 Everything found within `app` is the source code for the Google Play store demo app. You can also use it for seeing how to use the adapters.
 	
 	
-License
-=======
+### License
 
     Copyright 2014 Jay Soyer
 
@@ -64,6 +61,3 @@ License
     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
     See the License for the specific language governing permissions and
     limitations under the License.
-
-
-[1]: https://github.com/JaySoyer/Advanced-Adapters/blob/master/app/src/main/logo.png
