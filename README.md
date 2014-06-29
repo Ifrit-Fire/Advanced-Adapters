@@ -1,4 +1,4 @@
-Advanced-Adapters
+Advanced-Adapters	![logo][1]
 =================
 Advanced-Adapters is a suite of adapters to designed to provide better alternaties to Android's ArrayAdapter. For some time now, their adapter has been plagued with filtering issues, which this open source project.  In fact, it was the primary drive to creating this suite of adapters. The following list are some of the advantages to using this suite:
 - Additional methods for supporting more ArrayList APIs.
@@ -10,6 +10,7 @@ Advanced-Adapters is a suite of adapters to designed to provide better alternati
 Currently, this suite provides two different adapters.  More will be coming in time. Head on over to the wiki to read more about them and learn how to use them.
 - ArrayBaseAdapter
 - SimpleArrayBaseAdapter
+
 
 Example
 =======
@@ -63,3 +64,6 @@ License
     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
     See the License for the specific language governing permissions and
     limitations under the License.
+
+
+[1]: https://github.com/JaySoyer/Advanced-Adapters/blob/master/app/src/main/logo.png
