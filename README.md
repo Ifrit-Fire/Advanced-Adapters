@@ -23,7 +23,7 @@ public class MovieAdapter extends ArrayBaseAdapter<MovieItem> {
 	@Override
 	public View getView(LayoutInflater inflater, int position, View convertView, ViewGroup parent) {
 		if (convertView == null) {
-			//Infalte your view
+			//Inflate your view
 		}
 
 		//Fill your view with data
