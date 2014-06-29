@@ -27,7 +27,6 @@ public class MovieAdapter extends ArrayBaseAdapter<MovieItem> {
 		}
 
 		//Fill your view with data
-
 		return convertView;
 	}
 	
