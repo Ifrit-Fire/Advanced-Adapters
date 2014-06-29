@@ -34,24 +34,27 @@
 
 		<Button
 			android:id="@+id/button_add_random"
-			android:layout_width="wrap_content"
+			android:layout_width="0dp"
 			android:layout_height="wrap_content"
 			android:layout_weight="1"
-			android:text="@string/title_add"/>
+			android:text="@string/title_add"
+			tools:ignore="ButtonStyle"/>
 
 		<Button
 			android:id="@+id/button_contain"
-			android:layout_width="wrap_content"
+			android:layout_width="0dp"
 			android:layout_height="wrap_content"
 			android:layout_weight="1"
-			android:text="@string/title_contains"/>
+			android:text="@string/title_contains"
+			tools:ignore="ButtonStyle"/>
 
 		<Button
 			android:id="@+id/button_insert_random"
-			android:layout_width="wrap_content"
+			android:layout_width="0dp"
 			android:layout_height="wrap_content"
 			android:layout_weight="1"
-			android:text="@string/title_insert"/>
+			android:text="@string/title_insert"
+			tools:ignore="ButtonStyle"/>
 	</LinearLayout>
 
 	<FrameLayout

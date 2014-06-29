@@ -26,18 +26,12 @@
 
 	<include layout="@layout/include_movie_single_list"/>
 
-	<FrameLayout
-		style="?android:buttonBarStyle"
+	<Button
+		android:id="@+id/movie_single_btn"
+		style="?android:buttonBarButtonStyle"
 		android:layout_width="match_parent"
-		android:layout_height="wrap_content">
-
-		<Button
-			android:id="@+id/movie_single_btn"
-			style="?android:buttonBarButtonStyle"
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:text="@string/btn_add"/>
-	</FrameLayout>
+		android:layout_height="wrap_content"
+		android:text="@string/btn_add"/>
 
 	<include layout="@layout/include_movie_collection_list"/>
 

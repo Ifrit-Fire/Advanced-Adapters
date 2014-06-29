@@ -17,5 +17,5 @@
 */
 -->
 <resources>
-	<color name="btn_flat_background">#40ff8e00</color>
+	<color name="orange_light">#40ff8e00</color>
 </resources>

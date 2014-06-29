@@ -78,10 +78,9 @@ public class ContainsDialogFragment extends CustomDialogFragment {
 		btn.setVisibility(containsVisibility);
 		tv = (TextView) dialog.findViewById(R.id.movie_collection1_txt);
 		tv.setText("- " + mMovieItems[0].title);
-		tv.setVisibility(containsVisibility);
+		((View) tv.getParent()).setVisibility(containsVisibility);
 		tv = (TextView) dialog.findViewById(R.id.movie_collection2_txt);
 		tv.setText("- " + mMovieItems[1].title);
-		tv.setVisibility(containsVisibility);
 
 		return dialog;
 	}

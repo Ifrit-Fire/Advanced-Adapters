@@ -27,32 +27,20 @@
 
 	<include layout="@layout/include_movie_single_list"/>
 
-	<FrameLayout
-		style="?android:buttonBarStyle"
+	<Button
+		android:id="@+id/movie_single_btn"
+		style="?android:buttonBarButtonStyle"
 		android:layout_width="match_parent"
-		android:layout_height="wrap_content">
-
-		<Button
-			android:id="@+id/movie_single_btn"
-			style="?android:buttonBarButtonStyle"
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:text="@string/btn_contains"/>
-	</FrameLayout>
+		android:layout_height="wrap_content"
+		android:text="@string/btn_contains"/>
 
 	<include layout="@layout/include_movie_collection_list"/>
 
-	<FrameLayout
-		style="?android:buttonBarStyle"
+	<Button
+		android:id="@+id/movies_collection_btn"
+		style="?android:buttonBarButtonStyle"
 		android:layout_width="match_parent"
-		android:layout_height="wrap_content">
-
-		<Button
-			android:id="@+id/movies_collection_btn"
-			style="?android:buttonBarButtonStyle"
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:text="@string/btn_contains_all"/>
-	</FrameLayout>
+		android:layout_height="wrap_content"
+		android:text="@string/btn_contains_all"/>
 
 </LinearLayout>

@@ -21,6 +21,7 @@
 	<style name="AppTheme" parent="android:Theme.Holo.Light">
 		<!--Buttons-->
 		<item name="android:buttonBarStyle">@style/ButtonBarStyle</item>
+		<item name="android:buttonBarButtonStyle">@style/ButtonBarButtonStyle</item>
 		<item name="android:buttonStyle">@style/ButtonStyle</item>
 		<item name="android:imageButtonStyle">@style/ImageButtonStyle</item>
 
@@ -32,7 +33,11 @@
 	</style>
 
 	<style name="AppTheme.Dialog" parent="android:Theme.Holo.Light.Dialog">
+		<!--Buttons-->
 		<item name="android:buttonBarStyle">@style/ButtonBarStyle</item>
+		<item name="android:buttonBarButtonStyle">@style/ButtonBarButtonStyle</item>
+
+		<!--Misc-->
 		<item name="android:windowTitleStyle">@style/WindowTitleStyle.Orange</item>
 	</style>
 

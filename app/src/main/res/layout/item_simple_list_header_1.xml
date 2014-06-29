@@ -17,10 +17,12 @@
 	android:id="@android:id/text1"
 	xmlns:android="http://schemas.android.com/apk/res/android"
 	android:layout_width="match_parent"
-	android:background="@color/btn_flat_background"
 	android:layout_height="wrap_content"
+	android:background="@drawable/header_selector_orange"
 	android:gravity="center_vertical"
 	android:minHeight="?android:attr/listPreferredItemHeightSmall"
 	android:paddingEnd="?android:attr/listPreferredItemPaddingEnd"
+	android:paddingLeft="?android:attr/listPreferredItemPaddingLeft"
+	android:paddingRight="?android:listPreferredItemPaddingRight"
 	android:paddingStart="?android:attr/listPreferredItemPaddingStart"
 	android:textAppearance="?android:attr/textAppearanceListItemSmall"/>

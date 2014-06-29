@@ -19,7 +19,11 @@
 <resources>
 	<!--Buttons-->
 	<style name="ButtonBarStyle" parent="android:Holo.Light.ButtonBar">
-		<item name="android:background">@color/btn_flat_background</item>
+	</style>
+
+	<style name="ButtonBarButtonStyle">
+		<item name="android:background">@drawable/btn_borderless_orange</item>
+		<item name="android:textAppearance">?android:textAppearanceButton</item>
 	</style>
 
 	<style name="ButtonStyle" parent="android:Widget.Holo.Light.Button">
