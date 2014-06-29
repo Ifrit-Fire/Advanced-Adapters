@@ -11,6 +11,12 @@ Currently, this suite provides two different adapters.  More will be coming in t
 - ArrayBaseAdapter
 - SimpleArrayBaseAdapter
 
+### Supports
+- Ice Cream Sandwich
+- Jelly Bean
+- Kitkat
+
+There is no plan to specifically support Gingerbread at this time.  However, I don't believe there's any API specific calls being used in the adapter's themselves that aren't found on Gingerbread.  Meaning...it may work fine. Seeing that I lack a Gingerbread devices, maybe someone can test that for me?
 
 ### Example
 Of course for those just skimming thru, here's a quick example of using the ArrayBaseAdapter.  For now, every adapter is just an abstract class that requires subclassing. This may or may not change in the future.  It's more or less just like using Android's ArrayAdapter.
