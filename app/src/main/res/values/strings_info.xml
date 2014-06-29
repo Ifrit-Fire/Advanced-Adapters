@@ -43,10 +43,12 @@
 		\t - Close the search view\n
 		\t - Attempt to add a new movie\n
 		\t - Behold…nothing is added.\n
+		\t - Demo is now in a bad state.\n
+		\t - Hit back and re-enter demo.\n
+		\t - You\'re back in a good state.\n
 		\n
-		The demo is now permanently in a bad state.  You\'ll need to back out and return to be back
-		in a good state. As soon as the ArrayAdapter performs one search, the Adapter can longer be
-		mutated without seeing problems. Can you found any other problems? Head on over to the wiki
+		As soon as the ArrayAdapter performs one search, the Adapter can longer be
+		mutated without seeing problems. Can you find any other problems? Head on over to the wiki
 		to find out more issues.\n\n
 	</string>
 	<string name="info_android_arrayAdapter_url">https://github.com/JaySoyer/Advanced-Adapters/wiki/</string>
@@ -54,23 +56,21 @@
 	<!--Info Dialog - ArrayBaseAdapter-->
 	<string name="info_array_baseadapter_title">Array BaseAdapter</string>
 	<string name="info_array_baseadapter_message">
-		This is a demonstration of the ArrayBaseAdapter class. It\'s an abstract BaseAdapter that is
-		backed by an ArrayList. All subclasses are expected to handle view generation and defining
-		the filtering logic.\n
+		This is a demonstration of the ArrayBaseAdapter class. It\'s backed by an ArrayList. All
+		subclasses are expected to handle view generation and defining the filter comparison logic.\n
 		\n
 		The ArrayBaseAdapter is designed to be more flexible then Android\'s ArrayAdapter class and
-		be a general goto adapter for most situations. Compared to the standard ArrayAdapter, it
-		provides extra features such as:\n
+		be a general goto adapter for most situations. Comparatively, it provides the following extra
+		features:\n
 		\n
-		\t- Additional methods supporting more ArrayList APIs\n
-		\t- Smarter use of notifyDataSetChanged()\n
+		\t- Additional methods supporting more ArrayList APIs.\n
+		\t- Smarter use of notifyDataSetChanged().\n
 		\t- LayoutInflater passed to all view creation methods.\n
-		\t- Resolves many outstanding filtering issues\n
+		\t- Resolves many outstanding filtering issues.\n
 		\n
-		Because the filtering process occurs on a background thread, all mutating methods are
-		internally synchronized. This ensures a thread safe environment for write operations. If
-		filtering is not required, it\'s strongly recommended to use the SimpleArrayBaseAdapter
-		instead.
+		All mutating methods are internally synchronized. This ensures a thread safe environment for
+		write operations. If filtering is not required, it\'s strongly recommended to use the
+		SimpleArrayBaseAdapter instead.
 	</string>
 
 	<!--About Screen - Credits Heading-->
@@ -98,8 +98,8 @@
 	<!--Info Dialog - SimpleArrayBaseAdapter-->
 	<string name="info_simplearray_baseadapter_title">SimpleArray BaseAdapter</string>
 	<string name="info_simplearray_baseadapter_message">
-		A trimmed down version of the ArrayBaseAdapter which is similarly backed by an ArrayList of
-		arbitrary objects. By default this class will delegate view generation to subclasses.\n
+		This is a demonstration of the SimpleArrayBaseAdapter class. It\'s backed by an ArrayList.
+		All subclasses are expected to handle view generation.\n
  		\n
 		Designed to be a simple version of it\'s cousin ArrayBaseAdapter, it removes some of the more
 		"convenience" method calls while adding support for insertion. The biggest difference is the
