@@ -7,7 +7,7 @@ Advanced-Adapters is a suite of adapters to designed to provide better alternati
 - Filtering behaves correctly.
 - No conflicting List instances during adapter construction
 
-Currently, this suite provides two different adapters.  More will be coming in time. Head on over to the wiki to read more about them and learn how to use them.
+Currently, this suite provides two different adapters.  More will be coming in time. Head on over to the wiki *(coming soon)* to read more about them and learn how to use them.
 - ArrayBaseAdapter
 - SimpleArrayBaseAdapter
 
@@ -48,7 +48,7 @@ Thats it!
 ### Adding To Your Project
 All adapters are found within the `lib` directory.  Each adapter is a standalone class file which you can copy and paste into your eclipse project.  If using Android Studio, you can import the module directly into your app instead.
 
-Everything found within `app` is the source code for the Google Play store demo app. You can also use it for seeing how to use the adapters.
+Everything found within `app` is the source code for the Google Play store demo app *(coming soon)*. You can also use it for seeing how to use the adapters.
 	
 	
 ### License
