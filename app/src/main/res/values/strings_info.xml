@@ -68,9 +68,8 @@
 		\t- LayoutInflater passed to all view creation methods.\n
 		\t- Resolves many outstanding filtering issues.\n
 		\n
-		All mutating methods are internally synchronized. This ensures a thread safe environment for
-		write operations. If filtering is not required, it\'s strongly recommended to use the
-		SimpleArrayBaseAdapter instead.
+		If filtering is not required, it\'s strongly recommended to use the SimpleArrayBaseAdapter
+		instead.
 	</string>
 
 	<!--About Screen - Credits Heading-->

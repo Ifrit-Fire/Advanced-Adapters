@@ -33,8 +33,8 @@ import java.util.List;
 
 /**
  * A custom abstract {@link BaseAdapter} that is backed by an {@link ArrayList} of arbitrary
- * objects.  By default this class delegates view generation and defining the
- * filtering logic to subclasses.
+ * objects.  By default this class delegates view generation and defining the filtering logic to
+ * subclasses.
  * <p/>
  * Designed to be a more flexible and customizable solution then Android's ArrayAdapter class. It
  * provides extra features such as: supporting additional {@link ArrayList} methods, resolves
@@ -42,8 +42,8 @@ import java.util.List;
  * conveniently passes along a layout inflater for view creation.
  * <p/>
  * Because of the background filtering process, all methods which mutates the underlying data are
- * internally synchronized. This ensures a thread safe environment for write operations.  If
- * filtering is not required, it's strongly recommended to use the {@link SimpleArrayBaseAdapter}
+ * internally synchronized. This ensures a thread safe environment for internal write operations.
+ * If filtering is not required, it's strongly recommended to use the {@link SimpleArrayBaseAdapter}
  * instead.
  */
 public abstract class ArrayBaseAdapter<T> extends BaseAdapter implements Filterable {
