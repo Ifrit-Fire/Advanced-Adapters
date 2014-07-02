@@ -1,6 +1,6 @@
 <p align="center"><img src="https://raw.githubusercontent.com/JaySoyer/Advanced-Adapters/master/app/src/main/logo.png" width="256px" height="256px"/></p>
 # Advanced-Adapters
-Advanced-Adapters is a suite of adapters designed to provide better alternaties to Android's ArrayAdapter. For some time now, their adapter has been plagued with filtering issues, which was the primary drive to starting this opensource project. The following list are some of the advantages to using this suite:
+Advanced-Adapters is a suite of adapters designed to provide better alternatives to Android's ArrayAdapter. For some time now, their adapter has been plagued with filtering issues, which was the primary drive to starting this opensource project. The following list are some of the advantages to using this suite:
 - Additional methods for supporting more ArrayList APIs.
 - Slightly smarter use of `notifyDataSetChanged()`.
 - LayoutInflater passed to all view creation methods.
