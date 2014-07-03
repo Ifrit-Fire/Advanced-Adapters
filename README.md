@@ -48,7 +48,7 @@ Thats it!
 ### Adding To Your Project
 All adapters are found within the `lib` directory.  Each adapter is a standalone class file which you can copy and paste into your eclipse project.  If using Android Studio, you can import the module directly into your app instead.
 
-Everything found within `app` is the source code for the Google Play store demo app *(coming soon)*. You can also use it for seeing how to use the adapters.
+Everything found within `app` is the source code for the Google Play store [demo app](https://play.google.com/store/apps/details?id=com.sawyer.advadapters.app&hl=en "Advanced-Adapters Demo App"). You can also use it for seeing how to use the adapters.
 	
 	
 ### License
