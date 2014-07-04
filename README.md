@@ -7,9 +7,9 @@ Advanced-Adapters is a suite of adapters designed to provide better alternatives
 - Filtering behaves correctly.
 - No conflicting List instances during adapter construction
 
-Currently, this suite provides two different adapters.  More will be coming in time. Head on over to the wiki *(coming soon)* to read more about them and learn how to use them.
-- ArrayBaseAdapter
-- SimpleArrayBaseAdapter
+Currently, this suite provides two different adapters.  More will be coming in time. Head on over to the wiki  [wiki](https://github.com/JaySoyer/Advanced-Adapters/wiki/) to read more about them and learn how to use them.
+- [ArrayBaseAdapter](https://github.com/JaySoyer/Advanced-Adapters/wiki/ArrayBaseAdapter)
+- [SimpleArrayBaseAdapter](https://github.com/JaySoyer/Advanced-Adapters/wiki/SimpleArrayBaseAdapter)
 
 ### Supports
 - Ice Cream Sandwich
