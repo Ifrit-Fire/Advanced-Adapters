@@ -26,34 +26,22 @@ import android.widget.Filter;
 import android.widget.Filterable;
 
 /**
- * A custom abstract {@link android.widget.BaseAdapter} that is backed by an {@link
- * java.util.ArrayList} of arbitrary objects.  By default this class delegates view generation and
- * defining the filtering logic to subclasses.
- * <p/>
- * Designed to be a more flexible and customizable solution then Android's ArrayAdapter class. It
- * provides extra features such as: supporting additional {@link java.util.ArrayList} methods,
- * resolves outstanding filtering bugs, makes smarter use of {@link #notifyDataSetChanged()}, and
- * conveniently passes along a layout inflater for view creation.
- * <p/>
- * Because of the background filtering process, all methods which mutates the underlying data are
- * internally synchronized. This ensures a thread safe environment for internal write operations. If
- * filtering is not required, it's strongly recommended to use the {@link
- * com.sawyer.advadapters.widget.SimpleArrayBaseAdapter} instead.
+ * TODO: Write this
  */
 public abstract class SparseArrayBaseAdapter<T> extends BaseAdapter implements Filterable {
 	/**
 	 * Lock used to modify the content of {@link #mObjects}. Any write operation performed on the
-	 * array should be synchronized on this lock. This lock is also used by the filter (see {@link
-	 * #getFilter()} to make a synchronized copy of the original array of data.
+	 * sparse array should be synchronized on this lock. This lock is also used by the filter (see
+	 * {@link #getFilter()} to make a synchronized copy of the original array of data.
 	 */
 	private final Object mLock = new Object();
 
 	/** LayoutInflater created from the constructing context */
 	private LayoutInflater mInflater;
 	/**
-	 * Contains the list of objects that represent the visible data of the adapter. It's contents
+	 * Contains the sparse array of objects that represent the visible data of the adapter. It's contents
 	 * will change as filtering occurs. All methods retrieving data about the adapter will always do
-	 * so from this list.
+	 * so from this sparse array.
 	 */
 	private SparseArray<T> mObjects;
 	/**
@@ -62,7 +50,7 @@ public abstract class SparseArrayBaseAdapter<T> extends BaseAdapter implements F
 	 */
 	private boolean mNotifyOnChange = true;
 	/**
-	 * A copy of the original mObjects array, is not initialized until a filtering processing
+	 * A copy of the original mObjects sparse array, is not initialized until a filtering processing
 	 * occurs. Once initialized, it'll track the entire unfiltered data. Once the filter process
 	 * completes, it's contents are copied back over to mObjects and is set to null.
 	 */
@@ -81,47 +69,57 @@ public abstract class SparseArrayBaseAdapter<T> extends BaseAdapter implements F
 	 * @param activity Context used for inflating views
 	 */
 	public SparseArrayBaseAdapter(Context activity) {
-		init(activity, new SparseArray<T>());
+		init(activity, null);
 	}
 
 	/**
 	 * Constructor
 	 *
 	 * @param activity Context used for inflating views
-	 * @param objects  The objects to represent within the adapter.
+	 * @param items  The items to represent within the adapter.
 	 */
-	public SparseArrayBaseAdapter(Context activity, SparseArray<T> objects) {
-		init(activity, objects);
+	public SparseArrayBaseAdapter(Context activity, SparseArray<T> items) {
+		init(activity, items);
 	}
 
 	/**
-	 * Adds the specified object at the end of the adapter. Will repeat the last filtering request
-	 * if invoked while filtered results are being displayed.
+	 * Appends the specified key and item pair to the end of the adapter, optimizing for the case
+	 * where the key is greater then all existing keys in the adapter. Will repeat the last
+	 * filtering request if invoked while filtered results are being displayed.
 	 *
-	 * @param object The object to add at the end of the adapter.
+	 * @param keyId The keyId to append with
+	 * @param item  The item to append with
 	 */
-	public void append(int keyId, T object) {
+	public void append(int keyId, T item) {
 		synchronized (mLock) {
 			if (mOriginalValues != null) {
-				mOriginalValues.append(keyId, object);
+				mOriginalValues.append(keyId, item);
 				getFilter().filter(mLastConstraint);
 			} else {
-				mObjects.append(keyId, object);
+				mObjects.append(keyId, item);
 			}
 		}
 		if (mNotifyOnChange) notifyDataSetChanged();
 	}
 
-	public void appendAll(SparseArray<T> objects) {
+	/**
+	 * Appends the specified items at the end of the adapter, optimizing for the case where all the
+	 * keys are greater then all existing keys in the adapter. This includes the specified items
+	 * having it's keys in sequential order as well. Will repeat the last filtering request if
+	 * invoked while filtered results are being displayed.
+	 *
+	 * @param items The SparseArray items to add at the end of the adapter.
+	 */
+	public void appendAll(SparseArray<T> items) {
 		synchronized (mLock) {
 			if (mOriginalValues != null) {
-				for (int index = 0; index < objects.size(); ++index) {
-					mOriginalValues.append(objects.keyAt(index), objects.valueAt(index));
+				for (int index = 0; index < items.size(); ++index) {
+					mOriginalValues.append(items.keyAt(index), items.valueAt(index));
 				}
 				getFilter().filter(mLastConstraint);
 			} else {
-				for (int index = 0; index < objects.size(); ++index) {
-					mObjects.append(objects.keyAt(index), objects.valueAt(index));
+				for (int index = 0; index < items.size(); ++index) {
+					mObjects.append(items.keyAt(index), items.valueAt(index));
 				}
 			}
 			if (mNotifyOnChange) notifyDataSetChanged();
@@ -129,7 +127,7 @@ public abstract class SparseArrayBaseAdapter<T> extends BaseAdapter implements F
 	}
 
 	/**
-	 * Remove all elements from the adapter.
+	 * Removes all items from the adapter.
 	 */
 	public void clear() {
 		synchronized (mLock) {
@@ -139,19 +137,26 @@ public abstract class SparseArrayBaseAdapter<T> extends BaseAdapter implements F
 		if (mNotifyOnChange) notifyDataSetChanged();
 	}
 
+	/**
+	 * Determines if the specified keyId exists within the adapter.
+	 *
+	 * @param keyId The keyId to search for
+	 *
+	 * @return {@code true} if the keyId is found within the adapter. {@code false} otherwise.
+	 */
 	public boolean containsId(int keyId) {
 		return mObjects.indexOfKey(keyId) >= 0;
 	}
 
 	/**
-	 * Tests whether this adapter contains the specified object
+	 * Determines if the specified item exists within the adapter.
 	 *
-	 * @param object The object to search for
+	 * @param item The item to search for
 	 *
-	 * @return {@code true} if the object is an element of this adapter. {@code false} otherwise
+	 * @return {@code true} if the item is an element of this adapter. {@code false} otherwise
 	 */
-	public boolean containsItem(T object) {
-		return mObjects.indexOfValue(object) >= 0;
+	public boolean containsItem(T item) {
+		return mObjects.indexOfValue(item) >= 0;
 	}
 
 	@Override
@@ -192,7 +197,8 @@ public abstract class SparseArrayBaseAdapter<T> extends BaseAdapter implements F
 	}
 
 	/**
-	 * @return The shown filtered list. If no filter is applied, then the original list is returned.
+	 * @return The shown filtered sparse array. If no filter is applied, then the original sparse
+	 * array is returned.
 	 */
 	public SparseArray<T> getFilteredSparseArray() {
 		SparseArray<T> objects;
@@ -212,12 +218,15 @@ public abstract class SparseArrayBaseAdapter<T> extends BaseAdapter implements F
 		return mObjects.keyAt(position);
 	}
 
+	/**
+	 * @return The Item mapped by the keyId or null if no such mapping has been made
+	 */
 	public T getItemWithId(int keyId) {
 		return mObjects.get(keyId);
 	}
 
 	/**
-	 * @return The original (unfiltered) list of objects stored within the Adapter
+	 * @return The original (unfiltered) sparse array of items stored within the Adapter
 	 */
 	public SparseArray<T> getSparseArray() {
 		SparseArray<T> objects;
@@ -232,27 +241,45 @@ public abstract class SparseArrayBaseAdapter<T> extends BaseAdapter implements F
 	}
 
 	/**
-	 * Resets the adapter to store a new list of objects. Convenient way of calling {@link
-	 * #clear()}, then {@link # (java.util.Collection)} without having to worry about an extra
-	 * {@link #notifyDataSetChanged()} invoked in between. Will repeat the last filtering request if
+	 * Resets the adapter to store a new list of items. Convenient way of calling {@link #clear()},
+	 * then {@link #appendAll} without having to worry about an extra {@link
+	 * #notifyDataSetChanged()} invoked in between. Will repeat the last filtering request if
 	 * invoked while filtered results are being displayed.
 	 *
-	 * @param objects New list of objects to store within the adapter.
+	 * @param items New SparseArray of items to store within the adapter.
 	 */
-	public void setSparseArray(SparseArray<T> objects) {
+	public void setSparseArray(SparseArray<T> items) {
 		synchronized (mLock) {
 			if (mOriginalValues != null) {
 				mOriginalValues.clear();
-				mOriginalValues = objects.clone();
+				mOriginalValues = items.clone();
 				getFilter().filter(mLastConstraint);
 			} else {
 				mObjects.clear();
-				mObjects = objects.clone();
+				mObjects = items.clone();
 			}
 		}
 		if (mNotifyOnChange) notifyDataSetChanged();
 	}
 
+	/**
+	 * Get a View that displays the data at the specified position in the data set.  You can either
+	 * create a View manually or inflate it from an XML layout file.  When the View is inflated, the
+	 * parent View (GridView, ListView...) will apply default layout parameters unless you {@link
+	 * android.view.LayoutInflater#inflate(int, android.view.ViewGroup, boolean) to specifiy a root
+	 * view and to prevent attachment to the root.}
+	 *
+	 * @param inflater    the LayoutInflater object that can be used to inflate each view.
+	 * @param position    The position of the item within the adapter's data set of the item whose
+	 *                    view we want
+	 * @param convertView the old view to reuse, if possible. Note: You should check that this view
+	 *                    is non-null and of an appropriate type before using. If it is not possible
+	 *                    to convert this view to display the correct data, this method can create a
+	 *                    new view.
+	 * @param parent      the parent that this view will eventually be attached to
+	 *
+	 * @return A View corresponding to the data at the specified position
+	 */
 	public abstract View getView(LayoutInflater inflater, int position, View convertView,
 								 ViewGroup parent);
 
@@ -263,22 +290,26 @@ public abstract class SparseArrayBaseAdapter<T> extends BaseAdapter implements F
 
 	private void init(Context context, SparseArray<T> objects) {
 		mInflater = LayoutInflater.from(context);
-		mObjects = objects.clone();
+		if (objects == null) {
+			mObjects = new SparseArray<>();
+		} else {
+			mObjects = objects.clone();
+		}
 	}
 
 	/**
-	 * Determines whether the provided constraint filters out the given object. Allows easy,
+	 * Determines whether the provided constraint filters out the given item. Allows easy,
 	 * customized filtering for subclasses. It's incorrect to modify the adapter or the contents of
-	 * the object itself. Any alterations will lead to undefined behavior or crashes. Internally,
-	 * this method is only ever invoked from a background thread.
+	 * the item itself. Any alterations will lead to undefined behavior or crashes. Internally,
+	 * this method is only ever invoked from a background thread. Do not make UI changes from here!
 	 *
-	 * @param object     The object to compare against the constraint
-	 * @param constraint The constraint used to filter the object
+	 * @param item       The item to compare against the constraint
+	 * @param constraint The constraint used to filter the item
 	 *
-	 * @return True if the object is filtered out by the constraint. False if the object is not
-	 * filtered and will continue to reside in the adapter.
+	 * @return True if the item is filtered out by the constraint. False if the item is not
+	 * filtered and will continue to visibly show in the adapter.
 	 */
-	protected abstract boolean isFilteredBy(int keyId, T object, CharSequence constraint);
+	protected abstract boolean isFilteredBy(int keyId, T item, CharSequence constraint);
 
 	@Override
 	public void notifyDataSetChanged() {
@@ -287,59 +318,39 @@ public abstract class SparseArrayBaseAdapter<T> extends BaseAdapter implements F
 	}
 
 	/**
-	 * Adds the specified Collection at the end of the adapter. Will repeat the last filtering
-	 * request if invoked while filtered results are being displayed.
+	 * Adds the specified key and item to the adapter, replacing the previous mapping from the
+	 * specified key if there was one. Will repeat the last filtering request if invoked while
+	 * filtered results are being displayed.
 	 */
-	public void put(int keyId, T object) {
+	public void put(int keyId, T item) {
 		synchronized (mLock) {
 			if (mOriginalValues != null) {
-				mOriginalValues.put(keyId, object);
+				mOriginalValues.put(keyId, item);
 				getFilter().filter(mLastConstraint);
 			} else {
-				mObjects.put(keyId, object);
+				mObjects.put(keyId, item);
 			}
 		}
 		if (mNotifyOnChange) notifyDataSetChanged();
 	}
 
-	public void putAll(SparseArray<T> objects) {
+	/**
+	 * Adds the specified SparseArray to the adapter, replacing any existing mappings from the
+	 * specified keys if there were any.  Will repeat the last filtering request if invoked while
+	 * filtered results are being displayed.
+	 *
+	 * @param items The SparseArray items to add to the adapter.
+	 */
+	public void putAll(SparseArray<T> items) {
 		synchronized (mLock) {
 			if (mOriginalValues != null) {
-				for (int index = 0; index < objects.size(); ++index) {
-					mOriginalValues.put(objects.keyAt(index), objects.valueAt(index));
+				for (int index = 0; index < items.size(); ++index) {
+					mOriginalValues.put(items.keyAt(index), items.valueAt(index));
 				}
 				getFilter().filter(mLastConstraint);
 			} else {
-				for (int index = 0; index < objects.size(); ++index) {
-					mObjects.put(objects.keyAt(index), objects.valueAt(index));
-				}
-			}
-		}
-		if (mNotifyOnChange) notifyDataSetChanged();
-	}
-
-	public void remove(int position) {
-		synchronized (mLock) {
-			if (mOriginalValues != null) {
-				mOriginalValues.removeAt(position);
-				getFilter().filter(mLastConstraint);
-			} else {
-				mObjects.removeAt(position);
-			}
-		}
-		if (mNotifyOnChange) notifyDataSetChanged();
-	}
-
-	public void removeAll(SparseArray<T> objects) {
-		synchronized (mLock) {
-			if (mOriginalValues != null) {
-				for (int index = 0; index < objects.size(); ++index) {
-					mOriginalValues.delete(objects.keyAt(index));
-				}
-				getFilter().filter(mLastConstraint);
-			} else {
-				for (int index = 0; index < objects.size(); ++index) {
-					mObjects.delete(objects.keyAt(index));
+				for (int index = 0; index < items.size(); ++index) {
+					mObjects.put(items.keyAt(index), items.valueAt(index));
 				}
 			}
 		}
@@ -347,25 +358,52 @@ public abstract class SparseArrayBaseAdapter<T> extends BaseAdapter implements F
 	}
 
 	/**
-	 * Removes the first occurrence of the specified object from the adapter. Will repeat the last
-	 * filtering request if invoked while filtered results are being displayed.
+	 * Removes the mapping at the specified position in the adapter.
 	 *
-	 * @param keyId The object to remove.
+	 * @param position The position of the item to remove
+	 */
+	public void remove(int position) {
+		synchronized (mLock) {
+			if (mOriginalValues != null) mOriginalValues.removeAt(position);
+			mObjects.removeAt(position);
+		}
+		if (mNotifyOnChange) notifyDataSetChanged();
+	}
+
+	/**
+	 * Removes all items from the adapter that are found within the specified sparse array.
+	 *
+	 * @param items The SparseArray items to remove from the adapter.
+	 */
+	public void removeAll(SparseArray<T> items) {
+		synchronized (mLock) {
+			if (mOriginalValues != null) {
+				for (int index = 0; index < items.size(); ++index) {
+					mOriginalValues.delete(items.keyAt(index));
+				}
+			}
+			for (int index = 0; index < items.size(); ++index) {
+				mObjects.delete(items.keyAt(index));
+			}
+		}
+		if (mNotifyOnChange) notifyDataSetChanged();
+	}
+
+	/**
+	 * Removes the mapping with the specified keyId from the adapter.
+	 *
+	 * @param keyId The keyId to remove.
 	 */
 	public void removeWithId(int keyId) {
 		synchronized (mLock) {
-			if (mOriginalValues != null) {
-				mOriginalValues.delete(keyId);
-				getFilter().filter(mLastConstraint);
-			} else {
-				mObjects.delete(keyId);
-			}
+			if (mOriginalValues != null) mOriginalValues.delete(keyId);
+			mObjects.delete(keyId);
 		}
 		if (mNotifyOnChange) notifyDataSetChanged();
 	}
 
 	/**
-	 * Control whether methods that change the list ({@link #append}, {@link #put}, {@link #remove},
+	 * Controls whether methods that change the list ({@link #append}, {@link #put}, {@link #remove},
 	 * {@link #clear}) automatically call {@link #notifyDataSetChanged}.  If set to false, caller
 	 * must manually call notifyDataSetChanged() to have the changes reflected in the attached
 	 * view.
@@ -380,8 +418,8 @@ public abstract class SparseArrayBaseAdapter<T> extends BaseAdapter implements F
 	}
 
 	/**
-	 * An array filter constrains the content of the array adapter. Whether an item is constrained
-	 * or not is delegated to subclasses through {@link com.sawyer.advadapters.widget.SparseArrayBaseAdapter#isFilteredBy}
+	 * A SparseArray filter constrains the content of the sparse array adapter. Whether an item is
+	 * constrained or not is delegated to subclasses through {@link SparseArrayBaseAdapter#isFilteredBy}
 	 */
 	private class SparseArrayFilter extends Filter {
 		@Override
