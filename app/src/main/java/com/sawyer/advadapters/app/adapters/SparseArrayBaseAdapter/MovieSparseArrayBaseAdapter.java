@@ -12,7 +12,7 @@ import com.sawyer.advadapters.app.R;
 import com.sawyer.advadapters.app.data.MovieItem;
 import com.sawyer.advadapters.widget.SparseArrayBaseAdapter;
 
-public class MovieSparseArrayBaseAdapter extends SparseArrayBaseAdapter<MovieItem> {
+class MovieSparseArrayBaseAdapter extends SparseArrayBaseAdapter<MovieItem> {
 	public MovieSparseArrayBaseAdapter(Context activity) {
 		super(activity);
 	}

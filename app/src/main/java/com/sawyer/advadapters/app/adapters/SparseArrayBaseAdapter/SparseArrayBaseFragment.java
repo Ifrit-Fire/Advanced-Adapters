@@ -20,6 +20,7 @@ import com.sawyer.advadapters.app.data.MovieItem;
 
 public class SparseArrayBaseFragment extends ListFragment {
 	private static final String STATE_CAB_CHECKED_ITEMS = "State Cab Checked Items";
+	private static final String STATE_LIST = "State List";
 
 	private SparseArray<MovieItem> mCheckedItems = new SparseArray<>();
 
@@ -51,6 +52,11 @@ public class SparseArrayBaseFragment extends ListFragment {
 
 		if (savedInstanceState != null) {
 			mCheckedItems = savedInstanceState.getSparseParcelableArray(STATE_CAB_CHECKED_ITEMS);
+			SparseArray<MovieItem> list = savedInstanceState
+					.getSparseParcelableArray(STATE_LIST);
+			setListAdapter(new MovieSparseArrayBaseAdapter(getActivity(), list));
+		} else {
+			setListAdapter(new MovieSparseArrayBaseAdapter(getActivity()));
 		}
 	}
 
@@ -61,6 +67,18 @@ public class SparseArrayBaseFragment extends ListFragment {
 		lv.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
 		lv.setMultiChoiceModeListener(new OnCabMultiChoiceModeListener());
 		return lv;
+	}
+
+	@Override
+	public void onListItemClick(ListView l, View v, int position, long id) {
+		//Granted, making a whole new instance is not even necessary here.
+		//However I wanted to demonstrate updating with an entirely different instance.
+		MovieItem oldMovie = getListAdapter().getItem(position);
+		MovieItem newMovie = new MovieItem(oldMovie.barcode());
+		newMovie.title = new StringBuilder(oldMovie.title).reverse().toString();
+		newMovie.year = oldMovie.year;
+		newMovie.isRecommended = !oldMovie.isRecommended;
+		getListAdapter().put((int) id, newMovie);
 	}
 
 	protected void onRemoveItemsClicked(SparseArray<MovieItem> items) {
@@ -79,6 +97,7 @@ public class SparseArrayBaseFragment extends ListFragment {
 	public void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
 		outState.putSparseParcelableArray(STATE_CAB_CHECKED_ITEMS, mCheckedItems);
+		outState.putSparseParcelableArray(STATE_LIST, getListAdapter().getSparseArray());
 	}
 
 	private class OnCabMultiChoiceModeListener implements AbsListView.MultiChoiceModeListener {
