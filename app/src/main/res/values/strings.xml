@@ -35,6 +35,7 @@
 	<string name="title_dialog_add_movies">Add Movie(s) To List</string>
 	<string name="title_dialog_contains_movies">Does List Contain?</string>
 	<string name="title_dialog_insert_movies">Insert Movie(s) At Location</string>
+	<string name="title_dialog_put_movies">Put Movie(s) in List</string>
 	<string name="title_insert">Insert</string>
 	<string name="title_put">Put</string>
 	<string name="title_screen_info">Screen Info</string>
@@ -60,6 +61,9 @@
 	<string name="btn_insert_end">At End</string>
 	<string name="btn_insert_random">At Random</string>
 	<string name="btn_insert_start">At Start</string>
+	<string name="btn_put">Put</string>
+	<string name="btn_put_id">Put with Id</string>
+	<string name="btn_put_all">Put All</string>
 
 	<!-- Toast Messages -->
 	<string name="toast_sort_not_supported">Sort not supported.</string>

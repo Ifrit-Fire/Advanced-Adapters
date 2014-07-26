@@ -54,7 +54,7 @@ abstract class CustomDialogFragment extends DialogFragment {
 			ViewGroup vg = (ViewGroup) v.getParent();
 			for (int index = 0; index < vg.getChildCount(); ++index) {
 				View child = vg.getChildAt(index);
-				if (child.getClass() == View.class) {
+				if (child.getClass().equals(View.class)) {
 					child.setBackgroundColor(child.getContext().getResources().getColor(android.R.color.holo_orange_dark));
 					break;
 				}

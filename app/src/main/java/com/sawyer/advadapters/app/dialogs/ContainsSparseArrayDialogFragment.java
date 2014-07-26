@@ -63,12 +63,12 @@ public class ContainsSparseArrayDialogFragment extends CustomDialogFragment {
 
 		Button btn = (Button) dialog.findViewById(R.id.movie_contains_id_btn);
 		btn.setOnClickListener(new OnContainsIdClickListener());
-		TextView tv = (TextView) dialog.findViewById(R.id.text1);
+		TextView tv = (TextView) dialog.findViewById(R.id.movie_single_txt1);
 		tv.setText("- " + mMovieItem.title);
 
 		btn = (Button) dialog.findViewById(R.id.movie_contains_item_btn);
 		btn.setOnClickListener(new OnContainsItemClickListener());
-		tv = (TextView) dialog.findViewById(R.id.text2);
+		tv = (TextView) dialog.findViewById(R.id.movie_single_txt2);
 		tv.setText("- " + mMovieItem.title);
 
 		return dialog;
@@ -79,7 +79,7 @@ public class ContainsSparseArrayDialogFragment extends CustomDialogFragment {
 	}
 
 	public interface EventListener {
-		public void onContainsIdClick(int keyId);
+		public void onContainsIdClick(int barcode);
 
 		public void onContainsItemClick(MovieItem movie);
 	}

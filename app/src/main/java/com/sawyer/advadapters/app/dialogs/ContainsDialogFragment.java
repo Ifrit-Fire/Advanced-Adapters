@@ -76,10 +76,10 @@ public class ContainsDialogFragment extends CustomDialogFragment {
 		btn = (Button) dialog.findViewById(R.id.movies_collection_btn);
 		btn.setOnClickListener(new OnContainsCollectionClickListener());
 		btn.setVisibility(containsVisibility);
-		tv = (TextView) dialog.findViewById(R.id.movie_collection1_txt);
+		tv = (TextView) dialog.findViewById(R.id.movie_multi_txt1);
 		tv.setText("- " + mMovieItems[0].title);
 		((View) tv.getParent()).setVisibility(containsVisibility);
-		tv = (TextView) dialog.findViewById(R.id.movie_collection2_txt);
+		tv = (TextView) dialog.findViewById(R.id.movie_multi_txt2);
 		tv.setText("- " + mMovieItems[1].title);
 
 		return dialog;

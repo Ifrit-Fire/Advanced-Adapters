@@ -82,9 +82,9 @@ public class InsertDialogFragment extends CustomDialogFragment {
 		btn.setOnClickListener(new OnInsertCollectionClickListener(InsertLocation.RANDOM));
 		btn = (Button) vg.findViewById(R.id.movie_insert_end_btn);
 		btn.setOnClickListener(new OnInsertCollectionClickListener(InsertLocation.END));
-		tv = (TextView) dialog.findViewById(R.id.movie_collection1_txt);
+		tv = (TextView) dialog.findViewById(R.id.movie_multi_txt1);
 		tv.setText("- " + mMovieItems[0].title);
-		tv = (TextView) dialog.findViewById(R.id.movie_collection2_txt);
+		tv = (TextView) dialog.findViewById(R.id.movie_multi_txt2);
 		tv.setText("- " + mMovieItems[1].title);
 
 		return dialog;

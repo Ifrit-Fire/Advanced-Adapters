@@ -28,9 +28,9 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * Renders a dialog with all the options possible for checking a list for contends it may contain.
- * Implement the {@link EventListener} in order to receive back dialog results. Toggling the Varargs
- * option on and off is possible through the listener.
+ * Renders a dialog with all the options possible for adding movie items to a list. Implement the
+ * {@link EventListener} in order to receive back dialog results. Toggling the Varargs option on and
+ * off is possible through the listener.
  */
 public class AddDialogFragment extends CustomDialogFragment {
 	private static final String STATE_MOVIE_1 = "State Movie 1";
@@ -72,9 +72,9 @@ public class AddDialogFragment extends CustomDialogFragment {
 
 		btn = (Button) dialog.findViewById(R.id.movies_collection_btn);
 		btn.setOnClickListener(new OnAddCollectionClickListener());
-		tv = (TextView) dialog.findViewById(R.id.movie_collection1_txt);
+		tv = (TextView) dialog.findViewById(R.id.movie_multi_txt1);
 		tv.setText("- " + mMovieItems[0].title);
-		tv = (TextView) dialog.findViewById(R.id.movie_collection2_txt);
+		tv = (TextView) dialog.findViewById(R.id.movie_multi_txt2);
 		tv.setText("- " + mMovieItems[1].title);
 
 		btn = (Button) dialog.findViewById(R.id.movies_vararg_btn);
