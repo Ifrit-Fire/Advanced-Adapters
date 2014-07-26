@@ -30,7 +30,7 @@
 		android:id="@+id/movie_single_button_bar"
 		layout="@layout/include_insert_button_bar"/>
 
-	<include layout="@layout/include_movie_collection_list"/>
+	<include layout="@layout/include_movie_multi_list"/>
 
 	<include
 		android:id="@+id/movie_collection_button_bar"

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
 /**
- * By: JaySoyer
+ * Copyright 2014 Jay Soyer
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,7 +26,7 @@
 
 	<include
 		layout="@layout/include_movie_single_list"
-		android:id="@+id/text1"/>
+		android:id="@+id/movie_single_txt1"/>
 
 	<Button
 		android:id="@+id/movie_contains_id_btn"
@@ -37,7 +37,7 @@
 
 	<include
 		layout="@layout/include_movie_single_list"
-		android:id="@+id/text2"/>
+		android:id="@+id/movie_single_txt2"/>
 
 	<Button
 		android:id="@+id/movie_contains_item_btn"

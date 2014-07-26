@@ -22,25 +22,39 @@
 	android:layout_height="wrap_content"
 	android:divider="?android:dividerHorizontal"
 	android:orientation="vertical"
-	android:showDividers="middle"
-	>
+	android:showDividers="middle">
 
 	<include layout="@layout/include_movie_single_list"/>
 
-	<Button
-		android:id="@+id/movie_single_btn"
-		style="?android:buttonBarButtonStyle"
+	<LinearLayout
+		style="?android:buttonBarStyle"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		android:text="@string/btn_contains"/>
+		android:orientation="horizontal">
+
+		<Button
+			android:id="@+id/movie_put_btn"
+			style="?android:buttonBarButtonStyle"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_weight="1"
+			android:text="@string/btn_put"/>
+
+		<Button
+			android:id="@+id/movie_put_id_btn"
+			style="?android:buttonBarButtonStyle"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_weight="1"
+			android:text="@string/btn_put_id"/>
+	</LinearLayout>
 
 	<include layout="@layout/include_movie_multi_list"/>
 
 	<Button
-		android:id="@+id/movies_collection_btn"
+		android:id="@+id/movies_put_all_btn"
 		style="?android:buttonBarButtonStyle"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		android:text="@string/btn_contains_all"/>
-
+		android:text="@string/btn_put_all"/>
 </LinearLayout>

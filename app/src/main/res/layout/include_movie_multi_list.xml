@@ -24,14 +24,14 @@
 	android:padding="@dimen/spacing_normal">
 
 	<TextView
-		android:id="@+id/movie_collection1_txt"
+		android:id="@+id/movie_multi_txt1"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:layout_marginBottom="@dimen/spacing_half"
 		android:lines="1"/>
 
 	<TextView
-		android:id="@+id/movie_collection2_txt"
+		android:id="@+id/movie_multi_txt2"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:layout_marginTop="@dimen/spacing_half"
