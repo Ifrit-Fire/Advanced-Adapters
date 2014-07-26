@@ -17,6 +17,7 @@ package com.sawyer.advadapters.app.adapters.sparsearraybaseadapter;
 
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.util.SparseArray;
 import android.widget.Toast;
 
 import com.sawyer.advadapters.app.R;
@@ -24,13 +25,16 @@ import com.sawyer.advadapters.app.adapters.AdapterBaseActivity;
 import com.sawyer.advadapters.app.data.MovieContent;
 import com.sawyer.advadapters.app.data.MovieItem;
 import com.sawyer.advadapters.app.dialogs.ContainsSparseArrayDialogFragment;
+import com.sawyer.advadapters.app.dialogs.PutDialogFragment;
 
-public class SparseArrayBaseAdapterActivity extends AdapterBaseActivity implements ContainsSparseArrayDialogFragment.EventListener {
+public class SparseArrayBaseAdapterActivity extends AdapterBaseActivity implements ContainsSparseArrayDialogFragment.EventListener, PutDialogFragment.EventListener {
 	private static final String TAG_BASE_ADAPTER_FRAG = "Tag Base Adapter Frag";
 	private static final String TAG_CONTAINS_DIALOG_FRAG = "Tag Contains Dialog Frag";
+	private static final String TAG_PUT_DIALOG_FRAG = "Tag Put Dialog Frag";
 
 	private SparseArrayBaseFragment mListFragment;
 	private ContainsSparseArrayDialogFragment mContainsFragment;
+	private PutDialogFragment mPutFragment;
 
 	@Override
 	protected void clear() {
@@ -72,6 +76,11 @@ public class SparseArrayBaseAdapterActivity extends AdapterBaseActivity implemen
 		if (mContainsFragment != null) {
 			mContainsFragment.setEventListener(this);
 		}
+
+		mPutFragment = (PutDialogFragment) manager.findFragmentByTag(TAG_PUT_DIALOG_FRAG);
+		if (mPutFragment != null) {
+			mPutFragment.setEventListener(this);
+		}
 	}
 
 	@Override
@@ -95,14 +104,14 @@ public class SparseArrayBaseAdapterActivity extends AdapterBaseActivity implemen
 	}
 
 	@Override
-	public void onContainsIdClick(int keyId) {
+	public void onContainsIdClick(int barcode) {
 		StringBuilder text = new StringBuilder();
-		if (mListFragment.getListAdapter().containsId(keyId)) {
+		if (mListFragment.getListAdapter().containsId(barcode)) {
 			text.append(getString(R.string.toast_contains_movie_true));
 		} else {
 			text.append(getString(R.string.toast_contains_movie_false));
 		}
-		text.append(MovieContent.ITEM_SPARSE.get(keyId).title);
+		text.append(MovieContent.ITEM_SPARSE.get(barcode).title);
 		Toast.makeText(this, text.toString(), Toast.LENGTH_SHORT).show();
 		mContainsFragment.dismiss();
 	}
@@ -118,6 +127,34 @@ public class SparseArrayBaseAdapterActivity extends AdapterBaseActivity implemen
 		text.append(movie.title);
 		Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
 		mContainsFragment.dismiss();
+	}
+
+	@Override
+	public void onPutAllMoviesClick(SparseArray<MovieItem> movies) {
+		mListFragment.getListAdapter().putAll(movies);
+		updateActionBar();
+		mPutFragment.dismiss();
+	}
+
+	@Override
+	public void onPutMovieClick(MovieItem movie) {
+		int position = mListFragment.getListAdapter().getPosition(movie);
+
+		//Bug fix, can't find movie. SparseArrays use == to search instead of equals()
+		if (position < 0) {
+			mListFragment.getListAdapter().putWithId(movie.barcode(), movie);
+		} else {
+			mListFragment.getListAdapter().put(position, movie);
+		}
+		updateActionBar();
+		mPutFragment.dismiss();
+	}
+
+	@Override
+	public void onPutMovieWithIdClick(int barcode, MovieItem movie) {
+		mListFragment.getListAdapter().putWithId(barcode, movie);
+		updateActionBar();
+		mPutFragment.dismiss();
 	}
 
 	@Override
@@ -157,5 +194,8 @@ public class SparseArrayBaseAdapterActivity extends AdapterBaseActivity implemen
 
 	@Override
 	protected void startPutDialog() {
+		mPutFragment = PutDialogFragment.newInstance();
+		mPutFragment.setEventListener(this);
+		mPutFragment.show(getFragmentManager(), TAG_PUT_DIALOG_FRAG);
 	}
 }

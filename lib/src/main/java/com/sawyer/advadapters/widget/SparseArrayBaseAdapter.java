@@ -225,6 +225,14 @@ public abstract class SparseArrayBaseAdapter<T> extends BaseAdapter implements F
 		return mObjects.get(keyId);
 	}
 
+	public int getPosition(T item) {
+		return mObjects.indexOfValue(item);
+	}
+
+	public int getPosition(int keyId) {
+		return mObjects.indexOfKey(keyId);
+	}
+
 	/**
 	 * @return The original (unfiltered) sparse array of items stored within the Adapter
 	 */
