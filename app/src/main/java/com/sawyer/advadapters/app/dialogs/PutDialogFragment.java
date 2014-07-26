@@ -43,7 +43,7 @@ public class PutDialogFragment extends CustomDialogFragment {
 		PutDialogFragment frag = new PutDialogFragment();
 
 		SparseArray<MovieItem> movies = new SparseArray<>();
-		while (movies.size() != 2) {
+		while (movies.size() != 3) {
 			int index = new Random().nextInt(MovieContent.ITEM_SPARSE.size());
 			MovieItem movie = MovieContent.ITEM_SPARSE.valueAt(index);
 			movies.put(movie.barcode(), movie);
@@ -77,9 +77,9 @@ public class PutDialogFragment extends CustomDialogFragment {
 		btn = (Button) dialog.findViewById(R.id.movies_put_all_btn);
 		btn.setOnClickListener(new OnPutAllMoviesClickListener());
 		tv = (TextView) dialog.findViewById(R.id.movie_multi_txt1);
-		tv.setText("- " + mMovieItems.valueAt(0).title);
-		tv = (TextView) dialog.findViewById(R.id.movie_multi_txt2);
 		tv.setText("- " + mMovieItems.valueAt(1).title);
+		tv = (TextView) dialog.findViewById(R.id.movie_multi_txt2);
+		tv.setText("- " + mMovieItems.valueAt(2).title);
 
 		return dialog;
 	}
