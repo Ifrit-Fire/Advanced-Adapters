@@ -22,6 +22,7 @@
 	<string name="activity_android_arrayadapter">Android\'s ArrayAdapter</string>
 	<string name="activity_array_baseadapter">Array BaseAdapter</string>
 	<string name="activity_simplearray_baseadapter">SimpleArray BaseAdapter</string>
+	<string name="activity_sparsearray_baseadapter">SparseArray BaseAdapter</string>
 
 	<!-- Content Description Text -->
 	<string name="cd_rating_icon">Rating Icon</string>
@@ -29,11 +30,13 @@
 	<!-- Titles, Headings, etc -->
 	<string name="title_about">About</string>
 	<string name="title_add">Add</string>
+	<string name="title_append">Append</string>
 	<string name="title_contains">Contains</string>
 	<string name="title_dialog_add_movies">Add Movie(s) To List</string>
 	<string name="title_dialog_contains_movies">Does List Contain?</string>
 	<string name="title_dialog_insert_movies">Insert Movie(s) At Location</string>
 	<string name="title_insert">Insert</string>
+	<string name="title_put">Put</string>
 	<string name="title_screen_info">Screen Info</string>
 
 	<!-- Menu Text -->
@@ -52,8 +55,14 @@
 	<string name="btn_add_all_var">Add as Vararg</string>df
 	<string name="btn_contains">Contains One</string>
 	<string name="btn_contains_all">Contains All</string>
+	<string name="btn_contains_id">Contains Id</string>
+	<string name="btn_contains_item">Contains Item</string>
 	<string name="btn_insert_end">At End</string>
 	<string name="btn_insert_random">At Random</string>
 	<string name="btn_insert_start">At Start</string>
 
+	<!-- Toast Messages -->
+	<string name="toast_sort_not_supported">Sort not supported.</string>
+	<string name="toast_contains_movie_true">Adapter contains:\n</string>
+	<string name="toast_contains_movie_false">Could not find:\n</string>
 </resources>

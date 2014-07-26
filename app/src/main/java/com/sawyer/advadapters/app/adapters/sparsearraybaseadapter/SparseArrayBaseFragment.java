@@ -1,4 +1,4 @@
-package com.sawyer.advadapters.app.adapters.SparseArrayBaseAdapter;
+package com.sawyer.advadapters.app.adapters.sparsearraybaseadapter;
 
 import android.app.ListFragment;
 import android.os.Bundle;
@@ -24,25 +24,28 @@ public class SparseArrayBaseFragment extends ListFragment {
 
 	private SparseArray<MovieItem> mCheckedItems = new SparseArray<>();
 
+	public static SparseArrayBaseFragment newInstance() {
+		return new SparseArrayBaseFragment();
+	}
+
 	@Override
-	public MovieSparseArrayBaseAdapter getListAdapter() {
-		return (MovieSparseArrayBaseAdapter) super.getListAdapter();
+	public MovieSparseArrayAdapter getListAdapter() {
+		return (MovieSparseArrayAdapter) super.getListAdapter();
 	}
 
 	@Override
 	public void setListAdapter(ListAdapter adapter) {
-		if (adapter instanceof MovieSparseArrayBaseAdapter) {
+		if (adapter instanceof MovieSparseArrayAdapter) {
 			super.setListAdapter(adapter);
 		} else {
 			throw new ClassCastException(
-					"Adapter must be of type " + MovieSparseArrayBaseAdapter.class.getSimpleName());
+					"Adapter must be of type " + MovieSparseArrayAdapter.class.getSimpleName());
 		}
 	}
 
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
-
 		getListView().setAdapter(getListAdapter());
 	}
 
@@ -54,9 +57,9 @@ public class SparseArrayBaseFragment extends ListFragment {
 			mCheckedItems = savedInstanceState.getSparseParcelableArray(STATE_CAB_CHECKED_ITEMS);
 			SparseArray<MovieItem> list = savedInstanceState
 					.getSparseParcelableArray(STATE_LIST);
-			setListAdapter(new MovieSparseArrayBaseAdapter(getActivity(), list));
+			setListAdapter(new MovieSparseArrayAdapter(getActivity(), list));
 		} else {
-			setListAdapter(new MovieSparseArrayBaseAdapter(getActivity()));
+			setListAdapter(new MovieSparseArrayAdapter(getActivity()));
 		}
 	}
 
@@ -78,7 +81,7 @@ public class SparseArrayBaseFragment extends ListFragment {
 		newMovie.title = new StringBuilder(oldMovie.title).reverse().toString();
 		newMovie.year = oldMovie.year;
 		newMovie.isRecommended = !oldMovie.isRecommended;
-		getListAdapter().put((int) id, newMovie);
+		getListAdapter().put(position, newMovie);
 	}
 
 	protected void onRemoveItemsClicked(SparseArray<MovieItem> items) {

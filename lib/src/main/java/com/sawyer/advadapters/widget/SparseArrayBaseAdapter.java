@@ -39,9 +39,9 @@ public abstract class SparseArrayBaseAdapter<T> extends BaseAdapter implements F
 	/** LayoutInflater created from the constructing context */
 	private LayoutInflater mInflater;
 	/**
-	 * Contains the sparse array of objects that represent the visible data of the adapter. It's contents
-	 * will change as filtering occurs. All methods retrieving data about the adapter will always do
-	 * so from this sparse array.
+	 * Contains the sparse array of objects that represent the visible data of the adapter. It's
+	 * contents will change as filtering occurs. All methods retrieving data about the adapter will
+	 * always do so from this sparse array.
 	 */
 	private SparseArray<T> mObjects;
 	/**
@@ -76,30 +76,10 @@ public abstract class SparseArrayBaseAdapter<T> extends BaseAdapter implements F
 	 * Constructor
 	 *
 	 * @param activity Context used for inflating views
-	 * @param items  The items to represent within the adapter.
+	 * @param items    The items to represent within the adapter.
 	 */
 	public SparseArrayBaseAdapter(Context activity, SparseArray<T> items) {
 		init(activity, items);
-	}
-
-	/**
-	 * Appends the specified key and item pair to the end of the adapter, optimizing for the case
-	 * where the key is greater then all existing keys in the adapter. Will repeat the last
-	 * filtering request if invoked while filtered results are being displayed.
-	 *
-	 * @param keyId The keyId to append with
-	 * @param item  The item to append with
-	 */
-	public void append(int keyId, T item) {
-		synchronized (mLock) {
-			if (mOriginalValues != null) {
-				mOriginalValues.append(keyId, item);
-				getFilter().filter(mLastConstraint);
-			} else {
-				mObjects.append(keyId, item);
-			}
-		}
-		if (mNotifyOnChange) notifyDataSetChanged();
 	}
 
 	/**
@@ -124,6 +104,26 @@ public abstract class SparseArrayBaseAdapter<T> extends BaseAdapter implements F
 			}
 			if (mNotifyOnChange) notifyDataSetChanged();
 		}
+	}
+
+	/**
+	 * Appends the specified key and item pair to the end of the adapter, optimizing for the case
+	 * where the key is greater then all existing keys in the adapter. Will repeat the last
+	 * filtering request if invoked while filtered results are being displayed.
+	 *
+	 * @param keyId The keyId to append with
+	 * @param item  The item to append with
+	 */
+	public void appendWithId(int keyId, T item) {
+		synchronized (mLock) {
+			if (mOriginalValues != null) {
+				mOriginalValues.append(keyId, item);
+				getFilter().filter(mLastConstraint);
+			} else {
+				mObjects.append(keyId, item);
+			}
+		}
+		if (mNotifyOnChange) notifyDataSetChanged();
 	}
 
 	/**
@@ -300,14 +300,14 @@ public abstract class SparseArrayBaseAdapter<T> extends BaseAdapter implements F
 	/**
 	 * Determines whether the provided constraint filters out the given item. Allows easy,
 	 * customized filtering for subclasses. It's incorrect to modify the adapter or the contents of
-	 * the item itself. Any alterations will lead to undefined behavior or crashes. Internally,
-	 * this method is only ever invoked from a background thread. Do not make UI changes from here!
+	 * the item itself. Any alterations will lead to undefined behavior or crashes. Internally, this
+	 * method is only ever invoked from a background thread. Do not make UI changes from here!
 	 *
 	 * @param item       The item to compare against the constraint
 	 * @param constraint The constraint used to filter the item
 	 *
-	 * @return True if the item is filtered out by the constraint. False if the item is not
-	 * filtered and will continue to visibly show in the adapter.
+	 * @return True if the item is filtered out by the constraint. False if the item is not filtered
+	 * and will continue to visibly show in the adapter.
 	 */
 	protected abstract boolean isFilteredBy(int keyId, T item, CharSequence constraint);
 
@@ -317,18 +317,14 @@ public abstract class SparseArrayBaseAdapter<T> extends BaseAdapter implements F
 		mNotifyOnChange = true;
 	}
 
-	/**
-	 * Adds the specified key and item to the adapter, replacing the previous mapping from the
-	 * specified key if there was one. Will repeat the last filtering request if invoked while
-	 * filtered results are being displayed.
-	 */
-	public void put(int keyId, T item) {
+	public void put(int position, T item) {
 		synchronized (mLock) {
 			if (mOriginalValues != null) {
-				mOriginalValues.put(keyId, item);
+				int newPosition = mOriginalValues.indexOfKey(mObjects.keyAt(position));
+				mOriginalValues.setValueAt(newPosition, item);
 				getFilter().filter(mLastConstraint);
 			} else {
-				mObjects.put(keyId, item);
+				mObjects.setValueAt(position, item);
 			}
 		}
 		if (mNotifyOnChange) notifyDataSetChanged();
@@ -358,13 +354,33 @@ public abstract class SparseArrayBaseAdapter<T> extends BaseAdapter implements F
 	}
 
 	/**
+	 * Adds the specified key and item to the adapter, replacing the previous mapping from the
+	 * specified key if there was one. Will repeat the last filtering request if invoked while
+	 * filtered results are being displayed.
+	 */
+	public void putWithId(int keyId, T item) {
+		synchronized (mLock) {
+			if (mOriginalValues != null) {
+				mOriginalValues.put(keyId, item);
+				getFilter().filter(mLastConstraint);
+			} else {
+				mObjects.put(keyId, item);
+			}
+		}
+		if (mNotifyOnChange) notifyDataSetChanged();
+	}
+
+	/**
 	 * Removes the mapping at the specified position in the adapter.
 	 *
 	 * @param position The position of the item to remove
 	 */
 	public void remove(int position) {
 		synchronized (mLock) {
-			if (mOriginalValues != null) mOriginalValues.removeAt(position);
+			if (mOriginalValues != null) {
+				int newPosition = mOriginalValues.indexOfKey(mObjects.keyAt(position));
+				mOriginalValues.removeAt(newPosition);
+			}
 			mObjects.removeAt(position);
 		}
 		if (mNotifyOnChange) notifyDataSetChanged();
@@ -403,10 +419,10 @@ public abstract class SparseArrayBaseAdapter<T> extends BaseAdapter implements F
 	}
 
 	/**
-	 * Controls whether methods that change the list ({@link #append}, {@link #put}, {@link #remove},
-	 * {@link #clear}) automatically call {@link #notifyDataSetChanged}.  If set to false, caller
-	 * must manually call notifyDataSetChanged() to have the changes reflected in the attached
-	 * view.
+	 * Controls whether methods that change the list ({@link #appendWithId}, {@link #putWithId},
+	 * {@link #remove}, {@link #clear}) automatically call {@link #notifyDataSetChanged}.  If set to
+	 * false, caller must manually call notifyDataSetChanged() to have the changes reflected in the
+	 * attached view.
 	 * <p/>
 	 * The default is true, and calling notifyDataSetChanged() resets the flag to true.
 	 *
