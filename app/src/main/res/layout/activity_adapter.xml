@@ -41,11 +41,28 @@
 			tools:ignore="ButtonStyle"/>
 
 		<Button
+			android:id="@+id/button_append_random"
+			android:layout_width="0dp"
+			android:layout_height="wrap_content"
+			android:layout_weight="1"
+			android:text="@string/title_append"
+			tools:ignore="ButtonStyle"
+			/>
+
+		<Button
 			android:id="@+id/button_contain"
 			android:layout_width="0dp"
 			android:layout_height="wrap_content"
 			android:layout_weight="1"
 			android:text="@string/title_contains"
+			tools:ignore="ButtonStyle"/>
+
+		<Button
+			android:id="@+id/button_put"
+			android:layout_width="0dp"
+			android:layout_height="wrap_content"
+			android:layout_weight="1"
+			android:text="@string/title_put"
 			tools:ignore="ButtonStyle"/>
 
 		<Button

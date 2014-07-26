@@ -1,4 +1,4 @@
-package com.sawyer.advadapters.app.adapters.SparseArrayBaseAdapter;
+package com.sawyer.advadapters.app.adapters.sparsearraybaseadapter;
 
 import android.content.Context;
 import android.util.SparseArray;
@@ -12,12 +12,14 @@ import com.sawyer.advadapters.app.R;
 import com.sawyer.advadapters.app.data.MovieItem;
 import com.sawyer.advadapters.widget.SparseArrayBaseAdapter;
 
-class MovieSparseArrayBaseAdapter extends SparseArrayBaseAdapter<MovieItem> {
-	public MovieSparseArrayBaseAdapter(Context activity) {
+import java.util.Locale;
+
+class MovieSparseArrayAdapter extends SparseArrayBaseAdapter<MovieItem> {
+	public MovieSparseArrayAdapter(Context activity) {
 		super(activity);
 	}
 
-	public MovieSparseArrayBaseAdapter(Context activity, SparseArray<MovieItem> items) {
+	public MovieSparseArrayAdapter(Context activity, SparseArray<MovieItem> items) {
 		super(activity, items);
 	}
 
@@ -46,6 +48,7 @@ class MovieSparseArrayBaseAdapter extends SparseArrayBaseAdapter<MovieItem> {
 
 	@Override
 	protected boolean isFilteredBy(int keyId, MovieItem item, CharSequence constraint) {
-		return false;
+		return item.title.toLowerCase(Locale.US)
+						 .contains(constraint.toString().toLowerCase(Locale.US));
 	}
 }

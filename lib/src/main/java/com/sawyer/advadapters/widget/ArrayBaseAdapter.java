@@ -42,8 +42,8 @@ import java.util.List;
  * conveniently passes along a layout inflater for view creation.
  * <p/>
  * Because of the background filtering process, all methods which mutates the underlying data are
- * internally synchronized. This ensures a thread safe environment for internal write operations.
- * If filtering is not required, it's strongly recommended to use the {@link SimpleArrayBaseAdapter}
+ * internally synchronized. This ensures a thread safe environment for internal write operations. If
+ * filtering is not required, it's strongly recommended to use the {@link SimpleArrayBaseAdapter}
  * instead.
  */
 public abstract class ArrayBaseAdapter<T> extends BaseAdapter implements Filterable {
@@ -458,8 +458,9 @@ public abstract class ArrayBaseAdapter<T> extends BaseAdapter implements Filtera
 	/**
 	 * Updates the object at the specified position in the adapter with the specified object. This
 	 * operation does not change the size of the adapter. Will repeat the last filtering request if
-	 * invoked while filtered results are being displayed. Be-aware this method may not always be a
-	 * constant time operation, as sometimes it'll require traversing the original unfiltered list.
+	 * invoked while filtered results are being displayed. Be-aware this method is only a constant
+	 * time operation when the list is not filtered. Otherwise, the position must be converted to a
+	 * unfiltered position; which requires traversing the original unfiltered list.
 	 *
 	 * @param position The location at which to put the specified object
 	 * @param object   The new object to replace with the old

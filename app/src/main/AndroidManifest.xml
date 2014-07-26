@@ -40,6 +40,10 @@
 			android:name=".adapters.androidarrayadapter.AndroidAdapterActivity"
 			android:label="@string/activity_android_arrayadapter">
 		</activity>
+		<activity
+			android:name=".adapters.sparsearraybaseadapter.SparseArrayBaseAdapterActivity"
+			android:label="@string/activity_sparsearray_baseadapter">
+		</activity>
 
 		<activity
 			android:name=".MainActivity"

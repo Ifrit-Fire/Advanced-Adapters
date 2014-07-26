@@ -101,7 +101,6 @@ public class ArrayBaseAdapterFragment extends ListAdapterFragment<MovieItem> {
 	@Override
 	public void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
-
 		outState.putSerializable(STATE_LIST, getListAdapter().getList());
 	}
 }
