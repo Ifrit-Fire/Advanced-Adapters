@@ -24,17 +24,22 @@ import com.sawyer.advadapters.app.R;
 import com.sawyer.advadapters.app.adapters.AdapterBaseActivity;
 import com.sawyer.advadapters.app.data.MovieContent;
 import com.sawyer.advadapters.app.data.MovieItem;
-import com.sawyer.advadapters.app.dialogs.ContainsSparseArrayDialogFragment;
-import com.sawyer.advadapters.app.dialogs.PutDialogFragment;
+import com.sawyer.advadapters.app.dialogs.AppendSparseDialogFragment;
+import com.sawyer.advadapters.app.dialogs.ContainsSparseDialogFragment;
+import com.sawyer.advadapters.app.dialogs.PutSparseDialogFragment;
 
-public class SparseArrayBaseAdapterActivity extends AdapterBaseActivity implements ContainsSparseArrayDialogFragment.EventListener, PutDialogFragment.EventListener {
+public class SparseArrayBaseAdapterActivity extends AdapterBaseActivity implements
+		ContainsSparseDialogFragment.EventListener, PutSparseDialogFragment.EventListener,
+		AppendSparseDialogFragment.EventListener {
+	private static final String TAG_APPEND_ADAPTER_FRAG = "Tag Append Adapter Frag";
 	private static final String TAG_BASE_ADAPTER_FRAG = "Tag Base Adapter Frag";
 	private static final String TAG_CONTAINS_DIALOG_FRAG = "Tag Contains Dialog Frag";
 	private static final String TAG_PUT_DIALOG_FRAG = "Tag Put Dialog Frag";
 
 	private SparseArrayBaseFragment mListFragment;
-	private ContainsSparseArrayDialogFragment mContainsFragment;
-	private PutDialogFragment mPutFragment;
+	private ContainsSparseDialogFragment mContainsDialogFragment;
+	private PutSparseDialogFragment mPutDialogFragment;
+	private AppendSparseDialogFragment mAppendDialogFragment;
 
 	@Override
 	protected void clear() {
@@ -71,15 +76,22 @@ public class SparseArrayBaseAdapterActivity extends AdapterBaseActivity implemen
 			transaction.commit();
 		}
 
-		mContainsFragment = (ContainsSparseArrayDialogFragment) manager
+		mContainsDialogFragment = (ContainsSparseDialogFragment) manager
 				.findFragmentByTag(TAG_CONTAINS_DIALOG_FRAG);
-		if (mContainsFragment != null) {
-			mContainsFragment.setEventListener(this);
+		if (mContainsDialogFragment != null) {
+			mContainsDialogFragment.setEventListener(this);
 		}
 
-		mPutFragment = (PutDialogFragment) manager.findFragmentByTag(TAG_PUT_DIALOG_FRAG);
-		if (mPutFragment != null) {
-			mPutFragment.setEventListener(this);
+		mPutDialogFragment = (PutSparseDialogFragment) manager
+				.findFragmentByTag(TAG_PUT_DIALOG_FRAG);
+		if (mPutDialogFragment != null) {
+			mPutDialogFragment.setEventListener(this);
+		}
+
+		mAppendDialogFragment = (AppendSparseDialogFragment) manager
+				.findFragmentByTag(TAG_APPEND_ADAPTER_FRAG);
+		if (mAppendDialogFragment != null) {
+			mAppendDialogFragment.setEventListener(this);
 		}
 	}
 
@@ -104,6 +116,20 @@ public class SparseArrayBaseAdapterActivity extends AdapterBaseActivity implemen
 	}
 
 	@Override
+	public void onAppendAllMoviesClick(SparseArray<MovieItem> movies) {
+		mListFragment.getListAdapter().appendAll(movies);
+		updateActionBar();
+		mAppendDialogFragment.dismiss();
+	}
+
+	@Override
+	public void onAppendMovieWithIdClick(int barcode, MovieItem movieItem) {
+		mListFragment.getListAdapter().appendWithId(barcode, movieItem);
+		updateActionBar();
+		mAppendDialogFragment.dismiss();
+	}
+
+	@Override
 	public void onContainsIdClick(int barcode) {
 		StringBuilder text = new StringBuilder();
 		if (mListFragment.getListAdapter().containsId(barcode)) {
@@ -113,7 +139,7 @@ public class SparseArrayBaseAdapterActivity extends AdapterBaseActivity implemen
 		}
 		text.append(MovieContent.ITEM_SPARSE.get(barcode).title);
 		Toast.makeText(this, text.toString(), Toast.LENGTH_SHORT).show();
-		mContainsFragment.dismiss();
+		mContainsDialogFragment.dismiss();
 	}
 
 	@Override
@@ -126,14 +152,14 @@ public class SparseArrayBaseAdapterActivity extends AdapterBaseActivity implemen
 		}
 		text.append(movie.title);
 		Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
-		mContainsFragment.dismiss();
+		mContainsDialogFragment.dismiss();
 	}
 
 	@Override
 	public void onPutAllMoviesClick(SparseArray<MovieItem> movies) {
 		mListFragment.getListAdapter().putAll(movies);
 		updateActionBar();
-		mPutFragment.dismiss();
+		mPutDialogFragment.dismiss();
 	}
 
 	@Override
@@ -147,14 +173,14 @@ public class SparseArrayBaseAdapterActivity extends AdapterBaseActivity implemen
 			mListFragment.getListAdapter().put(position, movie);
 		}
 		updateActionBar();
-		mPutFragment.dismiss();
+		mPutDialogFragment.dismiss();
 	}
 
 	@Override
 	public void onPutMovieWithIdClick(int barcode, MovieItem movie) {
 		mListFragment.getListAdapter().putWithId(barcode, movie);
 		updateActionBar();
-		mPutFragment.dismiss();
+		mPutDialogFragment.dismiss();
 	}
 
 	@Override
@@ -182,20 +208,22 @@ public class SparseArrayBaseAdapterActivity extends AdapterBaseActivity implemen
 
 	@Override
 	protected void startAppendDialog() {
-
+		mAppendDialogFragment = AppendSparseDialogFragment.newInstance();
+		mAppendDialogFragment.setEventListener(this);
+		mAppendDialogFragment.show(getFragmentManager(), TAG_APPEND_ADAPTER_FRAG);
 	}
 
 	@Override
 	protected void startContainsDialog() {
-		mContainsFragment = ContainsSparseArrayDialogFragment.newInstance();
-		mContainsFragment.setEventListener(this);
-		mContainsFragment.show(getFragmentManager(), TAG_CONTAINS_DIALOG_FRAG);
+		mContainsDialogFragment = ContainsSparseDialogFragment.newInstance();
+		mContainsDialogFragment.setEventListener(this);
+		mContainsDialogFragment.show(getFragmentManager(), TAG_CONTAINS_DIALOG_FRAG);
 	}
 
 	@Override
 	protected void startPutDialog() {
-		mPutFragment = PutDialogFragment.newInstance();
-		mPutFragment.setEventListener(this);
-		mPutFragment.show(getFragmentManager(), TAG_PUT_DIALOG_FRAG);
+		mPutDialogFragment = PutSparseDialogFragment.newInstance();
+		mPutDialogFragment.setEventListener(this);
+		mPutDialogFragment.show(getFragmentManager(), TAG_PUT_DIALOG_FRAG);
 	}
 }

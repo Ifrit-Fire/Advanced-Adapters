@@ -31,15 +31,15 @@ import java.util.Random;
  * Renders a dialog with all the options possible for checking a list for contents it may contain.
  * Implement the {@link EventListener} in order to receive back dialog results.
  */
-public class ContainsSparseArrayDialogFragment extends CustomDialogFragment {
+public class ContainsSparseDialogFragment extends CustomDialogFragment {
 	private static final String STATE_MOVIE = "State Movie";
 
 	private EventListener mEventListener;
 
 	private MovieItem mMovieItem;
 
-	public static ContainsSparseArrayDialogFragment newInstance() {
-		ContainsSparseArrayDialogFragment frag = new ContainsSparseArrayDialogFragment();
+	public static ContainsSparseDialogFragment newInstance() {
+		ContainsSparseDialogFragment frag = new ContainsSparseDialogFragment();
 
 		Bundle bundle = new Bundle();
 		int index = new Random().nextInt(MovieContent.ITEM_SPARSE.size());
@@ -58,7 +58,7 @@ public class ContainsSparseArrayDialogFragment extends CustomDialogFragment {
 	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
 		Dialog dialog = super.onCreateDialog(savedInstanceState);
-		dialog.setContentView(R.layout.dialog_contains_sparsearray);
+		dialog.setContentView(R.layout.dialog_contains_sparse);
 		dialog.setTitle(R.string.title_dialog_contains_movies);
 
 		Button btn = (Button) dialog.findViewById(R.id.movie_contains_id_btn);
