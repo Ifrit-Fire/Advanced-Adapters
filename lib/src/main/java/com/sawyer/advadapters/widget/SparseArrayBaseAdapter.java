@@ -1,5 +1,5 @@
 /**
- * By: JaySoyer
+ * Copyright 2014 Jay Soyer
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -149,7 +149,12 @@ public abstract class SparseArrayBaseAdapter<T> extends BaseAdapter implements F
 	}
 
 	/**
-	 * Determines if the specified item exists within the adapter.
+	 * Determines if the specified item exists within the adapter. Beware that this is a linear
+	 * search, unlike lookups by key, and that multiple keys can map to the same value and this will
+	 * find only one of them.
+	 * <p/>
+	 * Note also that unlike most collections' this method compares values using == rather than
+	 * equals...a result of how SparseArrays were implemented.
 	 *
 	 * @param item The item to search for
 	 *
@@ -197,8 +202,8 @@ public abstract class SparseArrayBaseAdapter<T> extends BaseAdapter implements F
 	}
 
 	/**
-	 * @return The shown filtered sparse array. If no filter is applied, then the original sparse
-	 * array is returned.
+	 * @return The shown filtered data as sparse array. If no filter is applied, then the original
+	 * list of data is returned.
 	 */
 	public SparseArray<T> getFilteredSparseArray() {
 		SparseArray<T> objects;
@@ -225,10 +230,27 @@ public abstract class SparseArrayBaseAdapter<T> extends BaseAdapter implements F
 		return mObjects.get(keyId);
 	}
 
+	/**
+	 * Returns the position of the specified item in the sparse array. Beware that this is a linear
+	 * search, unlike lookups by key,and that multiple keys can map to the same value and this will
+	 * find only one of them.
+	 * <p/>
+	 * Note also that unlike most collections' indexOf methods, this method compares values using ==
+	 * rather than equals.
+	 *
+	 * @param item The item to retrieve the position of.
+	 *
+	 * @return The position of the specified item, or a negative number if not found.
+	 */
 	public int getPosition(T item) {
 		return mObjects.indexOfValue(item);
 	}
 
+	/**
+	 * @param keyId The keyId to search for
+	 *
+	 * @return the position for which a keyId is found, or a negative number if not found.
+	 */
 	public int getPosition(int keyId) {
 		return mObjects.indexOfKey(keyId);
 	}
@@ -325,6 +347,15 @@ public abstract class SparseArrayBaseAdapter<T> extends BaseAdapter implements F
 		mNotifyOnChange = true;
 	}
 
+	/**
+	 * Given a position in the range of 0...{@link #getCount()}-1, sets a new value for the
+	 * key-value stored at that position. Be-aware this method is only a constant amortised time
+	 * operation when the adapter is not filtered. Otherwise, the position must be converted to a
+	 * unfiltered position; which requires a binary search on the original unfiltered sparse array.
+	 *
+	 * @param position The position of the item to update
+	 * @param item     The item to update with
+	 */
 	public void put(int position, T item) {
 		synchronized (mLock) {
 			if (mOriginalValues != null) {
@@ -379,7 +410,10 @@ public abstract class SparseArrayBaseAdapter<T> extends BaseAdapter implements F
 	}
 
 	/**
-	 * Removes the mapping at the specified position in the adapter.
+	 * Removes the mapping at the specified position in the adapter.  Be-aware this method is only a
+	 * constant amortised time operation when the adapter is not filtered. Otherwise, the position
+	 * must be converted to a unfiltered position; which requires a binary search on the original
+	 * unfiltered sparse array.
 	 *
 	 * @param position The position of the item to remove
 	 */
