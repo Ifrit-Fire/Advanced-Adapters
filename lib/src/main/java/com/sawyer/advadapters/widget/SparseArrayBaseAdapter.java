@@ -58,8 +58,8 @@ public abstract class SparseArrayBaseAdapter<T> extends BaseAdapter implements F
 	private SparseArrayFilter mFilter;
 
 	/**
-	 * Saves the constraint used during the last filtering operation. Used to re-filter the list
-	 * following changes to the array of data
+	 * Saves the constraint used during the last filtering operation. Used to re-filter the sparse
+	 * array following changes to the data
 	 */
 	private CharSequence mLastConstraint;
 
@@ -83,8 +83,8 @@ public abstract class SparseArrayBaseAdapter<T> extends BaseAdapter implements F
 	}
 
 	/**
-	 * Appends the specified items at the end of the adapter, optimizing for the case where all the
-	 * keys are greater then all existing keys in the adapter. This includes the specified items
+	 * Appends the specified SparseArray at the end of the adapter, optimizing for the case where
+	 * all the keys are greater then all existing keys in the adapter. This includes the given items
 	 * having it's keys in sequential order as well. Will repeat the last filtering request if
 	 * invoked while filtered results are being displayed.
 	 *
@@ -102,8 +102,8 @@ public abstract class SparseArrayBaseAdapter<T> extends BaseAdapter implements F
 					mObjects.append(items.keyAt(index), items.valueAt(index));
 				}
 			}
-			if (mNotifyOnChange) notifyDataSetChanged();
 		}
+		if (mNotifyOnChange) notifyDataSetChanged();
 	}
 
 	/**
@@ -154,7 +154,7 @@ public abstract class SparseArrayBaseAdapter<T> extends BaseAdapter implements F
 	 * find only one of them.
 	 * <p/>
 	 * Note also that unlike most collections' this method compares values using == rather than
-	 * equals...a result of how SparseArrays were implemented.
+	 * equals...a result of how SparseArrays are implemented.
 	 *
 	 * @param item The item to search for
 	 *
@@ -202,8 +202,8 @@ public abstract class SparseArrayBaseAdapter<T> extends BaseAdapter implements F
 	}
 
 	/**
-	 * @return The shown filtered data as sparse array. If no filter is applied, then the original
-	 * list of data is returned.
+	 * @return The shown filtered data as a SparseArray. If no filter is applied, then the original
+	 * (unfiltered) data is returned instead.
 	 */
 	public SparseArray<T> getFilteredSparseArray() {
 		SparseArray<T> objects;
@@ -252,11 +252,12 @@ public abstract class SparseArrayBaseAdapter<T> extends BaseAdapter implements F
 	 * @return the position for which a keyId is found, or a negative number if not found.
 	 */
 	public int getPosition(int keyId) {
+
 		return mObjects.indexOfKey(keyId);
 	}
 
 	/**
-	 * @return The original (unfiltered) sparse array of items stored within the Adapter
+	 * @return The original (unfiltered) SparseArray of items stored within the adapter.
 	 */
 	public SparseArray<T> getSparseArray() {
 		SparseArray<T> objects;
@@ -271,8 +272,8 @@ public abstract class SparseArrayBaseAdapter<T> extends BaseAdapter implements F
 	}
 
 	/**
-	 * Resets the adapter to store a new list of items. Convenient way of calling {@link #clear()},
-	 * then {@link #appendAll} without having to worry about an extra {@link
+	 * Resets the adapter to store a new sparse array of items. Convenient way of calling {@link
+	 * #clear()}, then {@link #putAll} without having to worry about an extra {@link
 	 * #notifyDataSetChanged()} invoked in between. Will repeat the last filtering request if
 	 * invoked while filtered results are being displayed.
 	 *
@@ -351,7 +352,7 @@ public abstract class SparseArrayBaseAdapter<T> extends BaseAdapter implements F
 	 * Given a position in the range of 0...{@link #getCount()}-1, sets a new value for the
 	 * key-value stored at that position. Be-aware this method is only a constant amortised time
 	 * operation when the adapter is not filtered. Otherwise, the position must be converted to a
-	 * unfiltered position; which requires a binary search on the original unfiltered sparse array.
+	 * unfiltered position; which requires a binary search on the original unfiltered data.
 	 *
 	 * @param position The position of the item to update
 	 * @param item     The item to update with
@@ -429,7 +430,7 @@ public abstract class SparseArrayBaseAdapter<T> extends BaseAdapter implements F
 	}
 
 	/**
-	 * Removes all items from the adapter that are found within the specified sparse array.
+	 * Removes all items from the adapter that are found within the specified SparseArray.
 	 *
 	 * @param items The SparseArray items to remove from the adapter.
 	 */
@@ -476,8 +477,8 @@ public abstract class SparseArrayBaseAdapter<T> extends BaseAdapter implements F
 	}
 
 	/**
-	 * A SparseArray filter constrains the content of the sparse array adapter. Whether an item is
-	 * constrained or not is delegated to subclasses through {@link SparseArrayBaseAdapter#isFilteredBy}
+	 * A SparseArray filter constrains the content of the adapter. Whether an item is constrained or
+	 * not is delegated to subclasses through {@link SparseArrayBaseAdapter#isFilteredBy}
 	 */
 	private class SparseArrayFilter extends Filter {
 		@Override
