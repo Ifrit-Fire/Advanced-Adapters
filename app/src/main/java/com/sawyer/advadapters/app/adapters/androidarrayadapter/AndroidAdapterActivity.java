@@ -18,32 +18,35 @@ package com.sawyer.advadapters.app.adapters.androidarrayadapter;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.widget.Toast;
 
 import com.sawyer.advadapters.app.R;
-import com.sawyer.advadapters.app.adapters.AdapterActivity;
+import com.sawyer.advadapters.app.adapters.AdapterBaseActivity;
 import com.sawyer.advadapters.app.data.MovieContent;
 import com.sawyer.advadapters.app.data.MovieItem;
+import com.sawyer.advadapters.app.dialogs.AddArrayDialogFragment;
+import com.sawyer.advadapters.app.dialogs.ContainsArrayDialogFragment;
+import com.sawyer.advadapters.app.dialogs.InsertArrayDialogFragment;
 
 import java.util.List;
 
-public class AndroidAdapterActivity extends AdapterActivity {
+public class AndroidAdapterActivity extends AdapterBaseActivity implements
+		AddArrayDialogFragment.EventListener, ContainsArrayDialogFragment.EventListener,
+		InsertArrayDialogFragment.EventListener {
+	private static final String TAG_ADD_DIALOG_FRAG = "Tag Add Dialog Frag";
+	private static final String TAG_BASE_ADAPTER_FRAG = "Tag Base Adapter Frag";
+	private static final String TAG_CONTAINS_DIALOG_FRAG = "Tag Contains Dialog Frag";
+	private static final String TAG_INSERT_DIALOG_FRAG = "Tag Insert Dialog Frag";
+
+	private AddArrayDialogFragment mAddDialogFragment;
+	private ContainsArrayDialogFragment mContainsDialogFragment;
+	private InsertArrayDialogFragment mInsertDialogFragment;
 	private AndroidAdapterFragment mListFragment;
 
 	@Override
 	protected void clear() {
 		mListFragment.getListAdapter().clear();
 		updateActionBar();
-	}
-
-	@Override
-	protected boolean containsMovie(MovieItem movie) {
-		return (mListFragment.getListAdapter().getPosition(movie) != -1);
-	}
-
-	@Override
-	protected boolean containsMovieCollection(List<MovieItem> movies) {
-		//Not supported
-		return false;
 	}
 
 	@Override
@@ -74,16 +77,24 @@ public class AndroidAdapterActivity extends AdapterActivity {
 			transaction.replace(R.id.frag_container, mListFragment, TAG_BASE_ADAPTER_FRAG);
 			transaction.commit();
 		}
-	}
 
-	@Override
-	protected void insertMovieCollection(List<MovieItem> movies, int position) {
-		//Not supported
-	}
+		mContainsDialogFragment = (ContainsArrayDialogFragment) manager
+				.findFragmentByTag(TAG_CONTAINS_DIALOG_FRAG);
+		if (mContainsDialogFragment != null) {
+			mContainsDialogFragment.setEventListener(this);
+		}
 
-	@Override
-	protected void insertSingleMovie(MovieItem movie, int position) {
-		//Not supported
+		mAddDialogFragment = (AddArrayDialogFragment) manager
+				.findFragmentByTag(TAG_ADD_DIALOG_FRAG);
+		if (mAddDialogFragment != null) {
+			mAddDialogFragment.setEventListener(this);
+		}
+
+		mInsertDialogFragment = (InsertArrayDialogFragment) manager
+				.findFragmentByTag(TAG_INSERT_DIALOG_FRAG);
+		if (mInsertDialogFragment != null) {
+			mInsertDialogFragment.setEventListener(this);
+		}
 	}
 
 	@Override
@@ -97,7 +108,7 @@ public class AndroidAdapterActivity extends AdapterActivity {
 	}
 
 	@Override
-	protected boolean isContainsAllEnabled() {
+	public boolean isContainsAllEnabled() {
 		return false;
 	}
 
@@ -108,7 +119,7 @@ public class AndroidAdapterActivity extends AdapterActivity {
 
 	@Override
 	protected boolean isInsertDialogEnabled() {
-		return false;
+		return true;
 	}
 
 	@Override
@@ -118,23 +129,23 @@ public class AndroidAdapterActivity extends AdapterActivity {
 
 	@Override
 	public void onAddMovieCollectionClick(List<MovieItem> movies) {
-		super.onAddMovieCollectionClick(movies);
 		mListFragment.getListAdapter().addAll(movies);
 		updateActionBar();
+		mAddDialogFragment.dismiss();
 	}
 
 	@Override
 	public void onAddSingleMovieClick(MovieItem movie) {
-		super.onAddSingleMovieClick(movie);
 		mListFragment.getListAdapter().add(movie);
 		updateActionBar();
+		mAddDialogFragment.dismiss();
 	}
 
 	@Override
 	public void onAddVarargsMovieClick(MovieItem... movies) {
-		super.onAddVarargsMovieClick(movies);
 		mListFragment.getListAdapter().addAll(movies);
 		updateActionBar();
+		mAddDialogFragment.dismiss();
 	}
 
 	@Override
@@ -144,6 +155,38 @@ public class AndroidAdapterActivity extends AdapterActivity {
 		if (fragment instanceof AndroidAdapterFragment) {
 			mListFragment = (AndroidAdapterFragment) fragment;
 		}
+	}
+
+	@Override
+	public void onContainsMovieClick(MovieItem movie) {
+		StringBuilder text = new StringBuilder();
+		if (mListFragment.getListAdapter().getPosition(movie) != -1) {
+			text.append(getString(R.string.toast_contains_movie_true));
+		} else {
+			text.append(getString(R.string.toast_contains_movie_false));
+		}
+		text.append(movie.title);
+		Toast.makeText(this, text.toString(), Toast.LENGTH_SHORT).show();
+		mContainsDialogFragment.dismiss();
+	}
+
+	@Override
+	public void onContainsMovieCollectionClick(List<MovieItem> movies) {
+		//Not supported
+	}
+
+	@Override
+	public void onInsertMovieCollectionClick(List<MovieItem> movies,
+											 InsertArrayDialogFragment.InsertLocation location) {
+		//Not supported
+	}
+
+	@Override
+	public void onInsertSingleMovieClick(MovieItem movie,
+										 InsertArrayDialogFragment.InsertLocation location) {
+		int count = mListFragment.getListAdapter().getCount();
+		mListFragment.getListAdapter().insert(movie, location.toListPosition(count));
+		mInsertDialogFragment.dismiss();
 	}
 
 	@Override
@@ -171,5 +214,26 @@ public class AndroidAdapterActivity extends AdapterActivity {
 	@Override
 	protected void sort() {
 		mListFragment.getListAdapter().sort(null);
+	}
+
+	@Override
+	protected void startAddDialog() {
+		mAddDialogFragment = AddArrayDialogFragment.newInstance();
+		mAddDialogFragment.setEventListener(this);
+		mAddDialogFragment.show(getFragmentManager(), TAG_ADD_DIALOG_FRAG);
+	}
+
+	@Override
+	protected void startContainsDialog() {
+		mContainsDialogFragment = ContainsArrayDialogFragment.newInstance();
+		mContainsDialogFragment.setEventListener(this);
+		mContainsDialogFragment.show(getFragmentManager(), TAG_ADD_DIALOG_FRAG);
+	}
+
+	@Override
+	protected void startInsertDialog() {
+		mInsertDialogFragment = InsertArrayDialogFragment.newInstance();
+		mInsertDialogFragment.setEventListener(this);
+		mInsertDialogFragment.show(getFragmentManager(), TAG_INSERT_DIALOG_FRAG);
 	}
 }

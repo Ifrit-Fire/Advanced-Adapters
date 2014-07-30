@@ -15,22 +15,33 @@
  */
 package com.sawyer.advadapters.app.adapters.androidarrayadapter;
 
+import android.app.ListFragment;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Parcelable;
+import android.view.ActionMode;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 
-import com.sawyer.advadapters.app.adapters.ListAdapterFragment;
+import com.sawyer.advadapters.app.R;
 import com.sawyer.advadapters.app.data.MovieItem;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Set;
 
-public class AndroidAdapterFragment extends ListAdapterFragment<MovieItem> {
+public class AndroidAdapterFragment extends ListFragment {
+	private static final String STATE_CAB_CHECKED_ITEMS = "State Cab Checked Items";
 	private static final String STATE_LIST = "State List";
+
+	Set<MovieItem> mCheckedItems = new HashSet<>();
 
 	public static AndroidAdapterFragment newInstance() {
 		return new AndroidAdapterFragment();
@@ -47,25 +58,15 @@ public class AndroidAdapterFragment extends ListAdapterFragment<MovieItem> {
 			super.setListAdapter(adapter);
 		} else {
 			throw new ClassCastException(
-					"Adapter must be of type " +
-					MovieAdapter.class.getSimpleName()
+					"Adapter must be of type " + MovieAdapter.class.getSimpleName()
 			);
 		}
 	}
 
 	@Override
-	protected boolean isRemoveItemsEnabled() {
-		return true;
-	}
-
-	@Override
-	protected boolean isRetainItemsEnabled() {
-		return false;
-	}
-
-	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
+		getListView().setAdapter(getListAdapter());
 	}
 
 	@SuppressWarnings("unchecked")
@@ -74,8 +75,10 @@ public class AndroidAdapterFragment extends ListAdapterFragment<MovieItem> {
 		super.onCreate(savedInstanceState);
 
 		if (savedInstanceState != null) {
-			List<MovieItem> list = (ArrayList<MovieItem>) savedInstanceState
-					.getSerializable(STATE_LIST);
+			ArrayList<MovieItem> checkItems = savedInstanceState.getParcelableArrayList(
+					STATE_CAB_CHECKED_ITEMS);
+			mCheckedItems.addAll(checkItems);
+			ArrayList<MovieItem> list = savedInstanceState.getParcelableArrayList(STATE_LIST);
 			setListAdapter(new MovieAdapter(getActivity(), list));
 		} else {
 			setListAdapter(new MovieAdapter(getActivity()));
@@ -85,7 +88,10 @@ public class AndroidAdapterFragment extends ListAdapterFragment<MovieItem> {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 							 Bundle savedInstanceState) {
-		return super.onCreateView(inflater, container, savedInstanceState);
+		ListView lv = (ListView) inflater.inflate(R.layout.listview, container, false);
+		lv.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
+		lv.setMultiChoiceModeListener(new OnCabMultiChoiceModeListener());
+		return lv;
 	}
 
 	@Override
@@ -103,7 +109,6 @@ public class AndroidAdapterFragment extends ListAdapterFragment<MovieItem> {
 		getListAdapter().notifyDataSetChanged();
 	}
 
-	@Override
 	protected void onRemoveItemsClicked(Set<MovieItem> items) {
 		getListAdapter().setNotifyOnChange(false);
 		for (MovieItem item : items) {
@@ -113,18 +118,74 @@ public class AndroidAdapterFragment extends ListAdapterFragment<MovieItem> {
 	}
 
 	@Override
-	protected void onRetainItemsClicked(Set<MovieItem> items) {
-		//Not supported
-	}
-
-	@Override
 	public void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
 
+		//Pretty much as good as we can get it. Will fail if list was still filtered by this point
 		ArrayList<MovieItem> list = new ArrayList<>();
 		for (int index = 0; index < getListAdapter().getCount(); ++index) {
 			list.add(getListAdapter().getItem(index));
 		}
-		outState.putSerializable(STATE_LIST, list);
+		outState.putParcelableArrayList(STATE_LIST, list);
+		outState.putParcelableArrayList(STATE_CAB_CHECKED_ITEMS,
+										new ArrayList<Parcelable>(mCheckedItems));
+	}
+
+	private class OnCabMultiChoiceModeListener implements AbsListView.MultiChoiceModeListener {
+		@Override
+		public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+			boolean result;
+			switch (item.getItemId()) {
+			case R.id.menu_context_remove:
+				onRemoveItemsClicked(mCheckedItems);
+				mode.finish();
+				result = true;
+				break;
+
+			default:
+				result = false;
+				break;
+			}
+
+			//Quick and easy way to force activity actionbar list count to update
+			if (result) {
+				new Handler().post(new Runnable() {
+					@Override
+					public void run() {
+						getActivity().invalidateOptionsMenu();
+					}
+				});
+			}
+			return result;
+		}
+
+		@Override
+		public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+			MenuInflater inflater = mode.getMenuInflater();
+			inflater.inflate(R.menu.cab_sparsearray, menu);
+			mode.setTitle(mCheckedItems.size() + " Selected");
+			return true;
+		}
+
+		@Override
+		public void onDestroyActionMode(ActionMode mode) {
+			mCheckedItems.clear();
+		}
+
+		@Override
+		public void onItemCheckedStateChanged(ActionMode mode, int position, long id,
+											  boolean checked) {
+			if (checked) {
+				mCheckedItems.add(getListAdapter().getItem(position));
+			} else {
+				mCheckedItems.remove(getListAdapter().getItem(position));
+			}
+			mode.setTitle(mCheckedItems.size() + " Selected");
+		}
+
+		@Override
+		public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+			return false;
+		}
 	}
 }

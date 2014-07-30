@@ -17,36 +17,43 @@ package com.sawyer.advadapters.app.dialogs;
 
 import android.app.Dialog;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
 import com.sawyer.advadapters.app.R;
+import com.sawyer.advadapters.app.data.MovieContent;
 import com.sawyer.advadapters.app.data.MovieItem;
 
-import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
+import java.util.Set;
 
 /**
  * Renders a dialog with all the options possible for inserting items into one of the adapters.
  * Implement the {@link EventListener} interface in order to receive back the dialog results.
  */
-public class InsertDialogFragment extends CustomDialogFragment {
-	private static final String STATE_MOVIE_1 = "State Movie 1";
-	private static final String STATE_MOVIE_2 = "State Movie 2";
+public class InsertArrayDialogFragment extends CustomDialogFragment {
+	private static final String STATE_MOVIES = "State Movies";
 
 	private EventListener mEventListener;
 
-	private MovieItem[] mMovieItems;
+	private List<MovieItem> mMovieItems;
 
-	public static InsertDialogFragment newInstance(MovieItem movie1, MovieItem movie2) {
-		InsertDialogFragment frag = new InsertDialogFragment();
+	public static InsertArrayDialogFragment newInstance() {
+		InsertArrayDialogFragment frag = new InsertArrayDialogFragment();
 
+		Set<MovieItem> movies = new HashSet<>();
+		while (movies.size() != 3) {
+			int index = new Random().nextInt(MovieContent.ITEM_LIST.size());
+			movies.add(MovieContent.ITEM_LIST.get(index));
+		}
 		Bundle bundle = new Bundle();
-		bundle.putParcelable(STATE_MOVIE_1, movie1);
-		bundle.putParcelable(STATE_MOVIE_2, movie2);
+		bundle.putParcelableArrayList(STATE_MOVIES, new ArrayList<Parcelable>(movies));
 		frag.setArguments(bundle);
 
 		return frag;
@@ -55,9 +62,7 @@ public class InsertDialogFragment extends CustomDialogFragment {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		mMovieItems = new MovieItem[2];
-		mMovieItems[0] = getArguments().getParcelable(STATE_MOVIE_1);
-		mMovieItems[1] = getArguments().getParcelable(STATE_MOVIE_2);
+		mMovieItems = getArguments().getParcelableArrayList(STATE_MOVIES);
 	}
 
 	@Override
@@ -74,7 +79,7 @@ public class InsertDialogFragment extends CustomDialogFragment {
 		btn = (Button) vg.findViewById(R.id.movie_insert_end_btn);
 		btn.setOnClickListener(new OnInsertSingleClickListener(InsertLocation.END));
 		TextView tv = (TextView) dialog.findViewById(R.id.movie_single_txt);
-		tv.setText("- " + mMovieItems[0].title);
+		tv.setText("- " + mMovieItems.get(0).title);
 
 		vg = (ViewGroup) dialog.findViewById(R.id.movie_collection_button_bar);
 		btn = (Button) vg.findViewById(R.id.movie_insert_start_btn);
@@ -84,9 +89,9 @@ public class InsertDialogFragment extends CustomDialogFragment {
 		btn = (Button) vg.findViewById(R.id.movie_insert_end_btn);
 		btn.setOnClickListener(new OnInsertCollectionClickListener(InsertLocation.END));
 		tv = (TextView) dialog.findViewById(R.id.movie_multi_txt1);
-		tv.setText("- " + mMovieItems[0].title);
+		tv.setText("- " + mMovieItems.get(1).title);
 		tv = (TextView) dialog.findViewById(R.id.movie_multi_txt2);
-		tv.setText("- " + mMovieItems[1].title);
+		tv.setText("- " + mMovieItems.get(2).title);
 
 		return dialog;
 	}
@@ -121,10 +126,9 @@ public class InsertDialogFragment extends CustomDialogFragment {
 	}
 
 	public interface EventListener {
-		public void onInsertMovieCollectionClick(List<MovieItem> movies,
-												 InsertLocation insertLocation);
+		public void onInsertMovieCollectionClick(List<MovieItem> movies, InsertLocation location);
 
-		public void onInsertSingleMovieClick(MovieItem movie, InsertLocation insertLocation);
+		public void onInsertSingleMovieClick(MovieItem movie, InsertLocation location);
 	}
 
 	private class OnInsertCollectionClickListener implements View.OnClickListener {
@@ -137,8 +141,7 @@ public class InsertDialogFragment extends CustomDialogFragment {
 		@Override
 		public void onClick(View v) {
 			if (mEventListener != null) {
-				mEventListener
-						.onInsertMovieCollectionClick(Arrays.asList(mMovieItems), mInsertLocation);
+				mEventListener.onInsertMovieCollectionClick(mMovieItems, mInsertLocation);
 			}
 		}
 	}
@@ -153,7 +156,7 @@ public class InsertDialogFragment extends CustomDialogFragment {
 		@Override
 		public void onClick(View v) {
 			if (mEventListener != null) {
-				mEventListener.onInsertSingleMovieClick(mMovieItems[0], mInsertLocation);
+				mEventListener.onInsertSingleMovieClick(mMovieItems.get(0), mInsertLocation);
 			}
 		}
 	}
