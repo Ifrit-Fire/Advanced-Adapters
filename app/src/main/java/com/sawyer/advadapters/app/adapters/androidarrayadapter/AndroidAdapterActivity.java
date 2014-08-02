@@ -103,16 +103,6 @@ public class AndroidAdapterActivity extends AdapterBaseActivity implements
 	}
 
 	@Override
-	public boolean isAddVarargsEnabled() {
-		return true;
-	}
-
-	@Override
-	public boolean isContainsAllEnabled() {
-		return false;
-	}
-
-	@Override
 	protected boolean isContainsDialogEnabled() {
 		return true;
 	}
@@ -128,7 +118,7 @@ public class AndroidAdapterActivity extends AdapterBaseActivity implements
 	}
 
 	@Override
-	public void onAddMovieCollectionClick(List<MovieItem> movies) {
+	public void onAddMultipleMoviesClick(List<MovieItem> movies) {
 		mListFragment.getListAdapter().addAll(movies);
 		updateActionBar();
 		mAddDialogFragment.dismiss();
@@ -158,7 +148,12 @@ public class AndroidAdapterActivity extends AdapterBaseActivity implements
 	}
 
 	@Override
-	public void onContainsMovieClick(MovieItem movie) {
+	public void onContainsMultipleMovieClick(List<MovieItem> movies) {
+		//Not supported
+	}
+
+	@Override
+	public void onContainsSingleMovieClick(MovieItem movie) {
 		StringBuilder text = new StringBuilder();
 		if (mListFragment.getListAdapter().getPosition(movie) != -1) {
 			text.append(getString(R.string.toast_contains_movie_true));
@@ -171,13 +166,8 @@ public class AndroidAdapterActivity extends AdapterBaseActivity implements
 	}
 
 	@Override
-	public void onContainsMovieCollectionClick(List<MovieItem> movies) {
-		//Not supported
-	}
-
-	@Override
-	public void onInsertMovieCollectionClick(List<MovieItem> movies,
-											 InsertArrayDialogFragment.InsertLocation location) {
+	public void onInsertMultipleMoviesClick(List<MovieItem> movies,
+											InsertArrayDialogFragment.InsertLocation location) {
 		//Not supported
 	}
 
@@ -227,6 +217,7 @@ public class AndroidAdapterActivity extends AdapterBaseActivity implements
 	protected void startContainsDialog() {
 		mContainsDialogFragment = ContainsArrayDialogFragment.newInstance();
 		mContainsDialogFragment.setEventListener(this);
+		mContainsDialogFragment.setEnableContainsAll(false);
 		mContainsDialogFragment.show(getFragmentManager(), TAG_ADD_DIALOG_FRAG);
 	}
 
@@ -234,6 +225,7 @@ public class AndroidAdapterActivity extends AdapterBaseActivity implements
 	protected void startInsertDialog() {
 		mInsertDialogFragment = InsertArrayDialogFragment.newInstance();
 		mInsertDialogFragment.setEventListener(this);
+		mInsertDialogFragment.setEnableInsertAll(false);
 		mInsertDialogFragment.show(getFragmentManager(), TAG_INSERT_DIALOG_FRAG);
 	}
 }

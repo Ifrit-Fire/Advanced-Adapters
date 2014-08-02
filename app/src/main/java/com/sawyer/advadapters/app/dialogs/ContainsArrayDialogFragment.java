@@ -37,9 +37,11 @@ import java.util.Set;
  */
 public class ContainsArrayDialogFragment extends CustomDialogFragment {
 	private static final String STATE_MOVIES = "State Movies";
+	private static final String STATE_ENABLE_CONTAINS_ALL = "State Enable Contains All";
 
 	private EventListener mEventListener;
 
+	private boolean mIsContainsAllEnabled;
 	private List<MovieItem> mMovieItems;
 
 	public static ContainsArrayDialogFragment newInstance() {
@@ -61,6 +63,7 @@ public class ContainsArrayDialogFragment extends CustomDialogFragment {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		mMovieItems = getArguments().getParcelableArrayList(STATE_MOVIES);
+		mIsContainsAllEnabled = getArguments().getBoolean(STATE_ENABLE_CONTAINS_ALL, true);
 	}
 
 	@Override
@@ -74,20 +77,22 @@ public class ContainsArrayDialogFragment extends CustomDialogFragment {
 		TextView tv = (TextView) dialog.findViewById(R.id.movie_single_txt);
 		tv.setText("- " + mMovieItems.get(0).title);
 
-		int containsVisibility = View.VISIBLE;
-		if (mEventListener != null && !mEventListener.isContainsAllEnabled()) {
-			containsVisibility = View.GONE;
-		}
+		int visibility = mIsContainsAllEnabled ? View.VISIBLE : View.GONE;
 		btn = (Button) dialog.findViewById(R.id.movies_collection_btn);
 		btn.setOnClickListener(new OnContainsCollectionClickListener());
-		btn.setVisibility(containsVisibility);
+		btn.setVisibility(visibility);
 		tv = (TextView) dialog.findViewById(R.id.movie_multi_txt1);
 		tv.setText("- " + mMovieItems.get(1).title);
-		((View) tv.getParent()).setVisibility(containsVisibility);
+		((View) tv.getParent()).setVisibility(visibility);
 		tv = (TextView) dialog.findViewById(R.id.movie_multi_txt2);
 		tv.setText("- " + mMovieItems.get(2).title);
 
 		return dialog;
+	}
+
+	public void setEnableContainsAll(boolean enable) {
+		getArguments().putBoolean(STATE_ENABLE_CONTAINS_ALL, enable);
+		mIsContainsAllEnabled = enable;
 	}
 
 	public void setEventListener(EventListener listener) {
@@ -95,18 +100,16 @@ public class ContainsArrayDialogFragment extends CustomDialogFragment {
 	}
 
 	public interface EventListener {
-		public boolean isContainsAllEnabled();
+		public void onContainsMultipleMovieClick(List<MovieItem> movies);
 
-		public void onContainsMovieClick(MovieItem movie);
-
-		public void onContainsMovieCollectionClick(List<MovieItem> movies);
+		public void onContainsSingleMovieClick(MovieItem movie);
 	}
 
 	private class OnContainsCollectionClickListener implements View.OnClickListener {
 		@Override
 		public void onClick(View v) {
 			if (mEventListener != null) {
-				mEventListener.onContainsMovieCollectionClick(mMovieItems);
+				mEventListener.onContainsMultipleMovieClick(mMovieItems.subList(1, 2));
 			}
 		}
 	}
@@ -115,7 +118,7 @@ public class ContainsArrayDialogFragment extends CustomDialogFragment {
 		@Override
 		public void onClick(View v) {
 			if (mEventListener != null) {
-				mEventListener.onContainsMovieClick(mMovieItems.get(0));
+				mEventListener.onContainsSingleMovieClick(mMovieItems.get(0));
 			}
 		}
 	}

@@ -38,9 +38,11 @@ import java.util.Set;
  */
 public class AddArrayDialogFragment extends CustomDialogFragment {
 	private static final String STATE_MOVIES = "State Movies";
+	private static final String STATE_ENABLE_ARGVARGS = "State Enable Argvargs";
 
 	private EventListener mEventListener;
 
+	private boolean mIsArgvargsEnabled;
 	private List<MovieItem> mMovieItems;
 
 	public static AddArrayDialogFragment newInstance() {
@@ -62,6 +64,7 @@ public class AddArrayDialogFragment extends CustomDialogFragment {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		mMovieItems = getArguments().getParcelableArrayList(STATE_MOVIES);
+		mIsArgvargsEnabled = getArguments().getBoolean(STATE_ENABLE_ARGVARGS, true);
 	}
 
 	@Override
@@ -84,10 +87,13 @@ public class AddArrayDialogFragment extends CustomDialogFragment {
 
 		btn = (Button) dialog.findViewById(R.id.movies_vararg_btn);
 		btn.setOnClickListener(new OnAddVarargsClickListener());
-		if (mEventListener != null) {
-			btn.setVisibility(mEventListener.isAddVarargsEnabled() ? View.VISIBLE : View.GONE);
-		}
+		btn.setVisibility(mIsArgvargsEnabled ? View.VISIBLE : View.GONE);
 		return dialog;
+	}
+
+	public void setEnableArgvargs(boolean enable) {
+		getArguments().putBoolean(STATE_ENABLE_ARGVARGS, enable);
+		mIsArgvargsEnabled = enable;
 	}
 
 	public void setEventListener(EventListener listener) {
@@ -95,9 +101,7 @@ public class AddArrayDialogFragment extends CustomDialogFragment {
 	}
 
 	public interface EventListener {
-		public boolean isAddVarargsEnabled();
-
-		public void onAddMovieCollectionClick(List<MovieItem> movies);
+		public void onAddMultipleMoviesClick(List<MovieItem> movies);
 
 		public void onAddSingleMovieClick(MovieItem movie);
 
@@ -108,7 +112,7 @@ public class AddArrayDialogFragment extends CustomDialogFragment {
 		@Override
 		public void onClick(View v) {
 			if (mEventListener != null) {
-				mEventListener.onAddMovieCollectionClick(mMovieItems);
+				mEventListener.onAddMultipleMoviesClick(mMovieItems.subList(1, 2));
 			}
 		}
 	}

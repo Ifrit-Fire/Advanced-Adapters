@@ -39,9 +39,11 @@ import java.util.Set;
  */
 public class InsertArrayDialogFragment extends CustomDialogFragment {
 	private static final String STATE_MOVIES = "State Movies";
+	private static final String STATE_ENABLE_INSERT_ALL = "State Enable Insert All";
 
 	private EventListener mEventListener;
 
+	private boolean mIsInsertAllEnabled;
 	private List<MovieItem> mMovieItems;
 
 	public static InsertArrayDialogFragment newInstance() {
@@ -63,6 +65,7 @@ public class InsertArrayDialogFragment extends CustomDialogFragment {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		mMovieItems = getArguments().getParcelableArrayList(STATE_MOVIES);
+		mIsInsertAllEnabled = getArguments().getBoolean(STATE_ENABLE_INSERT_ALL, true);
 	}
 
 	@Override
@@ -81,7 +84,9 @@ public class InsertArrayDialogFragment extends CustomDialogFragment {
 		TextView tv = (TextView) dialog.findViewById(R.id.movie_single_txt);
 		tv.setText("- " + mMovieItems.get(0).title);
 
+		int visibility = mIsInsertAllEnabled ? View.VISIBLE : View.GONE;
 		vg = (ViewGroup) dialog.findViewById(R.id.movie_collection_button_bar);
+		vg.setVisibility(visibility);
 		btn = (Button) vg.findViewById(R.id.movie_insert_start_btn);
 		btn.setOnClickListener(new OnInsertCollectionClickListener(InsertLocation.START));
 		btn = (Button) vg.findViewById(R.id.movie_insert_random_btn);
@@ -92,8 +97,15 @@ public class InsertArrayDialogFragment extends CustomDialogFragment {
 		tv.setText("- " + mMovieItems.get(1).title);
 		tv = (TextView) dialog.findViewById(R.id.movie_multi_txt2);
 		tv.setText("- " + mMovieItems.get(2).title);
+		((View) tv.getParent()).setVisibility(visibility);
+
 
 		return dialog;
+	}
+
+	public void setEnableInsertAll(boolean enable) {
+		getArguments().putBoolean(STATE_ENABLE_INSERT_ALL, enable);
+		mIsInsertAllEnabled = enable;
 	}
 
 	public void setEventListener(EventListener listener) {
@@ -126,7 +138,7 @@ public class InsertArrayDialogFragment extends CustomDialogFragment {
 	}
 
 	public interface EventListener {
-		public void onInsertMovieCollectionClick(List<MovieItem> movies, InsertLocation location);
+		public void onInsertMultipleMoviesClick(List<MovieItem> movies, InsertLocation location);
 
 		public void onInsertSingleMovieClick(MovieItem movie, InsertLocation location);
 	}
@@ -141,7 +153,8 @@ public class InsertArrayDialogFragment extends CustomDialogFragment {
 		@Override
 		public void onClick(View v) {
 			if (mEventListener != null) {
-				mEventListener.onInsertMovieCollectionClick(mMovieItems, mInsertLocation);
+				mEventListener
+						.onInsertMultipleMoviesClick(mMovieItems.subList(1, 2), mInsertLocation);
 			}
 		}
 	}
