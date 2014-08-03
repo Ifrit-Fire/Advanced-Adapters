@@ -154,7 +154,7 @@ public class InsertArrayDialogFragment extends CustomDialogFragment {
 		public void onClick(View v) {
 			if (mEventListener != null) {
 				mEventListener
-						.onInsertMultipleMoviesClick(mMovieItems.subList(1, 2), mInsertLocation);
+						.onInsertMultipleMoviesClick(mMovieItems.subList(1, 3), mInsertLocation);
 			}
 		}
 	}

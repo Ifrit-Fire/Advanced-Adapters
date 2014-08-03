@@ -112,7 +112,7 @@ public class AddArrayDialogFragment extends CustomDialogFragment {
 		@Override
 		public void onClick(View v) {
 			if (mEventListener != null) {
-				mEventListener.onAddMultipleMoviesClick(mMovieItems.subList(1, 2));
+				mEventListener.onAddMultipleMoviesClick(mMovieItems.subList(1, 3));
 			}
 		}
 	}

@@ -109,7 +109,7 @@ public class ContainsArrayDialogFragment extends CustomDialogFragment {
 		@Override
 		public void onClick(View v) {
 			if (mEventListener != null) {
-				mEventListener.onContainsMultipleMovieClick(mMovieItems.subList(1, 2));
+				mEventListener.onContainsMultipleMovieClick(mMovieItems.subList(1, 3));
 			}
 		}
 	}
