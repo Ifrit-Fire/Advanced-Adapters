@@ -34,7 +34,8 @@ import com.sawyer.advadapters.app.dialogs.InfoDialogFragment;
  * Will adjust UI based on what subclasses enable/disable.  Subclasses should only need worrying
  * about hooking up the adapter to the required methods needing implementing.
  */
-public abstract class AdapterBaseActivity extends Activity implements SearchView.OnQueryTextListener {
+public abstract class AdapterBaseActivity extends Activity implements
+		SearchView.OnQueryTextListener {
 	private static final String TAG_INFO_DIALOG_FRAG = "Tag Info Dialog Frag";
 
 	private InfoDialogFragment mInfoDialogFragment;
@@ -100,7 +101,9 @@ public abstract class AdapterBaseActivity extends Activity implements SearchView
 		return false;
 	}
 
-	protected abstract boolean isSearchViewEnabled();
+	protected boolean isSearchViewEnabled() {
+		return false;
+	}
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -179,6 +182,16 @@ public abstract class AdapterBaseActivity extends Activity implements SearchView
 		boolean result = super.onPrepareOptionsMenu(menu);
 		updateActionBar();
 		return result;
+	}
+
+	@Override
+	public boolean onQueryTextChange(String newText) {
+		return false;
+	}
+
+	@Override
+	public boolean onQueryTextSubmit(String query) {
+		return false;
 	}
 
 	protected abstract void reset();

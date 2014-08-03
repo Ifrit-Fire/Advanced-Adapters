@@ -18,32 +18,35 @@ package com.sawyer.advadapters.app.adapters.simplearraybaseadapter;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.widget.Toast;
 
 import com.sawyer.advadapters.app.R;
-import com.sawyer.advadapters.app.adapters.AdapterActivity;
+import com.sawyer.advadapters.app.adapters.AdapterBaseActivity;
 import com.sawyer.advadapters.app.data.MovieContent;
 import com.sawyer.advadapters.app.data.MovieItem;
+import com.sawyer.advadapters.app.dialogs.AddArrayDialogFragment;
+import com.sawyer.advadapters.app.dialogs.ContainsArrayDialogFragment;
+import com.sawyer.advadapters.app.dialogs.InsertArrayDialogFragment;
 
 import java.util.List;
 
-public class SimpleArrayBaseAdapterActivity extends AdapterActivity {
-	private static final String STATE_CAB_CHECKED_ITEMS = "State Cab Checked Items";
+public class SimpleArrayBaseAdapterActivity extends AdapterBaseActivity implements
+		AddArrayDialogFragment.EventListener, ContainsArrayDialogFragment.EventListener,
+		InsertArrayDialogFragment.EventListener {
+	private static final String TAG_ADD_DIALOG_FRAG = "Tag Add Dialog Frag";
+	private static final String TAG_BASE_ADAPTER_FRAG = "Tag Base Adapter Frag";
+	private static final String TAG_CONTAINS_DIALOG_FRAG = "Tag Contains Dialog Frag";
+	private static final String TAG_INSERT_DIALOG_FRAG = "Tag Insert Dialog Frag";
+
+	private AddArrayDialogFragment mAddDialogFragment;
+	private ContainsArrayDialogFragment mContainsDialogFragment;
+	private InsertArrayDialogFragment mInsertDialogFragment;
 	private SimpleArrayBaseAdapterFragment mListFragment;
 
 	@Override
 	protected void clear() {
 		mListFragment.getListAdapter().clear();
 		updateActionBar();
-	}
-
-	@Override
-	protected boolean containsMovie(MovieItem movie) {
-		return mListFragment.getListAdapter().contains(movie);
-	}
-
-	@Override
-	protected boolean containsMovieCollection(List<MovieItem> movies) {
-		return mListFragment.getListAdapter().containsAll(movies);
 	}
 
 	@Override
@@ -73,30 +76,28 @@ public class SimpleArrayBaseAdapterActivity extends AdapterActivity {
 			transaction.replace(R.id.frag_container, mListFragment, TAG_BASE_ADAPTER_FRAG);
 			transaction.commit();
 		}
-	}
 
-	@Override
-	protected void insertMovieCollection(List<MovieItem> movies, int position) {
-		mListFragment.getListAdapter().insertAll(position, movies);
-	}
+		mContainsDialogFragment = (ContainsArrayDialogFragment) manager
+				.findFragmentByTag(TAG_CONTAINS_DIALOG_FRAG);
+		if (mContainsDialogFragment != null) {
+			mContainsDialogFragment.setEventListener(this);
+		}
 
-	@Override
-	protected void insertSingleMovie(MovieItem movie, int position) {
-		mListFragment.getListAdapter().insert(position, movie);
+		mAddDialogFragment = (AddArrayDialogFragment) manager
+				.findFragmentByTag(TAG_ADD_DIALOG_FRAG);
+		if (mAddDialogFragment != null) {
+			mAddDialogFragment.setEventListener(this);
+		}
+
+		mInsertDialogFragment = (InsertArrayDialogFragment) manager
+				.findFragmentByTag(TAG_INSERT_DIALOG_FRAG);
+		if (mInsertDialogFragment != null) {
+			mInsertDialogFragment.setEventListener(this);
+		}
 	}
 
 	@Override
 	protected boolean isAddDialogEnabled() {
-		return true;
-	}
-
-	@Override
-	public boolean isAddVarargsEnabled() {
-		return false;
-	}
-
-	@Override
-	protected boolean isContainsAllEnabled() {
 		return true;
 	}
 
@@ -111,22 +112,22 @@ public class SimpleArrayBaseAdapterActivity extends AdapterActivity {
 	}
 
 	@Override
-	protected boolean isSearchViewEnabled() {
-		return false;
-	}
-
-	@Override
-	public void onAddMovieCollectionClick(List<MovieItem> movies) {
-		super.onAddMovieCollectionClick(movies);
+	public void onAddMultipleMoviesClick(List<MovieItem> movies) {
 		mListFragment.getListAdapter().addAll(movies);
 		updateActionBar();
+		mAddDialogFragment.dismiss();
 	}
 
 	@Override
 	public void onAddSingleMovieClick(MovieItem movie) {
-		super.onAddSingleMovieClick(movie);
 		mListFragment.getListAdapter().add(movie);
 		updateActionBar();
+		mAddDialogFragment.dismiss();
+	}
+
+	@Override
+	public void onAddVarargsMovieClick(MovieItem... movies) {
+		//Not supported
 	}
 
 	@Override
@@ -139,13 +140,52 @@ public class SimpleArrayBaseAdapterActivity extends AdapterActivity {
 	}
 
 	@Override
-	public boolean onQueryTextChange(String newText) {
-		return false;
+	public void onContainsMultipleMovieClick(List<MovieItem> movies) {
+		StringBuilder text = new StringBuilder();
+		if (mListFragment.getListAdapter().containsAll(movies)) {
+			text.append(getString(R.string.toast_contains_movie_true));
+		} else {
+			text.append(getString(R.string.toast_contains_movie_false));
+		}
+		int index;
+		for (index = 0; index < movies.size() - 1; ++index) {
+			text.append(movies.get(0).title).append("\n");
+		}
+		text.append(movies.get(index).title);
+
+		Toast.makeText(this, text.toString(), Toast.LENGTH_SHORT).show();
+		mContainsDialogFragment.dismiss();
 	}
 
 	@Override
-	public boolean onQueryTextSubmit(String query) {
-		return false;
+	public void onContainsSingleMovieClick(MovieItem movie) {
+		StringBuilder text = new StringBuilder();
+		if (mListFragment.getListAdapter().contains(movie)) {
+			text.append(getString(R.string.toast_contains_movie_true));
+		} else {
+			text.append(getString(R.string.toast_contains_movie_false));
+		}
+		text.append(movie.title);
+		Toast.makeText(this, text.toString(), Toast.LENGTH_SHORT).show();
+		mContainsDialogFragment.dismiss();
+	}
+
+	@Override
+	public void onInsertMultipleMoviesClick(List<MovieItem> movies,
+											InsertArrayDialogFragment.InsertLocation location) {
+		int position = location.toListPosition(getListCount());
+		mListFragment.getListAdapter().insertAll(position, movies);
+		updateActionBar();
+		mInsertDialogFragment.dismiss();
+	}
+
+	@Override
+	public void onInsertSingleMovieClick(MovieItem movie,
+										 InsertArrayDialogFragment.InsertLocation location) {
+		int position = location.toListPosition(getListCount());
+		mListFragment.getListAdapter().insert(position, movie);
+		updateActionBar();
+		mInsertDialogFragment.dismiss();
 	}
 
 	@Override
@@ -160,5 +200,27 @@ public class SimpleArrayBaseAdapterActivity extends AdapterActivity {
 	@Override
 	protected void sort() {
 		mListFragment.getListAdapter().sort(null);
+	}
+
+	@Override
+	protected void startAddDialog() {
+		mAddDialogFragment = AddArrayDialogFragment.newInstance();
+		mAddDialogFragment.setEventListener(this);
+		mAddDialogFragment.setEnableArgvargs(false);
+		mAddDialogFragment.show(getFragmentManager(), TAG_ADD_DIALOG_FRAG);
+	}
+
+	@Override
+	protected void startContainsDialog() {
+		mContainsDialogFragment = ContainsArrayDialogFragment.newInstance();
+		mContainsDialogFragment.setEventListener(this);
+		mContainsDialogFragment.show(getFragmentManager(), TAG_CONTAINS_DIALOG_FRAG);
+	}
+
+	@Override
+	protected void startInsertDialog() {
+		mInsertDialogFragment = InsertArrayDialogFragment.newInstance();
+		mInsertDialogFragment.setEventListener(this);
+		mInsertDialogFragment.show(getFragmentManager(), TAG_INSERT_DIALOG_FRAG);
 	}
 }

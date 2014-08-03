@@ -141,7 +141,7 @@ public class ArrayBaseAdapterActivity extends AdapterBaseActivity implements
 		}
 		int index;
 		for (index = 0; index < movies.size() - 1; ++index) {
-			text.append(movies.get(0).title + "\n");
+			text.append(movies.get(0).title).append("\n");
 		}
 		text.append(movies.get(index).title);
 
