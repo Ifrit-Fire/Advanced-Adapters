@@ -27,10 +27,11 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.sawyer.advadapters.app.adapters.sparsearraybaseadapter.SparseArrayBaseAdapterActivity;
 import com.sawyer.advadapters.app.adapters.androidarrayadapter.AndroidAdapterActivity;
 import com.sawyer.advadapters.app.adapters.arraybaseadapter.ArrayBaseAdapterActivity;
 import com.sawyer.advadapters.app.adapters.simplearraybaseadapter.SimpleArrayBaseAdapterActivity;
+import com.sawyer.advadapters.app.adapters.simplesparsearraybaseadapter.SimpleSparseArrayBaseAdapterActivity;
+import com.sawyer.advadapters.app.adapters.sparsearraybaseadapter.SparseArrayBaseAdapterActivity;
 import com.sawyer.advadapters.widget.SimpleArrayBaseAdapter;
 
 import java.util.ArrayList;
@@ -54,6 +55,11 @@ public class MainActivity extends ListActivity {
 
 		intent = new Intent(this, SparseArrayBaseAdapterActivity.class);
 		intent.putExtra(EXTRA_INTENT_NAME, getString(R.string.activity_sparsearray_baseadapter));
+		intents.add(intent);
+
+		intent = new Intent(this, SimpleSparseArrayBaseAdapterActivity.class);
+		intent.putExtra(EXTRA_INTENT_NAME,
+						getString(R.string.activity_simplesparsearray_baseadapter));
 		intents.add(intent);
 
 		return intents;

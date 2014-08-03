@@ -23,6 +23,7 @@
 	<string name="activity_array_baseadapter">Array BaseAdapter</string>
 	<string name="activity_simplearray_baseadapter">SimpleArray BaseAdapter</string>
 	<string name="activity_sparsearray_baseadapter">SparseArray BaseAdapter</string>
+	<string name="activity_simplesparsearray_baseadapter">SimpleSparseArray BaseAdapter</string>
 
 	<!-- Content Description Text -->
 	<string name="cd_rating_icon">Rating Icon</string>
