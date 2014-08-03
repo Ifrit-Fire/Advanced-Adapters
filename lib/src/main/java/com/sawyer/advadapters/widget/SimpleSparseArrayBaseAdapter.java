@@ -24,7 +24,7 @@ import android.widget.BaseAdapter;
 
 /**
  * A <i>trimmed</i> down version of the {@link SparseArrayBaseAdapter} which is similarly backed by
- * an {@link SparseArray} of arbitrary objects. By default this class will delegate view generation
+ * a {@link SparseArray} of arbitrary objects. By default this class will delegate view generation
  * to subclasses.
  * <p/>
  * Designed to be a simple version of it's cousin SparseArrayBaseAdapter, it removes support for
