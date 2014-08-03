@@ -69,7 +69,8 @@
 	<string name="btn_put_all">Put All</string>
 
 	<!-- Toast Messages -->
-	<string name="toast_sort_not_supported">Sort not supported.</string>
 	<string name="toast_contains_movie_true">Adapter contains:\n</string>
 	<string name="toast_contains_movie_false">Could not find:\n</string>
+	<string name="toast_retain_all_not_support">RetainAll not supported.</string>
+	<string name="toast_sort_not_supported">Sort not supported.</string>
 </resources>

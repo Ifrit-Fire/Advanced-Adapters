@@ -27,6 +27,7 @@ import com.sawyer.advadapters.app.data.MovieItem;
 import java.util.List;
 
 public class SimpleArrayBaseAdapterActivity extends AdapterActivity {
+	private static final String STATE_CAB_CHECKED_ITEMS = "State Cab Checked Items";
 	private SimpleArrayBaseAdapterFragment mListFragment;
 
 	@Override

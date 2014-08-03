@@ -99,7 +99,7 @@ public class SparseArrayBaseFragment extends ListFragment {
 		getListAdapter().put(position, newMovie);
 	}
 
-	protected void onRemoveItemsClicked(SparseArray<MovieItem> items) {
+	private void onRemoveItemsClicked(SparseArray<MovieItem> items) {
 		//Want to test each type of remove
 		if (items.size() == 1) {
 			getListAdapter().remove(0);

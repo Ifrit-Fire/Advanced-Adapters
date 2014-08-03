@@ -29,6 +29,7 @@ import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.sawyer.advadapters.app.R;
 import com.sawyer.advadapters.app.data.MovieItem;
@@ -41,7 +42,7 @@ public class AndroidAdapterFragment extends ListFragment {
 	private static final String STATE_CAB_CHECKED_ITEMS = "State Cab Checked Items";
 	private static final String STATE_LIST = "State List";
 
-	Set<MovieItem> mCheckedItems = new HashSet<>();
+	private Set<MovieItem> mCheckedItems = new HashSet<>();
 
 	public static AndroidAdapterFragment newInstance() {
 		return new AndroidAdapterFragment();
@@ -109,7 +110,7 @@ public class AndroidAdapterFragment extends ListFragment {
 		getListAdapter().notifyDataSetChanged();
 	}
 
-	protected void onRemoveItemsClicked(Set<MovieItem> items) {
+	private void onRemoveItemsClicked(Set<MovieItem> items) {
 		getListAdapter().setNotifyOnChange(false);
 		for (MovieItem item : items) {
 			getListAdapter().remove(item);
@@ -142,6 +143,13 @@ public class AndroidAdapterFragment extends ListFragment {
 				result = true;
 				break;
 
+			case R.id.menu_context_retain:
+				Toast.makeText(getActivity(), R.string.toast_retain_all_not_support,
+							   Toast.LENGTH_SHORT)
+					 .show();
+				result = false;
+				break;
+
 			default:
 				result = false;
 				break;
@@ -162,7 +170,7 @@ public class AndroidAdapterFragment extends ListFragment {
 		@Override
 		public boolean onCreateActionMode(ActionMode mode, Menu menu) {
 			MenuInflater inflater = mode.getMenuInflater();
-			inflater.inflate(R.menu.cab_sparsearray, menu);
+			inflater.inflate(R.menu.cab_array, menu);
 			mode.setTitle(mCheckedItems.size() + " Selected");
 			return true;
 		}
