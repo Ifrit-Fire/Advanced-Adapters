@@ -139,7 +139,12 @@ public class ArrayBaseAdapterActivity extends AdapterBaseActivity implements
 		} else {
 			text.append(getString(R.string.toast_contains_movie_false));
 		}
-		text.append(movies.toString().replaceAll("[\\[\\]]", "").replaceAll(", ", "\n"));
+		int index;
+		for (index = 0; index < movies.size() - 1; ++index) {
+			text.append(movies.get(0).title + "\n");
+		}
+		text.append(movies.get(index).title);
+
 		Toast.makeText(this, text.toString(), Toast.LENGTH_SHORT).show();
 		mContainsDialogFragment.dismiss();
 	}
