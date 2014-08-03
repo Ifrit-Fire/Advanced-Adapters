@@ -186,7 +186,8 @@ public abstract class ArrayBaseAdapter<T> extends BaseAdapter implements Filtera
 	}
 
 	/**
-	 * Tests whether this adapter contains the specified object
+	 * Tests whether this adapter contains the specified object. Be aware that this is a linear
+	 * search.
 	 *
 	 * @param object The object to search for
 	 *
@@ -197,7 +198,8 @@ public abstract class ArrayBaseAdapter<T> extends BaseAdapter implements Filtera
 	}
 
 	/**
-	 * Tests whether this adapter contains all objects contained in the specified collection.
+	 * Tests whether this adapter contains all objects contained in the specified collection.  Be
+	 * aware that this performs a nested for loop search...eg O(n*m) complexity.
 	 *
 	 * @param collection The collection of objects
 	 *
@@ -304,7 +306,8 @@ public abstract class ArrayBaseAdapter<T> extends BaseAdapter implements Filtera
 	}
 
 	/**
-	 * Returns the position of the specified item in the array.
+	 * Returns the position of the specified item in the array.  Be aware that this is a linear
+	 * search.
 	 *
 	 * @param item The item to retrieve the position of.
 	 *

@@ -26,7 +26,19 @@ import android.widget.Filter;
 import android.widget.Filterable;
 
 /**
- * TODO: Write this
+ * A custom abstract {@link BaseAdapter} that is backed by a {@link SparseArray} of arbitrary
+ * objects.  By default this class delegates view generation and defining the filtering logic to
+ * subclasses.
+ * <p/>
+ * Designed to be a flexible and customizable solution for using SparseArray with an adapter. It
+ * exposes most of the SparseArray methods, provides active filtering support, and conveniently
+ * passes along a layout inflater for view creation. An adapter's row ID maps to the SparseArray's
+ * key and vice versa. Any method requiring a key will have <i>"withId"</i> in the name.
+ * <p/>
+ * Because of the background filtering process, all methods which mutates the underlying data are
+ * internally synchronized. This ensures a thread safe environment for internal write operations. If
+ * filtering is not required, it's strongly recommended to use the {@link
+ * SimpleSparseArrayBaseAdapter} instead.
  */
 public abstract class SparseArrayBaseAdapter<T> extends BaseAdapter implements Filterable {
 	/**
@@ -149,11 +161,11 @@ public abstract class SparseArrayBaseAdapter<T> extends BaseAdapter implements F
 	}
 
 	/**
-	 * Determines if the specified item exists within the adapter. Beware that this is a linear
-	 * search, unlike lookups by key, and that multiple keys can map to the same value and this will
-	 * find only one of them.
+	 * Determines if the specified item exists within the adapter. Be aware that this is a linear
+	 * search, unlike look-ups by key, and that multiple keys can map to the same value and this
+	 * will find only one of them.
 	 * <p/>
-	 * Note also that unlike most collections' this method compares values using == rather than
+	 * Note also that unlike most collections this method compares values using == rather than
 	 * equals...a result of how SparseArrays are implemented.
 	 *
 	 * @param item The item to search for
@@ -231,12 +243,12 @@ public abstract class SparseArrayBaseAdapter<T> extends BaseAdapter implements F
 	}
 
 	/**
-	 * Returns the position of the specified item in the sparse array. Beware that this is a linear
-	 * search, unlike lookups by key,and that multiple keys can map to the same value and this will
-	 * find only one of them.
+	 * Returns the position of the specified item in the sparse array. Be aware that this is a
+	 * linear search, unlike look-ups by key,and that multiple keys can map to the same value and
+	 * this will find only one of them.
 	 * <p/>
-	 * Note also that unlike most collections' indexOf methods, this method compares values using ==
-	 * rather than equals.
+	 * Note also that unlike most collections, this method compares values using == rather than
+	 * equals.
 	 *
 	 * @param item The item to retrieve the position of.
 	 *
@@ -272,7 +284,7 @@ public abstract class SparseArrayBaseAdapter<T> extends BaseAdapter implements F
 	}
 
 	/**
-	 * Resets the adapter to store a new sparse array of items. Convenient way of calling {@link
+	 * Resets the adapter to store a new SparseArray of items. Convenient way of calling {@link
 	 * #clear()}, then {@link #putAll} without having to worry about an extra {@link
 	 * #notifyDataSetChanged()} invoked in between. Will repeat the last filtering request if
 	 * invoked while filtered results are being displayed.
@@ -349,8 +361,8 @@ public abstract class SparseArrayBaseAdapter<T> extends BaseAdapter implements F
 	}
 
 	/**
-	 * Given a position in the range of 0...{@link #getCount()}-1, sets a new value for the
-	 * key-value stored at that position. Be-aware this method is only a constant amortised time
+	 * Given a position in the range of 0...{@link #getCount()} - 1, sets a new value for the
+	 * key-value stored at that position. Be aware this method is only a constant amortised time
 	 * operation when the adapter is not filtered. Otherwise, the position must be converted to a
 	 * unfiltered position; which requires a binary search on the original unfiltered data.
 	 *
@@ -411,7 +423,7 @@ public abstract class SparseArrayBaseAdapter<T> extends BaseAdapter implements F
 	}
 
 	/**
-	 * Removes the mapping at the specified position in the adapter.  Be-aware this method is only a
+	 * Removes the mapping at the specified position in the adapter.  Be aware this method is only a
 	 * constant amortised time operation when the adapter is not filtered. Otherwise, the position
 	 * must be converted to a unfiltered position; which requires a binary search on the original
 	 * unfiltered sparse array.

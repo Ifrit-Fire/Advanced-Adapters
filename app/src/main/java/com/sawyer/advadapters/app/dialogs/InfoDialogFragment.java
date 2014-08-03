@@ -47,7 +47,6 @@ public class InfoDialogFragment extends CustomDialogFragment {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
 		mTitle = getArguments().getString(STATE_TITLE);
 		mMessage = getArguments().getString(STATE_MESSAGE);
 	}
