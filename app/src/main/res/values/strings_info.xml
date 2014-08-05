@@ -32,12 +32,10 @@
 	<string name="info_about_url">https://github.com/JaySoyer/Advanced-Adapters</string>
 
 	<!--Info Dialog - Android's ArrayAdapter-->
-	<string name="info_android_arrayadapter_title">Android\'s ArrayAdapter</string>
+	<string name="info_android_arrayadapter_title">Adapter Demo Info</string>
 	<string name="info_android_arrayadapter_message">
-		A large motivation to create the Advanced-Adapter library was to fix the problems found in
-		Android\'s provided ArrayAdapter. The following is a demonstration of their adapter in action
-		to see just how easy it is to break.  Mostly the problems revolve around the filter. Try
-		doing this:\n
+		The following is a demonstration of Android\'s ArrayAdapter in action to show just how easy
+		it is to break.  Mostly the problems revolve around the filter. Try doing this:\n
 		\n
 		\t - Perform a search\n
 		\t - Close the search view\n
@@ -54,19 +52,11 @@
 	<string name="info_android_arrayAdapter_url">https://github.com/JaySoyer/Advanced-Adapters/wiki/</string>
 
 	<!--Info Dialog - ArrayBaseAdapter-->
-	<string name="info_array_baseadapter_title">Array BaseAdapter</string>
+	<string name="info_array_baseadapter_title">Adapter Demo Info</string>
 	<string name="info_array_baseadapter_message">
-		This is a demonstration of the ArrayBaseAdapter class. It\'s backed by an ArrayList. All
-		subclasses are expected to handle view generation and defining the filter comparison logic.\n
-		\n
-		The ArrayBaseAdapter is designed to be more flexible then Android\'s ArrayAdapter class and
-		be a general goto adapter for most situations. Comparatively, it provides the following extra
-		features:\n
-		\n
-		\t- Additional methods supporting more ArrayList APIs.\n
-		\t- Smarter use of notifyDataSetChanged().\n
-		\t- LayoutInflater passed to all view creation methods.\n
-		\t- Resolves many outstanding filtering issues.\n
+		This is a demonstration of the ArrayBaseAdapter, which is an adapter backed by an ArrayList.
+		This adapter is an improved version of Android\'s ArrayAdapter, resolving many of it\'s
+		issues. Most notably, all the filtering problems.\n
 		\n
 		If filtering is not required, it\'s strongly recommended to use the SimpleArrayBaseAdapter
 		instead.
@@ -95,17 +85,38 @@
 	<string name="info_license_url">http://www.apache.org/licenses/LICENSE-2.0</string>
 
 	<!--Info Dialog - SimpleArrayBaseAdapter-->
-	<string name="info_simplearray_baseadapter_title">SimpleArray BaseAdapter</string>
+	<string name="info_simplearray_baseadapter_title">Adapter Demo Info</string>
 	<string name="info_simplearray_baseadapter_message">
-		This is a demonstration of the SimpleArrayBaseAdapter class. It\'s backed by an ArrayList.
-		All subclasses are expected to handle view generation.\n
- 		\n
-		Designed to be a simple version of it\'s cousin ArrayBaseAdapter, it removes some of the more
-		"convenience" method calls while adding support for insertion. The biggest difference is the
-		lack of filtering. As a result, there is no need for synchronized blocks which may help
+		This is a demonstration of the SimpleArrayBaseAdapter class, which is an adapter backed by
+		an ArrayList.  This adapter is an improved version of Android\'s ArrayAdapter but removes
+		filtering support.  As a result, there is no need for synchronized blocks which may help
 		those worried about performance.\n
-		\n
+ 		\n
  		If filtering is required, it\'s strongly recommended to use the ArrayBaseAdapter instead.
 	</string>
 
+	<!--Info Dialog - SimpleSparseArrayBaseAdapter-->
+	<string name="info_simplesparsearray_baseadapter_title">Adapter Demo Info</string>
+	<string name="info_simplesparsearray_baseadapter_message">
+		This is a demonstration of the SimpleSparseArrayBaseAdapter which, as the name suggests, is
+		an adapter backed by a SparseArray.  It exposes most of the SparseArray methods with the key
+		mapping to an adapter\'s row id and vice versa.  Keep in mind this behaves like a map, not
+		a list.  Putting to the adapter is not the same as adding to the adapter.\n
+		\n
+		This adapter does not support filtering and as a result contains no synchronized blocks
+		which may help those worried about performance.  If filtering is required, it\'s strongly
+		recommended to use the SparseArrayBaseAdapter instead.
+	</string>
+
+	<!--Info Dialog - SparseArrayBaseAdapter-->
+	<string name="info_sparsearray_baseadapter_title">Adapter Demo Info</string>
+	<string name="info_sparsearray_baseadapter_message">
+		This is a demonstration of the SparseArrayBaseAdapter which, as the name suggests, is an
+		adapter backed by a SparseArray. It exposes most of the SparseArray methods with the key
+		mapping to an adapter\'s row id and vice versa.  Keep in mind this behaves like a map, not
+		a list.  Putting to the adapter is not the same as adding to the adapter.\n
+		\n
+		This adapter supports filtering.  If filtering is not required, it\'s strongly recommended
+		to use the SimpleSparseArrayBaseAdapter instead.
+	</string>
 </resources>

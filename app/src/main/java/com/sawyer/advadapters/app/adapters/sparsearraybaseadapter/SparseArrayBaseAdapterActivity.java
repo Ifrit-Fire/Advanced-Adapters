@@ -49,12 +49,12 @@ public class SparseArrayBaseAdapterActivity extends AdapterBaseActivity implemen
 
 	@Override
 	protected String getInfoDialogMessage() {
-		return "";
+		return getString(R.string.info_sparsearray_baseadapter_message);
 	}
 
 	@Override
 	protected String getInfoDialogTitle() {
-		return "";
+		return getString(R.string.info_sparsearray_baseadapter_title);
 	}
 
 	@Override
