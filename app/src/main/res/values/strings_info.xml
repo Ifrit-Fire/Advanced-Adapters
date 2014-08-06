@@ -45,7 +45,7 @@
 		\t - Hit back and re-enter demo.\n
 		\t - You\'re back in a good state.\n
 		\n
-		As soon as the ArrayAdapter performs one search, the Adapter can longer be
+		As soon as the ArrayAdapter performs one search, the adapter can longer be
 		mutated without seeing problems. Can you find any other problems? Head on over to the wiki
 		to find out more issues.\n\n
 	</string>

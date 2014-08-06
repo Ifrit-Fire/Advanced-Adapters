@@ -284,10 +284,11 @@ public abstract class SparseArrayBaseAdapter<T> extends BaseAdapter implements F
 	}
 
 	/**
-	 * Resets the adapter to store a new SparseArray of items. Convenient way of calling {@link
-	 * #clear()}, then {@link #putAll} without having to worry about an extra {@link
-	 * #notifyDataSetChanged()} invoked in between. Will repeat the last filtering request if
-	 * invoked while filtered results are being displayed.
+	 * Resets the adapter to store a new SparseArray of items. Though equivalent to calling {@link
+	 * #clear()}, followed by {@link #putAll}; this method is more efficient. It performs a straight
+	 * clone of the items instead of having to perform a binary search before putting each item
+	 * within the adapter. Will repeat the last filtering request if invoked while filtered results
+	 * are being displayed.
 	 *
 	 * @param items New SparseArray of items to store within the adapter.
 	 */

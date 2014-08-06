@@ -209,6 +209,20 @@ public abstract class SimpleSparseArrayBaseAdapter<T> extends BaseAdapter {
 	}
 
 	/**
+	 * Resets the adapter to store a new SparseArray of items. Though equivalent to calling {@link
+	 * #clear()}, followed by {@link #putAll}; this method is more efficient. It performs a straight
+	 * clone of the items instead of having to perform a binary search before putting each item
+	 * within the adapter.
+	 *
+	 * @param items New SparseArray of items to store within the adapter.
+	 */
+	public void setSparseArray(SparseArray<T> items) {
+		mObjects.clear();
+		mObjects = items.clone();
+		if (mNotifyOnChange) notifyDataSetChanged();
+	}
+
+	/**
 	 * Get a View that displays the data at the specified position in the data set.  You can either
 	 * create a View manually or inflate it from an XML layout file.  When the View is inflated, the
 	 * parent View (GridView, ListView...) will apply default layout parameters unless you {@link

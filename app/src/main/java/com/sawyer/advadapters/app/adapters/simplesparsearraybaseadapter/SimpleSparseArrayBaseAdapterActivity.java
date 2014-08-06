@@ -185,11 +185,7 @@ public class SimpleSparseArrayBaseAdapterActivity extends AdapterBaseActivity im
 
 	@Override
 	protected void reset() {
-		MovieSimpleSparseArrayAdapter adapter = mListFragment.getListAdapter();
-		adapter.setNotifyOnChange(false);
-		adapter.clear();
-		adapter.putAll(MovieContent.ITEM_SPARSE);
-		adapter.notifyDataSetChanged();
+		mListFragment.getListAdapter().setSparseArray(MovieContent.ITEM_SPARSE);
 		updateActionBar();
 	}
 
