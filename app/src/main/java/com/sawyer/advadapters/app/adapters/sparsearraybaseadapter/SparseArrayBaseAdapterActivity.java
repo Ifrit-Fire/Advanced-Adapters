@@ -48,6 +48,11 @@ public class SparseArrayBaseAdapterActivity extends AdapterBaseActivity implemen
 	}
 
 	@Override
+	protected void clearAdapterFilter() {
+		mListFragment.getListAdapter().getFilter().filter("");
+	}
+
+	@Override
 	protected String getInfoDialogMessage() {
 		return getString(R.string.info_sparsearray_baseadapter_message);
 	}

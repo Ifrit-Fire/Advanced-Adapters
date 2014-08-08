@@ -50,6 +50,11 @@ public class AndroidAdapterActivity extends AdapterBaseActivity implements
 	}
 
 	@Override
+	protected void clearAdapterFilter() {
+		mListFragment.getListAdapter().getFilter().filter("");
+	}
+
+	@Override
 	protected String getInfoDialogMessage() {
 		return getString(R.string.info_android_arrayadapter_message) +
 			   getString(R.string.info_android_arrayAdapter_url);
@@ -176,6 +181,7 @@ public class AndroidAdapterActivity extends AdapterBaseActivity implements
 										 InsertArrayDialogFragment.InsertLocation location) {
 		int count = mListFragment.getListAdapter().getCount();
 		mListFragment.getListAdapter().insert(movie, location.toListPosition(count));
+		updateActionBar();
 		mInsertDialogFragment.dismiss();
 	}
 

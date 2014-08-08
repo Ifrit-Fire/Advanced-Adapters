@@ -41,7 +41,7 @@ public class MovieContent {
 	public static Map<Integer, MovieItem> ITEM_MAP = new HashMap<>();    //TODO: Research HashMap Adapter
 
 	/** A sparse array of sample (movie) items */
-	public static SparseArray<MovieItem> ITEM_SPARSE = new SparseArray<>();    //TODO: Research SparseArray Adapter
+	public static SparseArray<MovieItem> ITEM_SPARSE = new SparseArray<>();
 
 	/** A JSON array of sample (movie) items */
 	public static JSONArray ITEM_JSON = new JSONArray();    //TODO: Research JSONArray Adapter

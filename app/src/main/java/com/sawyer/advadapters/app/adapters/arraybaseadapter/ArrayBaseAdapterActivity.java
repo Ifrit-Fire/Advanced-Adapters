@@ -46,6 +46,11 @@ public class ArrayBaseAdapterActivity extends AdapterBaseActivity implements
 	}
 
 	@Override
+	protected void clearAdapterFilter() {
+		mListFragment.getListAdapter().getFilter().filter("");
+	}
+
+	@Override
 	protected String getInfoDialogMessage() {
 		return getString(R.string.info_array_baseadapter_message);
 	}

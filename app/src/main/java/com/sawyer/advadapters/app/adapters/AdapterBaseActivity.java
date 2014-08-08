@@ -42,6 +42,9 @@ public abstract class AdapterBaseActivity extends Activity implements
 
 	protected abstract void clear();
 
+	protected void clearAdapterFilter() {
+	}
+
 	protected abstract String getInfoDialogMessage();
 
 	protected abstract String getInfoDialogTitle();
@@ -266,6 +269,7 @@ public abstract class AdapterBaseActivity extends Activity implements
 	private class OnSearchActionExpandListener implements MenuItem.OnActionExpandListener {
 		@Override
 		public boolean onMenuItemActionCollapse(MenuItem item) {
+			clearAdapterFilter();
 			item.getActionView().postDelayed(new Runnable() {
 				@Override
 				public void run() {
