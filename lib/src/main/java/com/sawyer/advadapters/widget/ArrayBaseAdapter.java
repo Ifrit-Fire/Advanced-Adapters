@@ -94,10 +94,10 @@ public abstract class ArrayBaseAdapter<T> extends BaseAdapter implements Filtera
 	 * Constructor
 	 *
 	 * @param activity Context used for inflating views
-	 * @param objects  The objects to represent within the adapter.
+	 * @param items    The items to represent within the adapter.
 	 */
-	public ArrayBaseAdapter(Context activity, T[] objects) {
-		List<T> list = Arrays.asList(objects);
+	public ArrayBaseAdapter(Context activity, T[] items) {
+		List<T> list = Arrays.asList(items);
 		if (list instanceof ArrayList) {    //Should always be true...but just in case implementation changes
 			init(activity, (ArrayList<T>) list);
 		} else {
@@ -109,25 +109,25 @@ public abstract class ArrayBaseAdapter<T> extends BaseAdapter implements Filtera
 	 * Constructor
 	 *
 	 * @param activity Context used for inflating views
-	 * @param objects  The objects to represent within the adapter.
+	 * @param items    The items to represent within the adapter.
 	 */
-	public ArrayBaseAdapter(Context activity, Collection<T> objects) {
-		init(activity, new ArrayList<>(objects));
+	public ArrayBaseAdapter(Context activity, Collection<T> items) {
+		init(activity, new ArrayList<>(items));
 	}
 
 	/**
-	 * Adds the specified object at the end of the adapter. Will repeat the last filtering request
-	 * if invoked while filtered results are being displayed.
+	 * Adds the specified items at the end of the adapter. Will repeat the last filtering request if
+	 * invoked while filtered results are being displayed.
 	 *
-	 * @param object The object to add at the end of the adapter.
+	 * @param items The items to add at the end of the adapter.
 	 */
-	public void add(T object) {
+	public void add(T items) {
 		synchronized (mLock) {
 			if (mOriginalValues != null) {
-				mOriginalValues.add(object);
+				mOriginalValues.add(items);
 				getFilter().filter(mLastConstraint);
 			} else {
-				mObjects.add(object);
+				mObjects.add(items);
 			}
 		}
 		if (mNotifyOnChange) notifyDataSetChanged();
@@ -137,17 +137,17 @@ public abstract class ArrayBaseAdapter<T> extends BaseAdapter implements Filtera
 	 * Adds the specified Collection at the end of the adapter. Will repeat the last filtering
 	 * request if invoked while filtered results are being displayed.
 	 *
-	 * @param collection The Collection to add at the end of the adapter.
+	 * @param items The Collection to add at the end of the adapter.
 	 */
-	public void addAll(Collection<? extends T> collection) {
+	public void addAll(Collection<? extends T> items) {
 		boolean isModified;
 
 		synchronized (mLock) {
 			if (mOriginalValues != null) {
-				isModified = mOriginalValues.addAll(collection);
+				isModified = mOriginalValues.addAll(items);
 				if (isModified) getFilter().filter(mLastConstraint);
 			} else {
-				isModified = mObjects.addAll(collection);
+				isModified = mObjects.addAll(items);
 			}
 		}
 		if (isModified && mNotifyOnChange) notifyDataSetChanged();
@@ -186,28 +186,28 @@ public abstract class ArrayBaseAdapter<T> extends BaseAdapter implements Filtera
 	}
 
 	/**
-	 * Tests whether this adapter contains the specified object. Be aware that this is a linear
+	 * Tests whether this adapter contains the specified item. Be aware that this is a linear
 	 * search.
 	 *
-	 * @param object The object to search for
+	 * @param item The item to search for
 	 *
-	 * @return {@code true} if the object is an element of this adapter. {@code false} otherwise
+	 * @return {@code true} if the item is an element of this adapter. {@code false} otherwise
 	 */
-	public boolean contains(T object) {
-		return mObjects.contains(object);
+	public boolean contains(T item) {
+		return mObjects.contains(item);
 	}
 
 	/**
-	 * Tests whether this adapter contains all objects contained in the specified collection.  Be
+	 * Tests whether this adapter contains all items contained in the specified collection.  Be
 	 * aware that this performs a nested for loop search...eg O(n*m) complexity.
 	 *
-	 * @param collection The collection of objects
+	 * @param items The collection of items
 	 *
-	 * @return {@code true} if all objects in the specified collection are elements of this adapter,
+	 * @return {@code true} if all items in the specified collection are elements of this adapter,
 	 * {@code false} otherwise
 	 */
-	public boolean containsAll(Collection<?> collection) {
-		return mObjects.containsAll(collection);
+	public boolean containsAll(Collection<?> items) {
+		return mObjects.containsAll(items);
 	}
 
 	@Override
@@ -269,7 +269,7 @@ public abstract class ArrayBaseAdapter<T> extends BaseAdapter implements Filtera
 	}
 
 	/**
-	 * @return The original (unfiltered) list of objects stored within the Adapter
+	 * @return The original (unfiltered) list of items stored within the Adapter
 	 */
 	public ArrayList<T> getList() {
 		ArrayList<T> objects;
@@ -284,30 +284,30 @@ public abstract class ArrayBaseAdapter<T> extends BaseAdapter implements Filtera
 	}
 
 	/**
-	 * Resets the adapter to store a new list of objects. Convenient way of calling {@link
-	 * #clear()}, then {@link #addAll(java.util.Collection)} without having to worry about an extra
-	 * {@link #notifyDataSetChanged()} invoked in between. Will repeat the last filtering request if
+	 * Resets the adapter to store a new list of items. Convenient way of calling {@link #clear()},
+	 * then {@link #addAll(java.util.Collection)} without having to worry about an extra {@link
+	 * #notifyDataSetChanged()} invoked in between. Will repeat the last filtering request if
 	 * invoked while filtered results are being displayed.
 	 *
-	 * @param objects New list of objects to store within the adapter.
+	 * @param items New list of items to store within the adapter.
 	 */
-	public void setList(Collection<? extends T> objects) {
+	public void setList(Collection<? extends T> items) {
 		synchronized (mLock) {
 			if (mOriginalValues != null) {
 				mOriginalValues.clear();
-				mOriginalValues.addAll(objects);
+				mOriginalValues.addAll(items);
 				getFilter().filter(mLastConstraint);
 			} else {
 				mObjects.clear();
-				mObjects.addAll(objects);
+				mObjects.addAll(items);
 			}
 		}
 		if (mNotifyOnChange) notifyDataSetChanged();
 	}
 
 	/**
-	 * Returns the position of the specified item in the array.  Be aware that this is a linear
-	 * search.
+	 * Returns the position of the specified item in the array.  Be aware that this performs a
+	 * linear search.
 	 *
 	 * @param item The item to retrieve the position of.
 	 *
@@ -331,18 +331,18 @@ public abstract class ArrayBaseAdapter<T> extends BaseAdapter implements Filtera
 	}
 
 	/**
-	 * Determines whether the provided constraint filters out the given object. Allows easy,
+	 * Determines whether the provided constraint filters out the given item. Allows easy,
 	 * customized filtering for subclasses. It's incorrect to modify the adapter or the contents of
-	 * the object itself. Any alterations will lead to undefined behavior or crashes. Internally,
-	 * this method is only ever invoked from a background thread.
+	 * the item itself. Any alterations will lead to undefined behavior or crashes. Internally, this
+	 * method is only ever invoked from a background thread.
 	 *
-	 * @param object     The object to compare against the constraint
-	 * @param constraint The constraint used to filter the object
+	 * @param item       The item to compare against the constraint
+	 * @param constraint The constraint used to filter the item
 	 *
-	 * @return True if the object is filtered out by the constraint. False if the object is not
-	 * filtered and will continue to reside in the adapter.
+	 * @return True if the item is filtered out by the constraint. False if the item is not filtered
+	 * and will continue to reside in the adapter.
 	 */
-	protected abstract boolean isFilteredBy(T object, CharSequence constraint);
+	protected abstract boolean isFilteredBy(T item, CharSequence constraint);
 
 	@Override
 	public void notifyDataSetChanged() {
@@ -351,49 +351,48 @@ public abstract class ArrayBaseAdapter<T> extends BaseAdapter implements Filtera
 	}
 
 	/**
-	 * Removes the first occurrence of the specified object from the adapter. Will repeat the last
+	 * Removes the first occurrence of the specified item from the adapter. Will repeat the last
 	 * filtering request if invoked while filtered results are being displayed.
 	 *
-	 * @param object The object to remove.
+	 * @param item The item to remove.
 	 */
-	public void remove(T object) {
+	public void remove(T item) {
 		boolean isModified = false;
 
 		synchronized (mLock) {
-			if (mOriginalValues != null) isModified = mOriginalValues.remove(object);
-			isModified |= mObjects.remove(object);
+			if (mOriginalValues != null) isModified = mOriginalValues.remove(item);
+			isModified |= mObjects.remove(item);
 		}
 		if (isModified && mNotifyOnChange) notifyDataSetChanged();
 	}
 
 	/**
-	 * Removes all occurrences in the adapter of each object in the specified collection. Will
-	 * repeat the last filter operation if one occurred.
+	 * Removes all occurrences in the adapter of each item in the specified collection. Will repeat
+	 * the last filter operation if one occurred.
 	 *
-	 * @param collection The collection of objects to remove
+	 * @param items The collection of items to remove
 	 */
-	public void removeAll(Collection<?> collection) {
+	public void removeAll(Collection<?> items) {
 		boolean isModified = false;
 		synchronized (mLock) {
-			if (mOriginalValues != null) isModified = mOriginalValues.removeAll(collection);
-			isModified |= mObjects.removeAll(collection);
+			if (mOriginalValues != null) isModified = mOriginalValues.removeAll(items);
+			isModified |= mObjects.removeAll(items);
 		}
 		if (isModified && mNotifyOnChange) notifyDataSetChanged();
 	}
 
 	/**
-	 * Removes all objects from this adapter that are not contained in the specified collection.
-	 * Will repeat the last filtering request if invoked while filtered results are being
-	 * displayed.
+	 * Removes all items from this adapter that are not contained in the specified collection. Will
+	 * repeat the last filtering request if invoked while filtered results are being displayed.
 	 *
-	 * @param collection The collection of objects to retain
+	 * @param items The collection of items to retain
 	 */
-	public void retainAll(Collection<?> collection) {
+	public void retainAll(Collection<?> items) {
 		boolean isModified = false;
 
 		synchronized (mLock) {
-			if (mOriginalValues != null) isModified = mOriginalValues.retainAll(collection);
-			isModified |= mObjects.retainAll(collection);
+			if (mOriginalValues != null) isModified = mOriginalValues.retainAll(items);
+			isModified |= mObjects.retainAll(items);
 		}
 		if (isModified && mNotifyOnChange) notifyDataSetChanged();
 	}
@@ -414,13 +413,13 @@ public abstract class ArrayBaseAdapter<T> extends BaseAdapter implements Filtera
 	}
 
 	/**
-	 * Sorts the content of this adapter using the natural order of the stored objects themselves.
-	 * This requires objects to have implemented {@link java.lang.Comparable} and is equivalent of
+	 * Sorts the content of this adapter using the natural order of the stored items themselves.
+	 * This requires items to have implemented {@link java.lang.Comparable} and is equivalent of
 	 * passing null to {@link #sort(java.util.Comparator)}.
 	 *
-	 * @throws java.lang.ClassCastException If the comparator is null and the stored objects do not
+	 * @throws java.lang.ClassCastException If the comparator is null and the stored items do not
 	 *                                      implement <code>Comparable</code> or if
-	 *                                      <code>compareTo</code> throws for any pair of objects.
+	 *                                      <code>compareTo</code> throws for any pair of items.
 	 */
 	public void sort() {
 		sort(null);
@@ -429,12 +428,12 @@ public abstract class ArrayBaseAdapter<T> extends BaseAdapter implements Filtera
 	/**
 	 * Sorts the content of this adapter using the specified comparator.
 	 *
-	 * @param comparator Used to sort the objects contained in this adapter. Null to use an object's
+	 * @param comparator Used to sort the items contained in this adapter. Null to use an item's
 	 *                   <code>Comparable</code> interface.
 	 *
-	 * @throws java.lang.ClassCastException If the comparator is null and the stored objects do not
+	 * @throws java.lang.ClassCastException If the comparator is null and the stored items do not
 	 *                                      implement <code>Comparable</code> or if
-	 *                                      <code>compareTo</code> throws for any pair of objects.
+	 *                                      <code>compareTo</code> throws for any pair of items.
 	 */
 	public void sort(Comparator<? super T> comparator) {
 		synchronized (mLock) {
@@ -447,23 +446,23 @@ public abstract class ArrayBaseAdapter<T> extends BaseAdapter implements Filtera
 	}
 
 	/**
-	 * Updates the object at the specified position in the adapter with the specified object. This
+	 * Updates the item at the specified position in the adapter with the specified item. This
 	 * operation does not change the size of the adapter. Will repeat the last filtering request if
 	 * invoked while filtered results are being displayed. Be-aware this method is only a constant
 	 * time operation when the list is not filtered. Otherwise, the position must be converted to a
 	 * unfiltered position; which requires traversing the original unfiltered list.
 	 *
-	 * @param position The location at which to put the specified object
-	 * @param object   The new object to replace with the old
+	 * @param position The location at which to put the specified item
+	 * @param item     The new item to replace with the old
 	 */
-	public void update(int position, T object) {
+	public void update(int position, T item) {
 		synchronized (mLock) {
 			if (mOriginalValues != null) {
 				int newPosition = mOriginalValues.indexOf(mObjects.get(position));
-				mOriginalValues.set(newPosition, object);
+				mOriginalValues.set(newPosition, item);
 				getFilter().filter(mLastConstraint);
 			} else {
-				mObjects.set(position, object);
+				mObjects.set(position, item);
 			}
 		}
 		if (mNotifyOnChange) notifyDataSetChanged();

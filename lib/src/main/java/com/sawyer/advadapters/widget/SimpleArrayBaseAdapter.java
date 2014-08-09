@@ -64,29 +64,29 @@ public abstract class SimpleArrayBaseAdapter<T> extends BaseAdapter {
 	 * Constructor
 	 *
 	 * @param activity Context used for inflating views
-	 * @param objects  The objects to represent within the adapter.
+	 * @param items  The items to represent within the adapter.
 	 */
-	public SimpleArrayBaseAdapter(Context activity, Collection<T> objects) {
-		init(activity, new ArrayList<>(objects));
+	public SimpleArrayBaseAdapter(Context activity, Collection<T> items) {
+		init(activity, new ArrayList<>(items));
 	}
 
 	/**
-	 * Adds the specified object at the end of the adapter.
+	 * Adds the specified item at the end of the adapter.
 	 *
-	 * @param object The object to add at the end of the adapter.
+	 * @param item The item to add at the end of the adapter.
 	 */
-	public void add(T object) {
-		mObjects.add(object);
+	public void add(T item) {
+		mObjects.add(item);
 		if (mNotifyOnChange) notifyDataSetChanged();
 	}
 
 	/**
 	 * Adds the specified Collection at the end of the adapter.
 	 *
-	 * @param collection The Collection to add at the end of the adapter.
+	 * @param items The Collection to add at the end of the adapter.
 	 */
-	public void addAll(Collection<? extends T> collection) {
-		boolean isModified = mObjects.addAll(collection);
+	public void addAll(Collection<? extends T> items) {
+		boolean isModified = mObjects.addAll(items);
 		if (isModified && mNotifyOnChange) notifyDataSetChanged();
 	}
 
@@ -99,28 +99,28 @@ public abstract class SimpleArrayBaseAdapter<T> extends BaseAdapter {
 	}
 
 	/**
-	 * Tests whether this adapter contains the specified object. Be aware that this is a linear
+	 * Tests whether this adapter contains the specified item. Be aware that this is a linear
 	 * search.
 	 *
-	 * @param object The object to search for
+	 * @param item The item to search for
 	 *
-	 * @return {@code true} if the object is an element of this adapter. {@code false} otherwise
+	 * @return {@code true} if the item is an element of this adapter. {@code false} otherwise
 	 */
-	public boolean contains(T object) {
-		return mObjects.contains(object);
+	public boolean contains(T item) {
+		return mObjects.contains(item);
 	}
 
 	/**
-	 * Tests whether this adapter contains all objects contained in the specified collection.  Be
+	 * Tests whether this adapter contains all items contained in the specified collection.  Be
 	 * aware that this performs a nested for loop search...eg O(n*m) complexity.
 	 *
-	 * @param collection The collection of objects
+	 * @param items The collection of items
 	 *
-	 * @return {@code true} if all objects in the specified collection are elements of this adapter,
+	 * @return {@code true} if all items in the specified collection are elements of this adapter,
 	 * {@code false} otherwise
 	 */
-	public boolean containsAll(Collection<?> collection) {
-		return mObjects.containsAll(collection);
+	public boolean containsAll(Collection<?> items) {
+		return mObjects.containsAll(items);
 	}
 
 	@Override
@@ -163,7 +163,7 @@ public abstract class SimpleArrayBaseAdapter<T> extends BaseAdapter {
 	}
 
 	/**
-	 * @return The  list of objects stored within the Adapter
+	 * @return The  list of items stored within the Adapter
 	 */
 	public ArrayList<T> getList() {
 		return new ArrayList<>(mObjects);
@@ -189,31 +189,31 @@ public abstract class SimpleArrayBaseAdapter<T> extends BaseAdapter {
 		return this.getView(mInflater, position, convertView, parent);
 	}
 
-	private void init(Context context, ArrayList<T> objects) {
+	private void init(Context context, ArrayList<T> items) {
 		mInflater = LayoutInflater.from(context);
-		mObjects = objects;
+		mObjects = items;
 	}
 
 	/**
-	 * Inserts the specified object at the specified index in the array.
+	 * Inserts the specified item at the specified index in the array.
 	 *
-	 * @param index  The index at which the object must be inserted.
-	 * @param object The object to insert into the adapter.
+	 * @param index  The index at which the item must be inserted.
+	 * @param item The item to insert into the adapter.
 	 */
-	public void insert(int index, T object) {
-		mObjects.add(index, object);
+	public void insert(int index, T item) {
+		mObjects.add(index, item);
 		if (mNotifyOnChange) notifyDataSetChanged();
 	}
 
 	/**
-	 * Inserts the objects in the specified collection at the specified location in this adapter.
-	 * The objects are added in the order they are returned from the collection's iterator.
+	 * Inserts the item in the specified collection at the specified location in this adapter.
+	 * The items are added in the order they are returned from the collection's iterator.
 	 *
-	 * @param index      The index at which the object must be inserted.
-	 * @param collection The collection of objects to be inserted.
+	 * @param index      The index at which the items must be inserted.
+	 * @param items The collection of items to be inserted.
 	 */
-	public void insertAll(int index, Collection<? extends T> collection) {
-		boolean isModified = mObjects.addAll(index, collection);
+	public void insertAll(int index, Collection<? extends T> items) {
+		boolean isModified = mObjects.addAll(index, items);
 		if (isModified && mNotifyOnChange) notifyDataSetChanged();
 	}
 
@@ -224,32 +224,32 @@ public abstract class SimpleArrayBaseAdapter<T> extends BaseAdapter {
 	}
 
 	/**
-	 * Removes the first occurrence of the specified object from the adapter
+	 * Removes the first occurrence of the specified item from the adapter
 	 *
-	 * @param object The object to remove.
+	 * @param item The item to remove.
 	 */
-	public void remove(T object) {
-		boolean isModified = mObjects.remove(object);
+	public void remove(T item) {
+		boolean isModified = mObjects.remove(item);
 		if (isModified && mNotifyOnChange) notifyDataSetChanged();
 	}
 
 	/**
-	 * Removes all occurrences in the adapter of each object in the specified collection.
+	 * Removes all occurrences in the adapter of each item in the specified collection.
 	 *
-	 * @param collection The collection of objects to remove
+	 * @param items The collection of items to remove
 	 */
-	public void removeAll(Collection<?> collection) {
-		boolean isModified = mObjects.removeAll(collection);
+	public void removeAll(Collection<?> items) {
+		boolean isModified = mObjects.removeAll(items);
 		if (isModified && mNotifyOnChange) notifyDataSetChanged();
 	}
 
 	/**
-	 * Removes all objects from this adapter that are not contained in the specified collection.
+	 * Removes all items from this adapter that are not contained in the specified collection.
 	 *
-	 * @param collection The collection of objects to retain
+	 * @param items The collection of items to retain
 	 */
-	public void retainAll(Collection<?> collection) {
-		boolean isModified = mObjects.retainAll(collection);
+	public void retainAll(Collection<?> items) {
+		boolean isModified = mObjects.retainAll(items);
 		if (isModified && mNotifyOnChange) notifyDataSetChanged();
 	}
 
@@ -271,12 +271,12 @@ public abstract class SimpleArrayBaseAdapter<T> extends BaseAdapter {
 	/**
 	 * Sorts the content of this adapter using the specified comparator.
 	 *
-	 * @param comparator Used to sort the objects contained in this adapter. Null to use an object's
+	 * @param comparator Used to sort the items contained in this adapter. Null to use an item's
 	 *                   <code>Comparable</code> interface.
 	 *
-	 * @throws ClassCastException If the comparator is null and the stored objects do not implement
+	 * @throws ClassCastException If the comparator is null and the stored items do not implement
 	 *                            <code>Comparable</code> or if <code>compareTo</code> throws for
-	 *                            any pair of objects.
+	 *                            any pair of items.
 	 */
 	public void sort(Comparator<? super T> comparator) {
 		Collections.sort(mObjects, comparator);
@@ -284,14 +284,14 @@ public abstract class SimpleArrayBaseAdapter<T> extends BaseAdapter {
 	}
 
 	/**
-	 * Updates the object at the specified position in the adapter with the specified object. This
+	 * Updates the item at the specified position in the adapter with the specified item. This
 	 * operation does not change the size of the adapter.
 	 *
-	 * @param position The location at which to put the specified object
-	 * @param object   The new object to replace with the old
+	 * @param position The location at which to put the specified item
+	 * @param item   The new item to replace with the old
 	 */
-	public void update(int position, T object) {
-		mObjects.set(position, object);
+	public void update(int position, T item) {
+		mObjects.set(position, item);
 		if (mNotifyOnChange) notifyDataSetChanged();
 	}
 }
