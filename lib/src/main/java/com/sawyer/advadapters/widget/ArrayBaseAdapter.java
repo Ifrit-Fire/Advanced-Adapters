@@ -357,15 +357,11 @@ public abstract class ArrayBaseAdapter<T> extends BaseAdapter implements Filtera
 	 * @param object The object to remove.
 	 */
 	public void remove(T object) {
-		boolean isModified;
+		boolean isModified = false;
 
 		synchronized (mLock) {
-			if (mOriginalValues != null) {
-				isModified = mOriginalValues.remove(object);
-				if (isModified) getFilter().filter(mLastConstraint);
-			} else {
-				isModified = mObjects.remove(object);
-			}
+			if (mOriginalValues != null) isModified = mOriginalValues.remove(object);
+			isModified |= mObjects.remove(object);
 		}
 		if (isModified && mNotifyOnChange) notifyDataSetChanged();
 	}
@@ -377,14 +373,10 @@ public abstract class ArrayBaseAdapter<T> extends BaseAdapter implements Filtera
 	 * @param collection The collection of objects to remove
 	 */
 	public void removeAll(Collection<?> collection) {
-		boolean isModified;
+		boolean isModified = false;
 		synchronized (mLock) {
-			if (mOriginalValues != null) {
-				isModified = mOriginalValues.removeAll(collection);
-				if (isModified) getFilter().filter(mLastConstraint);
-			} else {
-				isModified = mObjects.removeAll(collection);
-			}
+			if (mOriginalValues != null) isModified = mOriginalValues.removeAll(collection);
+			isModified |= mObjects.removeAll(collection);
 		}
 		if (isModified && mNotifyOnChange) notifyDataSetChanged();
 	}
@@ -397,15 +389,11 @@ public abstract class ArrayBaseAdapter<T> extends BaseAdapter implements Filtera
 	 * @param collection The collection of objects to retain
 	 */
 	public void retainAll(Collection<?> collection) {
-		boolean isModified;
+		boolean isModified = false;
 
 		synchronized (mLock) {
-			if (mOriginalValues != null) {
-				isModified = mOriginalValues.retainAll(collection);
-				if (isModified) getFilter().filter(mLastConstraint);
-			} else {
-				isModified = mObjects.retainAll(collection);
-			}
+			if (mOriginalValues != null) isModified = mOriginalValues.retainAll(collection);
+			isModified |= mObjects.retainAll(collection);
 		}
 		if (isModified && mNotifyOnChange) notifyDataSetChanged();
 	}
