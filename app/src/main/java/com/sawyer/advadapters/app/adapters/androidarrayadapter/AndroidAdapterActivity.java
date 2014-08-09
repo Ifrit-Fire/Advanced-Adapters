@@ -32,7 +32,7 @@ import java.util.List;
 
 public class AndroidAdapterActivity extends AdapterBaseActivity implements
 		AddArrayDialogFragment.EventListener, ContainsArrayDialogFragment.EventListener,
-		InsertArrayDialogFragment.EventListener {
+		InsertArrayDialogFragment.EventListener, AndroidAdapterFragment.EventListener {
 	private static final String TAG_ADD_DIALOG_FRAG = "Tag Add Dialog Frag";
 	private static final String TAG_BASE_ADAPTER_FRAG = "Tag Base Adapter Frag";
 	private static final String TAG_CONTAINS_DIALOG_FRAG = "Tag Contains Dialog Frag";
@@ -120,6 +120,11 @@ public class AndroidAdapterActivity extends AdapterBaseActivity implements
 	@Override
 	protected boolean isSearchViewEnabled() {
 		return true;
+	}
+
+	@Override
+	public void onAdapterCountUpdated() {
+		updateActionBar();
 	}
 
 	@Override

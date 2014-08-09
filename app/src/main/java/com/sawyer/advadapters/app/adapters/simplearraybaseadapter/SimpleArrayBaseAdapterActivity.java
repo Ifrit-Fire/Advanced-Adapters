@@ -32,7 +32,7 @@ import java.util.List;
 
 public class SimpleArrayBaseAdapterActivity extends AdapterBaseActivity implements
 		AddArrayDialogFragment.EventListener, ContainsArrayDialogFragment.EventListener,
-		InsertArrayDialogFragment.EventListener {
+		InsertArrayDialogFragment.EventListener, SimpleArrayBaseAdapterFragment.EventListener {
 	private static final String TAG_ADD_DIALOG_FRAG = "Tag Add Dialog Frag";
 	private static final String TAG_BASE_ADAPTER_FRAG = "Tag Base Adapter Frag";
 	private static final String TAG_CONTAINS_DIALOG_FRAG = "Tag Contains Dialog Frag";
@@ -109,6 +109,11 @@ public class SimpleArrayBaseAdapterActivity extends AdapterBaseActivity implemen
 	@Override
 	protected boolean isInsertDialogEnabled() {
 		return true;
+	}
+
+	@Override
+	public void onAdapterCountUpdated() {
+		updateActionBar();
 	}
 
 	@Override

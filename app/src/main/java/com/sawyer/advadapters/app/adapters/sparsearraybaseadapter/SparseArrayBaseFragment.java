@@ -15,9 +15,9 @@
  */
 package com.sawyer.advadapters.app.adapters.sparsearraybaseadapter;
 
+import android.app.Activity;
 import android.app.ListFragment;
 import android.os.Bundle;
-import android.os.Handler;
 import android.util.SparseArray;
 import android.view.ActionMode;
 import android.view.LayoutInflater;
@@ -38,6 +38,7 @@ public class SparseArrayBaseFragment extends ListFragment {
 	private static final String STATE_LIST = "State List";
 
 	private SparseArray<MovieItem> mCheckedItems = new SparseArray<>();
+	private EventListener mEventListener;
 
 	public static SparseArrayBaseFragment newInstance() {
 		return new SparseArrayBaseFragment();
@@ -62,6 +63,17 @@ public class SparseArrayBaseFragment extends ListFragment {
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 		getListView().setAdapter(getListAdapter());
+	}
+
+	@Override
+	public void onAttach(Activity activity) {
+		super.onAttach(activity);
+		if (activity instanceof EventListener) {
+			mEventListener = (EventListener) activity;
+		} else {
+			throw new ClassCastException(
+					"Activity must implement " + EventListener.class.getSimpleName());
+		}
 	}
 
 	@Override
@@ -118,6 +130,10 @@ public class SparseArrayBaseFragment extends ListFragment {
 		outState.putSparseParcelableArray(STATE_LIST, getListAdapter().getSparseArray());
 	}
 
+	public interface EventListener {
+		public void onAdapterCountUpdated();
+	}
+
 	private class OnCabMultiChoiceModeListener implements AbsListView.MultiChoiceModeListener {
 		@Override
 		public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
@@ -134,14 +150,8 @@ public class SparseArrayBaseFragment extends ListFragment {
 				break;
 			}
 
-			//Quick and easy way to force activity actionbar list count to update
-			if (result) {
-				new Handler().post(new Runnable() {
-					@Override
-					public void run() {
-						getActivity().invalidateOptionsMenu();
-					}
-				});
+			if (result && mEventListener != null) {
+				mEventListener.onAdapterCountUpdated();
 			}
 			return result;
 		}

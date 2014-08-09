@@ -30,7 +30,7 @@ import com.sawyer.advadapters.app.dialogs.PutSparseDialogFragment;
 
 public class SparseArrayBaseAdapterActivity extends AdapterBaseActivity implements
 		ContainsSparseDialogFragment.EventListener, PutSparseDialogFragment.EventListener,
-		AppendSparseDialogFragment.EventListener {
+		AppendSparseDialogFragment.EventListener, SparseArrayBaseFragment.EventListener {
 	private static final String TAG_APPEND_ADAPTER_FRAG = "Tag Append Adapter Frag";
 	private static final String TAG_BASE_ADAPTER_FRAG = "Tag Base Adapter Frag";
 	private static final String TAG_CONTAINS_DIALOG_FRAG = "Tag Contains Dialog Frag";
@@ -118,6 +118,11 @@ public class SparseArrayBaseAdapterActivity extends AdapterBaseActivity implemen
 	@Override
 	protected boolean isSearchViewEnabled() {
 		return true;
+	}
+
+	@Override
+	public void onAdapterCountUpdated() {
+		updateActionBar();
 	}
 
 	@Override
