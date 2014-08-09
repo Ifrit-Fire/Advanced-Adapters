@@ -1,22 +1,29 @@
 <p align="center"><img src="https://raw.githubusercontent.com/JaySoyer/Advanced-Adapters/master/app/src/main/logo.png" width="256px" height="256px"/></p>
 # Advanced-Adapters
-Advanced-Adapters is a suite of adapters designed to provide better alternatives to Android's ArrayAdapter. For some time now, their adapter has been plagued with filtering issues, which was the primary drive to starting this opensource project. The following are some of the advantages to using this suite:
-- Additional methods for supporting more ArrayList APIs.
-- Slightly smarter use of `notifyDataSetChanged()`.
-- LayoutInflater passed to all view creation methods.
+Advanced-Adapters is a suite of adapters designed to provide better alternatives to Android's provided adapters. For some time now, their adapters have been plagued with filtering issues, which was the primary drive to starting this opensource project. The following are some of the advantages to using this suite:
+- Additional methods for supporting data mutations.
+- Getters for obtaining adapter data
 - Filtering behaves correctly.
-- No conflicting List instances during adapter construction
+- Slightly smarter use of `notifyDataSetChanged()` where possible.
+- LayoutInflater passed to all view creation methods.
+- No conflicting object instances during adapter construction.
 
-Currently, this suite provides two different adapters.  More will be coming in time. Head on over to the [wiki](https://github.com/JaySoyer/Advanced-Adapters/wiki/) to read more about them and learn how to use them.
+Currently, this suite provides four different adapters.  More will be coming in time. Head on over to the [wiki](https://github.com/JaySoyer/Advanced-Adapters/wiki/) to read more about them and learn how to use them.
+
+**ArrayList Backed**
 - [ArrayBaseAdapter](https://github.com/JaySoyer/Advanced-Adapters/wiki/ArrayBaseAdapter)
 - [SimpleArrayBaseAdapter](https://github.com/JaySoyer/Advanced-Adapters/wiki/SimpleArrayBaseAdapter)
+
+**SparseArray Backed**
+- [SparseArrayBaseAdapter](https://github.com/JaySoyer/Advanced-Adapters/wiki/SparseArrayBaseAdapter)
+- [SimpleSparseArrayBaseAdapter](https://github.com/JaySoyer/Advanced-Adapters/wiki/SimpleSparseArrayBaseAdapter)
 
 ### Supports
 - Ice Cream Sandwich
 - Jelly Bean
 - Kit Kat
 
-There is no plan to specifically support Gingerbread at this time.  However, I don't believe there's any API specific calls being used in the adapter's themselves that aren't found on Gingerbread.  Meaning...it may work fine. Seeing that I lack a Gingerbread device, maybe someone can test that for me?
+There are no plans to specifically support Gingerbread at this time.  In fact, I'm purposely attempting to avoid using any android support library.  However, I don't believe there's any API specific calls being used in the ArrayList based adapters themselves that aren't found on Gingerbread.  Meaning...it may work fine for the ArrayBaseAdapter and SimpleArrayBaseAdpater. Seeing that I lack a Gingerbread device, maybe someone can test that for me?  Otherwise, the SparseArray adapters will definitely not work on Gingerbread.
 
 ### Example
 Of course for those just skimming thru, here's a quick example of using the ArrayBaseAdapter.  For now, every adapter is just an abstract class that requires subclassing. This may or may not change in the future.  It's more or less just like using Android's ArrayAdapter.
