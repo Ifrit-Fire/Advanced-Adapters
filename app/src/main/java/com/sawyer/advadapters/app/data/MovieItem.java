@@ -19,26 +19,38 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.text.TextUtils;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.Locale;
 import java.util.Random;
 
 public class MovieItem implements Comparable<MovieItem>, Parcelable {
 	public static final Creator<MovieItem> CREATOR = new MovieCreator();
+	public static final String JSON_TITLE = "title";
+	public static final String JSON_YEAR = "year";
+	public static final String JSON_IS_RECOMMENDED = "recommended";
+	public static final String JSON_RUNNING_TIME = "running time";
+	public static final String JSON_BARCODE = "barcode";
 
 	private static Random sRand = new Random();
 
 	public String title;
 	public int year;
 	public boolean isRecommended;
+	public double runningTimeHrs;
 
 	private int mBarcode;
+	private long mBarcodeLong;
 
 	public MovieItem() {
-		mBarcode = sRand.nextInt(Integer.MAX_VALUE);
+		mBarcode = sRand.nextInt();
+		mBarcodeLong = mBarcode;
 	}
 
 	public MovieItem(int barcode) {
 		mBarcode = barcode;
+		mBarcodeLong = barcode;
 	}
 
 	private static String getStringToCompare(String text) {
@@ -51,6 +63,10 @@ public class MovieItem implements Comparable<MovieItem>, Parcelable {
 
 	public int barcode() {
 		return mBarcode;
+	}
+
+	public long barcodeLong() {
+		return mBarcodeLong;
 	}
 
 	@Override
@@ -79,9 +95,25 @@ public class MovieItem implements Comparable<MovieItem>, Parcelable {
 		return Integer.valueOf(mBarcode).hashCode();
 	}
 
+	public JSONObject toJSONObject() {
+		JSONObject object = new JSONObject();
+		try {
+			object.put(JSON_TITLE, title);
+			object.put(JSON_YEAR, year);
+			object.put(JSON_IS_RECOMMENDED, isRecommended);
+			object.put(JSON_RUNNING_TIME, runningTimeHrs);
+			object.put(JSON_BARCODE, barcode());
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+
+		return object;
+	}
+
 	@Override
 	public String toString() {
-		return ((title == null ? "" : title) + " " + year + " " + isRecommended);
+		return (title == null ? "" : title) + Integer.toString(year) +
+			   Boolean.toString(isRecommended) + Double.toString(runningTimeHrs);
 	}
 
 	@Override
@@ -90,6 +122,7 @@ public class MovieItem implements Comparable<MovieItem>, Parcelable {
 		dest.writeInt(year);
 		dest.writeInt(mBarcode);
 		dest.writeString(Boolean.toString(isRecommended));
+		dest.writeDouble(runningTimeHrs);
 	}
 
 	private static class MovieCreator implements Creator<MovieItem> {
@@ -99,7 +132,9 @@ public class MovieItem implements Comparable<MovieItem>, Parcelable {
 			item.title = source.readString();
 			item.year = source.readInt();
 			item.mBarcode = source.readInt();
+			item.mBarcodeLong = item.mBarcode;
 			item.isRecommended = Boolean.getBoolean(source.readString());
+			item.runningTimeHrs = source.readDouble();
 
 			return item;
 		}
