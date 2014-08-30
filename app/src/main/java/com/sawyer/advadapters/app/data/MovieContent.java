@@ -93,7 +93,7 @@ public class MovieContent {
 		ITEM_SET.add(item);
 		ITEM_MAP.put(item.year, item);
 		ITEM_SPARSE.put(item.barcode(), item);
-		ITEM_JSON.put(item);
+		ITEM_JSON.put(item.toJSONObject());
 	}
 
 	private static MovieItem newMovie(String title, int year, boolean isRecommended) {

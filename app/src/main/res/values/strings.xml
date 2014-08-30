@@ -24,6 +24,7 @@
 	<string name="activity_simplearray_baseadapter">SimpleArray BaseAdapter</string>
 	<string name="activity_sparsearray_baseadapter">SparseArray BaseAdapter</string>
 	<string name="activity_simplesparsearray_baseadapter">SimpleSparseArray BaseAdapter</string>
+	<string name="activity_jsonarray_baseadapter">JSONArray BaseAdapter</string>
 
 	<!-- Content Description Text -->
 	<string name="cd_rating_icon">Rating Icon</string>
@@ -72,6 +73,7 @@
 	<!-- Toast Messages -->
 	<string name="toast_contains_movie_true">Adapter contains:\n</string>
 	<string name="toast_contains_movie_false">Could not find:\n</string>
-	<string name="toast_retain_all_not_support">RetainAll not supported.</string>
+	<string name="toast_remove_not_supported">Remove not supported.</string>
+	<string name="toast_retain_all_not_supported">RetainAll not supported.</string>
 	<string name="toast_sort_not_supported">Sort not supported.</string>
 </resources>
