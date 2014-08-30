@@ -118,6 +118,21 @@ public abstract class JSONArrayBaseAdapter extends BaseAdapter implements Filter
 	}
 
 	/**
+	 * Creates a new {@code JSONArray} with values from another. Adds backward support as this only
+	 * exists in API19.
+	 */
+	private static JSONArray generateCopy(JSONArray array) {
+		JSONArray copy = new JSONArray();
+		for (int i = 0; i < array.length(); ++i) {
+			Object object = array.opt(i);
+			if (object != null) {
+				copy.put(object);
+			}
+		}
+		return copy;
+	}
+
+	/**
 	 * Adds the specified items at the end of the adapter. Will repeat the last filtering request if
 	 * invoked while filtered results are being displayed.
 	 *
@@ -192,21 +207,6 @@ public abstract class JSONArrayBaseAdapter extends BaseAdapter implements Filter
 			mObjects = new JSONArray();
 		}
 		if (mNotifyOnChange) notifyDataSetChanged();
-	}
-
-	/**
-	 * Creates a new {@code JSONArray} with values from another. Adds backward support as this only
-	 * exists in API19.
-	 */
-	private static JSONArray generateCopy(JSONArray array) {
-		JSONArray copy = new JSONArray();
-		for (int i = 0; i < array.length(); ++i) {
-			Object object = array.opt(i);
-			if (object != null) {
-				copy.put(object);
-			}
-		}
-		return copy;
 	}
 
 	@Override
@@ -344,6 +344,34 @@ public abstract class JSONArrayBaseAdapter extends BaseAdapter implements Filter
 		mObjects = objects;
 	}
 
+	protected boolean isFilteredBy(Boolean item, CharSequence constraint) {
+		return isItemFilteredBy(item, constraint);
+	}
+
+	protected boolean isFilteredBy(JSONArray item, CharSequence constraint) {
+		return isItemFilteredBy(item, constraint);
+	}
+
+	protected boolean isFilteredBy(JSONObject item, CharSequence constraint) {
+		return isItemFilteredBy(item, constraint);
+	}
+
+	protected boolean isFilteredBy(Long item, CharSequence constraint) {
+		return isItemFilteredBy(item, constraint);
+	}
+
+	protected boolean isFilteredBy(Double item, CharSequence constraint) {
+		return isItemFilteredBy(item, constraint);
+	}
+
+	protected boolean isFilteredBy(Integer item, CharSequence constraint) {
+		return isItemFilteredBy(item, constraint);
+	}
+
+	protected boolean isFilteredBy(String item, CharSequence constraint) {
+		return isItemFilteredBy(item, constraint);
+	}
+
 	/**
 	 * Determines whether the provided constraint filters out the given item. Allows easy,
 	 * customized filtering for subclasses. It's incorrect to modify the adapter or the contents of
@@ -356,7 +384,7 @@ public abstract class JSONArrayBaseAdapter extends BaseAdapter implements Filter
 	 * @return True if the item is filtered out by the constraint. False if the item is not filtered
 	 * and will continue to reside in the adapter.
 	 */
-	protected abstract boolean isFilteredBy(Object item, CharSequence constraint);
+	protected abstract boolean isItemFilteredBy(Object item, CharSequence constraint);
 
 	public boolean isNull(int position) {
 		return mObjects.isNull(position);
@@ -436,7 +464,7 @@ public abstract class JSONArrayBaseAdapter extends BaseAdapter implements Filter
 
 	/**
 	 * An array filter constrains the content of the array adapter. Whether an item is constrained
-	 * or not is delegated to subclasses through {@link com.sawyer.advadapters.widget.JSONArrayBaseAdapter#isFilteredBy(Object,
+	 * or not is delegated to subclasses through {@link com.sawyer.advadapters.widget.JSONArrayBaseAdapter#isItemFilteredBy(Object,
 	 * CharSequence)}
 	 */
 	private class JSONArrayFilter extends Filter {
@@ -466,8 +494,25 @@ public abstract class JSONArrayBaseAdapter extends BaseAdapter implements Filter
 			if (values != null) {
 				for (int index = 0; index < values.length(); ++index) {
 					Object value = values.opt(index);
-					if (value != null && isFilteredBy(value, constraint)) {
-						newValues.put(value);
+
+					if (value != null) {
+						if (value instanceof Integer) {
+							if (isFilteredBy((Integer) value, constraint)) newValues.put(value);
+						} else if (value instanceof Long) {
+							if (isFilteredBy((Long) value, constraint)) newValues.put(value);
+						} else if (value instanceof Double) {
+							if (isFilteredBy((Double) value, constraint)) newValues.put(value);
+						} else if (value instanceof Boolean) {
+							if (isFilteredBy((Boolean) value, constraint)) newValues.put(value);
+						} else if (value instanceof String) {
+							if (isFilteredBy((String) value, constraint)) newValues.put(value);
+						} else if (value instanceof JSONObject) {
+							if (isFilteredBy((JSONObject) value, constraint)) newValues.put(value);
+						} else if (value instanceof JSONArray) {
+							if (isFilteredBy((JSONArray) value, constraint)) newValues.put(value);
+						} else {
+							if (isItemFilteredBy(value, constraint)) newValues.put(value);
+						}
 					}
 				}
 			}
