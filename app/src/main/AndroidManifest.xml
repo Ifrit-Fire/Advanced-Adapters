@@ -48,6 +48,10 @@
 			android:name=".adapters.simplesparsearraybaseadapter.SimpleSparseArrayBaseAdapterActivity"
 			android:label="@string/activity_simplesparsearray_baseadapter">
 		</activity>
+		<activity
+			android:name=".adapters.jsonarraybaseadapter.JSONArrayBaseAdapterActivity"
+			android:label="@string/activity_jsonarray_baseadapter">
+		</activity>
 
 		<activity
 			android:name=".MainActivity"
