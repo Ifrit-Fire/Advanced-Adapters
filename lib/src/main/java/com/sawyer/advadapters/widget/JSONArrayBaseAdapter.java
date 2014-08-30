@@ -198,14 +198,12 @@ public abstract class JSONArrayBaseAdapter extends BaseAdapter implements Filter
 	 * Creates a new {@code JSONArray} with values from another. Adds backward support as this only
 	 * exists in API19.
 	 */
-	private JSONArray generateCopy(JSONArray array) {
+	private static JSONArray generateCopy(JSONArray array) {
 		JSONArray copy = new JSONArray();
-		synchronized (mLock) {
-			for (int i = 0; i < array.length(); ++i) {
-				Object object = array.opt(i);
-				if (object != null) {
-					copy.put(object);
-				}
+		for (int i = 0; i < array.length(); ++i) {
+			Object object = array.opt(i);
+			if (object != null) {
+				copy.put(object);
 			}
 		}
 		return copy;
