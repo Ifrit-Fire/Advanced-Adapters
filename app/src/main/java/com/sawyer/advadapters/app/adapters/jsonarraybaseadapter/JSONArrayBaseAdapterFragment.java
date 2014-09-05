@@ -37,15 +37,11 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
-
 public class JSONArrayBaseAdapterFragment extends ListFragment {
-	private static final String STATE_CAB_CHECKED_ITEMS = "State Cab Checked Items";
+	private static final String STATE_CAB_CHECKED_COUNT = "State Cab Checked Count";
 	private static final String STATE_LIST = "State List";
 
-	private Set<Object> mCheckedItems = new HashSet<>();
+	private int mCheckedCount;
 	private EventListener mEventListener;
 
 	public static JSONArrayBaseAdapterFragment newInstance() {
@@ -90,15 +86,13 @@ public class JSONArrayBaseAdapterFragment extends ListFragment {
 		super.onCreate(savedInstanceState);
 
 		if (savedInstanceState != null) {
-			ArrayList<MovieItem> checkItems = savedInstanceState
-					.getParcelableArrayList(STATE_CAB_CHECKED_ITEMS);
-			//mCheckedItems.addAll(checkItems);
+			mCheckedCount = savedInstanceState.getInt(STATE_CAB_CHECKED_COUNT);
 			try {
 				JSONArray list = new JSONArray(savedInstanceState.getString(STATE_LIST));
 				setListAdapter(new MovieJSONArrayBaseAdapter(getActivity(), list));
 			} catch (JSONException e) {
 				e.printStackTrace();
-				mCheckedItems.clear();
+				mCheckedCount = 0;
 				setListAdapter(new MovieJSONArrayBaseAdapter(getActivity()));
 			}
 		} else {
@@ -139,8 +133,7 @@ public class JSONArrayBaseAdapterFragment extends ListFragment {
 	public void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
 		outState.putString(STATE_LIST, getListAdapter().getJSONArray().toString());
-//		outState.putParcelableArrayList(STATE_CAB_CHECKED_ITEMS,
-//										new ArrayList<Parcelable>(mCheckedItems));
+		outState.putInt(STATE_CAB_CHECKED_COUNT, mCheckedCount);
 	}
 
 	public interface EventListener {
@@ -173,24 +166,24 @@ public class JSONArrayBaseAdapterFragment extends ListFragment {
 		public boolean onCreateActionMode(ActionMode mode, Menu menu) {
 			MenuInflater inflater = mode.getMenuInflater();
 			inflater.inflate(R.menu.cab_jsonarray, menu);
-			mode.setTitle(mCheckedItems.size() + " Selected");
+			mode.setTitle(mCheckedCount + " Selected");
 			return true;
 		}
 
 		@Override
 		public void onDestroyActionMode(ActionMode mode) {
-			mCheckedItems.clear();
+			mCheckedCount = 0;
 		}
 
 		@Override
 		public void onItemCheckedStateChanged(ActionMode mode, int position, long id,
 											  boolean checked) {
 			if (checked) {
-				mCheckedItems.add(getListAdapter().getItem(position));
+				++mCheckedCount;
 			} else {
-				mCheckedItems.remove(getListAdapter().getItem(position));
+				--mCheckedCount;
 			}
-			mode.setTitle(mCheckedItems.size() + " Selected");
+			mode.setTitle(mCheckedCount + " Selected");
 		}
 
 		@Override

@@ -23,21 +23,17 @@ import android.widget.Toast;
 import com.sawyer.advadapters.app.R;
 import com.sawyer.advadapters.app.adapters.AdapterBaseActivity;
 import com.sawyer.advadapters.app.data.MovieContent;
-import com.sawyer.advadapters.app.data.MovieItem;
-import com.sawyer.advadapters.app.dialogs.AddArrayDialogFragment;
-import com.sawyer.advadapters.app.dialogs.ContainsArrayDialogFragment;
+import com.sawyer.advadapters.app.dialogs.AddJSONArrayDialogFragment;
 
-import java.util.List;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 public class JSONArrayBaseAdapterActivity extends AdapterBaseActivity implements
-		AddArrayDialogFragment.EventListener, ContainsArrayDialogFragment.EventListener,
-		JSONArrayBaseAdapterFragment.EventListener {
+		AddJSONArrayDialogFragment.EventListener, JSONArrayBaseAdapterFragment.EventListener {
 	private static final String TAG_ADD_DIALOG_FRAG = "Tag Add Dialog Frag";
 	private static final String TAG_BASE_ADAPTER_FRAG = "Tag Base Adapter Frag";
-	private static final String TAG_CONTAINS_DIALOG_FRAG = "Tag Contains Dialog Frag";
 
-	private AddArrayDialogFragment mAddDialogFragment;
-	private ContainsArrayDialogFragment mContainsDialogFragment;
+	private AddJSONArrayDialogFragment mAddDialogFragment;
 	private JSONArrayBaseAdapterFragment mListFragment;
 
 	@Override
@@ -79,13 +75,7 @@ public class JSONArrayBaseAdapterActivity extends AdapterBaseActivity implements
 			transaction.commit();
 		}
 
-		mContainsDialogFragment = (ContainsArrayDialogFragment) manager
-				.findFragmentByTag(TAG_CONTAINS_DIALOG_FRAG);
-		if (mContainsDialogFragment != null) {
-			mContainsDialogFragment.setEventListener(this);
-		}
-
-		mAddDialogFragment = (AddArrayDialogFragment) manager
+		mAddDialogFragment = (AddJSONArrayDialogFragment) manager
 				.findFragmentByTag(TAG_ADD_DIALOG_FRAG);
 		if (mAddDialogFragment != null) {
 			mAddDialogFragment.setEventListener(this);
@@ -94,11 +84,6 @@ public class JSONArrayBaseAdapterActivity extends AdapterBaseActivity implements
 
 	@Override
 	protected boolean isAddDialogEnabled() {
-		return true;
-	}
-
-	@Override
-	protected boolean isContainsDialogEnabled() {
 		return true;
 	}
 
@@ -113,22 +98,22 @@ public class JSONArrayBaseAdapterActivity extends AdapterBaseActivity implements
 	}
 
 	@Override
-	public void onAddMultipleMoviesClick(List<MovieItem> movies) {
-		//mListFragment.getListAdapter().addAll(movies);
+	public void onAddMultipleMoviesClick(JSONArray movies) {
+		mListFragment.getListAdapter().addAll(movies);
 		updateActionBar();
 		mAddDialogFragment.dismiss();
 	}
 
 	@Override
-	public void onAddSingleMovieClick(MovieItem movie) {
+	public void onAddSingleMovieClick(JSONObject movie) {
 		mListFragment.getListAdapter().add(movie);
 		updateActionBar();
 		mAddDialogFragment.dismiss();
 	}
 
 	@Override
-	public void onAddVarargsMovieClick(MovieItem... movies) {
-		//mListFragment.getListAdapter().addAll(movies);
+	public void onAddVarargsMovieClick(JSONObject... movies) {
+		mListFragment.getListAdapter().addAll(movies);
 		updateActionBar();
 		mAddDialogFragment.dismiss();
 	}
@@ -140,37 +125,6 @@ public class JSONArrayBaseAdapterActivity extends AdapterBaseActivity implements
 		if (fragment instanceof JSONArrayBaseAdapterFragment) {
 			mListFragment = (JSONArrayBaseAdapterFragment) fragment;
 		}
-	}
-
-	@Override
-	public void onContainsMultipleMovieClick(List<MovieItem> movies) {
-		StringBuilder text = new StringBuilder();
-//		if (mListFragment.getListAdapter().containsAll(movies)) {
-//			text.append(getString(R.string.toast_contains_movie_true));
-//		} else {
-//			text.append(getString(R.string.toast_contains_movie_false));
-//		}
-		int index;
-		for (index = 0; index < movies.size() - 1; ++index) {
-			text.append(movies.get(0).title).append("\n");
-		}
-		text.append(movies.get(index).title);
-
-		Toast.makeText(this, text.toString(), Toast.LENGTH_SHORT).show();
-		mContainsDialogFragment.dismiss();
-	}
-
-	@Override
-	public void onContainsSingleMovieClick(MovieItem movie) {
-		StringBuilder text = new StringBuilder();
-//		if (mListFragment.getListAdapter().contains(movie)) {
-//			text.append(getString(R.string.toast_contains_movie_true));
-//		} else {
-//			text.append(getString(R.string.toast_contains_movie_false));
-//		}
-		text.append(movie.title);
-		Toast.makeText(this, text.toString(), Toast.LENGTH_SHORT).show();
-		mContainsDialogFragment.dismiss();
 	}
 
 	@Override
@@ -193,20 +147,13 @@ public class JSONArrayBaseAdapterActivity extends AdapterBaseActivity implements
 
 	@Override
 	protected void sort() {
-		//mListFragment.getListAdapter().sort();
+		Toast.makeText(this, R.string.toast_sort_not_supported, Toast.LENGTH_SHORT).show();
 	}
 
 	@Override
 	protected void startAddDialog() {
-		mAddDialogFragment = AddArrayDialogFragment.newInstance();
+		mAddDialogFragment = AddJSONArrayDialogFragment.newInstance();
 		mAddDialogFragment.setEventListener(this);
 		mAddDialogFragment.show(getFragmentManager(), TAG_ADD_DIALOG_FRAG);
-	}
-
-	@Override
-	protected void startContainsDialog() {
-		mContainsDialogFragment = ContainsArrayDialogFragment.newInstance();
-		mContainsDialogFragment.setEventListener(this);
-		mContainsDialogFragment.show(getFragmentManager(), TAG_CONTAINS_DIALOG_FRAG);
 	}
 }
