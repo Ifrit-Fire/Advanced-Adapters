@@ -56,8 +56,8 @@ class MovieJSONArrayBaseAdapter extends JSONArrayBaseAdapter {
 			vh = (ViewHolder) convertView.getTag();
 		}
 
-		JSONObject movie = (JSONObject) getItem(position);
 		try {
+			JSONObject movie = optItemJSONObject(position);
 			vh.title.setText(movie.getString(MovieItem.JSON_TITLE));
 			vh.subtitle.setText(movie.getString(MovieItem.JSON_YEAR));
 			vh.icon.setImageResource((movie.getBoolean(MovieItem.JSON_IS_RECOMMENDED))
@@ -71,20 +71,20 @@ class MovieJSONArrayBaseAdapter extends JSONArrayBaseAdapter {
 
 	@Override
 	protected boolean isItemFilteredBy(Object item, CharSequence constraint) {
-		//We are expecting the adapter to only ever contain JSONObjects. So we are letting specifically letting
-		//the JSONObject filter handle it.
+		//We are expecting the adapter to only ever contain JSONObjects. So we are specifically letting
+		//the JSONObject filter handle it. Otherwise, this should never be called.
 		return false;
 	}
 
 	@Override
-	protected boolean isFilteredBy(JSONObject item, CharSequence constraint) {
-		String title = "";
+	protected boolean isJSONObjectFilteredBy(JSONObject item, CharSequence constraint) {
 		try {
-			title = item.getString(MovieItem.JSON_TITLE).toLowerCase(Locale.US);
+			String title = item.getString(MovieItem.JSON_TITLE).toLowerCase(Locale.US);
+			return title.contains(constraint.toString().toLowerCase(Locale.US));
 		} catch (JSONException e) {
 			e.printStackTrace();
+			return false;
 		}
-		return title.contains(constraint.toString().toLowerCase(Locale.US));
 	}
 
 	private static class ViewHolder {
