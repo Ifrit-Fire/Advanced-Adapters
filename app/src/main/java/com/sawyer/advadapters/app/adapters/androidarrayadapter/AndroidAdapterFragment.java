@@ -29,9 +29,9 @@ import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.sawyer.advadapters.app.R;
+import com.sawyer.advadapters.app.ToastHelper;
 import com.sawyer.advadapters.app.data.MovieItem;
 
 import java.util.ArrayList;
@@ -160,9 +160,7 @@ public class AndroidAdapterFragment extends ListFragment {
 				break;
 
 			case R.id.menu_context_retain:
-				Toast.makeText(getActivity(), R.string.toast_retain_all_not_support,
-							   Toast.LENGTH_SHORT)
-					 .show();
+				ToastHelper.showRetainAllNotSupported(getActivity());
 				result = false;
 				break;
 

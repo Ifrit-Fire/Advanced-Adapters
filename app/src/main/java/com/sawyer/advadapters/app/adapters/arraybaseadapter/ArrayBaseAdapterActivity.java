@@ -18,9 +18,9 @@ package com.sawyer.advadapters.app.adapters.arraybaseadapter;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
-import android.widget.Toast;
 
 import com.sawyer.advadapters.app.R;
+import com.sawyer.advadapters.app.ToastHelper;
 import com.sawyer.advadapters.app.adapters.AdapterBaseActivity;
 import com.sawyer.advadapters.app.data.MovieContent;
 import com.sawyer.advadapters.app.data.MovieItem;
@@ -145,31 +145,27 @@ public class ArrayBaseAdapterActivity extends AdapterBaseActivity implements
 	@Override
 	public void onContainsMultipleMovieClick(List<MovieItem> movies) {
 		StringBuilder text = new StringBuilder();
-		if (mListFragment.getListAdapter().containsAll(movies)) {
-			text.append(getString(R.string.toast_contains_movie_true));
-		} else {
-			text.append(getString(R.string.toast_contains_movie_false));
-		}
 		int index;
 		for (index = 0; index < movies.size() - 1; ++index) {
 			text.append(movies.get(0).title).append("\n");
 		}
 		text.append(movies.get(index).title);
 
-		Toast.makeText(this, text.toString(), Toast.LENGTH_SHORT).show();
+		if (mListFragment.getListAdapter().containsAll(movies)) {
+			ToastHelper.showContainsTrue(this, text.toString());
+		} else {
+			ToastHelper.showContainsFalse(this, text.toString());
+		}
 		mContainsDialogFragment.dismiss();
 	}
 
 	@Override
 	public void onContainsSingleMovieClick(MovieItem movie) {
-		StringBuilder text = new StringBuilder();
 		if (mListFragment.getListAdapter().contains(movie)) {
-			text.append(getString(R.string.toast_contains_movie_true));
+			ToastHelper.showContainsTrue(this, movie.title);
 		} else {
-			text.append(getString(R.string.toast_contains_movie_false));
+			ToastHelper.showContainsFalse(this, movie.title);
 		}
-		text.append(movie.title);
-		Toast.makeText(this, text.toString(), Toast.LENGTH_SHORT).show();
 		mContainsDialogFragment.dismiss();
 	}
 

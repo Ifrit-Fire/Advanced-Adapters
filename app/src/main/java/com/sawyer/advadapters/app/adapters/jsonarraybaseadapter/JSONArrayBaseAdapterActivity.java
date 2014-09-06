@@ -18,9 +18,9 @@ package com.sawyer.advadapters.app.adapters.jsonarraybaseadapter;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
-import android.widget.Toast;
 
 import com.sawyer.advadapters.app.R;
+import com.sawyer.advadapters.app.ToastHelper;
 import com.sawyer.advadapters.app.adapters.AdapterBaseActivity;
 import com.sawyer.advadapters.app.data.MovieContent;
 import com.sawyer.advadapters.app.dialogs.AddJSONArrayDialogFragment;
@@ -147,7 +147,7 @@ public class JSONArrayBaseAdapterActivity extends AdapterBaseActivity implements
 
 	@Override
 	protected void sort() {
-		Toast.makeText(this, R.string.toast_sort_not_supported, Toast.LENGTH_SHORT).show();
+		ToastHelper.showSortNotSupported(this);
 	}
 
 	@Override

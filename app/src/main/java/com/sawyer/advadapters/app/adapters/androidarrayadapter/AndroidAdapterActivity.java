@@ -18,9 +18,9 @@ package com.sawyer.advadapters.app.adapters.androidarrayadapter;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
-import android.widget.Toast;
 
 import com.sawyer.advadapters.app.R;
+import com.sawyer.advadapters.app.ToastHelper;
 import com.sawyer.advadapters.app.adapters.AdapterBaseActivity;
 import com.sawyer.advadapters.app.data.MovieContent;
 import com.sawyer.advadapters.app.data.MovieItem;
@@ -164,14 +164,11 @@ public class AndroidAdapterActivity extends AdapterBaseActivity implements
 
 	@Override
 	public void onContainsSingleMovieClick(MovieItem movie) {
-		StringBuilder text = new StringBuilder();
 		if (mListFragment.getListAdapter().getPosition(movie) != -1) {
-			text.append(getString(R.string.toast_contains_movie_true));
+			ToastHelper.showContainsTrue(this, movie.title);
 		} else {
-			text.append(getString(R.string.toast_contains_movie_false));
+			ToastHelper.showContainsFalse(this, movie.title);
 		}
-		text.append(movie.title);
-		Toast.makeText(this, text.toString(), Toast.LENGTH_SHORT).show();
 		mContainsDialogFragment.dismiss();
 	}
 

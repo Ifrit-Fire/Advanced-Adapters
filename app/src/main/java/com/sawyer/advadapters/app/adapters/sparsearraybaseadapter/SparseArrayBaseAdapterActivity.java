@@ -18,9 +18,9 @@ package com.sawyer.advadapters.app.adapters.sparsearraybaseadapter;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.util.SparseArray;
-import android.widget.Toast;
 
 import com.sawyer.advadapters.app.R;
+import com.sawyer.advadapters.app.ToastHelper;
 import com.sawyer.advadapters.app.adapters.AdapterBaseActivity;
 import com.sawyer.advadapters.app.data.MovieContent;
 import com.sawyer.advadapters.app.data.MovieItem;
@@ -141,27 +141,23 @@ public class SparseArrayBaseAdapterActivity extends AdapterBaseActivity implemen
 
 	@Override
 	public void onContainsIdClick(int barcode) {
-		StringBuilder text = new StringBuilder();
 		if (mListFragment.getListAdapter().containsId(barcode)) {
-			text.append(getString(R.string.toast_contains_movie_true));
+			String text = mListFragment.getListAdapter().getItemWithId(barcode).title;
+			ToastHelper.showContainsTrue(this, text);
 		} else {
-			text.append(getString(R.string.toast_contains_movie_false));
+			String text = MovieContent.ITEM_SPARSE.get(barcode).title;
+			ToastHelper.showContainsFalse(this, text);
 		}
-		text.append(MovieContent.ITEM_SPARSE.get(barcode).title);
-		Toast.makeText(this, text.toString(), Toast.LENGTH_SHORT).show();
 		mContainsDialogFragment.dismiss();
 	}
 
 	@Override
 	public void onContainsItemClick(MovieItem movie) {
-		StringBuilder text = new StringBuilder();
 		if (mListFragment.getListAdapter().containsItem(movie)) {
-			text.append(getString(R.string.toast_contains_movie_true));
+			ToastHelper.showContainsTrue(this, movie.title);
 		} else {
-			text.append(getString(R.string.toast_contains_movie_false));
+			ToastHelper.showContainsFalse(this, movie.title);
 		}
-		text.append(movie.title);
-		Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
 		mContainsDialogFragment.dismiss();
 	}
 
@@ -213,7 +209,7 @@ public class SparseArrayBaseAdapterActivity extends AdapterBaseActivity implemen
 
 	@Override
 	protected void sort() {
-		Toast.makeText(this, R.string.toast_sort_not_supported, Toast.LENGTH_SHORT).show();
+		ToastHelper.showSortNotSupported(this);
 	}
 
 	@Override

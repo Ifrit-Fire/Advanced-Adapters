@@ -28,14 +28,12 @@ import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.sawyer.advadapters.app.R;
-import com.sawyer.advadapters.app.data.MovieItem;
+import com.sawyer.advadapters.app.ToastHelper;
 
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 
 public class JSONArrayBaseAdapterFragment extends ListFragment {
 	private static final String STATE_CAB_CHECKED_COUNT = "State Cab Checked Count";
@@ -111,22 +109,11 @@ public class JSONArrayBaseAdapterFragment extends ListFragment {
 
 	@Override
 	public void onListItemClick(ListView l, View v, int position, long id) {
-		try {
-			JSONObject movie = getListAdapter().getItemJSONObject(position);
-			StringBuilder builder = new StringBuilder(movie.getString(MovieItem.JSON_TITLE));
-			movie.put(MovieItem.JSON_TITLE, builder.reverse().toString());
-			Boolean isRecommended = movie.getBoolean(MovieItem.JSON_IS_RECOMMENDED);
-			movie.put(MovieItem.JSON_IS_RECOMMENDED, !isRecommended);
-		} catch (JSONException e) {
-			e.printStackTrace();
-		} finally {
-			getListAdapter().notifyDataSetChanged();
-		}
+		ToastHelper.showItemUpdatesNotSupported(getActivity());
 	}
 
 	private void onRemoveItemsClicked() {
-		Toast.makeText(getActivity(), R.string.toast_remove_not_supported, Toast.LENGTH_SHORT)
-			 .show();
+		ToastHelper.showRemoveNotSupported(getActivity());
 	}
 
 	@Override
