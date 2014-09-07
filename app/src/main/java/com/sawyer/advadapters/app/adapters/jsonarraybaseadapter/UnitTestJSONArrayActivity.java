@@ -18,26 +18,62 @@ package com.sawyer.advadapters.app.adapters.jsonarraybaseadapter;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
-import android.content.Intent;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.util.Log;
 
 import com.sawyer.advadapters.app.R;
 import com.sawyer.advadapters.app.ToastHelper;
 import com.sawyer.advadapters.app.adapters.AdapterBaseActivity;
-import com.sawyer.advadapters.app.data.MovieContent;
-import com.sawyer.advadapters.app.dialogs.AddJSONArrayDialogFragment;
+import com.sawyer.advadapters.widget.JSONArrayBaseAdapter;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
+import org.json.JSONException;
 
-public class JSONArrayBaseAdapterActivity extends AdapterBaseActivity implements
-		AddJSONArrayDialogFragment.EventListener, JSONArrayBaseAdapterFragment.EventListener {
-	private static final String TAG_ADD_DIALOG_FRAG = "Tag Add Dialog Frag";
+import java.util.Random;
+import java.util.UUID;
+
+public class UnitTestJSONArrayActivity extends AdapterBaseActivity implements
+		UnitTestJSONArrayFragment.EventListener {
 	private static final String TAG_BASE_ADAPTER_FRAG = "Tag Base Adapter Frag";
+	private static final String TAG = UnitTestJSONArrayActivity.class.getSimpleName();
 
-	private AddJSONArrayDialogFragment mAddDialogFragment;
-	private JSONArrayBaseAdapterFragment mListFragment;
+	private UnitTestJSONArrayFragment mListFragment;
+
+	private static boolean getBoolean() {
+		return new Random().nextBoolean();
+	}
+
+	private static byte getByte() {
+		byte[] buf = new byte[1];
+		new Random().nextBytes(buf);
+		return buf[0];
+	}
+
+	private static char getChar() {
+		return (char) (new Random().nextInt(26) + 'a');
+	}
+
+	private static double getDouble() {
+		return new Random().nextDouble();
+	}
+
+	private static float getFloat() {
+		return new Random().nextFloat();
+	}
+
+	private static int getInteger() {
+		return new Random().nextInt();
+	}
+
+	private static long getLong() {
+		return new Random().nextLong();
+	}
+
+	private static short getShort() {
+		return (short) new Random().nextInt(Short.MAX_VALUE);
+	}
+
+	private static String getString() {
+		return UUID.randomUUID().toString().substring(0, 6);
+	}
 
 	@Override
 	protected void clear() {
@@ -69,25 +105,14 @@ public class JSONArrayBaseAdapterActivity extends AdapterBaseActivity implements
 	protected void initFrags() {
 		super.initFrags();
 		FragmentManager manager = getFragmentManager();
-		mListFragment = (JSONArrayBaseAdapterFragment) manager
+		mListFragment = (UnitTestJSONArrayFragment) manager
 				.findFragmentByTag(TAG_BASE_ADAPTER_FRAG);
 		if (mListFragment == null) {
-			mListFragment = JSONArrayBaseAdapterFragment.newInstance();
+			mListFragment = UnitTestJSONArrayFragment.newInstance();
 			FragmentTransaction transaction = manager.beginTransaction();
 			transaction.replace(R.id.frag_container, mListFragment, TAG_BASE_ADAPTER_FRAG);
 			transaction.commit();
 		}
-
-		mAddDialogFragment = (AddJSONArrayDialogFragment) manager
-				.findFragmentByTag(TAG_ADD_DIALOG_FRAG);
-		if (mAddDialogFragment != null) {
-			mAddDialogFragment.setEventListener(this);
-		}
-	}
-
-	@Override
-	protected boolean isAddDialogEnabled() {
-		return true;
 	}
 
 	@Override
@@ -101,51 +126,11 @@ public class JSONArrayBaseAdapterActivity extends AdapterBaseActivity implements
 	}
 
 	@Override
-	public void onAddMultipleMoviesClick(JSONArray movies) {
-		mListFragment.getListAdapter().addAll(movies);
-		updateActionBar();
-		mAddDialogFragment.dismiss();
-	}
-
-	@Override
-	public void onAddSingleMovieClick(JSONObject movie) {
-		mListFragment.getListAdapter().add(movie);
-		updateActionBar();
-		mAddDialogFragment.dismiss();
-	}
-
-	@Override
-	public void onAddVarargsMovieClick(JSONObject... movies) {
-		mListFragment.getListAdapter().addAll(movies);
-		updateActionBar();
-		mAddDialogFragment.dismiss();
-	}
-
-	@Override
 	public void onAttachFragment(Fragment fragment) {
 		super.onAttachFragment(fragment);
 
-		if (fragment instanceof JSONArrayBaseAdapterFragment) {
-			mListFragment = (JSONArrayBaseAdapterFragment) fragment;
-		}
-	}
-
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		getMenuInflater().inflate(R.menu.jsonarray, menu);
-		return super.onCreateOptionsMenu(menu);
-	}
-
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		int id = item.getItemId();
-		switch (id) {
-		case R.id.menu_unit_test:
-			Intent intent = new Intent(this, UnitTestJSONArrayActivity.class);
-			startActivity(intent);
-			return true;
-		default:
-			return super.onOptionsItemSelected(item);
+		if (fragment instanceof UnitTestJSONArrayFragment) {
+			mListFragment = (UnitTestJSONArrayFragment) fragment;
 		}
 	}
 
@@ -163,19 +148,28 @@ public class JSONArrayBaseAdapterActivity extends AdapterBaseActivity implements
 
 	@Override
 	protected void reset() {
-		mListFragment.getListAdapter().setJSONArray(MovieContent.ITEM_JSON);
+		JSONArrayBaseAdapter adapter = mListFragment.getListAdapter();
+		adapter.setNotifyOnChange(false);
+		adapter.clear();
+		adapter.add(getChar());    //JSONArray converts to Integer
+		adapter.add(getString());
+		adapter.add(getBoolean());
+		adapter.add(getByte());    //JSONArray converts to Integer
+		adapter.add(getShort());    //JSONArray converts to Integer
+		adapter.add(getInteger());
+		adapter.add(getLong());
+		try {
+			adapter.add(getFloat());    //JSONArray converts to Double
+			adapter.add(getDouble());
+		} catch (JSONException e) {
+			Log.e(TAG, "Error resetting float and/or double");
+		}
+		adapter.notifyDataSetChanged();
 		updateActionBar();
 	}
 
 	@Override
 	protected void sort() {
 		ToastHelper.showSortNotSupported(this);
-	}
-
-	@Override
-	protected void startAddDialog() {
-		mAddDialogFragment = AddJSONArrayDialogFragment.newInstance();
-		mAddDialogFragment.setEventListener(this);
-		mAddDialogFragment.show(getFragmentManager(), TAG_ADD_DIALOG_FRAG);
 	}
 }

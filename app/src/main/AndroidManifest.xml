@@ -52,6 +52,10 @@
 			android:name=".adapters.jsonarraybaseadapter.JSONArrayBaseAdapterActivity"
 			android:label="@string/activity_jsonarray_baseadapter">
 		</activity>
+		<activity
+			android:name=".adapters.jsonarraybaseadapter.UnitTestJSONArrayActivity"
+			android:label="@string/activity_jsonarray_unittest">
+		</activity>
 
 		<activity
 			android:name=".MainActivity"

@@ -21,5 +21,4 @@
 		android:id="@+id/menu_context_remove"
 		android:icon="@drawable/ic_action_content_discard"
 		android:title="@string/menu_remove"/>
-
 </menu>

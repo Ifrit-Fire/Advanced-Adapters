@@ -134,7 +134,7 @@ public abstract class AdapterBaseActivity extends Activity implements
 			item.setOnActionExpandListener(new OnSearchActionExpandListener());
 			item.setVisible(isSearchViewEnabled());
 		}
-		return true;
+		return super.onCreateOptionsMenu(menu);
 	}
 
 	@Override

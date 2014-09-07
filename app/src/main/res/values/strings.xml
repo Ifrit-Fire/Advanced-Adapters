@@ -25,6 +25,7 @@
 	<string name="activity_sparsearray_baseadapter">SparseArray BaseAdapter</string>
 	<string name="activity_simplesparsearray_baseadapter">SimpleSparseArray BaseAdapter</string>
 	<string name="activity_jsonarray_baseadapter">JSONArray BaseAdapter</string>
+	<string name="activity_jsonarray_unittest">JSONArray - Unit Test</string>
 
 	<!-- Content Description Text -->
 	<string name="cd_rating_icon">Rating Icon</string>
@@ -52,6 +53,7 @@
 	<string name="menu_retain">Retain Selected</string>
 	<string name="menu_search">Search</string>
 	<string name="menu_sort">Sort</string>
+	<string name="menu_unit_test">Unit Test</string>
 
 	<!-- Button Text -->
 	<string name="btn_add">Add One</string>
