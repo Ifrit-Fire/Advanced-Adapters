@@ -64,7 +64,7 @@ class MovieJSONArrayBaseAdapter extends JSONArrayBaseAdapter {
 			vh.icon.setImageResource((movie.getBoolean(MovieItem.JSON_IS_RECOMMENDED))
 											 ? R.drawable.ic_rating_good : R.drawable.ic_rating_bad);
 		} catch (JSONException e) {
-			e.printStackTrace();
+			Log.e(MovieJSONArrayBaseAdapter.class.getSimpleName(), "GetView error", e);
 		}
 
 		return convertView;

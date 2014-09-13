@@ -18,6 +18,7 @@ package com.sawyer.advadapters.app.adapters.jsonarraybaseadapter;
 import android.app.Activity;
 import android.app.ListFragment;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.ActionMode;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -89,7 +90,7 @@ public class UnitTestJSONArrayFragment extends ListFragment {
 				JSONArray list = new JSONArray(savedInstanceState.getString(STATE_LIST));
 				setListAdapter(new UnitTestMovieAdapter(getActivity(), list));
 			} catch (JSONException e) {
-				e.printStackTrace();
+				Log.w(UnitTestJSONArrayFragment.class.getSimpleName(), "Error restoring state", e);
 				mCheckedCount = 0;
 				setListAdapter(new UnitTestMovieAdapter(getActivity()));
 			}

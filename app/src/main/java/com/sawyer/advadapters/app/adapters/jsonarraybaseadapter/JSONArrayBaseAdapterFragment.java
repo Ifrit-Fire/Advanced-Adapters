@@ -18,6 +18,7 @@ package com.sawyer.advadapters.app.adapters.jsonarraybaseadapter;
 import android.app.Activity;
 import android.app.ListFragment;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.ActionMode;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -89,7 +90,7 @@ public class JSONArrayBaseAdapterFragment extends ListFragment {
 				JSONArray list = new JSONArray(savedInstanceState.getString(STATE_LIST));
 				setListAdapter(new MovieJSONArrayBaseAdapter(getActivity(), list));
 			} catch (JSONException e) {
-				e.printStackTrace();
+				Log.e(JSONArrayBaseAdapterFragment.class.getSimpleName(), "OnRestore Error", e);
 				mCheckedCount = 0;
 				setListAdapter(new MovieJSONArrayBaseAdapter(getActivity()));
 			}
