@@ -21,9 +21,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.sawyer.advadapters.app.data.MovieItem;
 import com.sawyer.advadapters.widget.JSONArrayBaseAdapter;
 
 import org.json.JSONArray;
+
+import java.util.Locale;
 
 class UnitTestMovieAdapter extends JSONArrayBaseAdapter {
 
@@ -56,8 +59,20 @@ class UnitTestMovieAdapter extends JSONArrayBaseAdapter {
 	}
 
 	@Override
-	protected boolean isItemFilteredBy(Object item, CharSequence constraint) {
-		return false;
+	protected boolean isFilteredBy(Object item, CharSequence constraint) {
+		return item.toString().toLowerCase(Locale.US)
+				   .contains(constraint.toString().toLowerCase(Locale.US));
+	}
+
+	@Override
+	protected boolean isFilteredBy(Long item, CharSequence constraint) {
+		return String.valueOf(item).toLowerCase(Locale.US)
+					 .contains(constraint.toString().toLowerCase(Locale.US));
+	}
+
+	boolean isFilteredBy(MovieItem movie, CharSequence constraint) {
+		return movie.title.toLowerCase(Locale.US)
+						  .contains(constraint.toString().toLowerCase(Locale.US));
 	}
 
 	private static class ViewHolder {

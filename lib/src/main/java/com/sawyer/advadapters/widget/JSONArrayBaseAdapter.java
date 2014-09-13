@@ -17,6 +17,7 @@ package com.sawyer.advadapters.widget;
 
 import android.content.Context;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,7 +30,12 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.lang.reflect.Type;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * TODO
@@ -61,13 +67,18 @@ public abstract class JSONArrayBaseAdapter extends BaseAdapter implements Filter
 	 * completes, it's contents are copied back over to mObjects and is set to null.
 	 */
 	private JSONArray mOriginalValues;
-	private JSONArrayFilter mFilter;
-
 	/**
 	 * Saves the constraint used during the last filtering operation. Used to re-filter the list
 	 * following changes to the array of data
 	 */
 	private CharSequence mLastConstraint;
+	/**
+	 * Initialized at startup, caches all the Method's which can be used for filtering data. Key is
+	 * based on the object's name (including package). Eg, java.lang.Integer. Will also store the
+	 * filtered methods defined in this class.
+	 */
+	private Map<String, Method> mFilterMethods;
+	private JSONArrayFilter mFilter;
 
 	/**
 	 * Constructor
@@ -130,6 +141,29 @@ public abstract class JSONArrayBaseAdapter extends BaseAdapter implements Filter
 			}
 		}
 		return copy;
+	}
+
+	/**
+	 * Determines whether the given method has he proper signature of a isFiltered method.
+	 * Specifically looking for the following: <ul><li>Name equals <i>"isFilteredBy"</i></li>
+	 * <li>Returns a primitive boolean</li> <li>Has exactly 2 parameters</li> <li>The 2nd param is a
+	 * CharSequence</li> </ul> If the method matches the criteria, the first parameter is extracted
+	 * and returned as a string to be used as a key in the filter cache.
+	 *
+	 * @param m Method to check signature of.
+	 *
+	 * @return String value of a filtered methods 1st parameter. Null if the method does not have
+	 * the proper signature.
+	 */
+	private static String getFilterMethodKey(Method m) {
+		if ("isFilteredBy".equals(m.getName()) && m.getGenericReturnType().equals(boolean.class)) {
+			Type[] params = m.getGenericParameterTypes();
+			if (params.length == 2 && params[1].equals(CharSequence.class)) {
+				String[] split = params[0].toString().split("\\s+");
+				return split[split.length - 1];
+			}
+		}
+		return null;
 	}
 
 	/**
@@ -228,6 +262,62 @@ public abstract class JSONArrayBaseAdapter extends BaseAdapter implements Filter
 			}
 		}
 		if (mNotifyOnChange) notifyDataSetChanged();
+	}
+
+	/**
+	 * Caches the predefined isFilteredBy methods for later invocation.
+	 */
+	private void cacheKnownFilteredMethods() {
+		try {
+			Method m;
+			m = JSONArrayBaseAdapter.class
+					.getDeclaredMethod("isFilteredBy", Boolean.class, CharSequence.class);
+			mFilterMethods.put(Boolean.class.getName(), m);
+			m = JSONArrayBaseAdapter.class
+					.getDeclaredMethod("isFilteredBy", Double.class, CharSequence.class);
+			mFilterMethods.put(Double.class.getName(), m);
+			m = JSONArrayBaseAdapter.class
+					.getDeclaredMethod("isFilteredBy", Integer.class, CharSequence.class);
+			mFilterMethods.put(Integer.class.getName(), m);
+			m = JSONArrayBaseAdapter.class
+					.getDeclaredMethod("isFilteredBy", Long.class, CharSequence.class);
+			mFilterMethods.put(Long.class.getName(), m);
+			m = JSONArrayBaseAdapter.class
+					.getDeclaredMethod("isFilteredBy", String.class, CharSequence.class);
+			mFilterMethods.put(String.class.getName(), m);
+			m = JSONArrayBaseAdapter.class
+					.getDeclaredMethod("isFilteredBy", Object.class, CharSequence.class);
+			mFilterMethods.put(Object.class.getName(), m);
+		} catch (NoSuchMethodException e) {
+			Log.e(JSONArrayBaseAdapter.this.getClass().getSimpleName(), "Unexpected error", e);
+		}
+	}
+
+	/**
+	 * Scans all subclasses of this instance for any isFilteredBy methods and caches them for later
+	 * invocation.
+	 */
+	private void cacheSubclassFilteredMethods() {
+		//Scan public methods first
+		Class<?> c = this.getClass();
+		Method[] methods = c.getMethods();
+		for (Method m : methods) {
+			String key = getFilterMethodKey(m);
+			if (key != null) mFilterMethods.put(key, m);
+		}
+
+		//Scan non-public methods next
+		while (!c.equals(JSONArrayBaseAdapter.class)) {
+			methods = c.getDeclaredMethods();
+			for (Method m : methods) {
+				String key = getFilterMethodKey(m);
+				if (key != null) {
+					m.setAccessible(true);
+					mFilterMethods.put(key, m);
+				}
+			}
+			c = c.getSuperclass();
+		}
 	}
 
 	/**
@@ -374,13 +464,16 @@ public abstract class JSONArrayBaseAdapter extends BaseAdapter implements Filter
 	private void init(Context context, JSONArray objects) {
 		mInflater = LayoutInflater.from(context);
 		mObjects = objects;
+		mFilterMethods = new HashMap<>();
+		cacheKnownFilteredMethods();
+		cacheSubclassFilteredMethods();
 	}
 
-	protected boolean isBooleanFilteredBy(Boolean item, CharSequence constraint) {
-		return item.equals(Boolean.valueOf(constraint.toString()));
+	protected boolean isFilteredBy(Boolean item, CharSequence constraint) {
+		return item.toString().equalsIgnoreCase(constraint.toString());
 	}
 
-	protected boolean isDoubleFilteredBy(Double item, CharSequence constraint) {
+	protected boolean isFilteredBy(Double item, CharSequence constraint) {
 		try {
 			return item.equals(Double.valueOf(constraint.toString()));
 		} catch (NumberFormatException e) {
@@ -388,9 +481,17 @@ public abstract class JSONArrayBaseAdapter extends BaseAdapter implements Filter
 		}
 	}
 
-	protected boolean isIntegerFilteredBy(Integer item, CharSequence constraint) {
+	protected boolean isFilteredBy(Integer item, CharSequence constraint) {
 		try {
 			return item.equals(Integer.valueOf(constraint.toString()));
+		} catch (NumberFormatException e) {
+			return false;
+		}
+	}
+
+	protected boolean isFilteredBy(Long item, CharSequence constraint) {
+		try {
+			return item.equals(Long.valueOf(constraint.toString()));
 		} catch (NumberFormatException e) {
 			return false;
 		}
@@ -408,30 +509,14 @@ public abstract class JSONArrayBaseAdapter extends BaseAdapter implements Filter
 	 * @return True if the item is filtered out by the constraint. False if the item is not filtered
 	 * and will continue to reside in the adapter.
 	 */
-	protected abstract boolean isItemFilteredBy(Object item, CharSequence constraint);
+	protected abstract boolean isFilteredBy(Object item, CharSequence constraint);
 
-	protected boolean isJSONArrayFilteredBy(JSONArray item, CharSequence constraint) {
-		return isItemFilteredBy(item, constraint);
-	}
-
-	protected boolean isJSONObjectFilteredBy(JSONObject item, CharSequence constraint) {
-		return isItemFilteredBy(item, constraint);
-	}
-
-	protected boolean isLongFilteredBy(Long item, CharSequence constraint) {
-		try {
-			return item.equals(Long.valueOf(constraint.toString()));
-		} catch (NumberFormatException e) {
-			return false;
-		}
+	protected boolean isFilteredBy(String item, CharSequence constraint) {
+		return item.equalsIgnoreCase(constraint.toString());
 	}
 
 	public boolean isNull(int position) {
 		return mObjects.isNull(position);
-	}
-
-	protected boolean isStringFilteredBy(String item, CharSequence constraint) {
-		return item.toLowerCase().contains(constraint.toString().toLowerCase());
 	}
 
 	@Override
@@ -508,7 +593,7 @@ public abstract class JSONArrayBaseAdapter extends BaseAdapter implements Filter
 
 	/**
 	 * An array filter constrains the content of the array adapter. Whether an item is constrained
-	 * or not is delegated to subclasses through {@link com.sawyer.advadapters.widget.JSONArrayBaseAdapter#isItemFilteredBy(Object,
+	 * or not is delegated to subclasses through {@link com.sawyer.advadapters.widget.JSONArrayBaseAdapter#isFilteredBy(Object,
 	 * CharSequence)}
 	 */
 	private class JSONArrayFilter extends Filter {
@@ -536,33 +621,28 @@ public abstract class JSONArrayBaseAdapter extends BaseAdapter implements Filter
 
 			final JSONArray newValues = new JSONArray();
 			if (values != null) {
+				Object[] varargs = new Object[2];
+				varargs[1] = constraint;
 				for (int index = 0; index < values.length(); ++index) {
 					Object value = values.opt(index);
-
-					if (value != null) {
-						if (value instanceof Integer) {
-							if (isIntegerFilteredBy(values.optInt(index), constraint))
-								newValues.put(value);
-						} else if (value instanceof Long) {
-							if (isLongFilteredBy((Long) value, constraint)) newValues.put(value);
-						} else if (value instanceof Double) {
-							if (isDoubleFilteredBy((Double) value, constraint))
-								newValues.put(value);
-						} else if (value instanceof Boolean) {
-							if (isBooleanFilteredBy((Boolean) value, constraint))
-								newValues.put(value);
-						} else if (value instanceof String) {
-							if (isStringFilteredBy((String) value, constraint))
-								newValues.put(value);
-						} else if (value instanceof JSONObject) {
-							if (isJSONObjectFilteredBy((JSONObject) value, constraint))
-								newValues.put(value);
-						} else if (value instanceof JSONArray) {
-							if (isJSONArrayFilteredBy((JSONArray) value, constraint))
-								newValues.put(value);
-						} else {
-							if (isItemFilteredBy(value, constraint)) newValues.put(value);
+					Method m = mFilterMethods.get(value.getClass().getName());
+					if (m != null) {
+						varargs[0] = value;
+						try {
+							boolean result = (boolean) m
+									.invoke(JSONArrayBaseAdapter.this, varargs);
+							if (result) newValues.put(value);
+						} catch (IllegalAccessException e) {
+							Log.w(m.getName(),
+								  "Method not accessible. Using `isFilteredBy(Object)` instead");
+							if (isFilteredBy(value, constraint)) newValues.put(value);
+						} catch (InvocationTargetException e) {
+							Log.w(m.getName(), "Exception thrown by method. Gracefully skipping " +
+											   mObjects.toString());
 						}
+					} else {
+						Log.v("No method defined for", value.getClass().getName());
+						if (isFilteredBy(value, constraint)) newValues.put(value);
 					}
 				}
 			}

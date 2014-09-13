@@ -23,6 +23,7 @@ import android.util.Log;
 import com.sawyer.advadapters.app.R;
 import com.sawyer.advadapters.app.ToastHelper;
 import com.sawyer.advadapters.app.adapters.AdapterBaseActivity;
+import com.sawyer.advadapters.app.data.MovieContent;
 import com.sawyer.advadapters.widget.JSONArrayBaseAdapter;
 
 import org.json.JSONException;
@@ -158,6 +159,7 @@ public class UnitTestJSONArrayActivity extends AdapterBaseActivity implements
 		adapter.add(getShort());    //JSONArray converts to Integer
 		adapter.add(getInteger());
 		adapter.add(getLong());
+		adapter.add(MovieContent.ITEM_LIST.get(0));
 		try {
 			adapter.add(getFloat());    //JSONArray converts to Double
 			adapter.add(getDouble());

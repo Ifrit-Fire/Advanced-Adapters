@@ -16,6 +16,7 @@
 package com.sawyer.advadapters.app.adapters.jsonarraybaseadapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -70,19 +71,20 @@ class MovieJSONArrayBaseAdapter extends JSONArrayBaseAdapter {
 	}
 
 	@Override
-	protected boolean isItemFilteredBy(Object item, CharSequence constraint) {
+	protected boolean isFilteredBy(Object item, CharSequence constraint) {
 		//We are expecting the adapter to only ever contain JSONObjects. So we are specifically letting
-		//the JSONObject filter handle it. Otherwise, this should never be called.
+		//the JSONObject filter handle it.
 		return false;
 	}
 
-	@Override
-	protected boolean isJSONObjectFilteredBy(JSONObject item, CharSequence constraint) {
+	@SuppressWarnings("UnusedDeclaration")    //Reflexively called, hence the suppressed warning
+	private boolean isFilteredBy(JSONObject item, CharSequence constraint) {
 		try {
 			String title = item.getString(MovieItem.JSON_TITLE).toLowerCase(Locale.US);
 			return title.contains(constraint.toString().toLowerCase(Locale.US));
 		} catch (JSONException e) {
-			e.printStackTrace();
+			Log.e(MovieJSONArrayBaseAdapter.class.getSimpleName(),
+				  "Unexpected error during isFilteredBy", e);
 			return false;
 		}
 	}
