@@ -56,13 +56,15 @@ class MovieArrayBaseAdapter extends ArrayBaseAdapter<MovieItem> {
 		subtitle.setText(String.valueOf(movie.year));
 
 		ImageView icon = (ImageView) convertView.getTag(R.id.icon);
-		icon.setImageResource((movie.isRecommended) ? R.drawable.ic_rating_good : R.drawable.ic_rating_bad);
+		icon.setImageResource(
+				movie.isRecommended ? R.drawable.ic_rating_good : R.drawable.ic_rating_bad);
 
 		return convertView;
 	}
 
 	@Override
-	public boolean isFilteredBy(MovieItem movie, CharSequence constraint) {
-		return movie.title.toLowerCase(Locale.US).contains(constraint.toString().toLowerCase(Locale.US));
+	protected boolean isFilteredBy(MovieItem movie, CharSequence constraint) {
+		return movie.title.toLowerCase(Locale.US)
+						  .contains(constraint.toString().toLowerCase(Locale.US));
 	}
 }
