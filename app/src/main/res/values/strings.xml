@@ -58,6 +58,7 @@
 	<!-- Button Text -->
 	<string name="btn_add">Add One</string>
 	<string name="btn_add_all_col">Add as Collection</string>
+	<string name="btn_add_all_json">Add as JSONArray</string>
 	<string name="btn_add_all_var">Add as Vararg</string>
 	<string name="btn_append_id">Append with Id</string>
 	<string name="btn_append_all">Append All</string>

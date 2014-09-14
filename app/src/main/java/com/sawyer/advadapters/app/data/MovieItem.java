@@ -18,6 +18,7 @@ package com.sawyer.advadapters.app.data;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.text.TextUtils;
+import android.util.Log;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -30,7 +31,6 @@ public class MovieItem implements Comparable<MovieItem>, Parcelable {
 	public static final String JSON_TITLE = "title";
 	public static final String JSON_YEAR = "year";
 	public static final String JSON_IS_RECOMMENDED = "recommended";
-	public static final String JSON_RUNNING_TIME = "running time";
 	public static final String JSON_BARCODE = "barcode";
 
 	private static Random sRand = new Random();
@@ -38,8 +38,6 @@ public class MovieItem implements Comparable<MovieItem>, Parcelable {
 	public String title;
 	public int year;
 	public boolean isRecommended;
-	public double runningTimeHrs;
-
 	private int mBarcode;
 	private long mBarcodeLong;
 
@@ -85,7 +83,7 @@ public class MovieItem implements Comparable<MovieItem>, Parcelable {
 
 	@Override
 	public boolean equals(Object o) {
-		if (o instanceof MovieItem == false) return false;
+		if (!(o instanceof MovieItem)) return false;
 		MovieItem other = (MovieItem) o;
 		return mBarcode == other.mBarcode;
 	}
@@ -101,10 +99,9 @@ public class MovieItem implements Comparable<MovieItem>, Parcelable {
 			object.put(JSON_TITLE, title);
 			object.put(JSON_YEAR, year);
 			object.put(JSON_IS_RECOMMENDED, isRecommended);
-			object.put(JSON_RUNNING_TIME, runningTimeHrs);
 			object.put(JSON_BARCODE, barcode());
 		} catch (JSONException e) {
-			e.printStackTrace();
+			Log.e(MovieItem.class.getSimpleName(), "Error converting to JSON", e);
 		}
 
 		return object;
@@ -112,8 +109,8 @@ public class MovieItem implements Comparable<MovieItem>, Parcelable {
 
 	@Override
 	public String toString() {
-		return (title == null ? "" : title) + Integer.toString(year) +
-			   Boolean.toString(isRecommended) + Double.toString(runningTimeHrs);
+		return (title == null ? "" : title) + " " + Integer.toString(year) + " " +
+			   Boolean.toString(isRecommended);
 	}
 
 	@Override
@@ -122,7 +119,6 @@ public class MovieItem implements Comparable<MovieItem>, Parcelable {
 		dest.writeInt(year);
 		dest.writeInt(mBarcode);
 		dest.writeString(Boolean.toString(isRecommended));
-		dest.writeDouble(runningTimeHrs);
 	}
 
 	private static class MovieCreator implements Creator<MovieItem> {
@@ -134,7 +130,6 @@ public class MovieItem implements Comparable<MovieItem>, Parcelable {
 			item.mBarcode = source.readInt();
 			item.mBarcodeLong = item.mBarcode;
 			item.isRecommended = Boolean.getBoolean(source.readString());
-			item.runningTimeHrs = source.readDouble();
 
 			return item;
 		}

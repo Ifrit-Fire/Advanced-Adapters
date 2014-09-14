@@ -85,7 +85,7 @@ public class AddJSONArrayDialogFragment extends CustomDialogFragment {
 	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
 		Dialog dialog = super.onCreateDialog(savedInstanceState);
-		dialog.setContentView(R.layout.dialog_add_array);
+		dialog.setContentView(R.layout.dialog_add_jsonarray);
 		dialog.setTitle(R.string.title_dialog_add_movies);
 
 		Button btn = (Button) dialog.findViewById(R.id.movie_single_btn);
@@ -93,7 +93,7 @@ public class AddJSONArrayDialogFragment extends CustomDialogFragment {
 		TextView tv = (TextView) dialog.findViewById(R.id.movie_single_txt);
 		tv.setText("- " + mMovieItems.optJSONObject(0).optString(MovieItem.JSON_TITLE));
 
-		btn = (Button) dialog.findViewById(R.id.movies_collection_btn);
+		btn = (Button) dialog.findViewById(R.id.movies_jsonarray_btn);
 		btn.setOnClickListener(new OnAddJSONArrayClickListener());
 		tv = (TextView) dialog.findViewById(R.id.movie_multi_txt1);
 		tv.setText("- " + mMovieItems.optJSONObject(1).optString(MovieItem.JSON_TITLE));

@@ -91,14 +91,12 @@ public class UnitTestJSONArrayActivity extends AdapterBaseActivity implements
 
 	@Override
 	protected String getInfoDialogMessage() {
-		//TODO: Implement
-		return "";
+		return getString(R.string.info_unittest_jsonarray_baseadapter_message);
 	}
 
 	@Override
 	protected String getInfoDialogTitle() {
-		//TODO: Implement
-		return "";
+		return getString(R.string.info_unittest_jsonarray_baseadapter_title);
 	}
 
 	@Override

@@ -75,6 +75,12 @@
 	<string name="info_credits_message_retain_url">http://thenounproject.com/term/crop/11553</string>
 	<string name="info_credits_message_plug_url">http://thenounproject.com/term/plug/33432</string>
 
+	<!-- Info Dialog - JSONArrayBaseAdapter -->
+	<string name="info_jsonarray_baseadapter_title">Adapter Demo Info</string>
+	<string name="info_jsonarray_baseadapter_message">
+		<!--TODO: Implement-->
+	</string>
+
 	<!--About Screen - License Heading-->
 	<string name="info_license_title">License</string>
 	<string name="info_license_message">
@@ -118,5 +124,11 @@
 		\n
 		This adapter supports filtering.  If filtering is not required, it\'s strongly recommended
 		to use the SimpleSparseArrayBaseAdapter instead.
+	</string>
+
+	<!-- Info Dialog - JSONArrayBaseAdapter -->
+	<string name="info_unittest_jsonarray_baseadapter_title">Adapter Unit Test</string>
+	<string name="info_unittest_jsonarray_baseadapter_message">
+		<!--TODO: Implement-->
 	</string>
 </resources>
