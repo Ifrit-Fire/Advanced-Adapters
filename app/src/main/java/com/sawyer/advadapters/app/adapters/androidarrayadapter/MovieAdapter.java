@@ -43,28 +43,34 @@ class MovieAdapter extends ArrayAdapter<MovieItem> {
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
+		ViewHolder vh;
 		if (convertView == null) {
 			convertView = mInflater.inflate(R.layout.item_movie1, parent, false);
-			convertView.setTag(R.id.title, convertView.findViewById(R.id.title));
-			convertView.setTag(R.id.subtitle, convertView.findViewById(R.id.subtitle));
-			convertView.setTag(R.id.icon, convertView.findViewById(R.id.icon));
+			vh = new ViewHolder();
+			vh.title = (TextView) convertView.findViewById(R.id.title);
+			vh.subtitle = (TextView) convertView.findViewById(R.id.subtitle);
+			vh.icon = (ImageView) convertView.findViewById(R.id.icon);
+			convertView.setTag(vh);
+		} else {
+			vh = (ViewHolder) convertView.getTag();
 		}
 
 		MovieItem movie = getItem(position);
-		TextView title = (TextView) convertView.getTag(R.id.title);
-		title.setText(movie.title);
-
-		TextView subtitle = (TextView) convertView.getTag(R.id.subtitle);
-		subtitle.setText(String.valueOf(movie.year));
-
-		ImageView icon = (ImageView) convertView.getTag(R.id.icon);
-		icon.setImageResource(
-				(movie.isRecommended) ? R.drawable.ic_rating_good : R.drawable.ic_rating_bad);
+		vh.title.setText(movie.title);
+		vh.subtitle.setText(String.valueOf(movie.year));
+		vh.icon.setImageResource(
+				movie.isRecommended ? R.drawable.ic_rating_good : R.drawable.ic_rating_bad);
 
 		return convertView;
 	}
 
 	private void init() {
 		mInflater = LayoutInflater.from(getContext());
+	}
+
+	private static class ViewHolder {
+		TextView title;
+		TextView subtitle;
+		ImageView icon;
 	}
 }
