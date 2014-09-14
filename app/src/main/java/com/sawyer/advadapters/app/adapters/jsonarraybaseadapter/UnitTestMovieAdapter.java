@@ -25,6 +25,7 @@ import com.sawyer.advadapters.app.data.MovieItem;
 import com.sawyer.advadapters.widget.JSONArrayBaseAdapter;
 
 import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.util.Locale;
 
@@ -58,21 +59,31 @@ class UnitTestMovieAdapter extends JSONArrayBaseAdapter {
 		return convertView;
 	}
 
-	@Override
+	@Override    //Default isFilteredBy, required by all subclasses to implement
 	protected boolean isFilteredBy(Object item, CharSequence constraint) {
 		return item.toString().toLowerCase(Locale.US)
 				   .contains(constraint.toString().toLowerCase(Locale.US));
 	}
 
-	@Override
+	@Override    //Predefined isFilteredBy, can optionally override to change the built in logic
 	protected boolean isFilteredBy(Long item, CharSequence constraint) {
 		return String.valueOf(item).toLowerCase(Locale.US)
 					 .contains(constraint.toString().toLowerCase(Locale.US));
 	}
 
-	boolean isFilteredBy(MovieItem movie, CharSequence constraint) {
+	//Custom isFilteredBy, found on adapter construction and called reflexively for any MovieItem
+	//object found in adapter while filtering.
+	protected boolean isFilteredBy(MovieItem movie, CharSequence constraint) {
 		return movie.title.toLowerCase(Locale.US)
 						  .contains(constraint.toString().toLowerCase(Locale.US));
+	}
+
+	//Another custom isFilteredBy method. Be it private, public, protected or no modifier at all.
+	//JSONArrayBaseAdapter will still find it and invoke it appropriately
+	@SuppressWarnings("UnusedDeclaration")
+	private boolean isFilteredBy(JSONObject item, CharSequence constraint) {
+		String title = item.optString(MovieItem.JSON_TITLE).toLowerCase(Locale.US);
+		return title.contains(constraint.toString().toLowerCase(Locale.US));
 	}
 
 	private static class ViewHolder {

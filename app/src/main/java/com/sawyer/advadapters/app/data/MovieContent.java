@@ -44,7 +44,7 @@ public class MovieContent {
 	public static SparseArray<MovieItem> ITEM_SPARSE = new SparseArray<>();
 
 	/** A JSON array of sample (movie) items */
-	public static JSONArray ITEM_JSON = new JSONArray();    //TODO: Research JSONArray Adapter
+	public static JSONArray ITEM_JSON = new JSONArray();
 
 	static {
 		addItem(newMovie("Primer", 2004, true));

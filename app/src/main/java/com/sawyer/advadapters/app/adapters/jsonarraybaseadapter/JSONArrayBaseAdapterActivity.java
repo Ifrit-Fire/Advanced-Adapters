@@ -52,12 +52,14 @@ public class JSONArrayBaseAdapterActivity extends AdapterBaseActivity implements
 
 	@Override
 	protected String getInfoDialogMessage() {
-		return getString(R.string.info_array_baseadapter_message);
+		//TODO: Implement
+		return "";
 	}
 
 	@Override
 	protected String getInfoDialogTitle() {
-		return getString(R.string.info_array_baseadapter_title);
+		//TODO: Implement
+		return "";
 	}
 
 	@Override

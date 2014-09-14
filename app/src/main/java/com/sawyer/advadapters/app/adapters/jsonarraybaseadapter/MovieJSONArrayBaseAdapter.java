@@ -79,14 +79,8 @@ class MovieJSONArrayBaseAdapter extends JSONArrayBaseAdapter {
 
 	@SuppressWarnings("UnusedDeclaration")    //Reflexively called, hence the suppressed warning
 	private boolean isFilteredBy(JSONObject item, CharSequence constraint) {
-		try {
-			String title = item.getString(MovieItem.JSON_TITLE).toLowerCase(Locale.US);
-			return title.contains(constraint.toString().toLowerCase(Locale.US));
-		} catch (JSONException e) {
-			Log.e(MovieJSONArrayBaseAdapter.class.getSimpleName(),
-				  "Unexpected error during isFilteredBy", e);
-			return false;
-		}
+		String title = item.optString(MovieItem.JSON_TITLE).toLowerCase(Locale.US);
+		return title.contains(constraint.toString().toLowerCase(Locale.US));
 	}
 
 	private static class ViewHolder {

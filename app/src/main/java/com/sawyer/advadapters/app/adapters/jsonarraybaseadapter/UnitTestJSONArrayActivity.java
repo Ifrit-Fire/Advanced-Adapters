@@ -26,8 +26,10 @@ import com.sawyer.advadapters.app.adapters.AdapterBaseActivity;
 import com.sawyer.advadapters.app.data.MovieContent;
 import com.sawyer.advadapters.widget.JSONArrayBaseAdapter;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 
+import java.util.Arrays;
 import java.util.Random;
 import java.util.UUID;
 
@@ -89,12 +91,14 @@ public class UnitTestJSONArrayActivity extends AdapterBaseActivity implements
 
 	@Override
 	protected String getInfoDialogMessage() {
-		return getString(R.string.info_array_baseadapter_message);
+		//TODO: Implement
+		return "";
 	}
 
 	@Override
 	protected String getInfoDialogTitle() {
-		return getString(R.string.info_array_baseadapter_title);
+		//TODO: Implement
+		return "";
 	}
 
 	@Override
@@ -159,13 +163,16 @@ public class UnitTestJSONArrayActivity extends AdapterBaseActivity implements
 		adapter.add(getShort());    //JSONArray converts to Integer
 		adapter.add(getInteger());
 		adapter.add(getLong());
-		adapter.add(MovieContent.ITEM_LIST.get(0));
 		try {
 			adapter.add(getFloat());    //JSONArray converts to Double
 			adapter.add(getDouble());
 		} catch (JSONException e) {
 			Log.e(TAG, "Error resetting float and/or double");
 		}
+		adapter.add(MovieContent.ITEM_LIST.get(0));
+		adapter.add(new JSONArray(Arrays.asList("Hello", "Random", "Test")));
+		adapter.add(MovieContent.ITEM_JSON.opt(1));
+
 		adapter.notifyDataSetChanged();
 		updateActionBar();
 	}
