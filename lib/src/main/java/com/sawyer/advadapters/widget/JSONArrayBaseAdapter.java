@@ -167,10 +167,11 @@ public abstract class JSONArrayBaseAdapter extends BaseAdapter implements Filter
 	}
 
 	/**
-	 * Adds the specified items at the end of the adapter. Will repeat the last filtering request if
+	 * Adds the specified items at the end of the adapter. May not be NaNs or infinities which will
+	 * cause the adapter to be in an inconsistent state. Will repeat the last filtering request if
 	 * invoked while filtered results are being displayed.
 	 *
-	 * @param item The items to add at the end of the adapter.
+	 * @param item The item to add at the end of the adapter.
 	 */
 	public void add(Object item) {
 		synchronized (mLock) {
@@ -184,6 +185,14 @@ public abstract class JSONArrayBaseAdapter extends BaseAdapter implements Filter
 		if (mNotifyOnChange) notifyDataSetChanged();
 	}
 
+	/**
+	 * Adds the specified items at the end of the adapter. May not be NaNs or infinities. Will
+	 * repeat the last filtering request if invoked while filtered results are being displayed.
+	 *
+	 * @param item The item to add at the end of the adapter.
+	 *
+	 * @throws JSONException If item is NaN or infinity
+	 */
 	public void add(double item) throws JSONException {
 		synchronized (mLock) {
 			if (mOriginalValues != null) {
@@ -196,6 +205,12 @@ public abstract class JSONArrayBaseAdapter extends BaseAdapter implements Filter
 		if (mNotifyOnChange) notifyDataSetChanged();
 	}
 
+	/**
+	 * Adds the specified items at the end of the adapter. Will repeat the last filtering request if
+	 * invoked while filtered results are being displayed.
+	 *
+	 * @param item The item to add at the end of the adapter.
+	 */
 	public void add(long item) {
 		synchronized (mLock) {
 			if (mOriginalValues != null) {
@@ -208,6 +223,12 @@ public abstract class JSONArrayBaseAdapter extends BaseAdapter implements Filter
 		if (mNotifyOnChange) notifyDataSetChanged();
 	}
 
+	/**
+	 * Adds the specified items at the end of the adapter. Will repeat the last filtering request if
+	 * invoked while filtered results are being displayed.
+	 *
+	 * @param item The item to add at the end of the adapter.
+	 */
 	public void add(boolean item) {
 		synchronized (mLock) {
 			if (mOriginalValues != null) {
@@ -220,6 +241,12 @@ public abstract class JSONArrayBaseAdapter extends BaseAdapter implements Filter
 		if (mNotifyOnChange) notifyDataSetChanged();
 	}
 
+	/**
+	 * Adds the specified items at the end of the adapter. Will repeat the last filtering request if
+	 * invoked while filtered results are being displayed.
+	 *
+	 * @param item The item to add at the end of the adapter.
+	 */
 	public void add(int item) {
 		synchronized (mLock) {
 			if (mOriginalValues != null) {
@@ -232,6 +259,13 @@ public abstract class JSONArrayBaseAdapter extends BaseAdapter implements Filter
 		if (mNotifyOnChange) notifyDataSetChanged();
 	}
 
+	/**
+	 * Adds the specified JSONArray at the end of the adapter. May not contain NaNs or infinities
+	 * which will cause the adapter to be in an inconsistent state. Will repeat the last filtering
+	 * request if invoked while filtered results are being displayed.
+	 *
+	 * @param items The JSONArray to add at the end of the adapter.
+	 */
 	public void addAll(JSONArray items) {
 		synchronized (mLock) {
 			if (mOriginalValues != null) {
@@ -248,6 +282,13 @@ public abstract class JSONArrayBaseAdapter extends BaseAdapter implements Filter
 		if (mNotifyOnChange) notifyDataSetChanged();
 	}
 
+	/**
+	 * Adds the specified items at the end of the adapter. May not contain NaNs or infinities which
+	 * will cause the adapter to be in an inconsistent state. Will repeat the last filtering request
+	 * if invoked while filtered results are being displayed.
+	 *
+	 * @param items The items to add at the end of the adapter.
+	 */
 	public void addAll(Object... items) {
 		synchronized (mLock) {
 			if (mOriginalValues != null) {
@@ -369,7 +410,8 @@ public abstract class JSONArrayBaseAdapter extends BaseAdapter implements Filter
 	}
 
 	/**
-	 * @return The shown filtered list. If no filter is applied, then the original list is returned.
+	 * @return The shown filtered JSONArray. If no filter is applied, then the original JSONArray is
+	 * returned.
 	 */
 	public JSONArray getFilteredJSONArray() {
 		JSONArray objects;
