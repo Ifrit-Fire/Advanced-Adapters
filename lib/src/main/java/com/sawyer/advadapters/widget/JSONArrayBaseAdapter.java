@@ -435,10 +435,30 @@ public abstract class JSONArrayBaseAdapter extends BaseAdapter implements Filter
 		return object;
 	}
 
+	/**
+	 * Gets the boolean data item associated with the specified position in the data set.
+	 *
+	 * @param position Position of the item whose data we want within the adapter's data set.
+	 *
+	 * @return The data at the specified position as a boolean.
+	 *
+	 * @throws JSONException If the value at position doesn't exit or cannot be coerced to a
+	 *                       boolean.
+	 */
 	public boolean getItemBoolean(int position) throws JSONException {
 		return mObjects.getBoolean(position);
 	}
 
+	/**
+	 * Gets the double data item associated with the specified position in the data set.
+	 *
+	 * @param position Position of the item whose data we want within the adapter's data set.
+	 *
+	 * @return The data at the specified position as a double.
+	 *
+	 * @throws JSONException If the value at position doesn't exit or cannot be coerced to a
+	 *                       double.
+	 */
 	public double getItemDouble(int position) throws JSONException {
 		return mObjects.getDouble(position);
 	}
@@ -448,22 +468,67 @@ public abstract class JSONArrayBaseAdapter extends BaseAdapter implements Filter
 		return position;
 	}
 
+	/**
+	 * Gets the int data item associated with the specified position in the data set.
+	 *
+	 * @param position Position of the item whose data we want within the adapter's data set.
+	 *
+	 * @return The data at the specified position as a int.
+	 *
+	 * @throws JSONException If the value at position doesn't exit or cannot be coerced to a int.
+	 */
 	public int getItemInt(int position) throws JSONException {
 		return mObjects.getInt(position);
 	}
 
+	/**
+	 * Gets the JSONArray data item associated with the specified position in the data set.
+	 *
+	 * @param position Position of the item whose data we want within the adapter's data set.
+	 *
+	 * @return The data at the specified position as a JSONArray.
+	 *
+	 * @throws JSONException If the value at position doesn't exit or is not a JSONArray.
+	 */
 	public JSONArray getItemJSONArray(int position) throws JSONException {
 		return mObjects.getJSONArray(position);
 	}
 
+	/**
+	 * Gets the JSONObject data item associated with the specified position in the data set.
+	 *
+	 * @param position Position of the item whose data we want within the adapter's data set.
+	 *
+	 * @return The data at the specified position as a JSONObject.
+	 *
+	 * @throws JSONException If the value at position doesn't exit or is not a JSONObject.
+	 */
 	public JSONObject getItemJSONObject(int position) throws JSONException {
 		return mObjects.getJSONObject(position);
 	}
 
+	/**
+	 * Gets the long data item associated with the specified position in the data set.
+	 *
+	 * @param position Position of the item whose data we want within the adapter's data set.
+	 *
+	 * @return The data at the specified position as a long.
+	 *
+	 * @throws JSONException If the value at position doesn't exit or cannot be coerced to a long.
+	 */
 	public long getItemLong(int position) throws JSONException {
 		return mObjects.getLong(position);
 	}
 
+	/**
+	 * Gets the String data item associated with the specified position in the data set.
+	 *
+	 * @param position Position of the item whose data we want within the adapter's data set.
+	 *
+	 * @return The data at the specified position as a String.
+	 *
+	 * @throws JSONException If no such value exists.
+	 */
 	public String getItemString(int position) throws JSONException {
 		return mObjects.getString(position);
 	}
@@ -483,6 +548,14 @@ public abstract class JSONArrayBaseAdapter extends BaseAdapter implements Filter
 		return objects;
 	}
 
+	/**
+	 * Resets the adapter to store a new JSONArray of items. Convenient way of calling {@link
+	 * #clear()}, then {@link #addAll(org.json.JSONArray)} without having to worry about an extra
+	 * {@link #notifyDataSetChanged()} invoked in between. Will repeat the last filtering request if
+	 * invoked while filtered results are being displayed.
+	 *
+	 * @param items New JSONArray of items to store within the adapter.
+	 */
 	public void setJSONArray(JSONArray items) {
 		synchronized (mLock) {
 			if (mOriginalValues != null) {
