@@ -101,6 +101,12 @@
  		If filtering is required, it\'s strongly recommended to use the ArrayBaseAdapter instead.
 	</string>
 
+	<!-- Info Dialog - SimpleJSONArrayBaseAdapter -->
+	<string name="info_simplejsonarray_baseadapter_title">Adapter Demo Info</string>
+	<string name="info_simplejsonarray_baseadapter_message">
+		<!--TODO: Implement-->
+	</string>
+
 	<!--Info Dialog - SimpleSparseArrayBaseAdapter-->
 	<string name="info_simplesparsearray_baseadapter_title">Adapter Demo Info</string>
 	<string name="info_simplesparsearray_baseadapter_message">
@@ -129,6 +135,14 @@
 	<!-- Info Dialog - JSONArrayBaseAdapter -->
 	<string name="info_unittest_jsonarray_baseadapter_title">Adapter Unit Test</string>
 	<string name="info_unittest_jsonarray_baseadapter_message">
-		<!--TODO: Implement-->
+		A quick and dirty setup to test various aspects of the JSONArray BaseAdapter that doesn\'t
+		quite fit with the normal presentable demo.
+	</string>
+
+	<!-- Info Dialog - SimpleJSONArrayBaseAdapter -->
+	<string name="info_unittest_simplejsonarray_baseadapter_title">Adapter Unit Test</string>
+	<string name="info_unittest_simplejsonarray_baseadapter_message">
+		A quick and dirty setup to test various aspects of the SimpleJSONArray BaseAdapter that
+		doesn\'t quite fit with the normal presentable demo.
 	</string>
 </resources>

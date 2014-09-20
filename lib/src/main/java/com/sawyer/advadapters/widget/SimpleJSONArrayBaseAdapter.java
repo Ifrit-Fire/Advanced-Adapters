@@ -20,7 +20,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.Filterable;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -32,7 +31,7 @@ import java.util.Collection;
 /**
  * TODO
  */
-public abstract class SimpleJSONArrayBaseAdapter extends BaseAdapter implements Filterable {
+public abstract class SimpleJSONArrayBaseAdapter extends BaseAdapter {
 	/** LayoutInflater created from the constructing context */
 	private LayoutInflater mInflater;
 	/**

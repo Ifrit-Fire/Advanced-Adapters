@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.sawyer.advadapters.app.adapters.jsonarraybaseadapter;
+package com.sawyer.advadapters.app.adapters.simplejsonarraybaseadapter;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
@@ -24,7 +24,7 @@ import com.sawyer.advadapters.app.R;
 import com.sawyer.advadapters.app.ToastHelper;
 import com.sawyer.advadapters.app.adapters.AdapterBaseActivity;
 import com.sawyer.advadapters.app.data.MovieContent;
-import com.sawyer.advadapters.widget.JSONArrayBaseAdapter;
+import com.sawyer.advadapters.widget.SimpleJSONArrayBaseAdapter;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -85,18 +85,13 @@ public class UnitTestJSONArrayActivity extends AdapterBaseActivity implements
 	}
 
 	@Override
-	protected void clearAdapterFilter() {
-		mListFragment.getListAdapter().getFilter().filter("");
-	}
-
-	@Override
 	protected String getInfoDialogMessage() {
-		return getString(R.string.info_unittest_jsonarray_baseadapter_message);
+		return getString(R.string.info_unittest_simplejsonarray_baseadapter_message);
 	}
 
 	@Override
 	protected String getInfoDialogTitle() {
-		return getString(R.string.info_unittest_jsonarray_baseadapter_title);
+		return getString(R.string.info_unittest_simplejsonarray_baseadapter_title);
 	}
 
 	@Override
@@ -119,11 +114,6 @@ public class UnitTestJSONArrayActivity extends AdapterBaseActivity implements
 	}
 
 	@Override
-	protected boolean isSearchViewEnabled() {
-		return true;
-	}
-
-	@Override
 	public void onAdapterCountUpdated() {
 		updateActionBar();
 	}
@@ -138,20 +128,8 @@ public class UnitTestJSONArrayActivity extends AdapterBaseActivity implements
 	}
 
 	@Override
-	public boolean onQueryTextChange(String newText) {
-		mListFragment.getListAdapter().getFilter().filter(newText);
-		return true;
-	}
-
-	@Override
-	public boolean onQueryTextSubmit(String query) {
-		mListFragment.getListAdapter().getFilter().filter(query);
-		return true;
-	}
-
-	@Override
 	protected void reset() {
-		JSONArrayBaseAdapter adapter = mListFragment.getListAdapter();
+		SimpleJSONArrayBaseAdapter adapter = mListFragment.getListAdapter();
 		adapter.setNotifyOnChange(false);
 		adapter.clear();
 		adapter.add(getChar());    //JSONArray converts to Integer
