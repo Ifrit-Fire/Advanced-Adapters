@@ -568,6 +568,26 @@ public abstract class JSONArrayBaseAdapter extends BaseAdapter implements Filter
 		if (mNotifyOnChange) notifyDataSetChanged();
 	}
 
+	/**
+	 * Get a View that displays the data at the specified position in the data set. You can either
+	 * create a View manually or inflate it from an XML layout file. When the View is inflated, the
+	 * parent View (GridView, ListView...) will apply default layout parameters unless you use
+	 * {@link android.view.LayoutInflater#inflate(int, android.view.ViewGroup, boolean)} to specify
+	 * a root view and to prevent attachment to the root.
+	 *
+	 * @param inflater    the LayoutInflater object that can be used to inflate each view.
+	 * @param position    The position of the item within the adapter's data set of the item whose
+	 *                    view we want.
+	 * @param convertView The old view to reuse, if possible. Note: You should check that this view
+	 *                    is non-null and of an appropriate type before using. If it is not possible
+	 *                    to convert this view to display the correct data, this method can create a
+	 *                    new view. Heterogeneous lists can specify their number of view types, so
+	 *                    that this View is always of the right type (see {@link
+	 *                    #getViewTypeCount()} and {@link #getItemViewType(int)}).
+	 * @param parent      The parent that this view will eventually be attached to
+	 *
+	 * @return A View corresponding to the data at the specified position.
+	 */
 	public abstract View getView(LayoutInflater inflater, int position, View convertView,
 								 ViewGroup parent);
 
@@ -584,10 +604,34 @@ public abstract class JSONArrayBaseAdapter extends BaseAdapter implements Filter
 		cacheSubclassFilteredMethods();
 	}
 
+	/**
+	 * Determines whether the provided constraint filters out the given item. Subclass to provide
+	 * you're own logic. It's incorrect to modify the adapter or the contents of the item itself.
+	 * Any alterations will lead to undefined behavior or crashes. Internally, this method is only
+	 * ever invoked from a background thread.
+	 *
+	 * @param item       The Boolean item to compare against the constraint
+	 * @param constraint The constraint used to filter the item
+	 *
+	 * @return True if the item equals the constraint and continues to display.  Otherwise, false
+	 * and is not displayed.
+	 */
 	protected boolean isFilteredBy(Boolean item, CharSequence constraint) {
 		return item.toString().equalsIgnoreCase(constraint.toString());
 	}
 
+	/**
+	 * Determines whether the provided constraint filters out the given item. Subclass to provide
+	 * you're own logic. It's incorrect to modify the adapter or the contents of the item itself.
+	 * Any alterations will lead to undefined behavior or crashes. Internally, this method is only
+	 * ever invoked from a background thread.
+	 *
+	 * @param item       The Double item to compare against the constraint
+	 * @param constraint The constraint used to filter the item
+	 *
+	 * @return True if the item equals the constraint and continues to display.  Otherwise, false
+	 * and is not displayed.
+	 */
 	protected boolean isFilteredBy(Double item, CharSequence constraint) {
 		try {
 			return item.equals(Double.valueOf(constraint.toString()));
@@ -596,6 +640,18 @@ public abstract class JSONArrayBaseAdapter extends BaseAdapter implements Filter
 		}
 	}
 
+	/**
+	 * Determines whether the provided constraint filters out the given item. Subclass to provide
+	 * you're own logic. It's incorrect to modify the adapter or the contents of the item itself.
+	 * Any alterations will lead to undefined behavior or crashes. Internally, this method is only
+	 * ever invoked from a background thread.
+	 *
+	 * @param item       The Integer item to compare against the constraint
+	 * @param constraint The constraint used to filter the item
+	 *
+	 * @return True if the item equals the constraint and continues to display.  Otherwise, false
+	 * and is not displayed.
+	 */
 	protected boolean isFilteredBy(Integer item, CharSequence constraint) {
 		try {
 			return item.equals(Integer.valueOf(constraint.toString()));
@@ -604,6 +660,18 @@ public abstract class JSONArrayBaseAdapter extends BaseAdapter implements Filter
 		}
 	}
 
+	/**
+	 * Determines whether the provided constraint filters out the given item. Subclass to provide
+	 * you're own logic. It's incorrect to modify the adapter or the contents of the item itself.
+	 * Any alterations will lead to undefined behavior or crashes. Internally, this method is only
+	 * ever invoked from a background thread.
+	 *
+	 * @param item       The Long item to compare against the constraint
+	 * @param constraint The constraint used to filter the item
+	 *
+	 * @return True if the item equals the constraint and continues to display.  Otherwise, false
+	 * and is not displayed.
+	 */
 	protected boolean isFilteredBy(Long item, CharSequence constraint) {
 		try {
 			return item.equals(Long.valueOf(constraint.toString()));
@@ -618,18 +686,34 @@ public abstract class JSONArrayBaseAdapter extends BaseAdapter implements Filter
 	 * the item itself. Any alterations will lead to undefined behavior or crashes. Internally, this
 	 * method is only ever invoked from a background thread.
 	 *
-	 * @param item       The item to compare against the constraint
+	 * @param item       The Object item to compare against the constraint
 	 * @param constraint The constraint used to filter the item
 	 *
-	 * @return True if the item is filtered out by the constraint. False if the item is not filtered
-	 * and will continue to reside in the adapter.
+	 * @return True if the item passes the filtered constraint and continues to display. False if
+	 * the item does not pass the filter check and is not displayed.
 	 */
 	protected abstract boolean isFilteredBy(Object item, CharSequence constraint);
 
+	/**
+	 * Determines whether the provided constraint filters out the given item. Subclass to provide
+	 * you're own logic. It's incorrect to modify the adapter or the contents of the item itself.
+	 * Any alterations will lead to undefined behavior or crashes. Internally, this method is only
+	 * ever invoked from a background thread.
+	 *
+	 * @param item       The String item to compare against the constraint
+	 * @param constraint The constraint used to filter the item
+	 *
+	 * @return True if the item contains the constraint and continues to display. Otherwise, false
+	 * and is not displayed.
+	 */
 	protected boolean isFilteredBy(String item, CharSequence constraint) {
-		return item.equalsIgnoreCase(constraint.toString());
+		return item.toLowerCase().contains(constraint.toString().toLowerCase());
 	}
 
+	/**
+	 * @return True if this adapter has no value at position, or if it's value is the {@code null}
+	 * reference or {@link JSONObject#NULL NULL}.
+	 */
 	public boolean isNull(int position) {
 		return mObjects.isNull(position);
 	}
@@ -640,54 +724,163 @@ public abstract class JSONArrayBaseAdapter extends BaseAdapter implements Filter
 		mNotifyOnChange = true;
 	}
 
+	/**
+	 * Gets the data item associated with the specified position in the adapter or null if there is
+	 * no value at position.
+	 *
+	 * @param position Position of the item whose data we want within the adapter's data set.
+	 *
+	 * @return The data at the specified position or null.
+	 */
 	public Object optItem(int position) {
 		return mObjects.opt(position);
 	}
 
+	/**
+	 * Gets the boolean data item associated with the specified position in the adapter or null if
+	 * there is no value at position.
+	 *
+	 * @param position Position of the item whose data we want within the adapter's data set.
+	 *
+	 * @return The boolean data at the specified position or null.
+	 */
 	public boolean optItemBoolean(int position) {
 		return mObjects.optBoolean(position);
 	}
 
+	/**
+	 * Gets the boolean data item associated with the specified position in the adapter or null if
+	 * there is no value at position.
+	 *
+	 * @param position Position of the item whose data we want within the adapter's data set.
+	 * @param fallback Value to return if no data is found.
+	 *
+	 * @return The boolean data at the specified position or otherwise the fallback.
+	 */
 	public boolean optItemBoolean(int position, boolean fallback) {
 		return mObjects.optBoolean(position, fallback);
 	}
 
+	/**
+	 * Gets the double data item associated with the specified position in the adapter or null if
+	 * there is no value at position.
+	 *
+	 * @param position Position of the item whose data we want within the adapter's data set.
+	 *
+	 * @return The double data at the specified position or null.
+	 */
 	public double optItemDouble(int position) {
 		return mObjects.optDouble(position);
 	}
 
+	/**
+	 * Gets the double data item associated with the specified position in the adapter or null if
+	 * there is no value at position.
+	 *
+	 * @param position Position of the item whose data we want within the adapter's data set.
+	 * @param fallback Value to return if no data is found.
+	 *
+	 * @return The double data at the specified position or otherwise the fallback.
+	 */
 	public double optItemDouble(int position, double fallback) {
 		return mObjects.optDouble(position, fallback);
 	}
 
+	/**
+	 * Gets the int data item associated with the specified position in the adapter or null if there
+	 * is no value at position.
+	 *
+	 * @param position Position of the item whose data we want within the adapter's data set.
+	 *
+	 * @return The int data at the specified position or null.
+	 */
 	public int optItemInt(int position) {
 		return mObjects.optInt(position);
 	}
 
+	/**
+	 * Gets the int data item associated with the specified position in the adapter or null if there
+	 * is no value at position.
+	 *
+	 * @param position Position of the item whose data we want within the adapter's data set.
+	 * @param fallback Value to return if no data is found.
+	 *
+	 * @return The int data at the specified position or otherwise the fallback.
+	 */
 	public int optItemInt(int position, int fallback) {
 		return mObjects.optInt(position, fallback);
 	}
 
+	/**
+	 * Gets the JSONArray data item associated with the specified position in the adapter or null if
+	 * there is no value at position.
+	 *
+	 * @param position Position of the item whose data we want within the adapter's data set.
+	 *
+	 * @return The JSONArray data at the specified position or null.
+	 */
 	public JSONArray optItemJSONArray(int position) {
 		return mObjects.optJSONArray(position);
 	}
 
+	/**
+	 * Gets the JSONObject data item associated with the specified position in the adapter or null
+	 * if there is no value at position.
+	 *
+	 * @param position Position of the item whose data we want within the adapter's data set.
+	 *
+	 * @return The JSONObject data at the specified position or null.
+	 */
 	public JSONObject optItemJSONObject(int position) {
 		return mObjects.optJSONObject(position);
 	}
 
+	/**
+	 * Gets the long data item associated with the specified position in the adapter or null if
+	 * there is no value at position.
+	 *
+	 * @param position Position of the item whose data we want within the adapter's data set.
+	 *
+	 * @return The long data at the specified position or null.
+	 */
 	public long optItemLong(int position) {
 		return mObjects.optLong(position);
 	}
 
+	/**
+	 * Gets the long data item associated with the specified position in the adapter or null if
+	 * there is no value at position.
+	 *
+	 * @param position Position of the item whose data we want within the adapter's data set.
+	 * @param fallback Value to return if no data is found.
+	 *
+	 * @return The long data at the specified position or otherwise the fallback.
+	 */
 	public long optItemLong(int position, long fallback) {
 		return mObjects.optLong(position, fallback);
 	}
 
+	/**
+	 * Gets the String data item associated with the specified position in the adapter or null if
+	 * there is no value at position.
+	 *
+	 * @param position Position of the item whose data we want within the adapter's data set.
+	 *
+	 * @return The String data at the specified position or null.
+	 */
 	public String optItemString(int position) {
 		return mObjects.optString(position);
 	}
 
+	/**
+	 * Gets the String data item associated with the specified position in the adapter or null if
+	 * there is no value at position.
+	 *
+	 * @param position Position of the item whose data we want within the adapter's data set.
+	 * @param fallback Value to return if no data is found.
+	 *
+	 * @return The String data at the specified position or otherwise the fallback.
+	 */
 	public String optItemString(int position, String fallback) {
 		return mObjects.optString(position, fallback);
 	}
@@ -707,9 +900,17 @@ public abstract class JSONArrayBaseAdapter extends BaseAdapter implements Filter
 	}
 
 	/**
-	 * An array filter constrains the content of the array adapter. Whether an item is constrained
-	 * or not is delegated to subclasses through {@link com.sawyer.advadapters.widget.JSONArrayBaseAdapter#isFilteredBy(Object,
-	 * CharSequence)}
+	 * A JSONArray filter constrains the content of the adapter. Whether an item is constrained or
+	 * not is delegated to subclasses through the default {@link JSONArrayBaseAdapter#isFilteredBy(Object,
+	 * CharSequence)}. However the filter will first attempt to find the best matching {@code
+	 * isFilteredBy} method based on the type of object stored at a given location. For instance, if
+	 * the object is an Integer, then the {@link JSONArrayBaseAdapter#isFilteredBy(Integer,
+	 * CharSequence)} will be invoked instead.
+	 * <p/>
+	 * It's possible for subclasses to define their own {@code isFilteredBy} methods for their own
+	 * custom classes. So if the object stored is of type {@code Foo} and the subclassed adapter has
+	 * defined an {@code isFilteredBy(Foo, CharSequence)}} method, then that  will be invoked
+	 * instead of the default {@link JSONArrayBaseAdapter#isFilteredBy(Object, CharSequence)}.
 	 */
 	private class JSONArrayFilter extends Filter {
 		@Override
