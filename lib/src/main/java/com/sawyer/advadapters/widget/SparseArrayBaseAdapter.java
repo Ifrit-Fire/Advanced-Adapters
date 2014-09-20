@@ -350,8 +350,8 @@ public abstract class SparseArrayBaseAdapter<T> extends BaseAdapter implements F
 	 * @param item       The item to compare against the constraint
 	 * @param constraint The constraint used to filter the item
 	 *
-	 * @return True if the item is filtered out by the constraint. False if the item is not filtered
-	 * and will continue to visibly show in the adapter.
+	 * @return True if the item passes the filtered constraint and continues to display. False if
+	 * the item does not pass the filter check and is not displayed.
 	 */
 	protected abstract boolean isFilteredBy(int keyId, T item, CharSequence constraint);
 

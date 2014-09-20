@@ -28,9 +28,9 @@ import android.widget.BaseAdapter;
  * to subclasses.
  * <p/>
  * Designed to be a simple version of it's cousin SparseArrayBaseAdapter, it removes support for
- * filtering. As a result, there is no need for <code>synchronized</code> blocks which may help
- * those worried about performance. An adapter's row ID maps to the SparseArray's key and vice
- * versa. Any method requiring a key will have <i>"withId"</i> in the name.
+ * filtering. As a result, there is no need for {@code synchronized} blocks which may help those
+ * worried about performance. An adapter's row ID maps to the SparseArray's key and vice versa. Any
+ * method requiring a key will have <i>"withId"</i> in the name.
  * <p/>
  * If filtering is required, it's strongly recommended to use the {@link ArrayBaseAdapter} instead.
  */

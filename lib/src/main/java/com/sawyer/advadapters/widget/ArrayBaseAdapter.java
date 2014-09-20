@@ -317,6 +317,26 @@ public abstract class ArrayBaseAdapter<T> extends BaseAdapter implements Filtera
 		return mObjects.indexOf(item);
 	}
 
+	/**
+	 * Get a View that displays the data at the specified position in the data set. You can either
+	 * create a View manually or inflate it from an XML layout file. When the View is inflated, the
+	 * parent View (GridView, ListView...) will apply default layout parameters unless you use
+	 * {@link android.view.LayoutInflater#inflate(int, android.view.ViewGroup, boolean)} to specify
+	 * a root view and to prevent attachment to the root.
+	 *
+	 * @param inflater    the LayoutInflater object that can be used to inflate each view.
+	 * @param position    The position of the item within the adapter's data set of the item whose
+	 *                    view we want.
+	 * @param convertView The old view to reuse, if possible. Note: You should check that this view
+	 *                    is non-null and of an appropriate type before using. If it is not possible
+	 *                    to convert this view to display the correct data, this method can create a
+	 *                    new view. Heterogeneous lists can specify their number of view types, so
+	 *                    that this View is always of the right type (see {@link
+	 *                    #getViewTypeCount()} and {@link #getItemViewType(int)}).
+	 * @param parent      The parent that this view will eventually be attached to
+	 *
+	 * @return A View corresponding to the data at the specified position.
+	 */
 	public abstract View getView(LayoutInflater inflater, int position, View convertView,
 								 ViewGroup parent);
 
@@ -339,8 +359,8 @@ public abstract class ArrayBaseAdapter<T> extends BaseAdapter implements Filtera
 	 * @param item       The item to compare against the constraint
 	 * @param constraint The constraint used to filter the item
 	 *
-	 * @return True if the item is filtered out by the constraint. False if the item is not filtered
-	 * and will continue to reside in the adapter.
+	 * @return True if the item passes the filtered constraint and continues to display. False if
+	 * the item does not pass the filter check and is not displayed.
 	 */
 	protected abstract boolean isFilteredBy(T item, CharSequence constraint);
 
@@ -418,8 +438,8 @@ public abstract class ArrayBaseAdapter<T> extends BaseAdapter implements Filtera
 	 * passing null to {@link #sort(java.util.Comparator)}.
 	 *
 	 * @throws java.lang.ClassCastException If the comparator is null and the stored items do not
-	 *                                      implement <code>Comparable</code> or if
-	 *                                      <code>compareTo</code> throws for any pair of items.
+	 *                                      implement {@code Comparable} or if {@code compareTo}
+	 *                                      throws for any pair of items.
 	 */
 	public void sort() {
 		sort(null);
@@ -429,11 +449,11 @@ public abstract class ArrayBaseAdapter<T> extends BaseAdapter implements Filtera
 	 * Sorts the content of this adapter using the specified comparator.
 	 *
 	 * @param comparator Used to sort the items contained in this adapter. Null to use an item's
-	 *                   <code>Comparable</code> interface.
+	 *                   {@code Comparable} interface.
 	 *
 	 * @throws java.lang.ClassCastException If the comparator is null and the stored items do not
-	 *                                      implement <code>Comparable</code> or if
-	 *                                      <code>compareTo</code> throws for any pair of items.
+	 *                                      implement {@code Comparable} or if {@code compareTo}
+	 *                                      throws for any pair of items.
 	 */
 	public void sort(Comparator<? super T> comparator) {
 		synchronized (mLock) {
