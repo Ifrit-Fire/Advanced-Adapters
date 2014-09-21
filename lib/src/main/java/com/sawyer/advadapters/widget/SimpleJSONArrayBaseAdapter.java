@@ -29,7 +29,17 @@ import org.json.JSONTokener;
 import java.util.Collection;
 
 /**
- * TODO
+ * A custom abstract {@link BaseAdapter} that is backed by a {@link JSONArray} of arbitrary objects.
+ * By default this class delegates view generation to subclasses.
+ * <p/>
+ * Designed to be a simple version of it's cousin JSONArrayBaseAdapter; it exposes most of the
+ * JSONArray methods, conveniently passes along a layout inflater for view creation, and removes
+ * support for filtering. As a result, there is no need for {@code synchronized} blocks which may
+ * help those worried about performance. Keep in mind JSONArray itself has limited capabilities
+ * which restricts what this adapter can do.
+ * <p/>
+ * If filtering is required, it's strongly recommended to use the {@link JSONArrayBaseAdapter}
+ * instead.
  */
 public abstract class SimpleJSONArrayBaseAdapter extends BaseAdapter {
 	/** LayoutInflater created from the constructing context */

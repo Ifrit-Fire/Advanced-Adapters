@@ -38,7 +38,32 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * TODO
+ * A custom abstract {@link BaseAdapter} that is backed by a {@link JSONArray} of arbitrary objects.
+ * By default this class delegates view generation and defining the filtering logic to subclasses.
+ * <p/>
+ * Designed to be a flexible and customizable solution for using JSONArray with an adapter. It
+ * exposes most of the JSONArray methods, provides active filtering support, and conveniently passes
+ * along a layout inflater for view creation. Keep in mind JSONArray itself has limited capabilities
+ * which restricts what this adapter can do.
+ * <p/>
+ * Because of the background filtering process, all methods which mutates the underlying data are
+ * internally synchronized. This ensures a thread safe environment for internal write operations. If
+ * filtering is not required, it's strongly recommended to use the {@link
+ * SimpleJSONArrayBaseAdapter} instead. In order to support the multitude of data types a
+ * JSONArray can store, the filtering mechanism is built to be very robust.
+ * <p/>
+ * Only the {@link #isFilteredBy(Object, CharSequence)} is required to be implemented by subclasses.
+ * Pre-built methods for handing the logic for Boolean, Double, Integer, Long, and String already
+ * exist. You may override them to provide an alternate behavior. In addition, you can provide your
+ * own filtered methods for custom data types. During adapter construction, any methods which match
+ * the {@code isFilteredBy} method signature are cached.  Then during a filter operation, will be
+ * invoked via reflection when required.
+ * <p/>
+ * For example, lets say you created your own object type called Foo. You've stored several instances of
+ * Foo within the adapter along with JSONObjects, Integers, and Booleans. In order to specifically
+ * support a {@code isFilteredBy} method for your Foo object, have your subclass implement a {@code
+ * isFilteredBy(Foo, CharSequence)}. Then during a filter operation, any Foo object detected will
+ * have that method invoke to determine whether it passes the filter or not.
  */
 public abstract class JSONArrayBaseAdapter extends BaseAdapter implements Filterable {
 	/**

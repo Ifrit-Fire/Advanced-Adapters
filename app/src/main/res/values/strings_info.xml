@@ -78,7 +78,14 @@
 	<!-- Info Dialog - JSONArrayBaseAdapter -->
 	<string name="info_jsonarray_baseadapter_title">Adapter Demo Info</string>
 	<string name="info_jsonarray_baseadapter_message">
-		<!--TODO: Implement-->
+		This is a demonstration of the JSONArrayBaseAdapter class, which is a full fledged adapter
+		backed by a JSONArray.  Keep in mind, JSONArray is not part of a Collection and does not
+		behave like a normal array.  It\'s ability to dynamically change the underlying data is very
+		limited but possible.\n
+		\n
+		This adapter specifically supports a highly customizable filtering process which allows easy
+		support for whatever data type is stored within. If filtering is not required, it\'s
+		strongly recommended to use the SimpleJSONArrayBaseAdapter instead.
 	</string>
 
 	<!--About Screen - License Heading-->
@@ -104,7 +111,12 @@
 	<!-- Info Dialog - SimpleJSONArrayBaseAdapter -->
 	<string name="info_simplejsonarray_baseadapter_title">Adapter Demo Info</string>
 	<string name="info_simplejsonarray_baseadapter_message">
-		<!--TODO: Implement-->
+		This is a demonstration of the SimpleJSONArrayBaseAdapter class, which is a full fledged
+		adapter backed by a JSONArray.  Keep in mind, JSONArray is not part of a Collection and does
+		not behave like a normal array.  It\'s ability to dynamically change the underlying data is
+		limited but possible.\n
+		\n
+		If filtering is required, it\'s strongly recommended to use the JSONArrayBaseAdapter instead.
 	</string>
 
 	<!--Info Dialog - SimpleSparseArrayBaseAdapter-->
