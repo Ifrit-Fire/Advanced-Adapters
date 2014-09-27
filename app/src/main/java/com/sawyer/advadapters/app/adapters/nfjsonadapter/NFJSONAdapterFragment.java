@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.sawyer.advadapters.app.adapters.simplejsonarraybaseadapter;
+package com.sawyer.advadapters.app.adapters.nfjsonadapter;
 
 import android.app.Activity;
 import android.app.ListFragment;
@@ -32,45 +32,36 @@ import android.widget.ListView;
 
 import com.sawyer.advadapters.app.R;
 import com.sawyer.advadapters.app.ToastHelper;
-import com.sawyer.advadapters.app.data.MovieContent;
 import com.sawyer.advadapters.app.data.MovieItem;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.Arrays;
-import java.util.Random;
-import java.util.UUID;
-
-public class UnitTestJSONArrayFragment extends ListFragment {
+public class NFJSONAdapterFragment extends ListFragment {
 	private static final String STATE_CAB_CHECKED_COUNT = "State Cab Checked Count";
 	private static final String STATE_LIST = "State List";
 
 	private int mCheckedCount;
 	private EventListener mEventListener;
 
-	private static String getString() {
-		return UUID.randomUUID().toString().substring(0, 6);
-	}
-
-	public static UnitTestJSONArrayFragment newInstance() {
-		return new UnitTestJSONArrayFragment();
+	public static NFJSONAdapterFragment newInstance() {
+		return new NFJSONAdapterFragment();
 	}
 
 	@Override
-	public UnitTestMovieAdapter getListAdapter() {
-		return (UnitTestMovieAdapter) super.getListAdapter();
+	public MovieNFJSONArrayAdapter getListAdapter() {
+		return (MovieNFJSONArrayAdapter) super.getListAdapter();
 	}
 
 	@Override
 	public void setListAdapter(ListAdapter adapter) {
-		if (adapter instanceof UnitTestMovieAdapter) {
+		if (adapter instanceof MovieNFJSONArrayAdapter) {
 			super.setListAdapter(adapter);
 		} else {
 			throw new ClassCastException(
 					"Adapter must be of type " +
-					UnitTestMovieAdapter.class.getSimpleName());
+					MovieNFJSONArrayAdapter.class.getSimpleName());
 		}
 	}
 
@@ -99,14 +90,15 @@ public class UnitTestJSONArrayFragment extends ListFragment {
 			mCheckedCount = savedInstanceState.getInt(STATE_CAB_CHECKED_COUNT);
 			try {
 				JSONArray list = new JSONArray(savedInstanceState.getString(STATE_LIST));
-				setListAdapter(new UnitTestMovieAdapter(getActivity(), list));
+				setListAdapter(new MovieNFJSONArrayAdapter(getActivity(), list));
 			} catch (JSONException e) {
-				Log.w(UnitTestJSONArrayFragment.class.getSimpleName(), "Error restoring state", e);
+				Log.e(NFJSONAdapterFragment.class.getSimpleName(), "OnRestore Error",
+					  e);
 				mCheckedCount = 0;
-				setListAdapter(new UnitTestMovieAdapter(getActivity()));
+				setListAdapter(new MovieNFJSONArrayAdapter(getActivity()));
 			}
 		} else {
-			setListAdapter(new UnitTestMovieAdapter(getActivity()));
+			setListAdapter(new MovieNFJSONArrayAdapter(getActivity()));
 		}
 	}
 
@@ -119,35 +111,20 @@ public class UnitTestJSONArrayFragment extends ListFragment {
 		return lv;
 	}
 
-	@SuppressWarnings("ChainOfInstanceofChecks")    //Yeah, yeah. Just need a quick way to test.
 	@Override
 	public void onListItemClick(ListView l, View v, int position, long id) {
-		Object item = getListAdapter().optItem(position);
+		//Granted, making a whole new instance is not even necessary here.
+		//However I wanted to demonstrate updating with an entirely different instance.
+		JSONObject oldMovie = getListAdapter().optItemJSONObject(position);
+		MovieItem newMovie = new MovieItem(oldMovie.optInt(MovieItem.JSON_BARCODE));
+		newMovie.title = new StringBuilder(oldMovie.optString(MovieItem.JSON_TITLE, "")).reverse()
+				.toString();
+		newMovie.year = oldMovie.optInt(MovieItem.JSON_YEAR);
+		newMovie.isRecommended = !oldMovie.optBoolean(MovieItem.JSON_IS_RECOMMENDED);
 		try {
-			if (item instanceof Integer) {
-				getListAdapter().update(position, new Random().nextInt());
-			} else if (item instanceof String) {
-				getListAdapter().update(position, getString());
-			} else if (item instanceof Boolean) {
-				getListAdapter().update(position, new Random().nextBoolean());
-			} else if (item instanceof Long) {
-				getListAdapter().update(position, new Random().nextLong());
-			} else if (item instanceof Double) {
-				getListAdapter().update(position, new Random().nextDouble());
-			} else if (item instanceof MovieItem) {
-				getListAdapter().update(position, MovieContent.ITEM_LIST
-						.get(new Random().nextInt(MovieContent.ITEM_LIST.size())));
-			} else if (item instanceof JSONArray) {
-				getListAdapter().update(position, new JSONArray(
-						Arrays.asList(getString(), getString(), getString())));
-			} else if (item instanceof JSONObject) {
-				getListAdapter().update(position, MovieContent.ITEM_JSON.opt(new Random().nextInt(
-						MovieContent.ITEM_JSON.length())));
-			} else {
-				Log.e("Unrecognized Object In Click", item.getClass().getSimpleName());
-			}
+			getListAdapter().update(position, newMovie.toJSONObject());
 		} catch (JSONException e) {
-			Log.e("Error updating " + item.getClass().getSimpleName(), e.getMessage());
+			Log.e("Error updating JSONArray", e.getMessage());
 		}
 	}
 

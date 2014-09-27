@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.sawyer.advadapters.app.adapters.simplejsonarraybaseadapter;
+package com.sawyer.advadapters.app.adapters.nfjsonadapter;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
@@ -31,13 +31,13 @@ import com.sawyer.advadapters.app.dialogs.AddJSONArrayDialogFragment;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-public class SimpleJSONArrayBaseAdapterActivity extends AdapterBaseActivity implements
-		AddJSONArrayDialogFragment.EventListener, SimpleJSONArrayBaseAdapterFragment.EventListener {
+public class NFJSONAdapterActivity extends AdapterBaseActivity implements
+		AddJSONArrayDialogFragment.EventListener, NFJSONAdapterFragment.EventListener {
 	private static final String TAG_ADD_DIALOG_FRAG = "Tag Add Dialog Frag";
 	private static final String TAG_BASE_ADAPTER_FRAG = "Tag Base Adapter Frag";
 
 	private AddJSONArrayDialogFragment mAddDialogFragment;
-	private SimpleJSONArrayBaseAdapterFragment mListFragment;
+	private NFJSONAdapterFragment mListFragment;
 
 	@Override
 	protected void clear() {
@@ -47,12 +47,12 @@ public class SimpleJSONArrayBaseAdapterActivity extends AdapterBaseActivity impl
 
 	@Override
 	protected String getInfoDialogMessage() {
-		return getString(R.string.info_simplejsonarray_baseadapter_message);
+		return getString(R.string.info_nfjsonadapter_message);
 	}
 
 	@Override
 	protected String getInfoDialogTitle() {
-		return getString(R.string.info_simplejsonarray_baseadapter_title);
+		return getString(R.string.info_nfjsonadapter_title);
 	}
 
 	@Override
@@ -64,10 +64,10 @@ public class SimpleJSONArrayBaseAdapterActivity extends AdapterBaseActivity impl
 	protected void initFrags() {
 		super.initFrags();
 		FragmentManager manager = getFragmentManager();
-		mListFragment = (SimpleJSONArrayBaseAdapterFragment) manager
+		mListFragment = (NFJSONAdapterFragment) manager
 				.findFragmentByTag(TAG_BASE_ADAPTER_FRAG);
 		if (mListFragment == null) {
-			mListFragment = SimpleJSONArrayBaseAdapterFragment.newInstance();
+			mListFragment = NFJSONAdapterFragment.newInstance();
 			FragmentTransaction transaction = manager.beginTransaction();
 			transaction.replace(R.id.frag_container, mListFragment, TAG_BASE_ADAPTER_FRAG);
 			transaction.commit();
@@ -113,8 +113,8 @@ public class SimpleJSONArrayBaseAdapterActivity extends AdapterBaseActivity impl
 	public void onAttachFragment(Fragment fragment) {
 		super.onAttachFragment(fragment);
 
-		if (fragment instanceof SimpleJSONArrayBaseAdapterFragment) {
-			mListFragment = (SimpleJSONArrayBaseAdapterFragment) fragment;
+		if (fragment instanceof NFJSONAdapterFragment) {
+			mListFragment = (NFJSONAdapterFragment) fragment;
 		}
 	}
 

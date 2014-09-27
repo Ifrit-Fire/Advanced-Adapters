@@ -13,25 +13,31 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.sawyer.advadapters.app.adapters.simplejsonarraybaseadapter;
+package com.sawyer.advadapters.app.adapters.nfjsonadapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.sawyer.advadapters.widget.SimpleJSONArrayBaseAdapter;
+import com.sawyer.advadapters.app.R;
+import com.sawyer.advadapters.app.data.MovieItem;
+import com.sawyer.advadapters.widget.NFJSONArrayAdapter;
 
 import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
-class UnitTestMovieAdapter extends SimpleJSONArrayBaseAdapter {
+class MovieNFJSONArrayAdapter extends NFJSONArrayAdapter {
 
-	UnitTestMovieAdapter(Context activity) {
+	MovieNFJSONArrayAdapter(Context activity) {
 		super(activity);
 	}
 
-	UnitTestMovieAdapter(Context activity, JSONArray list) {
+	MovieNFJSONArrayAdapter(Context activity, JSONArray list) {
 		super(activity, list);
 	}
 
@@ -39,18 +45,25 @@ class UnitTestMovieAdapter extends SimpleJSONArrayBaseAdapter {
 	public View getView(LayoutInflater inflater, int position, View convertView, ViewGroup parent) {
 		ViewHolder vh;
 		if (convertView == null) {
-			convertView = inflater.inflate(android.R.layout.two_line_list_item, parent, false);
+			convertView = inflater.inflate(R.layout.item_movie1, parent, false);
 			vh = new ViewHolder();
-			vh.title = (TextView) convertView.findViewById(android.R.id.text1);
-			vh.subtitle = (TextView) convertView.findViewById(android.R.id.text2);
+			vh.title = (TextView) convertView.findViewById(R.id.title);
+			vh.subtitle = (TextView) convertView.findViewById(R.id.subtitle);
+			vh.icon = (ImageView) convertView.findViewById(R.id.icon);
 			convertView.setTag(vh);
 		} else {
 			vh = (ViewHolder) convertView.getTag();
 		}
 
-		Object item = getItem(position);
-		vh.title.setText(item.getClass().getSimpleName());
-		vh.subtitle.setText(item.toString());
+		try {
+			JSONObject movie = optItemJSONObject(position);
+			vh.title.setText(movie.getString(MovieItem.JSON_TITLE));
+			vh.subtitle.setText(movie.getString(MovieItem.JSON_YEAR));
+			vh.icon.setImageResource((movie.getBoolean(MovieItem.JSON_IS_RECOMMENDED))
+											 ? R.drawable.ic_rating_good : R.drawable.ic_rating_bad);
+		} catch (JSONException e) {
+			Log.e(MovieNFJSONArrayAdapter.class.getSimpleName(), "GetView error", e);
+		}
 
 		return convertView;
 	}
@@ -58,5 +71,6 @@ class UnitTestMovieAdapter extends SimpleJSONArrayBaseAdapter {
 	private static class ViewHolder {
 		TextView title;
 		TextView subtitle;
+		ImageView icon;
 	}
 }

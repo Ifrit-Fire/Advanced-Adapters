@@ -64,12 +64,12 @@
 			android:label="@string/activity_jsonarray_unittest">
 		</activity>
 		<activity
-			android:name=".adapters.simplejsonarraybaseadapter.SimpleJSONArrayBaseAdapterActivity"
-			android:label="@string/activity_simplejsonarray_baseadapter">
+			android:name=".adapters.nfjsonadapter.NFJSONAdapterActivity"
+			android:label="@string/activity_nfjsonadapter">
 		</activity>
 		<activity
-			android:name=".adapters.simplejsonarraybaseadapter.UnitTestJSONArrayActivity"
-			android:label="@string/activity_simplejsonarray_unittest">
+			android:name=".adapters.nfjsonadapter.UnitTestJSONArrayActivity"
+			android:label="@string/activity_nfjsonarray_unittest">
 		</activity>
 
 		<!-- Misc Support Activities-->

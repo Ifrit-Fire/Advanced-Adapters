@@ -49,7 +49,7 @@ import java.util.Map;
  * Because of the background filtering process, all methods which mutates the underlying data are
  * internally synchronized. This ensures a thread safe environment for internal write operations. If
  * filtering is not required, it's strongly recommended to use the {@link
- * SimpleJSONArrayBaseAdapter} instead. In order to support the multitude of data types a
+ * NFJSONArrayAdapter} instead. In order to support the multitude of data types a
  * JSONArray can store, the filtering mechanism is built to be very robust.
  * <p/>
  * Only the {@link #isFilteredBy(Object, CharSequence)} is required to be implemented by subclasses.

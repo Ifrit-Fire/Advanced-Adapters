@@ -31,7 +31,7 @@ import com.sawyer.advadapters.app.adapters.androidarrayadapter.AndroidAdapterAct
 import com.sawyer.advadapters.app.adapters.absarrayadapter.ArrayAdapterActivity;
 import com.sawyer.advadapters.app.adapters.jsonadapter.JSONAdapterActivity;
 import com.sawyer.advadapters.app.adapters.nfarrayadapter.NFArrayAdapterActivity;
-import com.sawyer.advadapters.app.adapters.simplejsonarraybaseadapter.SimpleJSONArrayBaseAdapterActivity;
+import com.sawyer.advadapters.app.adapters.nfjsonadapter.NFJSONAdapterActivity;
 import com.sawyer.advadapters.app.adapters.nfsparseadapter.NFSparseAdapterActivity;
 import com.sawyer.advadapters.app.adapters.sparseadapter.SparseAdapterActivity;
 import com.sawyer.advadapters.widget.NFArrayAdapter;
@@ -68,9 +68,9 @@ public class MainActivity extends ListActivity {
 		intent.putExtra(EXTRA_INTENT_NAME, getString(R.string.activity_jsonadapter));
 		intents.add(intent);
 
-		intent = new Intent(this, SimpleJSONArrayBaseAdapterActivity.class);
+		intent = new Intent(this, NFJSONAdapterActivity.class);
 		intent.putExtra(EXTRA_INTENT_NAME,
-						getString(R.string.activity_simplejsonarray_baseadapter));
+						getString(R.string.activity_nfjsonadapter));
 		intents.add(intent);
 
 		return intents;

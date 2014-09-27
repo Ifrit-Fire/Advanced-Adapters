@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.sawyer.advadapters.app.adapters.simplejsonarraybaseadapter;
+package com.sawyer.advadapters.app.adapters.nfjsonadapter;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
@@ -24,7 +24,7 @@ import com.sawyer.advadapters.app.R;
 import com.sawyer.advadapters.app.ToastHelper;
 import com.sawyer.advadapters.app.adapters.AdapterBaseActivity;
 import com.sawyer.advadapters.app.data.MovieContent;
-import com.sawyer.advadapters.widget.SimpleJSONArrayBaseAdapter;
+import com.sawyer.advadapters.widget.NFJSONArrayAdapter;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -86,12 +86,12 @@ public class UnitTestJSONArrayActivity extends AdapterBaseActivity implements
 
 	@Override
 	protected String getInfoDialogMessage() {
-		return getString(R.string.info_unittest_simplejsonarray_baseadapter_message);
+		return getString(R.string.info_unittest_nfjsonadapter_message);
 	}
 
 	@Override
 	protected String getInfoDialogTitle() {
-		return getString(R.string.info_unittest_simplejsonarray_baseadapter_title);
+		return getString(R.string.info_unittest_nfjsonadapter_title);
 	}
 
 	@Override
@@ -129,7 +129,7 @@ public class UnitTestJSONArrayActivity extends AdapterBaseActivity implements
 
 	@Override
 	protected void reset() {
-		SimpleJSONArrayBaseAdapter adapter = mListFragment.getListAdapter();
+		NFJSONArrayAdapter adapter = mListFragment.getListAdapter();
 		adapter.setNotifyOnChange(false);
 		adapter.clear();
 		adapter.add(getChar());    //JSONArray converts to Integer

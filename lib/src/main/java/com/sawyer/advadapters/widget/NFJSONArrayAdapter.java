@@ -29,19 +29,18 @@ import org.json.JSONTokener;
 import java.util.Collection;
 
 /**
- * A custom abstract {@link BaseAdapter} that is backed by a {@link JSONArray} of arbitrary objects.
- * By default this class delegates view generation to subclasses.
+ * A non-filterable custom abstract {@link BaseAdapter} that is backed by a {@link JSONArray} of
+ * arbitrary objects. By default this class delegates view generation to subclasses.
  * <p/>
- * Designed to be a simple version of it's cousin JSONAdapter; it exposes most of the
- * JSONArray methods, conveniently passes along a layout inflater for view creation, and removes
- * support for filtering. As a result, there is no need for {@code synchronized} blocks which may
- * help those worried about performance. Keep in mind JSONArray itself has limited capabilities
- * which restricts what this adapter can do.
+ * Designed to be a flexible and customizable solution for using JSONArray with an adapter but
+ * without the filtering mechanism. As a result, there is no need for {@code synchronized} blocks
+ * which may help those worried about performance. It exposes most of the JSONArray methods and
+ * conveniently passes along a layout inflater for view creation. Keep in mind JSONArray itself has
+ * limited capabilities which restricts what this adapter can do.
  * <p/>
- * If filtering is required, it's strongly recommended to use the {@link JSONAdapter}
- * instead.
+ * If filtering is required, it's strongly recommended to use the {@link JSONAdapter} instead.
  */
-public abstract class SimpleJSONArrayBaseAdapter extends BaseAdapter {
+public abstract class NFJSONArrayAdapter extends BaseAdapter {
 	/** LayoutInflater created from the constructing context */
 	private LayoutInflater mInflater;
 	/**
@@ -61,7 +60,7 @@ public abstract class SimpleJSONArrayBaseAdapter extends BaseAdapter {
 	 *
 	 * @param activity Context used for inflating views
 	 */
-	public SimpleJSONArrayBaseAdapter(Context activity) {
+	public NFJSONArrayAdapter(Context activity) {
 		init(activity, new JSONArray());
 	}
 
@@ -74,7 +73,7 @@ public abstract class SimpleJSONArrayBaseAdapter extends BaseAdapter {
 	 *
 	 * @throws org.json.JSONException if the parse fails or doesn't yield a {@code JSONArray}.
 	 */
-	public SimpleJSONArrayBaseAdapter(Context activity, JSONTokener readFrom) throws JSONException {
+	public NFJSONArrayAdapter(Context activity, JSONTokener readFrom) throws JSONException {
 		init(activity, new JSONArray(readFrom));
 	}
 
@@ -86,11 +85,11 @@ public abstract class SimpleJSONArrayBaseAdapter extends BaseAdapter {
 	 *
 	 * @throws org.json.JSONException if the parse fails or doesn't yield a {@code JSONArray}.
 	 */
-	public SimpleJSONArrayBaseAdapter(Context activity, String json) throws JSONException {
+	public NFJSONArrayAdapter(Context activity, String json) throws JSONException {
 		init(activity, new JSONArray(json));
 	}
 
-	public SimpleJSONArrayBaseAdapter(Context activity, JSONArray array) {
+	public NFJSONArrayAdapter(Context activity, JSONArray array) {
 		init(activity, generateCopy(array));
 	}
 
@@ -100,7 +99,7 @@ public abstract class SimpleJSONArrayBaseAdapter extends BaseAdapter {
 	 * @param activity Context used for inflating views
 	 * @param items    The items to represent within the adapter.
 	 */
-	public SimpleJSONArrayBaseAdapter(Context activity, Collection items) {
+	public NFJSONArrayAdapter(Context activity, Collection items) {
 		init(activity, new JSONArray(items));
 	}
 

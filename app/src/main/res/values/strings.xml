@@ -26,8 +26,8 @@
 	<string name="activity_nfsparseadapter">NFSparseAdapter</string>
 	<string name="activity_jsonadapter">JSONAdapter</string>
 	<string name="activity_jsonarray_unittest">JSONArray - Unit Test</string>
-	<string name="activity_simplejsonarray_baseadapter">SimpleJSONArray BaseAdapter</string>
-	<string name="activity_simplejsonarray_unittest">SimpleJSONArray - Unit Test</string>
+	<string name="activity_nfjsonadapter">NFJSONAdapter</string>
+	<string name="activity_nfjsonarray_unittest">NFJSONArray - Unit Test</string>
 
 	<!-- Content Description Text -->
 	<string name="cd_rating_icon">Rating Icon</string>

@@ -107,15 +107,15 @@
  		If filtering is required, it\'s strongly recommended to use the AbsArrayAdapter instead.
 	</string>
 
-	<!-- Info Dialog - SimpleJSONArrayBaseAdapter -->
-	<string name="info_simplejsonarray_baseadapter_title">Adapter Demo Info</string>
-	<string name="info_simplejsonarray_baseadapter_message">
-		This is a demonstration of the SimpleJSONArrayBaseAdapter class, which is a full fledged
-		adapter backed by a JSONArray.  Keep in mind, JSONArray is not part of a Collection and does
-		not behave like a normal array.  It\'s ability to dynamically change the underlying data is
+	<!-- Info Dialog - NFJSONArrayAdapter -->
+	<string name="info_nfjsonadapter_title">Adapter Demo Info</string>
+	<string name="info_nfjsonadapter_message">
+		This is a demonstration of the NFJSONArrayAdapter class, which is a full fledged adapter
+		backed by a JSONArray.  Keep in mind, JSONArray is not part of a Collection and does not
+		behave like a normal array.  It\'s ability to dynamically change the underlying data is
 		limited but possible.\n
 		\n
-		If filtering is required, it\'s strongly recommended to use the JSONArrayBaseAdapter instead.
+		If filtering is required, it\'s strongly recommended to use the JSONAdapter instead.
 	</string>
 
 	<!--Info Dialog - NFSparseAdapter-->
@@ -144,16 +144,16 @@
 	</string>
 
 	<!-- Info Dialog - JSONAdapter -->
-	<string name="info_unittest_jsonarray_baseadapter_title">Adapter Unit Test</string>
-	<string name="info_unittest_jsonarray_baseadapter_message">
-		A quick and dirty setup to test various aspects of the JSONArray BaseAdapter that doesn\'t
-		quite fit with the normal presentable demo.
+	<string name="info_unittest_jsonadapter_title">Adapter Unit Test</string>
+	<string name="info_unittest_jsonadapter_message">
+		A quick and dirty setup to test various aspects of the JSONAdapter that doesn\'t quite fit
+		with the normal presentable demo.
 	</string>
 
-	<!-- Info Dialog - SimpleJSONArrayBaseAdapter -->
-	<string name="info_unittest_simplejsonarray_baseadapter_title">Adapter Unit Test</string>
-	<string name="info_unittest_simplejsonarray_baseadapter_message">
-		A quick and dirty setup to test various aspects of the SimpleJSONArray BaseAdapter that
-		doesn\'t quite fit with the normal presentable demo.
+	<!-- Info Dialog - NFJSONArrayAdapter -->
+	<string name="info_unittest_nfjsonadapter_title">Adapter Unit Test</string>
+	<string name="info_unittest_nfjsonadapter_message">
+		A quick and dirty setup to test various aspects of the NFJSONAdapter that doesn\'t quite fit
+		with the normal presentable demo.
 	</string>
 </resources>
