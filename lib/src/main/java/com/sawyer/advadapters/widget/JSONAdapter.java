@@ -65,7 +65,7 @@ import java.util.Map;
  * isFilteredBy(Foo, CharSequence)}. Then during a filter operation, any Foo object detected will
  * have that method invoke to determine whether it passes the filter or not.
  */
-public abstract class JSONArrayBaseAdapter extends BaseAdapter implements Filterable {
+public abstract class JSONAdapter extends BaseAdapter implements Filterable {
 	/**
 	 * Lock used to modify the content of {@link #mObjects}. Any write operation performed on the
 	 * array should be synchronized on this lock. This lock is also used by the filter (see {@link
@@ -110,7 +110,7 @@ public abstract class JSONArrayBaseAdapter extends BaseAdapter implements Filter
 	 *
 	 * @param activity Context used for inflating views
 	 */
-	public JSONArrayBaseAdapter(Context activity) {
+	public JSONAdapter(Context activity) {
 		init(activity, new JSONArray());
 	}
 
@@ -123,7 +123,7 @@ public abstract class JSONArrayBaseAdapter extends BaseAdapter implements Filter
 	 *
 	 * @throws JSONException if the parse fails or doesn't yield a {@code JSONArray}.
 	 */
-	public JSONArrayBaseAdapter(Context activity, JSONTokener readFrom) throws JSONException {
+	public JSONAdapter(Context activity, JSONTokener readFrom) throws JSONException {
 		init(activity, new JSONArray(readFrom));
 	}
 
@@ -135,11 +135,11 @@ public abstract class JSONArrayBaseAdapter extends BaseAdapter implements Filter
 	 *
 	 * @throws JSONException if the parse fails or doesn't yield a {@code JSONArray}.
 	 */
-	public JSONArrayBaseAdapter(Context activity, String json) throws JSONException {
+	public JSONAdapter(Context activity, String json) throws JSONException {
 		init(activity, new JSONArray(json));
 	}
 
-	public JSONArrayBaseAdapter(Context activity, JSONArray array) {
+	public JSONAdapter(Context activity, JSONArray array) {
 		init(activity, generateCopy(array));
 	}
 
@@ -149,7 +149,7 @@ public abstract class JSONArrayBaseAdapter extends BaseAdapter implements Filter
 	 * @param activity Context used for inflating views
 	 * @param items    The items to represent within the adapter.
 	 */
-	public JSONArrayBaseAdapter(Context activity, Collection items) {
+	public JSONAdapter(Context activity, Collection items) {
 		init(activity, new JSONArray(items));
 	}
 
@@ -336,26 +336,26 @@ public abstract class JSONArrayBaseAdapter extends BaseAdapter implements Filter
 	private void cacheKnownFilteredMethods() {
 		try {
 			Method m;
-			m = JSONArrayBaseAdapter.class
+			m = JSONAdapter.class
 					.getDeclaredMethod("isFilteredBy", Boolean.class, CharSequence.class);
 			mFilterMethods.put(Boolean.class.getName(), m);
-			m = JSONArrayBaseAdapter.class
+			m = JSONAdapter.class
 					.getDeclaredMethod("isFilteredBy", Double.class, CharSequence.class);
 			mFilterMethods.put(Double.class.getName(), m);
-			m = JSONArrayBaseAdapter.class
+			m = JSONAdapter.class
 					.getDeclaredMethod("isFilteredBy", Integer.class, CharSequence.class);
 			mFilterMethods.put(Integer.class.getName(), m);
-			m = JSONArrayBaseAdapter.class
+			m = JSONAdapter.class
 					.getDeclaredMethod("isFilteredBy", Long.class, CharSequence.class);
 			mFilterMethods.put(Long.class.getName(), m);
-			m = JSONArrayBaseAdapter.class
+			m = JSONAdapter.class
 					.getDeclaredMethod("isFilteredBy", String.class, CharSequence.class);
 			mFilterMethods.put(String.class.getName(), m);
-			m = JSONArrayBaseAdapter.class
+			m = JSONAdapter.class
 					.getDeclaredMethod("isFilteredBy", Object.class, CharSequence.class);
 			mFilterMethods.put(Object.class.getName(), m);
 		} catch (NoSuchMethodException e) {
-			Log.e(JSONArrayBaseAdapter.this.getClass().getSimpleName(), "Unexpected error", e);
+			Log.e(JSONAdapter.this.getClass().getSimpleName(), "Unexpected error", e);
 		}
 	}
 
@@ -373,7 +373,7 @@ public abstract class JSONArrayBaseAdapter extends BaseAdapter implements Filter
 		}
 
 		//Scan non-public methods next
-		while (!c.equals(JSONArrayBaseAdapter.class)) {
+		while (!c.equals(JSONAdapter.class)) {
 			methods = c.getDeclaredMethods();
 			for (Method m : methods) {
 				String key = getFilterMethodKey(m);
@@ -926,16 +926,16 @@ public abstract class JSONArrayBaseAdapter extends BaseAdapter implements Filter
 
 	/**
 	 * A JSONArray filter constrains the content of the adapter. Whether an item is constrained or
-	 * not is delegated to subclasses through the default {@link JSONArrayBaseAdapter#isFilteredBy(Object,
+	 * not is delegated to subclasses through the default {@link JSONAdapter#isFilteredBy(Object,
 	 * CharSequence)}. However the filter will first attempt to find the best matching {@code
 	 * isFilteredBy} method based on the type of object stored at a given location. For instance, if
-	 * the object is an Integer, then the {@link JSONArrayBaseAdapter#isFilteredBy(Integer,
+	 * the object is an Integer, then the {@link JSONAdapter#isFilteredBy(Integer,
 	 * CharSequence)} will be invoked instead.
 	 * <p/>
 	 * It's possible for subclasses to define their own {@code isFilteredBy} methods for their own
 	 * custom classes. So if the object stored is of type {@code Foo} and the subclassed adapter has
 	 * defined an {@code isFilteredBy(Foo, CharSequence)}} method, then that  will be invoked
-	 * instead of the default {@link JSONArrayBaseAdapter#isFilteredBy(Object, CharSequence)}.
+	 * instead of the default {@link JSONAdapter#isFilteredBy(Object, CharSequence)}.
 	 */
 	private class JSONArrayFilter extends Filter {
 		@Override
@@ -971,7 +971,7 @@ public abstract class JSONArrayBaseAdapter extends BaseAdapter implements Filter
 						varargs[0] = value;
 						try {
 							boolean result = (boolean) m
-									.invoke(JSONArrayBaseAdapter.this, varargs);
+									.invoke(JSONAdapter.this, varargs);
 							if (result) newValues.put(value);
 						} catch (IllegalAccessException e) {
 							Log.w(m.getName(),

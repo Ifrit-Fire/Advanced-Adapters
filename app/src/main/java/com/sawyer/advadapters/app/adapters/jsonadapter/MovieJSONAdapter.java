@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.sawyer.advadapters.app.adapters.jsonarraybaseadapter;
+package com.sawyer.advadapters.app.adapters.jsonadapter;
 
 import android.content.Context;
 import android.util.Log;
@@ -25,7 +25,7 @@ import android.widget.TextView;
 
 import com.sawyer.advadapters.app.R;
 import com.sawyer.advadapters.app.data.MovieItem;
-import com.sawyer.advadapters.widget.JSONArrayBaseAdapter;
+import com.sawyer.advadapters.widget.JSONAdapter;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -33,13 +33,13 @@ import org.json.JSONObject;
 
 import java.util.Locale;
 
-class MovieJSONArrayBaseAdapter extends JSONArrayBaseAdapter {
+class MovieJSONAdapter extends JSONAdapter {
 
-	MovieJSONArrayBaseAdapter(Context activity) {
+	MovieJSONAdapter(Context activity) {
 		super(activity);
 	}
 
-	MovieJSONArrayBaseAdapter(Context activity, JSONArray list) {
+	MovieJSONAdapter(Context activity, JSONArray list) {
 		super(activity, list);
 	}
 
@@ -64,7 +64,7 @@ class MovieJSONArrayBaseAdapter extends JSONArrayBaseAdapter {
 			vh.icon.setImageResource((movie.getBoolean(MovieItem.JSON_IS_RECOMMENDED))
 											 ? R.drawable.ic_rating_good : R.drawable.ic_rating_bad);
 		} catch (JSONException e) {
-			Log.e(MovieJSONArrayBaseAdapter.class.getSimpleName(), "GetView error", e);
+			Log.e(MovieJSONAdapter.class.getSimpleName(), "GetView error", e);
 		}
 
 		return convertView;

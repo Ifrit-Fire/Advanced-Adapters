@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.sawyer.advadapters.app.adapters.jsonarraybaseadapter;
+package com.sawyer.advadapters.app.adapters.jsonadapter;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
@@ -31,13 +31,13 @@ import com.sawyer.advadapters.app.dialogs.AddJSONArrayDialogFragment;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-public class JSONArrayBaseAdapterActivity extends AdapterBaseActivity implements
-		AddJSONArrayDialogFragment.EventListener, JSONArrayBaseAdapterFragment.EventListener {
+public class JSONAdapterActivity extends AdapterBaseActivity implements
+		AddJSONArrayDialogFragment.EventListener, JSONAdapterFragment.EventListener {
 	private static final String TAG_ADD_DIALOG_FRAG = "Tag Add Dialog Frag";
 	private static final String TAG_BASE_ADAPTER_FRAG = "Tag Base Adapter Frag";
 
 	private AddJSONArrayDialogFragment mAddDialogFragment;
-	private JSONArrayBaseAdapterFragment mListFragment;
+	private JSONAdapterFragment mListFragment;
 
 	@Override
 	protected void clear() {
@@ -52,12 +52,12 @@ public class JSONArrayBaseAdapterActivity extends AdapterBaseActivity implements
 
 	@Override
 	protected String getInfoDialogMessage() {
-		return getString(R.string.info_jsonarray_baseadapter_message);
+		return getString(R.string.info_jsonadapter_message);
 	}
 
 	@Override
 	protected String getInfoDialogTitle() {
-		return getString(R.string.info_jsonarray_baseadapter_title);
+		return getString(R.string.info_jsonadapter_title);
 	}
 
 	@Override
@@ -69,10 +69,10 @@ public class JSONArrayBaseAdapterActivity extends AdapterBaseActivity implements
 	protected void initFrags() {
 		super.initFrags();
 		FragmentManager manager = getFragmentManager();
-		mListFragment = (JSONArrayBaseAdapterFragment) manager
+		mListFragment = (JSONAdapterFragment) manager
 				.findFragmentByTag(TAG_BASE_ADAPTER_FRAG);
 		if (mListFragment == null) {
-			mListFragment = JSONArrayBaseAdapterFragment.newInstance();
+			mListFragment = JSONAdapterFragment.newInstance();
 			FragmentTransaction transaction = manager.beginTransaction();
 			transaction.replace(R.id.frag_container, mListFragment, TAG_BASE_ADAPTER_FRAG);
 			transaction.commit();
@@ -125,8 +125,8 @@ public class JSONArrayBaseAdapterActivity extends AdapterBaseActivity implements
 	public void onAttachFragment(Fragment fragment) {
 		super.onAttachFragment(fragment);
 
-		if (fragment instanceof JSONArrayBaseAdapterFragment) {
-			mListFragment = (JSONArrayBaseAdapterFragment) fragment;
+		if (fragment instanceof JSONAdapterFragment) {
+			mListFragment = (JSONAdapterFragment) fragment;
 		}
 	}
 

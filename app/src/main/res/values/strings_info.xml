@@ -74,17 +74,17 @@
 	<string name="info_credits_message_retain_url">http://thenounproject.com/term/crop/11553</string>
 	<string name="info_credits_message_plug_url">http://thenounproject.com/term/plug/33432</string>
 
-	<!-- Info Dialog - JSONArrayBaseAdapter -->
-	<string name="info_jsonarray_baseadapter_title">Adapter Demo Info</string>
-	<string name="info_jsonarray_baseadapter_message">
-		This is a demonstration of the JSONArrayBaseAdapter class, which is a full fledged adapter
-		backed by a JSONArray.  Keep in mind, JSONArray is not part of a Collection and does not
-		behave like a normal array.  It\'s ability to dynamically change the underlying data is very
-		limited but possible.\n
+	<!-- Info Dialog - JSONAdapter -->
+	<string name="info_jsonadapter_title">Adapter Demo Info</string>
+	<string name="info_jsonadapter_message">
+		This is a demonstration of the JSONAdapter class, which is a full fledged adapter backed by
+		a JSONArray.  Keep in mind, JSONArray is not part of a Collection and does not behave like a
+		normal array.  It\'s ability to dynamically change the underlying data is very limited but
+		possible.\n
 		\n
 		This adapter specifically supports a highly customizable filtering process which allows easy
 		support for whatever data type is stored within. If filtering is not required, it\'s
-		strongly recommended to use the SimpleJSONArrayBaseAdapter instead.
+		strongly recommended to use the NFJSONAdapter instead.
 	</string>
 
 	<!--About Screen - License Heading-->
@@ -143,7 +143,7 @@
 		to use the NFSparseAdapter instead.
 	</string>
 
-	<!-- Info Dialog - JSONArrayBaseAdapter -->
+	<!-- Info Dialog - JSONAdapter -->
 	<string name="info_unittest_jsonarray_baseadapter_title">Adapter Unit Test</string>
 	<string name="info_unittest_jsonarray_baseadapter_message">
 		A quick and dirty setup to test various aspects of the JSONArray BaseAdapter that doesn\'t

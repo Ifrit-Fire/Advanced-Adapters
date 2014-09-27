@@ -29,7 +29,7 @@ import android.widget.TextView;
 
 import com.sawyer.advadapters.app.adapters.androidarrayadapter.AndroidAdapterActivity;
 import com.sawyer.advadapters.app.adapters.absarrayadapter.ArrayAdapterActivity;
-import com.sawyer.advadapters.app.adapters.jsonarraybaseadapter.JSONArrayBaseAdapterActivity;
+import com.sawyer.advadapters.app.adapters.jsonadapter.JSONAdapterActivity;
 import com.sawyer.advadapters.app.adapters.nfarrayadapter.NFArrayAdapterActivity;
 import com.sawyer.advadapters.app.adapters.simplejsonarraybaseadapter.SimpleJSONArrayBaseAdapterActivity;
 import com.sawyer.advadapters.app.adapters.nfsparseadapter.NFSparseAdapterActivity;
@@ -64,8 +64,8 @@ public class MainActivity extends ListActivity {
 						getString(R.string.activity_nfsparseadapter));
 		intents.add(intent);
 
-		intent = new Intent(this, JSONArrayBaseAdapterActivity.class);
-		intent.putExtra(EXTRA_INTENT_NAME, getString(R.string.activity_jsonarray_baseadapter));
+		intent = new Intent(this, JSONAdapterActivity.class);
+		intent.putExtra(EXTRA_INTENT_NAME, getString(R.string.activity_jsonadapter));
 		intents.add(intent);
 
 		intent = new Intent(this, SimpleJSONArrayBaseAdapterActivity.class);

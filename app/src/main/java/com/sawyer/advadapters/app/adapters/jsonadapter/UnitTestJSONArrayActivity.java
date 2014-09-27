@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.sawyer.advadapters.app.adapters.jsonarraybaseadapter;
+package com.sawyer.advadapters.app.adapters.jsonadapter;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
@@ -24,7 +24,7 @@ import com.sawyer.advadapters.app.R;
 import com.sawyer.advadapters.app.ToastHelper;
 import com.sawyer.advadapters.app.adapters.AdapterBaseActivity;
 import com.sawyer.advadapters.app.data.MovieContent;
-import com.sawyer.advadapters.widget.JSONArrayBaseAdapter;
+import com.sawyer.advadapters.widget.JSONAdapter;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -151,7 +151,7 @@ public class UnitTestJSONArrayActivity extends AdapterBaseActivity implements
 
 	@Override
 	protected void reset() {
-		JSONArrayBaseAdapter adapter = mListFragment.getListAdapter();
+		JSONAdapter adapter = mListFragment.getListAdapter();
 		adapter.setNotifyOnChange(false);
 		adapter.clear();
 		adapter.add(getChar());    //JSONArray converts to Integer

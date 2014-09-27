@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.sawyer.advadapters.app.adapters.jsonarraybaseadapter;
+package com.sawyer.advadapters.app.adapters.jsonadapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -22,14 +22,14 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.sawyer.advadapters.app.data.MovieItem;
-import com.sawyer.advadapters.widget.JSONArrayBaseAdapter;
+import com.sawyer.advadapters.widget.JSONAdapter;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.Locale;
 
-class UnitTestMovieAdapter extends JSONArrayBaseAdapter {
+class UnitTestMovieAdapter extends JSONAdapter {
 
 	UnitTestMovieAdapter(Context activity) {
 		super(activity);
@@ -79,7 +79,7 @@ class UnitTestMovieAdapter extends JSONArrayBaseAdapter {
 	}
 
 	//Another custom isFilteredBy method. Be it private, public, protected or no modifier at all.
-	//JSONArrayBaseAdapter will still find it and invoke it appropriately
+	//JSONAdapter will still find it and invoke it appropriately
 	@SuppressWarnings("UnusedDeclaration")
 	private boolean isFilteredBy(JSONObject item, CharSequence constraint) {
 		String title = item.optString(MovieItem.JSON_TITLE).toLowerCase(Locale.US);

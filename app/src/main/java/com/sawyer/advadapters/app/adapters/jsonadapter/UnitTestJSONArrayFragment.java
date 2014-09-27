@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.sawyer.advadapters.app.adapters.jsonarraybaseadapter;
+package com.sawyer.advadapters.app.adapters.jsonadapter;
 
 import android.app.Activity;
 import android.app.ListFragment;
@@ -36,30 +36,30 @@ import com.sawyer.advadapters.app.ToastHelper;
 import org.json.JSONArray;
 import org.json.JSONException;
 
-public class JSONArrayBaseAdapterFragment extends ListFragment {
+public class UnitTestJSONArrayFragment extends ListFragment {
 	private static final String STATE_CAB_CHECKED_COUNT = "State Cab Checked Count";
 	private static final String STATE_LIST = "State List";
 
 	private int mCheckedCount;
 	private EventListener mEventListener;
 
-	public static JSONArrayBaseAdapterFragment newInstance() {
-		return new JSONArrayBaseAdapterFragment();
+	public static UnitTestJSONArrayFragment newInstance() {
+		return new UnitTestJSONArrayFragment();
 	}
 
 	@Override
-	public MovieJSONArrayBaseAdapter getListAdapter() {
-		return (MovieJSONArrayBaseAdapter) super.getListAdapter();
+	public UnitTestMovieAdapter getListAdapter() {
+		return (UnitTestMovieAdapter) super.getListAdapter();
 	}
 
 	@Override
 	public void setListAdapter(ListAdapter adapter) {
-		if (adapter instanceof MovieJSONArrayBaseAdapter) {
+		if (adapter instanceof UnitTestMovieAdapter) {
 			super.setListAdapter(adapter);
 		} else {
 			throw new ClassCastException(
 					"Adapter must be of type " +
-					MovieJSONArrayBaseAdapter.class.getSimpleName());
+					UnitTestMovieAdapter.class.getSimpleName());
 		}
 	}
 
@@ -88,14 +88,14 @@ public class JSONArrayBaseAdapterFragment extends ListFragment {
 			mCheckedCount = savedInstanceState.getInt(STATE_CAB_CHECKED_COUNT);
 			try {
 				JSONArray list = new JSONArray(savedInstanceState.getString(STATE_LIST));
-				setListAdapter(new MovieJSONArrayBaseAdapter(getActivity(), list));
+				setListAdapter(new UnitTestMovieAdapter(getActivity(), list));
 			} catch (JSONException e) {
-				Log.e(JSONArrayBaseAdapterFragment.class.getSimpleName(), "OnRestore Error", e);
+				Log.w(UnitTestJSONArrayFragment.class.getSimpleName(), "Error restoring state", e);
 				mCheckedCount = 0;
-				setListAdapter(new MovieJSONArrayBaseAdapter(getActivity()));
+				setListAdapter(new UnitTestMovieAdapter(getActivity()));
 			}
 		} else {
-			setListAdapter(new MovieJSONArrayBaseAdapter(getActivity()));
+			setListAdapter(new UnitTestMovieAdapter(getActivity()));
 		}
 	}
 
