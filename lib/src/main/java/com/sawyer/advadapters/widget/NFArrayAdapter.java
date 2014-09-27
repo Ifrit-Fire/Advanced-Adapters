@@ -22,9 +22,11 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.List;
 
 /**
  * A non-filterable custom abstract {@link BaseAdapter} that is backed by an {@link ArrayList} of
@@ -71,6 +73,21 @@ public abstract class NFArrayAdapter<T> extends BaseAdapter {
 	}
 
 	/**
+	 * Constructor
+	 *
+	 * @param activity Context used for inflating views
+	 * @param items    The items to represent within the adapter.
+	 */
+	public NFArrayAdapter(Context activity, T[] items) {
+		List<T> list = Arrays.asList(items);
+		if (list instanceof ArrayList) {    //Should always be true...but just in case implementation changes
+			init(activity, (ArrayList<T>) list);
+		} else {
+			init(activity, new ArrayList<>(list));
+		}
+	}
+
+	/**
 	 * Adds the specified item at the end of the adapter.
 	 *
 	 * @param item The item to add at the end of the adapter.
@@ -87,6 +104,17 @@ public abstract class NFArrayAdapter<T> extends BaseAdapter {
 	 */
 	public void addAll(Collection<? extends T> items) {
 		boolean isModified = mObjects.addAll(items);
+		if (isModified && mNotifyOnChange) notifyDataSetChanged();
+	}
+
+	/**
+	 * Adds the specified items at the end of the adapter.
+	 *
+	 * @param items The items to add at the end of the adapter.
+	 */
+	@SafeVarargs
+	public final void addAll(T... items) {
+		boolean isModified = Collections.addAll(mObjects, items);
 		if (isModified && mNotifyOnChange) notifyDataSetChanged();
 	}
 
@@ -167,6 +195,19 @@ public abstract class NFArrayAdapter<T> extends BaseAdapter {
 	 */
 	public ArrayList<T> getList() {
 		return new ArrayList<>(mObjects);
+	}
+
+	/**
+	 * Resets the adapter to store a new list of items. Convenient way of calling {@link #clear()},
+	 * then {@link #addAll(java.util.Collection)} without having to worry about an extra {@link
+	 * #notifyDataSetChanged()} invoked in between.
+	 *
+	 * @param items New list of items to store within the adapter.
+	 */
+	public void setList(Collection<? extends T> items) {
+		mObjects.clear();
+		mObjects.addAll(items);
+		if (mNotifyOnChange) notifyDataSetChanged();
 	}
 
 	/**
@@ -286,6 +327,19 @@ public abstract class NFArrayAdapter<T> extends BaseAdapter {
 	 */
 	public void setNotifyOnChange(boolean notifyOnChange) {
 		mNotifyOnChange = notifyOnChange;
+	}
+
+	/**
+	 * Sorts the content of this adapter using the natural order of the stored items themselves.
+	 * This requires items to have implemented {@link java.lang.Comparable} and is equivalent of
+	 * passing null to {@link #sort(java.util.Comparator)}.
+	 *
+	 * @throws java.lang.ClassCastException If the comparator is null and the stored items do not
+	 *                                      implement {@code Comparable} or if {@code compareTo}
+	 *                                      throws for any pair of items.
+	 */
+	public void sort() {
+		sort(null);
 	}
 
 	/**

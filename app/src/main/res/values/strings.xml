@@ -20,8 +20,8 @@
 
 	<string name="app_name">Advanced-Adapters Demo</string>
 	<string name="activity_android_arrayadapter">Android\'s ArrayAdapter</string>
-	<string name="activity_array_baseadapter">Array BaseAdapter</string>
-	<string name="activity_simplearray_baseadapter">SimpleArray BaseAdapter</string>
+	<string name="activity_absarrayadapter">AbsArrayAdapter</string>
+	<string name="activity_nfarrayadapter">NFArrayAdapter</string>
 	<string name="activity_sparsearray_baseadapter">SparseArray BaseAdapter</string>
 	<string name="activity_simplesparsearray_baseadapter">SimpleSparseArray BaseAdapter</string>
 	<string name="activity_jsonarray_baseadapter">JSONArray BaseAdapter</string>

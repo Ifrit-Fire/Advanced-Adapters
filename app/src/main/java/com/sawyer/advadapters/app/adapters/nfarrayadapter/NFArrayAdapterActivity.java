@@ -132,7 +132,9 @@ public class NFArrayAdapterActivity extends AdapterBaseActivity implements
 
 	@Override
 	public void onAddVarargsMovieClick(MovieItem... movies) {
-		//Not supported
+		mListFragment.getListAdapter().addAll(movies);
+		updateActionBar();
+		mAddDialogFragment.dismiss();
 	}
 
 	@Override
@@ -191,23 +193,19 @@ public class NFArrayAdapterActivity extends AdapterBaseActivity implements
 
 	@Override
 	protected void reset() {
-		mListFragment.getListAdapter().setNotifyOnChange(false);
-		mListFragment.getListAdapter().clear();
-		mListFragment.getListAdapter().addAll(MovieContent.ITEM_LIST);
-		mListFragment.getListAdapter().notifyDataSetChanged();
+		mListFragment.getListAdapter().setList(MovieContent.ITEM_LIST);
 		updateActionBar();
 	}
 
 	@Override
 	protected void sort() {
-		mListFragment.getListAdapter().sort(null);
+		mListFragment.getListAdapter().sort();
 	}
 
 	@Override
 	protected void startAddDialog() {
 		mAddDialogFragment = AddArrayDialogFragment.newInstance();
 		mAddDialogFragment.setEventListener(this);
-		mAddDialogFragment.setEnableArgvargs(false);
 		mAddDialogFragment.show(getFragmentManager(), TAG_ADD_DIALOG_FRAG);
 	}
 

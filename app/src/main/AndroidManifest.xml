@@ -37,11 +37,11 @@
 		<!-- Array Adapter Activities -->
 		<activity
 			android:name=".adapters.absarrayadapter.ArrayAdapterActivity"
-			android:label="@string/activity_array_baseadapter">
+			android:label="@string/activity_absarrayadapter">
 		</activity>
 		<activity
 			android:name=".adapters.nfarrayadapter.NFArrayAdapterActivity"
-			android:label="@string/activity_simplearray_baseadapter">
+			android:label="@string/activity_nfarrayadapter">
 		</activity>
 
 		<!-- SparseArray Adapter Activities-->

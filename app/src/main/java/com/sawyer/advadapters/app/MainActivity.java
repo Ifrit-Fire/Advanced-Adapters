@@ -48,11 +48,11 @@ public class MainActivity extends ListActivity {
 		Intent intent;
 
 		intent = new Intent(this, ArrayAdapterActivity.class);
-		intent.putExtra(EXTRA_INTENT_NAME, getString(R.string.activity_array_baseadapter));
+		intent.putExtra(EXTRA_INTENT_NAME, getString(R.string.activity_absarrayadapter));
 		intents.add(intent);
 
 		intent = new Intent(this, NFArrayAdapterActivity.class);
-		intent.putExtra(EXTRA_INTENT_NAME, getString(R.string.activity_simplearray_baseadapter));
+		intent.putExtra(EXTRA_INTENT_NAME, getString(R.string.activity_nfarrayadapter));
 		intents.add(intent);
 
 		intent = new Intent(this, SparseArrayBaseAdapterActivity.class);
