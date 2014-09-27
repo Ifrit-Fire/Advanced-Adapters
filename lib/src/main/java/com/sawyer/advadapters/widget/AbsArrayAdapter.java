@@ -43,7 +43,7 @@ import java.util.List;
  * <p/>
  * Because of the background filtering process, all methods which mutates the underlying data are
  * internally synchronized. This ensures a thread safe environment for internal write operations. If
- * filtering is not required, it's strongly recommended to use the {@link SimpleArrayBaseAdapter}
+ * filtering is not required, it's strongly recommended to use the {@link NFArrayAdapter}
  * instead.
  */
 public abstract class AbsArrayAdapter<T> extends BaseAdapter implements Filterable {

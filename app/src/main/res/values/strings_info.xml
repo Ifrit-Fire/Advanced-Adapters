@@ -96,15 +96,15 @@
 	</string>
 	<string name="info_license_url">http://www.apache.org/licenses/LICENSE-2.0</string>
 
-	<!--Info Dialog - SimpleArrayBaseAdapter-->
-	<string name="info_simplearray_baseadapter_title">Adapter Demo Info</string>
-	<string name="info_simplearray_baseadapter_message">
-		This is a demonstration of the SimpleArrayBaseAdapter class, which is an adapter backed by
+	<!--Info Dialog - NFArrayAdapter-->
+	<string name="info_nfarrayadapter_title">Adapter Demo Info</string>
+	<string name="info_nfarrayadapter_message">
+		This is a demonstration of the NFArrayAdapter class, which is an adapter backed by
 		an ArrayList.  This adapter is an improved version of Android\'s ArrayAdapter but removes
 		filtering support.  As a result, there is no need for synchronized blocks which may help
 		those worried about performance.\n
  		\n
- 		If filtering is required, it\'s strongly recommended to use the ArrayBaseAdapter instead.
+ 		If filtering is required, it\'s strongly recommended to use the AbsArrayAdapter instead.
 	</string>
 
 	<!-- Info Dialog - SimpleJSONArrayBaseAdapter -->

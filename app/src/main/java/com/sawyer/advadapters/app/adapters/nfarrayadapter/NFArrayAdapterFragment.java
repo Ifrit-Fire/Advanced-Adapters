@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.sawyer.advadapters.app.adapters.simplearraybaseadapter;
+package com.sawyer.advadapters.app.adapters.nfarrayadapter;
 
 import android.app.Activity;
 import android.app.ListFragment;
@@ -37,29 +37,29 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
-public class SimpleArrayBaseAdapterFragment extends ListFragment {
+public class NFArrayAdapterFragment extends ListFragment {
 	private static final String STATE_CAB_CHECKED_ITEMS = "State Cab Checked Items";
 	private static final String STATE_LIST = "State List";
 
 	private Set<MovieItem> mCheckedItems = new HashSet<>();
 	private EventListener mEventListener;
 
-	public static SimpleArrayBaseAdapterFragment newInstance() {
-		return new SimpleArrayBaseAdapterFragment();
+	public static NFArrayAdapterFragment newInstance() {
+		return new NFArrayAdapterFragment();
 	}
 
 	@Override
-	public MovieSimpleArrayBaseAdapter getListAdapter() {
-		return (MovieSimpleArrayBaseAdapter) super.getListAdapter();
+	public MovieNFArrayAdapter getListAdapter() {
+		return (MovieNFArrayAdapter) super.getListAdapter();
 	}
 
 	@Override
 	public void setListAdapter(ListAdapter adapter) {
-		if (adapter instanceof MovieSimpleArrayBaseAdapter) {
+		if (adapter instanceof MovieNFArrayAdapter) {
 			super.setListAdapter(adapter);
 		} else {
 			throw new ClassCastException(
-					"Adapter must be of type " + MovieSimpleArrayBaseAdapter.class.getSimpleName());
+					"Adapter must be of type " + MovieNFArrayAdapter.class.getSimpleName());
 		}
 	}
 
@@ -89,9 +89,9 @@ public class SimpleArrayBaseAdapterFragment extends ListFragment {
 					.getParcelableArrayList(STATE_CAB_CHECKED_ITEMS);
 			mCheckedItems.addAll(checkItems);
 			ArrayList<MovieItem> list = savedInstanceState.getParcelableArrayList(STATE_LIST);
-			setListAdapter(new MovieSimpleArrayBaseAdapter(getActivity(), list));
+			setListAdapter(new MovieNFArrayAdapter(getActivity(), list));
 		} else {
-			setListAdapter(new MovieSimpleArrayBaseAdapter(getActivity()));
+			setListAdapter(new MovieNFArrayAdapter(getActivity()));
 		}
 	}
 

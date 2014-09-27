@@ -30,11 +30,11 @@ import android.widget.TextView;
 import com.sawyer.advadapters.app.adapters.androidarrayadapter.AndroidAdapterActivity;
 import com.sawyer.advadapters.app.adapters.absarrayadapter.ArrayAdapterActivity;
 import com.sawyer.advadapters.app.adapters.jsonarraybaseadapter.JSONArrayBaseAdapterActivity;
-import com.sawyer.advadapters.app.adapters.simplearraybaseadapter.SimpleArrayBaseAdapterActivity;
+import com.sawyer.advadapters.app.adapters.nfarrayadapter.NFArrayAdapterActivity;
 import com.sawyer.advadapters.app.adapters.simplejsonarraybaseadapter.SimpleJSONArrayBaseAdapterActivity;
 import com.sawyer.advadapters.app.adapters.simplesparsearraybaseadapter.SimpleSparseArrayBaseAdapterActivity;
 import com.sawyer.advadapters.app.adapters.sparsearraybaseadapter.SparseArrayBaseAdapterActivity;
-import com.sawyer.advadapters.widget.SimpleArrayBaseAdapter;
+import com.sawyer.advadapters.widget.NFArrayAdapter;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -51,7 +51,7 @@ public class MainActivity extends ListActivity {
 		intent.putExtra(EXTRA_INTENT_NAME, getString(R.string.activity_array_baseadapter));
 		intents.add(intent);
 
-		intent = new Intent(this, SimpleArrayBaseAdapterActivity.class);
+		intent = new Intent(this, NFArrayAdapterActivity.class);
 		intent.putExtra(EXTRA_INTENT_NAME, getString(R.string.activity_simplearray_baseadapter));
 		intents.add(intent);
 
@@ -119,7 +119,7 @@ public class MainActivity extends ListActivity {
 		}
 	}
 
-	private class DemoAdapter extends SimpleArrayBaseAdapter<Intent> {
+	private class DemoAdapter extends NFArrayAdapter<Intent> {
 		public DemoAdapter(Context activity, Collection<Intent> objects) {
 			super(activity, objects);
 		}

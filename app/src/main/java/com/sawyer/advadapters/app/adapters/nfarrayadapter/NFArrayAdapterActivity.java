@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.sawyer.advadapters.app.adapters.simplearraybaseadapter;
+package com.sawyer.advadapters.app.adapters.nfarrayadapter;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
@@ -30,9 +30,9 @@ import com.sawyer.advadapters.app.dialogs.InsertArrayDialogFragment;
 
 import java.util.List;
 
-public class SimpleArrayBaseAdapterActivity extends AdapterBaseActivity implements
+public class NFArrayAdapterActivity extends AdapterBaseActivity implements
 		AddArrayDialogFragment.EventListener, ContainsArrayDialogFragment.EventListener,
-		InsertArrayDialogFragment.EventListener, SimpleArrayBaseAdapterFragment.EventListener {
+		InsertArrayDialogFragment.EventListener, NFArrayAdapterFragment.EventListener {
 	private static final String TAG_ADD_DIALOG_FRAG = "Tag Add Dialog Frag";
 	private static final String TAG_BASE_ADAPTER_FRAG = "Tag Base Adapter Frag";
 	private static final String TAG_CONTAINS_DIALOG_FRAG = "Tag Contains Dialog Frag";
@@ -41,7 +41,7 @@ public class SimpleArrayBaseAdapterActivity extends AdapterBaseActivity implemen
 	private AddArrayDialogFragment mAddDialogFragment;
 	private ContainsArrayDialogFragment mContainsDialogFragment;
 	private InsertArrayDialogFragment mInsertDialogFragment;
-	private SimpleArrayBaseAdapterFragment mListFragment;
+	private NFArrayAdapterFragment mListFragment;
 
 	@Override
 	protected void clear() {
@@ -51,12 +51,12 @@ public class SimpleArrayBaseAdapterActivity extends AdapterBaseActivity implemen
 
 	@Override
 	protected String getInfoDialogMessage() {
-		return getString(R.string.info_simplearray_baseadapter_message);
+		return getString(R.string.info_nfarrayadapter_message);
 	}
 
 	@Override
 	protected String getInfoDialogTitle() {
-		return getString(R.string.info_simplearray_baseadapter_title);
+		return getString(R.string.info_nfarrayadapter_title);
 	}
 
 	@Override
@@ -68,10 +68,10 @@ public class SimpleArrayBaseAdapterActivity extends AdapterBaseActivity implemen
 	protected void initFrags() {
 		super.initFrags();
 		FragmentManager manager = getFragmentManager();
-		mListFragment = (SimpleArrayBaseAdapterFragment) manager
+		mListFragment = (NFArrayAdapterFragment) manager
 				.findFragmentByTag(TAG_BASE_ADAPTER_FRAG);
 		if (mListFragment == null) {
-			mListFragment = SimpleArrayBaseAdapterFragment.newInstance();
+			mListFragment = NFArrayAdapterFragment.newInstance();
 			FragmentTransaction transaction = manager.beginTransaction();
 			transaction.replace(R.id.frag_container, mListFragment, TAG_BASE_ADAPTER_FRAG);
 			transaction.commit();
@@ -139,8 +139,8 @@ public class SimpleArrayBaseAdapterActivity extends AdapterBaseActivity implemen
 	public void onAttachFragment(Fragment fragment) {
 		super.onAttachFragment(fragment);
 
-		if (fragment instanceof SimpleArrayBaseAdapterFragment) {
-			mListFragment = (SimpleArrayBaseAdapterFragment) fragment;
+		if (fragment instanceof NFArrayAdapterFragment) {
+			mListFragment = (NFArrayAdapterFragment) fragment;
 		}
 	}
 

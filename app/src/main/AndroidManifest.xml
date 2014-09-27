@@ -40,7 +40,7 @@
 			android:label="@string/activity_array_baseadapter">
 		</activity>
 		<activity
-			android:name=".adapters.simplearraybaseadapter.SimpleArrayBaseAdapterActivity"
+			android:name=".adapters.nfarrayadapter.NFArrayAdapterActivity"
 			android:label="@string/activity_simplearray_baseadapter">
 		</activity>
 

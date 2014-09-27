@@ -27,18 +27,18 @@ import java.util.Collections;
 import java.util.Comparator;
 
 /**
- * A <i>trimmed</i> down version of the {@link AbsArrayAdapter} which is similarly backed by an
- * {@link ArrayList} of arbitrary objects. By default this class will delegate view generation to
- * subclasses.
+ * A non-filterable custom abstract {@link BaseAdapter} that is backed by an {@link ArrayList} of
+ * arbitrary objects.  By default this class delegates view generation to subclasses.
  * <p/>
- * Designed to be a simple version of it's cousin {@link AbsArrayAdapter}, it removes some of the
- * more "convenience" method calls while adding support for insertion. The biggest difference is the
- * lack of filtering. As a result, there is no need for {@code synchronized} blocks which may
- * help those worried about performance.
+ * Designed to be a more flexible then Android's ArrayAdapter class but without the filtering
+ * mechanism. As a result, there is no need for {@code synchronized} blocks which may help those
+ * worried about performance. It provides extra features such as: supporting additional {@link
+ * ArrayList} methods, makes smarter use of {@link #notifyDataSetChanged()}, and conveniently passes
+ * along a layout inflater for view creation.
  * <p/>
  * If filtering is required, it's strongly recommended to use the {@link AbsArrayAdapter} instead.
  */
-public abstract class SimpleArrayBaseAdapter<T> extends BaseAdapter {
+public abstract class NFArrayAdapter<T> extends BaseAdapter {
 	/** LayoutInflater created from the constructing context */
 	private LayoutInflater mInflater;
 	/**
@@ -56,7 +56,7 @@ public abstract class SimpleArrayBaseAdapter<T> extends BaseAdapter {
 	 *
 	 * @param activity Context used for inflating views
 	 */
-	public SimpleArrayBaseAdapter(Context activity) {
+	public NFArrayAdapter(Context activity) {
 		init(activity, new ArrayList<T>());
 	}
 
@@ -66,7 +66,7 @@ public abstract class SimpleArrayBaseAdapter<T> extends BaseAdapter {
 	 * @param activity Context used for inflating views
 	 * @param items    The items to represent within the adapter.
 	 */
-	public SimpleArrayBaseAdapter(Context activity, Collection<T> items) {
+	public NFArrayAdapter(Context activity, Collection<T> items) {
 		init(activity, new ArrayList<>(items));
 	}
 
@@ -295,8 +295,8 @@ public abstract class SimpleArrayBaseAdapter<T> extends BaseAdapter {
 	 *                   {@code Comparable} interface.
 	 *
 	 * @throws ClassCastException If the comparator is null and the stored items do not implement
-	 *                            {@code Comparable} or if {@code compareTo} throws for
-	 *                            any pair of items.
+	 *                            {@code Comparable} or if {@code compareTo} throws for any pair of
+	 *                            items.
 	 */
 	public void sort(Comparator<? super T> comparator) {
 		Collections.sort(mObjects, comparator);
