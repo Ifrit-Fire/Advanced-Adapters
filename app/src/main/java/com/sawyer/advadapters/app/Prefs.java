@@ -19,17 +19,18 @@ import android.app.Activity;
 import android.content.SharedPreferences;
 
 public class Prefs {
+	private static final String KEY_VIEW_ADAPTER_INFO = "Key View Adapter Info";
+	private static final boolean DEFAULT_VIEW_ADAPTER_INFO = false;
+
 	public static boolean hasViewedAdapterInfo(Activity activity) {
 		SharedPreferences pref = activity.getPreferences(Activity.MODE_PRIVATE);
-		return pref.getBoolean(activity.getString(R.string.key_pref_viewed_adapter),
-							   App.getBoolean(R.bool.default_pref_viewed_adapter));
+		return pref.getBoolean(KEY_VIEW_ADAPTER_INFO, DEFAULT_VIEW_ADAPTER_INFO);
 	}
 
 	public static void setViewedAdapterInfo(Activity activity, boolean hasViewed) {
 		SharedPreferences pref = activity.getPreferences(Activity.MODE_PRIVATE);
 		SharedPreferences.Editor editor = pref.edit();
-		editor.putBoolean(activity.getString(R.string.key_pref_viewed_adapter),
-						  hasViewed);
+		editor.putBoolean(KEY_VIEW_ADAPTER_INFO, hasViewed);
 		editor.apply();
 	}
 }
