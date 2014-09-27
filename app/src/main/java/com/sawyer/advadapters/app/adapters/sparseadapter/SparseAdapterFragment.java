@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.sawyer.advadapters.app.adapters.sparsearraybaseadapter;
+package com.sawyer.advadapters.app.adapters.sparseadapter;
 
 import android.app.Activity;
 import android.app.ListFragment;
@@ -33,29 +33,29 @@ import android.widget.ListView;
 import com.sawyer.advadapters.app.R;
 import com.sawyer.advadapters.app.data.MovieItem;
 
-public class SparseArrayBaseFragment extends ListFragment {
+public class SparseAdapterFragment extends ListFragment {
 	private static final String STATE_CAB_CHECKED_ITEMS = "State Cab Checked Items";
 	private static final String STATE_LIST = "State List";
 
 	private SparseArray<MovieItem> mCheckedItems = new SparseArray<>();
 	private EventListener mEventListener;
 
-	public static SparseArrayBaseFragment newInstance() {
-		return new SparseArrayBaseFragment();
+	public static SparseAdapterFragment newInstance() {
+		return new SparseAdapterFragment();
 	}
 
 	@Override
-	public MovieSparseArrayAdapter getListAdapter() {
-		return (MovieSparseArrayAdapter) super.getListAdapter();
+	public MovieSparseAdapter getListAdapter() {
+		return (MovieSparseAdapter) super.getListAdapter();
 	}
 
 	@Override
 	public void setListAdapter(ListAdapter adapter) {
-		if (adapter instanceof MovieSparseArrayAdapter) {
+		if (adapter instanceof MovieSparseAdapter) {
 			super.setListAdapter(adapter);
 		} else {
 			throw new ClassCastException(
-					"Adapter must be of type " + MovieSparseArrayAdapter.class.getSimpleName());
+					"Adapter must be of type " + MovieSparseAdapter.class.getSimpleName());
 		}
 	}
 
@@ -84,9 +84,9 @@ public class SparseArrayBaseFragment extends ListFragment {
 			mCheckedItems = savedInstanceState.getSparseParcelableArray(STATE_CAB_CHECKED_ITEMS);
 			SparseArray<MovieItem> list = savedInstanceState
 					.getSparseParcelableArray(STATE_LIST);
-			setListAdapter(new MovieSparseArrayAdapter(getActivity(), list));
+			setListAdapter(new MovieSparseAdapter(getActivity(), list));
 		} else {
-			setListAdapter(new MovieSparseArrayAdapter(getActivity()));
+			setListAdapter(new MovieSparseAdapter(getActivity()));
 		}
 	}
 

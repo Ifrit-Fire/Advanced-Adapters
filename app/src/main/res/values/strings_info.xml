@@ -131,16 +131,16 @@
 		recommended to use the SparseArrayBaseAdapter instead.
 	</string>
 
-	<!--Info Dialog - SparseArrayBaseAdapter-->
-	<string name="info_sparsearray_baseadapter_title">Adapter Demo Info</string>
-	<string name="info_sparsearray_baseadapter_message">
-		This is a demonstration of the SparseArrayBaseAdapter which, as the name suggests, is an
-		adapter backed by a SparseArray. It exposes most of the SparseArray methods with the key
-		mapping to an adapter\'s row id and vice versa.  Keep in mind this behaves like a map, not
-		a list.  Putting to the adapter is not the same as adding to the adapter.\n
+	<!--Info Dialog - SparseAdapter-->
+	<string name="info_sparseadapter_title">Adapter Demo Info</string>
+	<string name="info_sparseadapter_message">
+		This is a demonstration of the SparseAdapter which, as the name suggests, is an adapter
+		backed by a SparseArray. It exposes most of the SparseArray methods with the key mapping to
+		an adapter\'s row id and vice versa.  Keep in mind this behaves like a map, not a list.
+		Putting to the adapter is not the same as adding to the adapter.\n
 		\n
 		This adapter supports filtering.  If filtering is not required, it\'s strongly recommended
-		to use the SimpleSparseArrayBaseAdapter instead.
+		to use the NFSparseAdapter instead.
 	</string>
 
 	<!-- Info Dialog - JSONArrayBaseAdapter -->

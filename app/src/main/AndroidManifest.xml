@@ -46,8 +46,8 @@
 
 		<!-- SparseArray Adapter Activities-->
 		<activity
-			android:name=".adapters.sparsearraybaseadapter.SparseArrayBaseAdapterActivity"
-			android:label="@string/activity_sparsearray_baseadapter">
+			android:name=".adapters.sparseadapter.SparseAdapterActivity"
+			android:label="@string/activity_sparseadapter">
 		</activity>
 		<activity
 			android:name=".adapters.simplesparsearraybaseadapter.SimpleSparseArrayBaseAdapterActivity"

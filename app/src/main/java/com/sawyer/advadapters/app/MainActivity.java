@@ -33,7 +33,7 @@ import com.sawyer.advadapters.app.adapters.jsonarraybaseadapter.JSONArrayBaseAda
 import com.sawyer.advadapters.app.adapters.nfarrayadapter.NFArrayAdapterActivity;
 import com.sawyer.advadapters.app.adapters.simplejsonarraybaseadapter.SimpleJSONArrayBaseAdapterActivity;
 import com.sawyer.advadapters.app.adapters.simplesparsearraybaseadapter.SimpleSparseArrayBaseAdapterActivity;
-import com.sawyer.advadapters.app.adapters.sparsearraybaseadapter.SparseArrayBaseAdapterActivity;
+import com.sawyer.advadapters.app.adapters.sparseadapter.SparseAdapterActivity;
 import com.sawyer.advadapters.widget.NFArrayAdapter;
 
 import java.util.ArrayList;
@@ -55,8 +55,8 @@ public class MainActivity extends ListActivity {
 		intent.putExtra(EXTRA_INTENT_NAME, getString(R.string.activity_nfarrayadapter));
 		intents.add(intent);
 
-		intent = new Intent(this, SparseArrayBaseAdapterActivity.class);
-		intent.putExtra(EXTRA_INTENT_NAME, getString(R.string.activity_sparsearray_baseadapter));
+		intent = new Intent(this, SparseAdapterActivity.class);
+		intent.putExtra(EXTRA_INTENT_NAME, getString(R.string.activity_sparseadapter));
 		intents.add(intent);
 
 		intent = new Intent(this, SimpleSparseArrayBaseAdapterActivity.class);

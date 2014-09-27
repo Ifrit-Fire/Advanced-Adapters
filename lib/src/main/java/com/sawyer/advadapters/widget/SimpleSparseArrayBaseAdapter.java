@@ -23,16 +23,16 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
 /**
- * A <i>trimmed</i> down version of the {@link SparseArrayBaseAdapter} which is similarly backed by
+ * A <i>trimmed</i> down version of the {@link SparseAdapter} which is similarly backed by
  * a {@link SparseArray} of arbitrary objects. By default this class will delegate view generation
  * to subclasses.
  * <p/>
- * Designed to be a simple version of it's cousin SparseArrayBaseAdapter, it removes support for
+ * Designed to be a simple version of it's cousin SparseAdapter, it removes support for
  * filtering. As a result, there is no need for {@code synchronized} blocks which may help those
  * worried about performance. An adapter's row ID maps to the SparseArray's key and vice versa. Any
  * method requiring a key will have <i>"withId"</i> in the name.
  * <p/>
- * If filtering is required, it's strongly recommended to use the {@link SparseArrayBaseAdapter} instead.
+ * If filtering is required, it's strongly recommended to use the {@link SparseAdapter} instead.
  */
 public abstract class SimpleSparseArrayBaseAdapter<T> extends BaseAdapter {
 

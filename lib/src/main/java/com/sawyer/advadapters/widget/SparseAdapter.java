@@ -40,7 +40,7 @@ import android.widget.Filterable;
  * filtering is not required, it's strongly recommended to use the {@link
  * SimpleSparseArrayBaseAdapter} instead.
  */
-public abstract class SparseArrayBaseAdapter<T> extends BaseAdapter implements Filterable {
+public abstract class SparseAdapter<T> extends BaseAdapter implements Filterable {
 	/**
 	 * Lock used to modify the content of {@link #mObjects}. Any write operation performed on the
 	 * sparse array should be synchronized on this lock. This lock is also used by the filter (see
@@ -80,7 +80,7 @@ public abstract class SparseArrayBaseAdapter<T> extends BaseAdapter implements F
 	 *
 	 * @param activity Context used for inflating views
 	 */
-	public SparseArrayBaseAdapter(Context activity) {
+	public SparseAdapter(Context activity) {
 		init(activity, null);
 	}
 
@@ -90,7 +90,7 @@ public abstract class SparseArrayBaseAdapter<T> extends BaseAdapter implements F
 	 * @param activity Context used for inflating views
 	 * @param items    The items to represent within the adapter.
 	 */
-	public SparseArrayBaseAdapter(Context activity, SparseArray<T> items) {
+	public SparseAdapter(Context activity, SparseArray<T> items) {
 		init(activity, items);
 	}
 
@@ -491,7 +491,7 @@ public abstract class SparseArrayBaseAdapter<T> extends BaseAdapter implements F
 
 	/**
 	 * A SparseArray filter constrains the content of the adapter. Whether an item is constrained or
-	 * not is delegated to subclasses through {@link SparseArrayBaseAdapter#isFilteredBy}
+	 * not is delegated to subclasses through {@link SparseAdapter#isFilteredBy}
 	 */
 	private class SparseArrayFilter extends Filter {
 		@Override

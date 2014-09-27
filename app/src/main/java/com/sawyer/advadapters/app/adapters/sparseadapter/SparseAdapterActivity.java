@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.sawyer.advadapters.app.adapters.sparsearraybaseadapter;
+package com.sawyer.advadapters.app.adapters.sparseadapter;
 
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
@@ -28,15 +28,15 @@ import com.sawyer.advadapters.app.dialogs.AppendSparseDialogFragment;
 import com.sawyer.advadapters.app.dialogs.ContainsSparseDialogFragment;
 import com.sawyer.advadapters.app.dialogs.PutSparseDialogFragment;
 
-public class SparseArrayBaseAdapterActivity extends AdapterBaseActivity implements
+public class SparseAdapterActivity extends AdapterBaseActivity implements
 		ContainsSparseDialogFragment.EventListener, PutSparseDialogFragment.EventListener,
-		AppendSparseDialogFragment.EventListener, SparseArrayBaseFragment.EventListener {
+		AppendSparseDialogFragment.EventListener, SparseAdapterFragment.EventListener {
 	private static final String TAG_APPEND_ADAPTER_FRAG = "Tag Append Adapter Frag";
 	private static final String TAG_BASE_ADAPTER_FRAG = "Tag Base Adapter Frag";
 	private static final String TAG_CONTAINS_DIALOG_FRAG = "Tag Contains Dialog Frag";
 	private static final String TAG_PUT_DIALOG_FRAG = "Tag Put Dialog Frag";
 
-	private SparseArrayBaseFragment mListFragment;
+	private SparseAdapterFragment mListFragment;
 	private ContainsSparseDialogFragment mContainsDialogFragment;
 	private PutSparseDialogFragment mPutDialogFragment;
 	private AppendSparseDialogFragment mAppendDialogFragment;
@@ -54,12 +54,12 @@ public class SparseArrayBaseAdapterActivity extends AdapterBaseActivity implemen
 
 	@Override
 	protected String getInfoDialogMessage() {
-		return getString(R.string.info_sparsearray_baseadapter_message);
+		return getString(R.string.info_sparseadapter_message);
 	}
 
 	@Override
 	protected String getInfoDialogTitle() {
-		return getString(R.string.info_sparsearray_baseadapter_title);
+		return getString(R.string.info_sparseadapter_title);
 	}
 
 	@Override
@@ -72,10 +72,10 @@ public class SparseArrayBaseAdapterActivity extends AdapterBaseActivity implemen
 		super.initFrags();
 		FragmentManager manager = getFragmentManager();
 
-		mListFragment = (SparseArrayBaseFragment) manager
+		mListFragment = (SparseAdapterFragment) manager
 				.findFragmentByTag(TAG_BASE_ADAPTER_FRAG);
 		if (mListFragment == null) {
-			mListFragment = SparseArrayBaseFragment.newInstance();
+			mListFragment = SparseAdapterFragment.newInstance();
 			FragmentTransaction transaction = manager.beginTransaction();
 			transaction.replace(R.id.frag_container, mListFragment, TAG_BASE_ADAPTER_FRAG);
 			transaction.commit();
