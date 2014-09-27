@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.sawyer.advadapters.app.adapters.arraybaseadapter;
+package com.sawyer.advadapters.app.adapters.absarrayadapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -24,18 +24,18 @@ import android.widget.TextView;
 
 import com.sawyer.advadapters.app.R;
 import com.sawyer.advadapters.app.data.MovieItem;
-import com.sawyer.advadapters.widget.ArrayBaseAdapter;
+import com.sawyer.advadapters.widget.AbsArrayAdapter;
 
 import java.util.List;
 import java.util.Locale;
 
-class MovieArrayBaseAdapter extends ArrayBaseAdapter<MovieItem> {
+class MovieArrayAdapter extends AbsArrayAdapter<MovieItem> {
 
-	MovieArrayBaseAdapter(Context activity) {
+	MovieArrayAdapter(Context activity) {
 		super(activity);
 	}
 
-	MovieArrayBaseAdapter(Context activity, List<MovieItem> list) {
+	MovieArrayAdapter(Context activity, List<MovieItem> list) {
 		super(activity, list);
 	}
 

@@ -32,7 +32,7 @@ import android.widget.BaseAdapter;
  * worried about performance. An adapter's row ID maps to the SparseArray's key and vice versa. Any
  * method requiring a key will have <i>"withId"</i> in the name.
  * <p/>
- * If filtering is required, it's strongly recommended to use the {@link ArrayBaseAdapter} instead.
+ * If filtering is required, it's strongly recommended to use the {@link SparseArrayBaseAdapter} instead.
  */
 public abstract class SimpleSparseArrayBaseAdapter<T> extends BaseAdapter {
 

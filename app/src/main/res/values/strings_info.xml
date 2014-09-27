@@ -51,15 +51,14 @@
 	</string>
 	<string name="info_android_arrayAdapter_url">https://github.com/JaySoyer/Advanced-Adapters/wiki/</string>
 
-	<!--Info Dialog - ArrayBaseAdapter-->
-	<string name="info_array_baseadapter_title">Adapter Demo Info</string>
-	<string name="info_array_baseadapter_message">
-		This is a demonstration of the ArrayBaseAdapter, which is an adapter backed by an ArrayList.
+	<!--Info Dialog - AbsArrayAdapter-->
+	<string name="info_absarrayadapter_title">Adapter Demo Info</string>
+	<string name="info_absarrayadapter_message">
+		This is a demonstration of the AbsArrayAdapter, which is an adapter backed by an ArrayList.
 		This adapter is an improved version of Android\'s ArrayAdapter, resolving many of it\'s
 		issues. Most notably, all the filtering problems.\n
 		\n
-		If filtering is not required, it\'s strongly recommended to use the SimpleArrayBaseAdapter
-		instead.
+		If filtering is not required, it\'s strongly recommended to use the NFArrayAdapter instead.
 	</string>
 
 	<!--About Screen - Credits Heading-->

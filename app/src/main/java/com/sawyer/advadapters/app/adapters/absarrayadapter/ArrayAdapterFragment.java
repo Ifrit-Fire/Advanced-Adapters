@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.sawyer.advadapters.app.adapters.arraybaseadapter;
+package com.sawyer.advadapters.app.adapters.absarrayadapter;
 
 import android.app.Activity;
 import android.app.ListFragment;
@@ -37,29 +37,29 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
-public class ArrayBaseAdapterFragment extends ListFragment {
+public class ArrayAdapterFragment extends ListFragment {
 	private static final String STATE_CAB_CHECKED_ITEMS = "State Cab Checked Items";
 	private static final String STATE_LIST = "State List";
 
 	private Set<MovieItem> mCheckedItems = new HashSet<>();
 	private EventListener mEventListener;
 
-	public static ArrayBaseAdapterFragment newInstance() {
-		return new ArrayBaseAdapterFragment();
+	public static ArrayAdapterFragment newInstance() {
+		return new ArrayAdapterFragment();
 	}
 
 	@Override
-	public MovieArrayBaseAdapter getListAdapter() {
-		return (MovieArrayBaseAdapter) super.getListAdapter();
+	public MovieArrayAdapter getListAdapter() {
+		return (MovieArrayAdapter) super.getListAdapter();
 	}
 
 	@Override
 	public void setListAdapter(ListAdapter adapter) {
-		if (adapter instanceof MovieArrayBaseAdapter) {
+		if (adapter instanceof MovieArrayAdapter) {
 			super.setListAdapter(adapter);
 		} else {
 			throw new ClassCastException(
-					"Adapter must be of type " + MovieArrayBaseAdapter.class.getSimpleName());
+					"Adapter must be of type " + MovieArrayAdapter.class.getSimpleName());
 		}
 	}
 
@@ -89,9 +89,9 @@ public class ArrayBaseAdapterFragment extends ListFragment {
 					.getParcelableArrayList(STATE_CAB_CHECKED_ITEMS);
 			mCheckedItems.addAll(checkItems);
 			ArrayList<MovieItem> list = savedInstanceState.getParcelableArrayList(STATE_LIST);
-			setListAdapter(new MovieArrayBaseAdapter(getActivity(), list));
+			setListAdapter(new MovieArrayAdapter(getActivity(), list));
 		} else {
-			setListAdapter(new MovieArrayBaseAdapter(getActivity()));
+			setListAdapter(new MovieArrayAdapter(getActivity()));
 		}
 	}
 

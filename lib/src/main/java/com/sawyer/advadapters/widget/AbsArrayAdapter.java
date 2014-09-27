@@ -46,7 +46,7 @@ import java.util.List;
  * filtering is not required, it's strongly recommended to use the {@link SimpleArrayBaseAdapter}
  * instead.
  */
-public abstract class ArrayBaseAdapter<T> extends BaseAdapter implements Filterable {
+public abstract class AbsArrayAdapter<T> extends BaseAdapter implements Filterable {
 	/**
 	 * Lock used to modify the content of {@link #mObjects}. Any write operation performed on the
 	 * array should be synchronized on this lock. This lock is also used by the filter (see {@link
@@ -86,7 +86,7 @@ public abstract class ArrayBaseAdapter<T> extends BaseAdapter implements Filtera
 	 *
 	 * @param activity Context used for inflating views
 	 */
-	public ArrayBaseAdapter(Context activity) {
+	public AbsArrayAdapter(Context activity) {
 		init(activity, new ArrayList<T>());
 	}
 
@@ -96,7 +96,7 @@ public abstract class ArrayBaseAdapter<T> extends BaseAdapter implements Filtera
 	 * @param activity Context used for inflating views
 	 * @param items    The items to represent within the adapter.
 	 */
-	public ArrayBaseAdapter(Context activity, T[] items) {
+	public AbsArrayAdapter(Context activity, T[] items) {
 		List<T> list = Arrays.asList(items);
 		if (list instanceof ArrayList) {    //Should always be true...but just in case implementation changes
 			init(activity, (ArrayList<T>) list);
@@ -111,7 +111,7 @@ public abstract class ArrayBaseAdapter<T> extends BaseAdapter implements Filtera
 	 * @param activity Context used for inflating views
 	 * @param items    The items to represent within the adapter.
 	 */
-	public ArrayBaseAdapter(Context activity, Collection<T> items) {
+	public AbsArrayAdapter(Context activity, Collection<T> items) {
 		init(activity, new ArrayList<>(items));
 	}
 
@@ -490,7 +490,7 @@ public abstract class ArrayBaseAdapter<T> extends BaseAdapter implements Filtera
 
 	/**
 	 * An array filter constrains the content of the array adapter. Whether an item is constrained
-	 * or not is delegated to subclasses through {@link ArrayBaseAdapter#isFilteredBy(Object,
+	 * or not is delegated to subclasses through {@link AbsArrayAdapter#isFilteredBy(Object,
 	 * CharSequence)}
 	 */
 	private class ArrayFilter extends Filter {

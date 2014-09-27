@@ -36,7 +36,7 @@
 
 		<!-- Array Adapter Activities -->
 		<activity
-			android:name=".adapters.arraybaseadapter.ArrayBaseAdapterActivity"
+			android:name=".adapters.absarrayadapter.ArrayAdapterActivity"
 			android:label="@string/activity_array_baseadapter">
 		</activity>
 		<activity

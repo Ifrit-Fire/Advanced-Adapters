@@ -28,7 +28,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.sawyer.advadapters.app.adapters.androidarrayadapter.AndroidAdapterActivity;
-import com.sawyer.advadapters.app.adapters.arraybaseadapter.ArrayBaseAdapterActivity;
+import com.sawyer.advadapters.app.adapters.absarrayadapter.ArrayAdapterActivity;
 import com.sawyer.advadapters.app.adapters.jsonarraybaseadapter.JSONArrayBaseAdapterActivity;
 import com.sawyer.advadapters.app.adapters.simplearraybaseadapter.SimpleArrayBaseAdapterActivity;
 import com.sawyer.advadapters.app.adapters.simplejsonarraybaseadapter.SimpleJSONArrayBaseAdapterActivity;
@@ -47,7 +47,7 @@ public class MainActivity extends ListActivity {
 		List<Intent> intents = new ArrayList<>();
 		Intent intent;
 
-		intent = new Intent(this, ArrayBaseAdapterActivity.class);
+		intent = new Intent(this, ArrayAdapterActivity.class);
 		intent.putExtra(EXTRA_INTENT_NAME, getString(R.string.activity_array_baseadapter));
 		intents.add(intent);
 

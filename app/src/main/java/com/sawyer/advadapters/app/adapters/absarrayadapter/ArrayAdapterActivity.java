@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.sawyer.advadapters.app.adapters.arraybaseadapter;
+package com.sawyer.advadapters.app.adapters.absarrayadapter;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
@@ -29,16 +29,16 @@ import com.sawyer.advadapters.app.dialogs.ContainsArrayDialogFragment;
 
 import java.util.List;
 
-public class ArrayBaseAdapterActivity extends AdapterBaseActivity implements
+public class ArrayAdapterActivity extends AdapterBaseActivity implements
 		AddArrayDialogFragment.EventListener, ContainsArrayDialogFragment.EventListener,
-		ArrayBaseAdapterFragment.EventListener {
+		ArrayAdapterFragment.EventListener {
 	private static final String TAG_ADD_DIALOG_FRAG = "Tag Add Dialog Frag";
 	private static final String TAG_BASE_ADAPTER_FRAG = "Tag Base Adapter Frag";
 	private static final String TAG_CONTAINS_DIALOG_FRAG = "Tag Contains Dialog Frag";
 
 	private AddArrayDialogFragment mAddDialogFragment;
 	private ContainsArrayDialogFragment mContainsDialogFragment;
-	private ArrayBaseAdapterFragment mListFragment;
+	private ArrayAdapterFragment mListFragment;
 
 	@Override
 	protected void clear() {
@@ -53,12 +53,12 @@ public class ArrayBaseAdapterActivity extends AdapterBaseActivity implements
 
 	@Override
 	protected String getInfoDialogMessage() {
-		return getString(R.string.info_array_baseadapter_message);
+		return getString(R.string.info_absarrayadapter_message);
 	}
 
 	@Override
 	protected String getInfoDialogTitle() {
-		return getString(R.string.info_array_baseadapter_title);
+		return getString(R.string.info_absarrayadapter_title);
 	}
 
 	@Override
@@ -70,10 +70,10 @@ public class ArrayBaseAdapterActivity extends AdapterBaseActivity implements
 	protected void initFrags() {
 		super.initFrags();
 		FragmentManager manager = getFragmentManager();
-		mListFragment = (ArrayBaseAdapterFragment) manager
+		mListFragment = (ArrayAdapterFragment) manager
 				.findFragmentByTag(TAG_BASE_ADAPTER_FRAG);
 		if (mListFragment == null) {
-			mListFragment = ArrayBaseAdapterFragment.newInstance();
+			mListFragment = ArrayAdapterFragment.newInstance();
 			FragmentTransaction transaction = manager.beginTransaction();
 			transaction.replace(R.id.frag_container, mListFragment, TAG_BASE_ADAPTER_FRAG);
 			transaction.commit();
@@ -137,8 +137,8 @@ public class ArrayBaseAdapterActivity extends AdapterBaseActivity implements
 	public void onAttachFragment(Fragment fragment) {
 		super.onAttachFragment(fragment);
 
-		if (fragment instanceof ArrayBaseAdapterFragment) {
-			mListFragment = (ArrayBaseAdapterFragment) fragment;
+		if (fragment instanceof ArrayAdapterFragment) {
+			mListFragment = (ArrayAdapterFragment) fragment;
 		}
 	}
 

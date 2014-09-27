@@ -27,16 +27,16 @@ import java.util.Collections;
 import java.util.Comparator;
 
 /**
- * A <i>trimmed</i> down version of the {@link ArrayBaseAdapter} which is similarly backed by an
+ * A <i>trimmed</i> down version of the {@link AbsArrayAdapter} which is similarly backed by an
  * {@link ArrayList} of arbitrary objects. By default this class will delegate view generation to
  * subclasses.
  * <p/>
- * Designed to be a simple version of it's cousin {@link ArrayBaseAdapter}, it removes some of the
+ * Designed to be a simple version of it's cousin {@link AbsArrayAdapter}, it removes some of the
  * more "convenience" method calls while adding support for insertion. The biggest difference is the
  * lack of filtering. As a result, there is no need for {@code synchronized} blocks which may
  * help those worried about performance.
  * <p/>
- * If filtering is required, it's strongly recommended to use the {@link ArrayBaseAdapter} instead.
+ * If filtering is required, it's strongly recommended to use the {@link AbsArrayAdapter} instead.
  */
 public abstract class SimpleArrayBaseAdapter<T> extends BaseAdapter {
 	/** LayoutInflater created from the constructing context */
