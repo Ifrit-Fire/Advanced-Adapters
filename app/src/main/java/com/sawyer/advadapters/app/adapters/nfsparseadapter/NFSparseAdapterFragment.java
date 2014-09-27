@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.sawyer.advadapters.app.adapters.simplesparsearraybaseadapter;
+package com.sawyer.advadapters.app.adapters.nfsparseadapter;
 
 import android.app.Activity;
 import android.app.ListFragment;
@@ -33,30 +33,30 @@ import android.widget.ListView;
 import com.sawyer.advadapters.app.R;
 import com.sawyer.advadapters.app.data.MovieItem;
 
-public class SimpleSparseArrayBaseFragment extends ListFragment {
+public class NFSparseAdapterFragment extends ListFragment {
 	private static final String STATE_CAB_CHECKED_ITEMS = "State Cab Checked Items";
 	private static final String STATE_LIST = "State List";
 
 	private SparseArray<MovieItem> mCheckedItems = new SparseArray<>();
 	private EventListener mEventListener;
 
-	public static SimpleSparseArrayBaseFragment newInstance() {
-		return new SimpleSparseArrayBaseFragment();
+	public static NFSparseAdapterFragment newInstance() {
+		return new NFSparseAdapterFragment();
 	}
 
 	@Override
-	public MovieSimpleSparseArrayAdapter getListAdapter() {
-		return (MovieSimpleSparseArrayAdapter) super.getListAdapter();
+	public MovieNFSparseAdapter getListAdapter() {
+		return (MovieNFSparseAdapter) super.getListAdapter();
 	}
 
 	@Override
 	public void setListAdapter(ListAdapter adapter) {
-		if (adapter instanceof MovieSimpleSparseArrayAdapter) {
+		if (adapter instanceof MovieNFSparseAdapter) {
 			super.setListAdapter(adapter);
 		} else {
 			throw new ClassCastException(
 					"Adapter must be of type " +
-					MovieSimpleSparseArrayAdapter.class.getSimpleName());
+					MovieNFSparseAdapter.class.getSimpleName());
 		}
 	}
 
@@ -85,9 +85,9 @@ public class SimpleSparseArrayBaseFragment extends ListFragment {
 			mCheckedItems = savedInstanceState.getSparseParcelableArray(STATE_CAB_CHECKED_ITEMS);
 			SparseArray<MovieItem> list = savedInstanceState
 					.getSparseParcelableArray(STATE_LIST);
-			setListAdapter(new MovieSimpleSparseArrayAdapter(getActivity(), list));
+			setListAdapter(new MovieNFSparseAdapter(getActivity(), list));
 		} else {
-			setListAdapter(new MovieSimpleSparseArrayAdapter(getActivity()));
+			setListAdapter(new MovieNFSparseAdapter(getActivity()));
 		}
 	}
 

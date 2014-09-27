@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.sawyer.advadapters.app.adapters.simplesparsearraybaseadapter;
+package com.sawyer.advadapters.app.adapters.nfsparseadapter;
 
 import android.content.Context;
 import android.util.SparseArray;
@@ -25,14 +25,14 @@ import android.widget.TextView;
 
 import com.sawyer.advadapters.app.R;
 import com.sawyer.advadapters.app.data.MovieItem;
-import com.sawyer.advadapters.widget.SimpleSparseArrayBaseAdapter;
+import com.sawyer.advadapters.widget.NFSparseAdapter;
 
-class MovieSimpleSparseArrayAdapter extends SimpleSparseArrayBaseAdapter<MovieItem> {
-	public MovieSimpleSparseArrayAdapter(Context activity) {
+class MovieNFSparseAdapter extends NFSparseAdapter<MovieItem> {
+	public MovieNFSparseAdapter(Context activity) {
 		super(activity);
 	}
 
-	public MovieSimpleSparseArrayAdapter(Context activity, SparseArray<MovieItem> items) {
+	public MovieNFSparseAdapter(Context activity, SparseArray<MovieItem> items) {
 		super(activity, items);
 	}
 

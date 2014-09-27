@@ -50,8 +50,8 @@
 			android:label="@string/activity_sparseadapter">
 		</activity>
 		<activity
-			android:name=".adapters.simplesparsearraybaseadapter.SimpleSparseArrayBaseAdapterActivity"
-			android:label="@string/activity_simplesparsearray_baseadapter">
+			android:name=".adapters.nfsparseadapter.NFSparseAdapterActivity"
+			android:label="@string/activity_nfsparseadapter">
 		</activity>
 
 		<!-- JSONArray Adapter Activities-->

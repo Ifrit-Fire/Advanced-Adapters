@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.sawyer.advadapters.app.adapters.simplesparsearraybaseadapter;
+package com.sawyer.advadapters.app.adapters.nfsparseadapter;
 
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
@@ -28,15 +28,15 @@ import com.sawyer.advadapters.app.dialogs.AppendSparseDialogFragment;
 import com.sawyer.advadapters.app.dialogs.ContainsSparseDialogFragment;
 import com.sawyer.advadapters.app.dialogs.PutSparseDialogFragment;
 
-public class SimpleSparseArrayBaseAdapterActivity extends AdapterBaseActivity implements
+public class NFSparseAdapterActivity extends AdapterBaseActivity implements
 		ContainsSparseDialogFragment.EventListener, PutSparseDialogFragment.EventListener,
-		AppendSparseDialogFragment.EventListener, SimpleSparseArrayBaseFragment.EventListener {
+		AppendSparseDialogFragment.EventListener, NFSparseAdapterFragment.EventListener {
 	private static final String TAG_APPEND_ADAPTER_FRAG = "Tag Append Adapter Frag";
 	private static final String TAG_BASE_ADAPTER_FRAG = "Tag Base Adapter Frag";
 	private static final String TAG_CONTAINS_DIALOG_FRAG = "Tag Contains Dialog Frag";
 	private static final String TAG_PUT_DIALOG_FRAG = "Tag Put Dialog Frag";
 
-	private SimpleSparseArrayBaseFragment mListFragment;
+	private NFSparseAdapterFragment mListFragment;
 	private ContainsSparseDialogFragment mContainsDialogFragment;
 	private PutSparseDialogFragment mPutDialogFragment;
 	private AppendSparseDialogFragment mAppendDialogFragment;
@@ -49,12 +49,12 @@ public class SimpleSparseArrayBaseAdapterActivity extends AdapterBaseActivity im
 
 	@Override
 	protected String getInfoDialogMessage() {
-		return getString(R.string.info_simplesparsearray_baseadapter_message);
+		return getString(R.string.info_nfsparseadapter_message);
 	}
 
 	@Override
 	protected String getInfoDialogTitle() {
-		return getString(R.string.info_simplesparsearray_baseadapter_title);
+		return getString(R.string.info_nfsparseadapter_title);
 	}
 
 	@Override
@@ -67,10 +67,10 @@ public class SimpleSparseArrayBaseAdapterActivity extends AdapterBaseActivity im
 		super.initFrags();
 		FragmentManager manager = getFragmentManager();
 
-		mListFragment = (SimpleSparseArrayBaseFragment) manager
+		mListFragment = (NFSparseAdapterFragment) manager
 				.findFragmentByTag(TAG_BASE_ADAPTER_FRAG);
 		if (mListFragment == null) {
-			mListFragment = SimpleSparseArrayBaseFragment.newInstance();
+			mListFragment = NFSparseAdapterFragment.newInstance();
 			FragmentTransaction transaction = manager.beginTransaction();
 			transaction.replace(R.id.frag_container, mListFragment, TAG_BASE_ADAPTER_FRAG);
 			transaction.commit();

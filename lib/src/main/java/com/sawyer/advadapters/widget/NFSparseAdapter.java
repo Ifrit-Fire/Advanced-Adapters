@@ -23,18 +23,19 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
 /**
- * A <i>trimmed</i> down version of the {@link SparseAdapter} which is similarly backed by
- * a {@link SparseArray} of arbitrary objects. By default this class will delegate view generation
- * to subclasses.
+ * A non-filterable custom abstract {@link BaseAdapter} that is backed by a {@link SparseArray} of
+ * arbitrary objects.  By default this class delegates view generation to subclasses.
  * <p/>
- * Designed to be a simple version of it's cousin SparseAdapter, it removes support for
- * filtering. As a result, there is no need for {@code synchronized} blocks which may help those
- * worried about performance. An adapter's row ID maps to the SparseArray's key and vice versa. Any
- * method requiring a key will have <i>"withId"</i> in the name.
+ * Designed to be a flexible and customizable solution for using SparseArray with an adapter but
+ * without the filtering mechanism. As a result, there is no need for {@code synchronized} blocks
+ * which may help those worried about performance.  It exposes most of the SparseArray methods, and
+ * conveniently passes along a layout inflater for view creation. An adapter's row ID maps to the
+ * SparseArray's key and vice versa. Any method requiring a key will have <i>"withId"</i> in the
+ * name.
  * <p/>
  * If filtering is required, it's strongly recommended to use the {@link SparseAdapter} instead.
  */
-public abstract class SimpleSparseArrayBaseAdapter<T> extends BaseAdapter {
+public abstract class NFSparseAdapter<T> extends BaseAdapter {
 
 	/** LayoutInflater created from the constructing context */
 	private LayoutInflater mInflater;
@@ -55,7 +56,7 @@ public abstract class SimpleSparseArrayBaseAdapter<T> extends BaseAdapter {
 	 *
 	 * @param activity Context used for inflating views
 	 */
-	public SimpleSparseArrayBaseAdapter(Context activity) {
+	public NFSparseAdapter(Context activity) {
 		init(activity, null);
 	}
 
@@ -65,7 +66,7 @@ public abstract class SimpleSparseArrayBaseAdapter<T> extends BaseAdapter {
 	 * @param activity Context used for inflating views
 	 * @param items    The items to represent within the adapter.
 	 */
-	public SimpleSparseArrayBaseAdapter(Context activity, SparseArray<T> items) {
+	public NFSparseAdapter(Context activity, SparseArray<T> items) {
 		init(activity, items);
 	}
 

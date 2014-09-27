@@ -23,7 +23,7 @@
 	<string name="activity_absarrayadapter">AbsArrayAdapter</string>
 	<string name="activity_nfarrayadapter">NFArrayAdapter</string>
 	<string name="activity_sparseadapter">SparseAdapter</string>
-	<string name="activity_simplesparsearray_baseadapter">SimpleSparseArray BaseAdapter</string>
+	<string name="activity_nfsparseadapter">NFSparseAdapter</string>
 	<string name="activity_jsonarray_baseadapter">JSONArray BaseAdapter</string>
 	<string name="activity_jsonarray_unittest">JSONArray - Unit Test</string>
 	<string name="activity_simplejsonarray_baseadapter">SimpleJSONArray BaseAdapter</string>

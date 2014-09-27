@@ -118,17 +118,17 @@
 		If filtering is required, it\'s strongly recommended to use the JSONArrayBaseAdapter instead.
 	</string>
 
-	<!--Info Dialog - SimpleSparseArrayBaseAdapter-->
-	<string name="info_simplesparsearray_baseadapter_title">Adapter Demo Info</string>
-	<string name="info_simplesparsearray_baseadapter_message">
-		This is a demonstration of the SimpleSparseArrayBaseAdapter which, as the name suggests, is
-		an adapter backed by a SparseArray.  It exposes most of the SparseArray methods with the key
-		mapping to an adapter\'s row id and vice versa.  Keep in mind this behaves like a map, not
-		a list.  Putting to the adapter is not the same as adding to the adapter.\n
+	<!--Info Dialog - NFSparseAdapter-->
+	<string name="info_nfsparseadapter_title">Adapter Demo Info</string>
+	<string name="info_nfsparseadapter_message">
+		This is a demonstration of the NFSparseAdapter which, as the name suggests, is an adapter
+		backed by a SparseArray.  It exposes most of the SparseArray methods with the key mapping to
+		an adapter\'s row id and vice versa.  Keep in mind this behaves like a map, not a list.
+		Putting to the adapter is not the same as adding to the adapter.\n
 		\n
 		This adapter does not support filtering and as a result contains no synchronized blocks
 		which may help those worried about performance.  If filtering is required, it\'s strongly
-		recommended to use the SparseArrayBaseAdapter instead.
+		recommended to use the SparseAdapter instead.
 	</string>
 
 	<!--Info Dialog - SparseAdapter-->

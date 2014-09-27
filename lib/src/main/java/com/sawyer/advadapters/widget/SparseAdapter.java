@@ -38,7 +38,7 @@ import android.widget.Filterable;
  * Because of the background filtering process, all methods which mutates the underlying data are
  * internally synchronized. This ensures a thread safe environment for internal write operations. If
  * filtering is not required, it's strongly recommended to use the {@link
- * SimpleSparseArrayBaseAdapter} instead.
+ * NFSparseAdapter} instead.
  */
 public abstract class SparseAdapter<T> extends BaseAdapter implements Filterable {
 	/**

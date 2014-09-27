@@ -32,11 +32,11 @@ import java.util.List;
  * A non-filterable custom abstract {@link BaseAdapter} that is backed by an {@link ArrayList} of
  * arbitrary objects.  By default this class delegates view generation to subclasses.
  * <p/>
- * Designed to be a more flexible then Android's ArrayAdapter class but without the filtering
- * mechanism. As a result, there is no need for {@code synchronized} blocks which may help those
- * worried about performance. It provides extra features such as: supporting additional {@link
- * ArrayList} methods, makes smarter use of {@link #notifyDataSetChanged()}, and conveniently passes
- * along a layout inflater for view creation.
+ * Designed to be a more flexible and customizable solution then Android's ArrayAdapter class but
+ * without the filtering mechanism. As a result, there is no need for {@code synchronized} blocks
+ * which may help those worried about performance. It provides extra features such as: supporting
+ * additional {@link ArrayList} methods, makes smarter use of {@link #notifyDataSetChanged()}, and
+ * conveniently passes along a layout inflater for view creation.
  * <p/>
  * If filtering is required, it's strongly recommended to use the {@link AbsArrayAdapter} instead.
  */
