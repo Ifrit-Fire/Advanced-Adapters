@@ -34,7 +34,7 @@ public class NFArrayAdapterActivity extends AdapterBaseActivity implements
 		AddArrayDialogFragment.EventListener, ContainsArrayDialogFragment.EventListener,
 		InsertArrayDialogFragment.EventListener, NFArrayAdapterFragment.EventListener {
 	private static final String TAG_ADD_DIALOG_FRAG = "Tag Add Dialog Frag";
-	private static final String TAG_BASE_ADAPTER_FRAG = "Tag Base Adapter Frag";
+	private static final String TAG_ADAPTER_FRAG = "Tag Adapter Frag";
 	private static final String TAG_CONTAINS_DIALOG_FRAG = "Tag Contains Dialog Frag";
 	private static final String TAG_INSERT_DIALOG_FRAG = "Tag Insert Dialog Frag";
 
@@ -69,11 +69,11 @@ public class NFArrayAdapterActivity extends AdapterBaseActivity implements
 		super.initFrags();
 		FragmentManager manager = getFragmentManager();
 		mListFragment = (NFArrayAdapterFragment) manager
-				.findFragmentByTag(TAG_BASE_ADAPTER_FRAG);
+				.findFragmentByTag(TAG_ADAPTER_FRAG);
 		if (mListFragment == null) {
 			mListFragment = NFArrayAdapterFragment.newInstance();
 			FragmentTransaction transaction = manager.beginTransaction();
-			transaction.replace(R.id.frag_container, mListFragment, TAG_BASE_ADAPTER_FRAG);
+			transaction.replace(R.id.frag_container, mListFragment, TAG_ADAPTER_FRAG);
 			transaction.commit();
 		}
 

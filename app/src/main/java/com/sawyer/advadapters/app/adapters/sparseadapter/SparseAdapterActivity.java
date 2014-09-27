@@ -32,7 +32,7 @@ public class SparseAdapterActivity extends AdapterBaseActivity implements
 		ContainsSparseDialogFragment.EventListener, PutSparseDialogFragment.EventListener,
 		AppendSparseDialogFragment.EventListener, SparseAdapterFragment.EventListener {
 	private static final String TAG_APPEND_ADAPTER_FRAG = "Tag Append Adapter Frag";
-	private static final String TAG_BASE_ADAPTER_FRAG = "Tag Base Adapter Frag";
+	private static final String TAG_ADAPTER_FRAG = "Tag Adapter Frag";
 	private static final String TAG_CONTAINS_DIALOG_FRAG = "Tag Contains Dialog Frag";
 	private static final String TAG_PUT_DIALOG_FRAG = "Tag Put Dialog Frag";
 
@@ -73,11 +73,11 @@ public class SparseAdapterActivity extends AdapterBaseActivity implements
 		FragmentManager manager = getFragmentManager();
 
 		mListFragment = (SparseAdapterFragment) manager
-				.findFragmentByTag(TAG_BASE_ADAPTER_FRAG);
+				.findFragmentByTag(TAG_ADAPTER_FRAG);
 		if (mListFragment == null) {
 			mListFragment = SparseAdapterFragment.newInstance();
 			FragmentTransaction transaction = manager.beginTransaction();
-			transaction.replace(R.id.frag_container, mListFragment, TAG_BASE_ADAPTER_FRAG);
+			transaction.replace(R.id.frag_container, mListFragment, TAG_ADAPTER_FRAG);
 			transaction.commit();
 		}
 

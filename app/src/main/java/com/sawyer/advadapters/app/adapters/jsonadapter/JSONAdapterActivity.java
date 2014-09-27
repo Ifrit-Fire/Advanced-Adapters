@@ -34,7 +34,7 @@ import org.json.JSONObject;
 public class JSONAdapterActivity extends AdapterBaseActivity implements
 		AddJSONArrayDialogFragment.EventListener, JSONAdapterFragment.EventListener {
 	private static final String TAG_ADD_DIALOG_FRAG = "Tag Add Dialog Frag";
-	private static final String TAG_BASE_ADAPTER_FRAG = "Tag Base Adapter Frag";
+	private static final String TAG_ADAPTER_FRAG = "Tag Adapter Frag";
 
 	private AddJSONArrayDialogFragment mAddDialogFragment;
 	private JSONAdapterFragment mListFragment;
@@ -70,11 +70,11 @@ public class JSONAdapterActivity extends AdapterBaseActivity implements
 		super.initFrags();
 		FragmentManager manager = getFragmentManager();
 		mListFragment = (JSONAdapterFragment) manager
-				.findFragmentByTag(TAG_BASE_ADAPTER_FRAG);
+				.findFragmentByTag(TAG_ADAPTER_FRAG);
 		if (mListFragment == null) {
 			mListFragment = JSONAdapterFragment.newInstance();
 			FragmentTransaction transaction = manager.beginTransaction();
-			transaction.replace(R.id.frag_container, mListFragment, TAG_BASE_ADAPTER_FRAG);
+			transaction.replace(R.id.frag_container, mListFragment, TAG_ADAPTER_FRAG);
 			transaction.commit();
 		}
 

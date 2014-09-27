@@ -110,7 +110,7 @@
 	<!-- Info Dialog - NFJSONArrayAdapter -->
 	<string name="info_nfjsonadapter_title">Adapter Demo Info</string>
 	<string name="info_nfjsonadapter_message">
-		This is a demonstration of the NFJSONArrayAdapter class, which is a full fledged adapter
+		This is a demonstration of the NFJSONAdapter class, which is a full fledged adapter
 		backed by a JSONArray.  Keep in mind, JSONArray is not part of a Collection and does not
 		behave like a normal array.  It\'s ability to dynamically change the underlying data is
 		limited but possible.\n

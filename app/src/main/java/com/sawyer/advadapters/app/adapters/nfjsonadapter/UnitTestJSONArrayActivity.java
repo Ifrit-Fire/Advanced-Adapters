@@ -35,7 +35,7 @@ import java.util.UUID;
 
 public class UnitTestJSONArrayActivity extends AdapterBaseActivity implements
 		UnitTestJSONArrayFragment.EventListener {
-	private static final String TAG_BASE_ADAPTER_FRAG = "Tag Base Adapter Frag";
+	private static final String TAG_ADAPTER_FRAG = "Tag Adapter Frag";
 	private static final String TAG = UnitTestJSONArrayActivity.class.getSimpleName();
 
 	private UnitTestJSONArrayFragment mListFragment;
@@ -104,11 +104,11 @@ public class UnitTestJSONArrayActivity extends AdapterBaseActivity implements
 		super.initFrags();
 		FragmentManager manager = getFragmentManager();
 		mListFragment = (UnitTestJSONArrayFragment) manager
-				.findFragmentByTag(TAG_BASE_ADAPTER_FRAG);
+				.findFragmentByTag(TAG_ADAPTER_FRAG);
 		if (mListFragment == null) {
 			mListFragment = UnitTestJSONArrayFragment.newInstance();
 			FragmentTransaction transaction = manager.beginTransaction();
-			transaction.replace(R.id.frag_container, mListFragment, TAG_BASE_ADAPTER_FRAG);
+			transaction.replace(R.id.frag_container, mListFragment, TAG_ADAPTER_FRAG);
 			transaction.commit();
 		}
 	}
