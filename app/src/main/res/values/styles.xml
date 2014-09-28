@@ -22,16 +22,27 @@
 	</style>
 
 	<style name="ButtonBarButtonStyle">
-		<item name="android:background">@drawable/btn_borderless_orange</item>
+		<item name="android:background">@drawable/btn_borderless_holo_light</item>
 		<item name="android:textAppearance">?android:textAppearanceButton</item>
+		<item name="android:textColor">@color/btn_default_text</item>
 	</style>
 
 	<style name="ButtonStyle" parent="android:Widget.Holo.Light.Button">
-		<item name="android:background">@drawable/btn_default_orange</item>
+		<item name="android:background">@drawable/btn_default_holo_light</item>
+		<item name="android:textColor">@color/btn_default_text</item>
 	</style>
 
 	<style name="ImageButtonStyle" parent="android:Widget.Holo.Light.ImageButton">
-		<item name="android:background">@drawable/btn_default_orange</item>
+		<item name="android:background">@drawable/btn_default_holo_light</item>
+	</style>
+
+	s<!--Text Appearance-->
+	<style name="TextAppearanceListItem" parent="android:TextAppearance.Holo.Large.Inverse">
+		<item name="android:textColor">@color/list_item_text</item>
+	</style>
+
+	<style name="TextAppearanceListItemSmall" parent="android:TextAppearance.Holo.Medium.Inverse">
+		<item name="android:textColor">@color/list_item_text</item>
 	</style>
 
 	<!--Based on DialogWindowTitle.Holo.Light-->
@@ -40,12 +51,12 @@
 		<item name="android:scrollHorizontally">true</item>
 	</style>
 
-	<style name="WindowTitleStyle.Orange">
-		<item name="android:textAppearance">@style/TextAppearance.WindowTitleStyle.Orange</item>
+	<style name="WindowTitleStyle.Purple">
+		<item name="android:textAppearance">@style/TextAppearance.WindowTitleStyle.Purple</item>
 	</style>
 
-	<style name="TextAppearance.WindowTitleStyle.Orange" parent="android:TextAppearance.Holo.DialogWindowTitle">
-		<item name="android:textColor">@android:color/holo_orange_dark</item>
+	<style name="TextAppearance.WindowTitleStyle.Purple" parent="android:TextAppearance.Holo.DialogWindowTitle">
+		<item name="android:textColor">@color/purple_medium</item>
 	</style>
 
 </resources>

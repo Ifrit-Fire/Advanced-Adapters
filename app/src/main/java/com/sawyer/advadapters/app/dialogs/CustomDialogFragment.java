@@ -33,13 +33,14 @@ abstract class CustomDialogFragment extends DialogFragment {
 	}
 
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+							 Bundle savedInstanceState) {
 		setTitleBarColor();    //Done outside of onCreateDialog to ensure dialog's setContentView occurred
 		return null;
 	}
 
 	/**
-	 * Will apply an orange color to a dialog's title bar divider. Yes this is quite hackish and may
+	 * Will apply a custom color to a dialog's title bar divider. Yes this is quite hackish and may
 	 * not work on all devices. However its crash safe. Just make sure the dialog has already set
 	 * it's content view.
 	 */
@@ -55,7 +56,8 @@ abstract class CustomDialogFragment extends DialogFragment {
 			for (int index = 0; index < vg.getChildCount(); ++index) {
 				View child = vg.getChildAt(index);
 				if (child.getClass().equals(View.class)) {
-					child.setBackgroundColor(child.getContext().getResources().getColor(android.R.color.holo_orange_dark));
+					child.setBackgroundColor(
+							child.getContext().getResources().getColor(R.color.purple_medium));
 					break;
 				}
 			}
