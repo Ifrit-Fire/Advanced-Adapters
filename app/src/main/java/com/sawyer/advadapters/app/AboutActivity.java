@@ -26,6 +26,9 @@ import butterknife.ButterKnife;
 public class AboutActivity extends Activity {
 	private void initActionbar() {
 		ActionBar actionBar = getActionBar();
+		if (actionBar == null) {
+			return;
+		}
 		actionBar.setDisplayHomeAsUpEnabled(true);
 	}
 
@@ -52,7 +55,8 @@ public class AboutActivity extends Activity {
 		case android.R.id.home:
 			finish();
 			return true;
+		default:
+			return super.onOptionsItemSelected(item);
 		}
-		return super.onOptionsItemSelected(item);
 	}
 }
