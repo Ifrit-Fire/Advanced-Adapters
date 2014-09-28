@@ -40,6 +40,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import butterknife.ButterKnife;
+
 public class MainActivity extends ListActivity {
 	private static final String EXTRA_INTENT_NAME = "Extra Intent Name";
 
@@ -79,7 +81,7 @@ public class MainActivity extends ListActivity {
 	private void initHeaders() {
 		ListView lv = getListView();
 		View v = getLayoutInflater().inflate(R.layout.item_simple_list_header_1, lv, false);
-		TextView tv = (TextView) v.findViewById(android.R.id.text1);
+		TextView tv = ButterKnife.findById(v, android.R.id.text1);
 		tv.setText(R.string.activity_android_arrayadapter);
 		v.setOnClickListener(new OnAndroidHeaderClickListener());
 		lv.addHeaderView(v);

@@ -21,6 +21,8 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.TextView;
 
+import butterknife.ButterKnife;
+
 public class AboutActivity extends Activity {
 	private void initActionbar() {
 		ActionBar actionBar = getActionBar();
@@ -28,10 +30,10 @@ public class AboutActivity extends Activity {
 	}
 
 	private void initViews() {
-		TextView tv = (TextView) findViewById(R.id.version_code);
+		TextView tv = ButterKnife.findById(this, R.id.version_code);
 		tv.setText("c" + App.getVersionCode());
 
-		tv = (TextView) findViewById(R.id.version_name);
+		tv = ButterKnife.findById(this, R.id.version_name);
 		tv.setText("v" + App.getVersionName());
 	}
 

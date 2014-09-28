@@ -19,8 +19,8 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
+import com.sawyer.advadapters.app.adapters.UnitTestViewHolder;
 import com.sawyer.advadapters.widget.NFJSONArrayAdapter;
 
 import org.json.JSONArray;
@@ -37,15 +37,13 @@ class UnitTestMovieAdapter extends NFJSONArrayAdapter {
 
 	@Override
 	public View getView(LayoutInflater inflater, int position, View convertView, ViewGroup parent) {
-		ViewHolder vh;
+		UnitTestViewHolder vh;
 		if (convertView == null) {
 			convertView = inflater.inflate(android.R.layout.two_line_list_item, parent, false);
-			vh = new ViewHolder();
-			vh.title = (TextView) convertView.findViewById(android.R.id.text1);
-			vh.subtitle = (TextView) convertView.findViewById(android.R.id.text2);
+			vh = new UnitTestViewHolder(convertView);
 			convertView.setTag(vh);
 		} else {
-			vh = (ViewHolder) convertView.getTag();
+			vh = (UnitTestViewHolder) convertView.getTag();
 		}
 
 		Object item = getItem(position);
@@ -53,10 +51,5 @@ class UnitTestMovieAdapter extends NFJSONArrayAdapter {
 		vh.subtitle.setText(item.toString());
 
 		return convertView;
-	}
-
-	private static class ViewHolder {
-		TextView title;
-		TextView subtitle;
 	}
 }
