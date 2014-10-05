@@ -59,8 +59,8 @@ class MovieArrayAdapter extends AbsArrayAdapter<MovieItem> {
 	}
 
 	@Override
-	protected boolean isFilteredBy(MovieItem movie, CharSequence constraint) {
-		return movie.title.toLowerCase(Locale.US)
-				.contains(constraint.toString().toLowerCase(Locale.US));
+	protected boolean isFilteredOut(MovieItem movie, CharSequence constraint) {
+		return !movie.title.toLowerCase(Locale.US).contains(
+				constraint.toString().toLowerCase(Locale.US));
 	}
 }

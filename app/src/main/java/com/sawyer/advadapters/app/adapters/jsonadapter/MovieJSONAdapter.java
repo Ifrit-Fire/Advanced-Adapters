@@ -67,15 +67,15 @@ class MovieJSONAdapter extends JSONAdapter {
 	}
 
 	@Override
-	protected boolean isFilteredBy(Object item, CharSequence constraint) {
+	protected boolean isFilteredOut(Object item, CharSequence constraint) {
 		//We are expecting the adapter to only ever contain JSONObjects. So we are specifically letting
 		//the JSONObject filter handle it.
 		return false;
 	}
 
 	@SuppressWarnings("UnusedDeclaration")    //Reflexively called, hence the suppressed warning
-	private boolean isFilteredBy(JSONObject item, CharSequence constraint) {
+	private boolean isFilteredOut(JSONObject item, CharSequence constraint) {
 		String title = item.optString(MovieItem.JSON_TITLE).toLowerCase(Locale.US);
-		return title.contains(constraint.toString().toLowerCase(Locale.US));
+		return !title.contains(constraint.toString().toLowerCase(Locale.US));
 	}
 }

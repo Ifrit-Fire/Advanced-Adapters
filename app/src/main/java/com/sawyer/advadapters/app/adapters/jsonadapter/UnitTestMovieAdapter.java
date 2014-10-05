@@ -57,30 +57,30 @@ class UnitTestMovieAdapter extends JSONAdapter {
 		return convertView;
 	}
 
-	@Override    //Default isFilteredBy, required by all subclasses to implement
-	protected boolean isFilteredBy(Object item, CharSequence constraint) {
-		return item.toString().toLowerCase(Locale.US)
-				   .contains(constraint.toString().toLowerCase(Locale.US));
+	@Override    //Default isFilteredOut, required by all subclasses to implement
+	protected boolean isFilteredOut(Object item, CharSequence constraint) {
+		return !item.toString().toLowerCase(Locale.US)
+				.contains(constraint.toString().toLowerCase(Locale.US));
 	}
 
-	@Override    //Predefined isFilteredBy, can optionally override to change the built in logic
-	protected boolean isFilteredBy(Long item, CharSequence constraint) {
-		return String.valueOf(item).toLowerCase(Locale.US)
-					 .contains(constraint.toString().toLowerCase(Locale.US));
+	@Override //Predefined isFilteredOut, optionally overridden here to change the built in logic
+	protected boolean isFilteredOut(Long item, CharSequence constraint) {
+		return !String.valueOf(item).toLowerCase(Locale.US)
+				.contains(constraint.toString().toLowerCase(Locale.US));
 	}
 
-	//Custom isFilteredBy, found on adapter construction and called reflexively for any MovieItem
+	//Custom isFilteredOut, found on adapter construction and called reflexively for any MovieItem
 	//object found in adapter while filtering.
-	protected boolean isFilteredBy(MovieItem movie, CharSequence constraint) {
-		return movie.title.toLowerCase(Locale.US)
-						  .contains(constraint.toString().toLowerCase(Locale.US));
+	protected boolean isFilteredOut(MovieItem movie, CharSequence constraint) {
+		return !movie.title.toLowerCase(Locale.US)
+				.contains(constraint.toString().toLowerCase(Locale.US));
 	}
 
-	//Another custom isFilteredBy method. Be it private, public, protected or no modifier at all.
+	//Another custom isFilteredOut method. Be it private, public, protected or no modifier at all.
 	//JSONAdapter will still find it and invoke it appropriately
 	@SuppressWarnings("UnusedDeclaration")
-	private boolean isFilteredBy(JSONObject item, CharSequence constraint) {
+	private boolean isFilteredOut(JSONObject item, CharSequence constraint) {
 		String title = item.optString(MovieItem.JSON_TITLE).toLowerCase(Locale.US);
-		return title.contains(constraint.toString().toLowerCase(Locale.US));
+		return !title.contains(constraint.toString().toLowerCase(Locale.US));
 	}
 }

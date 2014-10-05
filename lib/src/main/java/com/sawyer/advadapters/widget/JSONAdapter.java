@@ -48,22 +48,22 @@ import java.util.Map;
  * <p/>
  * Because of the background filtering process, all methods which mutates the underlying data are
  * internally synchronized. This ensures a thread safe environment for internal write operations. If
- * filtering is not required, it's strongly recommended to use the {@link
- * NFJSONArrayAdapter} instead. In order to support the multitude of data types a
- * JSONArray can store, the filtering mechanism is built to be very robust.
+ * filtering is not required, it's strongly recommended to use the {@link NFJSONArrayAdapter}
+ * instead. In order to support the multitude of data types a JSONArray can store, the filtering
+ * mechanism is built to be very robust.
  * <p/>
- * Only the {@link #isFilteredBy(Object, CharSequence)} is required to be implemented by subclasses.
- * Pre-built methods for handing the logic for Boolean, Double, Integer, Long, and String already
- * exist. You may override them to provide an alternate behavior. In addition, you can provide your
- * own filtered methods for custom data types. During adapter construction, any methods which match
- * the {@code isFilteredBy} method signature are cached.  Then during a filter operation, will be
- * invoked via reflection when required.
+ * Only the {@link #isFilteredOut(Object, CharSequence)} is required to be implemented by
+ * subclasses. Pre-built methods for handing the logic for Boolean, Double, Integer, Long, and
+ * String already exist. You may override them to provide an alternate behavior. In addition, you
+ * can provide your own filtered methods for custom data types. During adapter construction, any
+ * methods which match the {@code isFilteredOut} method signature are cached.  Then during a filter
+ * operation, will be invoked via reflection when required.
  * <p/>
- * For example, lets say you created your own object type called Foo. You've stored several instances of
- * Foo within the adapter along with JSONObjects, Integers, and Booleans. In order to specifically
- * support a {@code isFilteredBy} method for your Foo object, have your subclass implement a {@code
- * isFilteredBy(Foo, CharSequence)}. Then during a filter operation, any Foo object detected will
- * have that method invoke to determine whether it passes the filter or not.
+ * For example, lets say you created your own object type called Foo. You've stored several
+ * instances of Foo within the adapter along with JSONObjects, Integers, and Booleans. In order to
+ * specifically support a {@code isFilteredOut} method for your Foo object, have your subclass
+ * implement a {@code isFilteredOut(Foo, CharSequence)}. Then during a filter operation, any Foo
+ * object detected will have that method invoke to determine whether it passes the filter or not.
  */
 public abstract class JSONAdapter extends BaseAdapter implements Filterable {
 	/**
@@ -170,7 +170,7 @@ public abstract class JSONAdapter extends BaseAdapter implements Filterable {
 
 	/**
 	 * Determines whether the given method has he proper signature of a isFiltered method.
-	 * Specifically looking for the following: <ul><li>Name equals <i>"isFilteredBy"</i></li>
+	 * Specifically looking for the following: <ul><li>Name equals <i>"isFilteredOut"</i></li>
 	 * <li>Returns a primitive boolean</li> <li>Has exactly 2 parameters</li> <li>The 2nd param is a
 	 * CharSequence</li> </ul> If the method matches the criteria, the first parameter is extracted
 	 * and returned as a string to be used as a key in the filter cache.
@@ -181,7 +181,7 @@ public abstract class JSONAdapter extends BaseAdapter implements Filterable {
 	 * the proper signature.
 	 */
 	private static String getFilterMethodKey(Method m) {
-		if ("isFilteredBy".equals(m.getName()) && m.getGenericReturnType().equals(boolean.class)) {
+		if ("isFilteredOut".equals(m.getName()) && m.getGenericReturnType().equals(boolean.class)) {
 			Type[] params = m.getGenericParameterTypes();
 			if (params.length == 2 && params[1].equals(CharSequence.class)) {
 				String[] split = params[0].toString().split("\\s+");
@@ -331,28 +331,28 @@ public abstract class JSONAdapter extends BaseAdapter implements Filterable {
 	}
 
 	/**
-	 * Caches the predefined isFilteredBy methods for later invocation.
+	 * Caches the predefined isFilteredOut methods for later invocation.
 	 */
 	private void cacheKnownFilteredMethods() {
 		try {
 			Method m;
 			m = JSONAdapter.class
-					.getDeclaredMethod("isFilteredBy", Boolean.class, CharSequence.class);
+					.getDeclaredMethod("isFilteredOut", Boolean.class, CharSequence.class);
 			mFilterMethods.put(Boolean.class.getName(), m);
 			m = JSONAdapter.class
-					.getDeclaredMethod("isFilteredBy", Double.class, CharSequence.class);
+					.getDeclaredMethod("isFilteredOut", Double.class, CharSequence.class);
 			mFilterMethods.put(Double.class.getName(), m);
 			m = JSONAdapter.class
-					.getDeclaredMethod("isFilteredBy", Integer.class, CharSequence.class);
+					.getDeclaredMethod("isFilteredOut", Integer.class, CharSequence.class);
 			mFilterMethods.put(Integer.class.getName(), m);
 			m = JSONAdapter.class
-					.getDeclaredMethod("isFilteredBy", Long.class, CharSequence.class);
+					.getDeclaredMethod("isFilteredOut", Long.class, CharSequence.class);
 			mFilterMethods.put(Long.class.getName(), m);
 			m = JSONAdapter.class
-					.getDeclaredMethod("isFilteredBy", String.class, CharSequence.class);
+					.getDeclaredMethod("isFilteredOut", String.class, CharSequence.class);
 			mFilterMethods.put(String.class.getName(), m);
 			m = JSONAdapter.class
-					.getDeclaredMethod("isFilteredBy", Object.class, CharSequence.class);
+					.getDeclaredMethod("isFilteredOut", Object.class, CharSequence.class);
 			mFilterMethods.put(Object.class.getName(), m);
 		} catch (NoSuchMethodException e) {
 			Log.e(JSONAdapter.this.getClass().getSimpleName(), "Unexpected error", e);
@@ -360,7 +360,7 @@ public abstract class JSONAdapter extends BaseAdapter implements Filterable {
 	}
 
 	/**
-	 * Scans all subclasses of this instance for any isFilteredBy methods and caches them for later
+	 * Scans all subclasses of this instance for any isFilteredOut methods and caches them for later
 	 * invocation.
 	 */
 	private void cacheSubclassFilteredMethods() {
@@ -450,7 +450,7 @@ public abstract class JSONAdapter extends BaseAdapter implements Filterable {
 	public Object getItem(int position) {
 		Object object = mObjects.opt(position);
 		if (object == null) {
-			//A pain but can't add throws to this overrided method
+			//A pain but can't add throws to this overridden method
 			if (position < 0 || position >= mObjects.length()) {
 				throw new IndexOutOfBoundsException();
 			} else {
@@ -638,11 +638,11 @@ public abstract class JSONAdapter extends BaseAdapter implements Filterable {
 	 * @param item       The Boolean item to compare against the constraint
 	 * @param constraint The constraint used to filter the item
 	 *
-	 * @return True if the item equals the constraint and continues to display.  Otherwise, false
-	 * and is not displayed.
+	 * @return True if the item is filtered out by the given constraint. False if the item will
+	 * continue to display in the adapter.
 	 */
-	protected boolean isFilteredBy(Boolean item, CharSequence constraint) {
-		return item.toString().equalsIgnoreCase(constraint.toString());
+	protected boolean isFilteredOut(Boolean item, CharSequence constraint) {
+		return !item.toString().equalsIgnoreCase(constraint.toString());
 	}
 
 	/**
@@ -654,14 +654,14 @@ public abstract class JSONAdapter extends BaseAdapter implements Filterable {
 	 * @param item       The Double item to compare against the constraint
 	 * @param constraint The constraint used to filter the item
 	 *
-	 * @return True if the item equals the constraint and continues to display.  Otherwise, false
-	 * and is not displayed.
+	 * @return True if the item is filtered out by the given constraint. False if the item will
+	 * continue to display in the adapter.
 	 */
-	protected boolean isFilteredBy(Double item, CharSequence constraint) {
+	protected boolean isFilteredOut(Double item, CharSequence constraint) {
 		try {
-			return item.equals(Double.valueOf(constraint.toString()));
+			return !item.equals(Double.valueOf(constraint.toString()));
 		} catch (NumberFormatException e) {
-			return false;
+			return true;
 		}
 	}
 
@@ -674,14 +674,14 @@ public abstract class JSONAdapter extends BaseAdapter implements Filterable {
 	 * @param item       The Integer item to compare against the constraint
 	 * @param constraint The constraint used to filter the item
 	 *
-	 * @return True if the item equals the constraint and continues to display.  Otherwise, false
-	 * and is not displayed.
+	 * @return True if the item is filtered out by the given constraint. False if the item will
+	 * continue to display in the adapter.
 	 */
-	protected boolean isFilteredBy(Integer item, CharSequence constraint) {
+	protected boolean isFilteredOut(Integer item, CharSequence constraint) {
 		try {
-			return item.equals(Integer.valueOf(constraint.toString()));
+			return !item.equals(Integer.valueOf(constraint.toString()));
 		} catch (NumberFormatException e) {
-			return false;
+			return true;
 		}
 	}
 
@@ -694,14 +694,14 @@ public abstract class JSONAdapter extends BaseAdapter implements Filterable {
 	 * @param item       The Long item to compare against the constraint
 	 * @param constraint The constraint used to filter the item
 	 *
-	 * @return True if the item equals the constraint and continues to display.  Otherwise, false
-	 * and is not displayed.
+	 * @return True if the item is filtered out by the given constraint. False if the item will
+	 * continue to display in the adapter.
 	 */
-	protected boolean isFilteredBy(Long item, CharSequence constraint) {
+	protected boolean isFilteredOut(Long item, CharSequence constraint) {
 		try {
-			return item.equals(Long.valueOf(constraint.toString()));
+			return !item.equals(Long.valueOf(constraint.toString()));
 		} catch (NumberFormatException e) {
-			return false;
+			return true;
 		}
 	}
 
@@ -714,10 +714,10 @@ public abstract class JSONAdapter extends BaseAdapter implements Filterable {
 	 * @param item       The Object item to compare against the constraint
 	 * @param constraint The constraint used to filter the item
 	 *
-	 * @return True if the item passes the filtered constraint and continues to display. False if
-	 * the item does not pass the filter check and is not displayed.
+	 * @return True if the item is filtered out by the given constraint. False if the item will
+	 * continue to display in the adapter.
 	 */
-	protected abstract boolean isFilteredBy(Object item, CharSequence constraint);
+	protected abstract boolean isFilteredOut(Object item, CharSequence constraint);
 
 	/**
 	 * Determines whether the provided constraint filters out the given item. Subclass to provide
@@ -728,11 +728,11 @@ public abstract class JSONAdapter extends BaseAdapter implements Filterable {
 	 * @param item       The String item to compare against the constraint
 	 * @param constraint The constraint used to filter the item
 	 *
-	 * @return True if the item contains the constraint and continues to display. Otherwise, false
-	 * and is not displayed.
+	 * @return True if the item is filtered out by the given constraint. False if the item will
+	 * continue to display in the adapter.
 	 */
-	protected boolean isFilteredBy(String item, CharSequence constraint) {
-		return item.toLowerCase().contains(constraint.toString().toLowerCase());
+	protected boolean isFilteredOut(String item, CharSequence constraint) {
+		return !item.toLowerCase().contains(constraint.toString().toLowerCase());
 	}
 
 	/**
@@ -926,16 +926,16 @@ public abstract class JSONAdapter extends BaseAdapter implements Filterable {
 
 	/**
 	 * A JSONArray filter constrains the content of the adapter. Whether an item is constrained or
-	 * not is delegated to subclasses through the default {@link JSONAdapter#isFilteredBy(Object,
+	 * not is delegated to subclasses through the default {@link JSONAdapter#isFilteredOut(Object,
 	 * CharSequence)}. However the filter will first attempt to find the best matching {@code
-	 * isFilteredBy} method based on the type of object stored at a given location. For instance, if
-	 * the object is an Integer, then the {@link JSONAdapter#isFilteredBy(Integer,
+	 * isFilteredOut} method based on the type of object stored at a given location. For instance,
+	 * if the object is an Integer, then the {@link JSONAdapter#isFilteredOut(Integer,
 	 * CharSequence)} will be invoked instead.
 	 * <p/>
-	 * It's possible for subclasses to define their own {@code isFilteredBy} methods for their own
+	 * It's possible for subclasses to define their own {@code isFilteredOut} methods for their own
 	 * custom classes. So if the object stored is of type {@code Foo} and the subclassed adapter has
-	 * defined an {@code isFilteredBy(Foo, CharSequence)}} method, then that  will be invoked
-	 * instead of the default {@link JSONAdapter#isFilteredBy(Object, CharSequence)}.
+	 * defined an {@code isFilteredOut(Foo, CharSequence)}} method, then that  will be invoked
+	 * instead of the default {@link JSONAdapter#isFilteredOut(Object, CharSequence)}.
 	 */
 	private class JSONArrayFilter extends Filter {
 		@Override
@@ -972,18 +972,18 @@ public abstract class JSONAdapter extends BaseAdapter implements Filterable {
 						try {
 							boolean result = (boolean) m
 									.invoke(JSONAdapter.this, varargs);
-							if (result) newValues.put(value);
+							if (!result) newValues.put(value);
 						} catch (IllegalAccessException e) {
 							Log.w(m.getName(),
-								  "Method not accessible. Using `isFilteredBy(Object)` instead");
-							if (isFilteredBy(value, constraint)) newValues.put(value);
+								  "Method not accessible. Using `isFilteredOut(Object)` instead");
+							if (!isFilteredOut(value, constraint)) newValues.put(value);
 						} catch (InvocationTargetException e) {
 							Log.w(m.getName(), "Exception thrown by method. Gracefully skipping " +
 											   mObjects.toString());
 						}
 					} else {
 						Log.v("No method defined for", value.getClass().getName());
-						if (isFilteredBy(value, constraint)) newValues.put(value);
+						if (!isFilteredOut(value, constraint)) newValues.put(value);
 					}
 				}
 			}

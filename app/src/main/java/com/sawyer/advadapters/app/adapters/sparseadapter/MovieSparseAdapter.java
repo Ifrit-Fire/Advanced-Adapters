@@ -58,8 +58,8 @@ class MovieSparseAdapter extends SparseAdapter<MovieItem> {
 	}
 
 	@Override
-	protected boolean isFilteredBy(int keyId, MovieItem item, CharSequence constraint) {
-		return item.title.toLowerCase(Locale.US)
+	protected boolean isFilteredOut(int keyId, MovieItem item, CharSequence constraint) {
+		return !item.title.toLowerCase(Locale.US)
 						 .contains(constraint.toString().toLowerCase(Locale.US));
 	}
 }

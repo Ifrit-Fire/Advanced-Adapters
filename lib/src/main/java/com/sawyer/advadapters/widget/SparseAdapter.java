@@ -345,15 +345,16 @@ public abstract class SparseAdapter<T> extends BaseAdapter implements Filterable
 	 * Determines whether the provided constraint filters out the given item. Allows easy,
 	 * customized filtering for subclasses. It's incorrect to modify the adapter or the contents of
 	 * the item itself. Any alterations will lead to undefined behavior or crashes. Internally, this
-	 * method is only ever invoked from a background thread. Do not make UI changes from here!
+	 * method is only ever invoked from a background thread.
 	 *
 	 * @param item       The item to compare against the constraint
 	 * @param constraint The constraint used to filter the item
 	 *
-	 * @return True if the item passes the filtered constraint and continues to display. False if
-	 * the item does not pass the filter check and is not displayed.
+	 * @return True if the item is filtered out by the given constraint. False if the item will
+	 * continue to display in the adapter.
 	 */
-	protected abstract boolean isFilteredBy(int keyId, T item, CharSequence constraint);
+	protected abstract boolean isFilteredOut(int keyId, T item, CharSequence constraint);
+
 
 	@Override
 	public void notifyDataSetChanged() {
@@ -491,7 +492,7 @@ public abstract class SparseAdapter<T> extends BaseAdapter implements Filterable
 
 	/**
 	 * A SparseArray filter constrains the content of the adapter. Whether an item is constrained or
-	 * not is delegated to subclasses through {@link SparseAdapter#isFilteredBy}
+	 * not is delegated to subclasses through {@link SparseAdapter#isFilteredOut}
 	 */
 	private class SparseArrayFilter extends Filter {
 		@Override
@@ -518,7 +519,7 @@ public abstract class SparseAdapter<T> extends BaseAdapter implements Filterable
 
 			final SparseArray<T> newValues = new SparseArray<>();
 			for (int index = 0; index < values.size(); ++index) {
-				if (isFilteredBy(values.keyAt(index), values.valueAt(index), constraint)) {
+				if (!isFilteredOut(values.keyAt(index), values.valueAt(index), constraint)) {
 					newValues.put(values.keyAt(index), values.valueAt(index));
 				}
 			}

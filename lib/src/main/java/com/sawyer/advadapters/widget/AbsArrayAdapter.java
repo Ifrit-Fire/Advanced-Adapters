@@ -43,8 +43,7 @@ import java.util.List;
  * <p/>
  * Because of the background filtering process, all methods which mutates the underlying data are
  * internally synchronized. This ensures a thread safe environment for internal write operations. If
- * filtering is not required, it's strongly recommended to use the {@link NFArrayAdapter}
- * instead.
+ * filtering is not required, it's strongly recommended to use the {@link NFArrayAdapter} instead.
  */
 public abstract class AbsArrayAdapter<T> extends BaseAdapter implements Filterable {
 	/**
@@ -359,10 +358,10 @@ public abstract class AbsArrayAdapter<T> extends BaseAdapter implements Filterab
 	 * @param item       The item to compare against the constraint
 	 * @param constraint The constraint used to filter the item
 	 *
-	 * @return True if the item passes the filtered constraint and continues to display. False if
-	 * the item does not pass the filter check and is not displayed.
+	 * @return True if the item is filtered out by the given constraint. False if the item will
+	 * continue to display in the adapter.
 	 */
-	protected abstract boolean isFilteredBy(T item, CharSequence constraint);
+	protected abstract boolean isFilteredOut(T item, CharSequence constraint);
 
 	@Override
 	public void notifyDataSetChanged() {
@@ -490,7 +489,7 @@ public abstract class AbsArrayAdapter<T> extends BaseAdapter implements Filterab
 
 	/**
 	 * An array filter constrains the content of the array adapter. Whether an item is constrained
-	 * or not is delegated to subclasses through {@link AbsArrayAdapter#isFilteredBy(Object,
+	 * or not is delegated to subclasses through {@link AbsArrayAdapter#isFilteredOut(Object,
 	 * CharSequence)}
 	 */
 	private class ArrayFilter extends Filter {
@@ -518,7 +517,7 @@ public abstract class AbsArrayAdapter<T> extends BaseAdapter implements Filterab
 
 			final ArrayList<T> newValues = new ArrayList<>();
 			for (T value : values) {
-				if (isFilteredBy(value, constraint)) {
+				if (!isFilteredOut(value, constraint)) {
 					newValues.add(value);
 				}
 			}
