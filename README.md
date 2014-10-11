@@ -1,3 +1,5 @@
+NOTE: This repo is in the middle of an overhaul.  While the code still works, the wiki and blog will be missing, out of date, or incorrect for a little bit.
+
 <p align="center"><img src="https://raw.githubusercontent.com/JaySoyer/Advanced-Adapters/master/app/src/main/logo.png" width="256px" height="256px"/></p>
 # Advanced-Adapters
 Advanced-Adapters is a suite of adapters designed to provide better alternatives to Android's provided adapters. For some time now, their adapters have been plagued with filtering issues, which was the primary drive to starting this opensource project. The following are some of the advantages to using this suite:
@@ -11,7 +13,7 @@ Advanced-Adapters is a suite of adapters designed to provide better alternatives
 Currently, this suite provides four different adapters.  More will be coming in time. Head on over to the [wiki](https://github.com/JaySoyer/Advanced-Adapters/wiki/) to read more about them and learn how to use them.
 
 **ArrayList Backed**
-- [ArrayBaseAdapter](https://github.com/JaySoyer/Advanced-Adapters/wiki/ArrayBaseAdapter)
+- [ArrayBaseAdapter]()
 - [SimpleArrayBaseAdapter](https://github.com/JaySoyer/Advanced-Adapters/wiki/SimpleArrayBaseAdapter)
 
 **SparseArray Backed**
