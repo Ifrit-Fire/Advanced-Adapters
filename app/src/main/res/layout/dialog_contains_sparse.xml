@@ -30,7 +30,7 @@
 
 	<Button
 		android:id="@+id/movie_contains_id_btn"
-		style="?android:buttonBarButtonStyle"
+		style="?android:borderlessButtonStyle"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:text="@string/btn_contains_id"/>
@@ -41,7 +41,7 @@
 
 	<Button
 		android:id="@+id/movie_contains_item_btn"
-		style="?android:buttonBarButtonStyle"
+		style="?android:borderlessButtonStyle"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:text="@string/btn_contains_item"/>

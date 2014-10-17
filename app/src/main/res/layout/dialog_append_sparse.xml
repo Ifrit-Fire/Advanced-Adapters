@@ -28,7 +28,7 @@
 
 	<Button
 		android:id="@+id/movie_append_id_btn"
-		style="?android:buttonBarButtonStyle"
+		style="?android:borderlessButtonStyle"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:text="@string/btn_append_id"/>
@@ -37,7 +37,7 @@
 
 	<Button
 		android:id="@+id/movies_append_all_btn"
-		style="?android:buttonBarButtonStyle"
+		style="?android:borderlessButtonStyle"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:text="@string/btn_append_all"/>

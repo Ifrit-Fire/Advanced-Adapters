@@ -18,11 +18,17 @@
 -->
 <resources>
 	<!--Buttons-->
+	<style name="BorderlessButtonStyle" parent="android:Widget.Holo.Button.Borderless">
+		<item name="android:background">@drawable/btn_borderless_holo_light</item>
+		<item name="android:textAppearance">?android:textAppearanceButton</item>
+		<item name="android:textColor">@color/btn_default_text</item>
+	</style>
 	<style name="ButtonBarStyle" parent="android:Holo.Light.ButtonBar">
+		<item name="android:background">@color/purple_medium60</item>
 	</style>
 
 	<style name="ButtonBarButtonStyle">
-		<item name="android:background">@drawable/btn_borderless_holo_light</item>
+		<item name="android:background">@drawable/btn_bar_holo_light</item>
 		<item name="android:textAppearance">?android:textAppearanceButton</item>
 		<item name="android:textColor">@color/btn_default_text</item>
 	</style>

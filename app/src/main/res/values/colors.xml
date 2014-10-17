@@ -21,5 +21,7 @@
 	<color name="purple_medium60">#99AA66CC</color>
 	<color name="purple_dark">#FF9933CC</color>
 	<color name="purple_dark60">#999933CC</color>
+	<color name="grey_light">#FFE0E0E0</color>
+	<color name="grey_light60">#99E0E0E0</color>
 
 </resources>

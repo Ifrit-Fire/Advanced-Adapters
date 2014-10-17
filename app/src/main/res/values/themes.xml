@@ -20,6 +20,7 @@
 
 	<style name="AppTheme" parent="android:Theme.Holo.Light">
 		<!--Buttons-->
+		<item name="android:borderlessButtonStyle">@style/BorderlessButtonStyle</item>
 		<item name="android:buttonBarStyle">@style/ButtonBarStyle</item>
 		<item name="android:buttonBarButtonStyle">@style/ButtonBarButtonStyle</item>
 		<item name="android:buttonStyle">@style/ButtonStyle</item>
@@ -36,6 +37,7 @@
 
 	<style name="AppTheme.Dialog" parent="android:Theme.Holo.Light.Dialog">
 		<!--Buttons-->
+		<item name="android:borderlessButtonStyle">@style/BorderlessButtonStyle</item>
 		<item name="android:buttonBarStyle">@style/ButtonBarStyle</item>
 		<item name="android:buttonBarButtonStyle">@style/ButtonBarButtonStyle</item>
 

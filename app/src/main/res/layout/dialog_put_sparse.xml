@@ -53,7 +53,7 @@
 
 	<Button
 		android:id="@+id/movies_put_all_btn"
-		style="?android:buttonBarButtonStyle"
+		style="?android:borderlessButtonStyle"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:text="@string/btn_put_all"/>
