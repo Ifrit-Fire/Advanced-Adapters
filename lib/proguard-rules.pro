@@ -1,17 +1,9 @@
-# Add project specific ProGuard rules here.
-# By default, the flags in this file are appended to flags specified
-# in /home/jaysoyer/Apps/android-studio/sdk/tools/proguard/proguard-android.txt
-# You can edit the include path and order by changing the proguardFiles
-# directive in build.gradle.
-#
-# For more details, see
-#   http://developer.android.com/guide/developing/tools/proguard.html
+# The following is not actually used by lib. Only here for official reference
 
-# Add any project specific keep options here:
-
-# If your project uses WebView with JS, uncomment the following
-# and specify the fully qualified class name to the JavaScript interface
-# class:
-#-keepclassmembers class fqcn.of.javascript.interface.for.webview {
-#   public *;
-#}
+# Advanced-Adapters
+-keepclassmembers class com.sawyer.advadapters.widget.JSONAdapter {
+	boolean isFilteredOut(...);
+}
+-keepclassmembers class * extends com.sawyer.advadapters.widget.JSONAdapter {
+	boolean isFilteredOut(...);
+}

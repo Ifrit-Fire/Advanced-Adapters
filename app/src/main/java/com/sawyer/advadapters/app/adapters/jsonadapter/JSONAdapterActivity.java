@@ -116,7 +116,7 @@ public class JSONAdapterActivity extends AdapterBaseActivity implements
 
 	@Override
 	public void onAddVarargsMovieClick(JSONObject... movies) {
-		mListFragment.getListAdapter().addAll(movies);
+		mListFragment.getListAdapter().addAll((Object[]) movies);
 		updateActionBar();
 		mAddDialogFragment.dismiss();
 	}

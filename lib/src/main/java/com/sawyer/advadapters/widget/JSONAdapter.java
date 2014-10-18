@@ -355,7 +355,8 @@ public abstract class JSONAdapter extends BaseAdapter implements Filterable {
 					.getDeclaredMethod("isFilteredOut", Object.class, CharSequence.class);
 			mFilterMethods.put(Object.class.getName(), m);
 		} catch (NoSuchMethodException e) {
-			Log.e(JSONAdapter.this.getClass().getSimpleName(), "Unexpected error", e);
+			Log.e(JSONAdapter.this.getClass().getSimpleName(),
+				  "Error attempting to cache known filtered methods. Did you configure proguard?");
 		}
 	}
 
