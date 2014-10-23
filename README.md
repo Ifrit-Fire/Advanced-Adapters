@@ -1,4 +1,4 @@
-NOTE: This repo is in the middle of an overhaul.  While the code still works, the wiki and blog will be missing, out of date, or incorrect for a little bit.
+NOTE: This repo is in the middle of an overhaul.  While the code still works, the wiki and blog will be missing, out of date, or incorrect for a little bit.  For more details, [click here](http://jaysoyer.wordpress.com/2014/09/25/overhauling-advanced-adapters/).
 
 <p align="center"><img src="https://raw.githubusercontent.com/JaySoyer/Advanced-Adapters/master/app/src/main/logo.png" width="256px" height="256px"/></p>
 # Advanced-Adapters
