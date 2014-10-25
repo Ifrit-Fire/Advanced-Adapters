@@ -20,10 +20,8 @@ import android.util.SparseArray;
 import org.json.JSONArray;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 /**
@@ -36,9 +34,6 @@ public class MovieContent {
 
 	/** A set of sample (movie) items */
 	public static Set<MovieItem> ITEM_SET = new HashSet<>();    //TODO: Research a HashSet Adapter
-
-	/** A map of sample (movie) items, by year. */
-	public static Map<Integer, MovieItem> ITEM_MAP = new HashMap<>();    //TODO: Research HashMap Adapter
 
 	/** A sparse array of sample (movie) items */
 	public static SparseArray<MovieItem> ITEM_SPARSE = new SparseArray<>();
@@ -91,7 +86,6 @@ public class MovieContent {
 	private static void addItem(MovieItem item) {
 		ITEM_LIST.add(item);
 		ITEM_SET.add(item);
-		ITEM_MAP.put(item.year, item);
 		ITEM_SPARSE.put(item.barcode(), item);
 		ITEM_JSON.put(item.toJSONObject());
 	}
