@@ -55,6 +55,8 @@ public abstract class AbsArrayAdapter<T> extends BaseAdapter implements Filterab
 
 	/** LayoutInflater created from the constructing context */
 	private LayoutInflater mInflater;
+	/** Activity Context used to construct this adapter * */
+	private Context mContext;
 	/**
 	 * Contains the list of objects that represent the visible data of the adapter. It's contents
 	 * will change as filtering occurs. All methods retrieving data about the adapter will always do
@@ -209,6 +211,13 @@ public abstract class AbsArrayAdapter<T> extends BaseAdapter implements Filterab
 		return mObjects.containsAll(items);
 	}
 
+	/**
+	 * @return The Context associated with this adapter.
+	 */
+	public Context getContext() {
+		return mContext;
+	}
+
 	@Override
 	public int getCount() {
 		return mObjects.size();
@@ -346,6 +355,7 @@ public abstract class AbsArrayAdapter<T> extends BaseAdapter implements Filterab
 
 	private void init(Context context, ArrayList<T> objects) {
 		mInflater = LayoutInflater.from(context);
+		mContext = context;
 		mObjects = objects;
 	}
 
