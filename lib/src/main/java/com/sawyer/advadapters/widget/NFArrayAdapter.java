@@ -43,6 +43,8 @@ import java.util.List;
 public abstract class NFArrayAdapter<T> extends BaseAdapter {
 	/** LayoutInflater created from the constructing context */
 	private LayoutInflater mInflater;
+	/** Activity Context used to construct this adapter * */
+	private Context mContext;
 	/**
 	 * Contains the list of objects that represent the data of the adapter.
 	 */
@@ -151,6 +153,13 @@ public abstract class NFArrayAdapter<T> extends BaseAdapter {
 		return mObjects.containsAll(items);
 	}
 
+	/**
+	 * @return The Context associated with this adapter.
+	 */
+	public Context getContext() {
+		return mContext;
+	}
+
 	@Override
 	public int getCount() {
 		return mObjects.size();
@@ -252,6 +261,7 @@ public abstract class NFArrayAdapter<T> extends BaseAdapter {
 
 	private void init(Context context, ArrayList<T> items) {
 		mInflater = LayoutInflater.from(context);
+		mContext = context;
 		mObjects = items;
 	}
 

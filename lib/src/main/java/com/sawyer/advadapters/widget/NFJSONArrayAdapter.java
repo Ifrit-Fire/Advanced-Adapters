@@ -43,6 +43,8 @@ import java.util.Collection;
 public abstract class NFJSONArrayAdapter extends BaseAdapter {
 	/** LayoutInflater created from the constructing context */
 	private LayoutInflater mInflater;
+	/** Activity Context used to construct this adapter * */
+	private Context mContext;
 	/**
 	 * Contains the list of objects that represent the visible data of the adapter. It's contents
 	 * will change as filtering occurs. All methods retrieving data about the adapter will always do
@@ -190,6 +192,13 @@ public abstract class NFJSONArrayAdapter extends BaseAdapter {
 	public void clear() {
 		mObjects = new JSONArray();
 		if (mNotifyOnChange) notifyDataSetChanged();
+	}
+
+	/**
+	 * @return The Context associated with this adapter.
+	 */
+	public Context getContext() {
+		return mContext;
 	}
 
 	@Override
@@ -385,6 +394,7 @@ public abstract class NFJSONArrayAdapter extends BaseAdapter {
 
 	private void init(Context context, JSONArray objects) {
 		mInflater = LayoutInflater.from(context);
+		mContext = context;
 		mObjects = objects;
 	}
 

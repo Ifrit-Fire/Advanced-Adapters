@@ -39,6 +39,8 @@ public abstract class NFSparseAdapter<T> extends BaseAdapter {
 
 	/** LayoutInflater created from the constructing context */
 	private LayoutInflater mInflater;
+	/** Activity Context used to construct this adapter * */
+	private Context mContext;
 	/**
 	 * Contains the sparse array of objects that represent the visible data of the adapter. It's
 	 * contents will change as filtering occurs. All methods retrieving data about the adapter will
@@ -129,6 +131,13 @@ public abstract class NFSparseAdapter<T> extends BaseAdapter {
 	 */
 	public boolean containsItem(T item) {
 		return mObjects.indexOfValue(item) >= 0;
+	}
+
+	/**
+	 * @return The Context associated with this adapter.
+	 */
+	public Context getContext() {
+		return mContext;
 	}
 
 	@Override
@@ -251,6 +260,7 @@ public abstract class NFSparseAdapter<T> extends BaseAdapter {
 
 	private void init(Context context, SparseArray<T> objects) {
 		mInflater = LayoutInflater.from(context);
+		mContext = context;
 		if (objects == null) {
 			mObjects = new SparseArray<>();
 		} else {
