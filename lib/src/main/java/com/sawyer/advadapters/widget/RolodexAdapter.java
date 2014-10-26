@@ -27,28 +27,28 @@ public abstract class RolodexAdapter<G, C> extends BaseExpandableListAdapter imp
 
 	/** LayoutInflater created from the constructing context */
 	private LayoutInflater mInflater;
+	/** Activity Context used to construct this adapter * */
+	private Context mContext;
 	/**
 	 * Contains the map of objects that represent the visible data of the adapter. It's contents
 	 * will change as filtering occurs. All methods retrieving data about the adapter will always do
 	 * so from this list.
 	 */
 	private Map<G, List<C>> mObjects;
+	private List<G> mGroups;
+	private Map<C, G> mChild2Group;
 	/**
 	 * Indicates whether or not {@link #notifyDataSetChanged()} must be called whenever {@link
 	 * #mObjects} is modified.
 	 */
 	private boolean mNotifyOnChange = true;
 	/**
-	 * A copy of the original mObjects map, is not initialized until a filtering processing
-	 * occurs. Once initialized, it'll track the entire unfiltered data. Once the filter process
-	 * completes, it's contents are copied back over to mObjects and is set to null.
+	 * A copy of the original mObjects map, is not initialized until a filtering processing occurs.
+	 * Once initialized, it'll track the entire unfiltered data. Once the filter process completes,
+	 * it's contents are copied back over to mObjects and is set to null.
 	 */
 	private Map<G, List<C>> mOriginalValues;
-	private List<G> mGroups;
-	private Map<C, G> mChild2Group;
-
 	private RolodexFilter mFilter;
-
 	/**
 	 * Saves the constraint used during the last filtering operation. Used to re-filter the map
 	 * following changes to the array of data
@@ -113,6 +113,13 @@ public abstract class RolodexAdapter<G, C> extends BaseExpandableListAdapter imp
 		return mObjects.get(mGroups.get(groupPosition)).size();
 	}
 
+	/**
+	 * @return The Context associated with this adapter.
+	 */
+	public Context getContext() {
+		return mContext;
+	}
+
 	@Override
 	public Filter getFilter() {
 		return mFilter;
@@ -155,11 +162,18 @@ public abstract class RolodexAdapter<G, C> extends BaseExpandableListAdapter imp
 									  boolean isExpanded, View convertView,
 									  ViewGroup parent);
 
+	@Override
+	public boolean hasStableIds() {
+		return false;
+	}
+
 	private void init(Context context, Collection<C> objects) {
 		mInflater = LayoutInflater.from(context);
+		mContext = context;
 		mObjects = new LinkedHashMap<>();
 		mGroups = new ArrayList<>();
 		mChild2Group = new HashMap<>(objects.size());
+
 		for (C object : objects) {
 			G group = getGroupFor(object);
 			List<C> children = mObjects.get(group);
@@ -169,6 +183,12 @@ public abstract class RolodexAdapter<G, C> extends BaseExpandableListAdapter imp
 			}
 			children.add(object);
 		}
+		mGroups.addAll(mObjects.keySet());
+	}
+
+	@Override
+	public boolean isChildSelectable(int groupPosition, int childPosition) {
+		return true;
 	}
 
 	private class RolodexFilter extends Filter {
