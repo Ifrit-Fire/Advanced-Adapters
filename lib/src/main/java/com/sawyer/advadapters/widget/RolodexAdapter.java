@@ -1,6 +1,8 @@
 package com.sawyer.advadapters.widget;
 
 import android.content.Context;
+import android.text.TextUtils;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,7 +37,7 @@ public abstract class RolodexAdapter<G, C> extends BaseExpandableListAdapter imp
 	 * so from this list.
 	 */
 	private Map<G, List<C>> mObjects;
-	private List<G> mGroups;
+	private List<G> mGroupObjects;
 	private Map<C, G> mChild2Group;
 	/**
 	 * Indicates whether or not {@link #notifyDataSetChanged()} must be called whenever {@link
@@ -48,6 +50,7 @@ public abstract class RolodexAdapter<G, C> extends BaseExpandableListAdapter imp
 	 * it's contents are copied back over to mObjects and is set to null.
 	 */
 	private Map<G, List<C>> mOriginalValues;
+	private List<G> mGroupOriginalValues;
 	private RolodexFilter mFilter;
 	/**
 	 * Saves the constraint used during the last filtering operation. Used to re-filter the map
@@ -92,15 +95,15 @@ public abstract class RolodexAdapter<G, C> extends BaseExpandableListAdapter imp
 	 * However any changes to the child or it's parent group will result in additional invocations
 	 * of this method.
 	 *
-	 * @param child The child item for which a group instance will be created for.
+	 * @param childItem The child item for which a group instance will be created for.
 	 *
 	 * @return The group class object which represents the give child. Do not return null.
 	 */
-	public abstract G createGroupFor(C child);
+	public abstract G createGroupFor(C childItem);
 
 	@Override
 	public C getChild(int groupPosition, int childPosition) {
-		return mObjects.get(mGroups.get(groupPosition)).get(childPosition);
+		return mObjects.get(mGroupObjects.get(groupPosition)).get(childPosition);
 	}
 
 	@Override
@@ -121,7 +124,7 @@ public abstract class RolodexAdapter<G, C> extends BaseExpandableListAdapter imp
 
 	@Override
 	public int getChildrenCount(int groupPosition) {
-		return mObjects.get(mGroups.get(groupPosition)).size();
+		return mObjects.get(mGroupObjects.get(groupPosition)).size();
 	}
 
 	/**
@@ -138,12 +141,12 @@ public abstract class RolodexAdapter<G, C> extends BaseExpandableListAdapter imp
 
 	@Override
 	public G getGroup(int groupPosition) {
-		return mGroups.get(groupPosition);
+		return mGroupObjects.get(groupPosition);
 	}
 
 	@Override
 	public int getGroupCount() {
-		return mGroups.size();
+		return mGroupObjects.size();
 	}
 
 	private G getGroupFor(C child) {
@@ -182,7 +185,7 @@ public abstract class RolodexAdapter<G, C> extends BaseExpandableListAdapter imp
 		mInflater = LayoutInflater.from(context);
 		mContext = context;
 		mObjects = new LinkedHashMap<>();
-		mGroups = new ArrayList<>();
+		mGroupObjects = new ArrayList<>();
 		mChild2Group = new HashMap<>(objects.size());
 
 		for (C object : objects) {
@@ -194,22 +197,102 @@ public abstract class RolodexAdapter<G, C> extends BaseExpandableListAdapter imp
 			}
 			children.add(object);
 		}
-		mGroups.addAll(mObjects.keySet());
+		mGroupObjects.addAll(mObjects.keySet());
 	}
+
+	/**
+	 * Determines whether the provided constraint filters out the given child item. Allows easy,
+	 * customized filtering for subclasses. It's incorrect to modify the adapter or the contents of
+	 * the item itself. Any alterations will lead to undefined behavior or crashes. Internally, this
+	 * method is only ever invoked from a background thread.
+	 *
+	 * @param childItem  The child item to compare against the constraint
+	 * @param constraint The constraint used to filter the item
+	 *
+	 * @return True if the child item is filtered out by the given constraint. False if the item
+	 * will continue to display in the adapter.
+	 */
+	protected abstract boolean isChildFilteredOut(C childItem, CharSequence constraint);
 
 	@Override
 	public boolean isChildSelectable(int groupPosition, int childPosition) {
 		return true;
 	}
 
+	/**
+	 * Determines whether the provided constraint filters out the given group item. If filtered out,
+	 * all it's children will automatically be filtered out as well. This method allows easy,
+	 * customized filtering for subclasses. It's incorrect to modify the adapter or the contents of
+	 * the item itself. Any alterations will lead to undefined behavior or crashes. Internally, this
+	 * method is only ever invoked from a background thread.
+	 *
+	 * @param groupItem  The group item to compare against the constraint
+	 * @param constraint The constraint used to filter the item
+	 *
+	 * @return True if the group item (and subsequently all it's children) is filtered out by the
+	 * given constraint. False if the item will continue to display in the adapter.
+	 */
+	protected abstract boolean isGroupFilteredOut(G groupItem, CharSequence constraint);
+
 	private class RolodexFilter extends Filter {
 		@Override
 		protected FilterResults performFiltering(CharSequence constraint) {
-			return null;
+			FilterResults results = new FilterResults();
+			final Map<G, List<C>> values;
+			final List<G> groups;
+
+			synchronized (mLock) {
+				if (TextUtils.isEmpty(constraint)) {    //Clearing out filtered results
+					if (mOriginalValues != null) {
+						mObjects = new LinkedHashMap<>(mOriginalValues);
+						mGroupObjects = new ArrayList<>(mGroupOriginalValues);
+						mOriginalValues = null;
+						mGroupOriginalValues = null;
+					}
+					results.values = new Pair<>(mObjects, mGroupObjects);
+					results.count = Math.max(mObjects.size(), mGroupObjects.size());
+					return results;
+				} else {    //Ready for filtering
+					if (mOriginalValues == null) {
+						mOriginalValues = new LinkedHashMap<>(mObjects);
+						mGroupOriginalValues = new ArrayList<>(mGroupObjects);
+					}
+					values = new LinkedHashMap<>(mOriginalValues);
+					groups = new ArrayList<>(mGroupOriginalValues);
+				}
+			}
+
+			final Map<G, List<C>> newValues = new LinkedHashMap<>();
+			final List<G> newGroups = new ArrayList<>();
+			for (G group : groups) {
+				if (!isGroupFilteredOut(group, constraint)) {
+					newGroups.add(group);
+					List<C> children = new ArrayList<>();
+					for (C child : values.get(group)) {
+						if (!isChildFilteredOut(child, constraint)) {
+							children.add(child);
+						}
+					}
+					newValues.put(group, children);
+				}
+			}
+
+			results.values = new Pair<>(newValues, newGroups);
+			results.count = newValues.size();
+			return results;
 		}
 
 		@Override
 		protected void publishResults(CharSequence constraint, FilterResults results) {
+			mLastConstraint = constraint;
+			Pair<Map<G, List<C>>, List<G>> pair = (Pair<Map<G, List<C>>, List<G>>) results.values;
+			mObjects = pair.first;
+			mGroupObjects = pair.second;
+			if (results.count > 0) {
+				notifyDataSetChanged();
+			} else {
+				notifyDataSetInvalidated();
+			}
 		}
 	}
 }
