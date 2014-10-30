@@ -154,5 +154,15 @@ public class MainActivity extends ExpandableListActivity {
 			tv.setText(getGroup(groupPosition));
 			return convertView;
 		}
+
+		@Override
+		protected boolean isChildFilteredOut(Intent childItem, CharSequence constraint) {
+			return false;
+		}
+
+		@Override
+		protected boolean isGroupFilteredOut(String groupItem, CharSequence constraint) {
+			return false;
+		}
 	}
 }

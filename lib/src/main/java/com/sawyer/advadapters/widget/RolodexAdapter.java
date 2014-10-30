@@ -88,6 +88,96 @@ public abstract class RolodexAdapter<G, C> extends BaseExpandableListAdapter imp
 		init(activity, items);
 	}
 
+	private static <G, C> void addChildToMap(C child, G group, Map<G, List<C>> map,
+											 List<G> groups) {
+		List<C> children = map.get(group);
+		if (children == null) {
+			children = new ArrayList<>();
+			groups.add(group);
+		}
+		children.add(child);
+		map.put(group, children);
+	}
+
+	/**
+	 * Adds the specified items at the end of the adapter. Will repeat the last filtering request if
+	 * invoked while filtered results are being displayed.
+	 *
+	 * @param item The item to add at the end of the adapter.
+	 */
+	public void add(C item) {
+		synchronized (mLock) {
+			if (mOriginalValues != null) {
+				addChildToMap(item, getGroupFor(item), mOriginalValues, mGroupOriginalValues);
+				getFilter().filter(mLastConstraint);
+			} else {
+				addChildToMap(item, getGroupFor(item), mObjects, mGroupObjects);
+			}
+		}
+		if (mNotifyOnChange) notifyDataSetChanged();
+	}
+
+	/**
+	 * Adds the specified Collection at the end of the adapter. Will repeat the last filtering
+	 * request if invoked while filtered results are being displayed.
+	 *
+	 * @param items The Collection to add at the end of the adapter.
+	 */
+	public void addAll(Collection<? extends C> items) {
+		synchronized (mLock) {
+			if (mOriginalValues != null) {
+				for (C item : items) {
+					addChildToMap(item, getGroupFor(item), mOriginalValues, mGroupOriginalValues);
+				}
+				getFilter().filter(mLastConstraint);
+			} else {
+				for (C item : items) {
+					addChildToMap(item, getGroupFor(item), mObjects, mGroupObjects);
+				}
+			}
+		}
+		if (mNotifyOnChange) notifyDataSetChanged();
+	}
+
+	/**
+	 * Adds the specified items at the end of the adapter. Will repeat the last filtering request if
+	 * invoked while filtered results are being displayed.
+	 *
+	 * @param items The items to add at the end of the adapter.
+	 */
+	@SafeVarargs
+	public final void addAll(C... items) {
+		synchronized (mLock) {
+			if (mOriginalValues != null) {
+				for (C item : items) {
+					addChildToMap(item, getGroupFor(item), mOriginalValues, mGroupOriginalValues);
+				}
+				getFilter().filter(mLastConstraint);
+			} else {
+				for (C item : items) {
+					addChildToMap(item, getGroupFor(item), mObjects, mGroupObjects);
+				}
+			}
+		}
+		if (mNotifyOnChange) notifyDataSetChanged();
+	}
+
+	/**
+	 * Remove all elements from the adapter.
+	 */
+	public void clear() {
+		synchronized (mLock) {
+			if (mOriginalValues != null) {
+				mOriginalValues.clear();
+				mGroupOriginalValues.clear();
+			}
+			mObjects.clear();
+			mGroupObjects.clear();
+			mChild2Group.clear();
+		}
+		if (mNotifyOnChange) notifyDataSetChanged();
+	}
+
 	/**
 	 * Creates a new group class object which represents the given child item. This is used to
 	 * determine what group item the child item will fall under. Internally this relationship is
@@ -136,6 +226,9 @@ public abstract class RolodexAdapter<G, C> extends BaseExpandableListAdapter imp
 
 	@Override
 	public Filter getFilter() {
+		if (mFilter == null) {
+			mFilter = new RolodexFilter();
+		}
 		return mFilter;
 	}
 
@@ -154,10 +247,11 @@ public abstract class RolodexAdapter<G, C> extends BaseExpandableListAdapter imp
 		if (group == null) {
 			group = createGroupFor(child);
 			if (group == null) {
-				throw new NullPointerException("createGroupFor() must return a non-null value");
+				throw new NullPointerException(
+						"createGroupFor(child) must return a non-null value");
 			}
+			mChild2Group.put(child, group);
 		}
-		mChild2Group.put(child, group);
 		return group;
 	}
 
@@ -189,15 +283,8 @@ public abstract class RolodexAdapter<G, C> extends BaseExpandableListAdapter imp
 		mChild2Group = new HashMap<>(objects.size());
 
 		for (C object : objects) {
-			G group = getGroupFor(object);
-			List<C> children = mObjects.get(group);
-			if (children == null) {
-				children = new ArrayList<>();
-				mObjects.put(group, children);
-			}
-			children.add(object);
+			addChildToMap(object, getGroupFor(object), mObjects, mGroupObjects);
 		}
-		mGroupObjects.addAll(mObjects.keySet());
 	}
 
 	/**
@@ -233,6 +320,35 @@ public abstract class RolodexAdapter<G, C> extends BaseExpandableListAdapter imp
 	 * given constraint. False if the item will continue to display in the adapter.
 	 */
 	protected abstract boolean isGroupFilteredOut(G groupItem, CharSequence constraint);
+
+	/**
+	 * Resets the adapter to store a new list of items. Convenient way of calling {@link #clear()},
+	 * then {@link #addAll(java.util.Collection)} without having to worry about an extra {@link
+	 * #notifyDataSetChanged()} invoked in between. Will repeat the last filtering request if
+	 * invoked while filtered results are being displayed.
+	 *
+	 * @param items New list of items to store within the adapter.
+	 */
+	public void setList(Collection<? extends C> items) {
+		synchronized (mLock) {
+			mChild2Group.clear();
+			if (mOriginalValues != null) {
+				mOriginalValues.clear();
+				mGroupOriginalValues.clear();
+				for (C item : items) {
+					addChildToMap(item, getGroupFor(item), mOriginalValues, mGroupOriginalValues);
+				}
+				getFilter().filter(mLastConstraint);
+			} else {
+				mObjects.clear();
+				mGroupObjects.clear();
+				for (C item : items) {
+					addChildToMap(item, getGroupFor(item), mObjects, mGroupObjects);
+				}
+			}
+		}
+		if (mNotifyOnChange) notifyDataSetChanged();
+	}
 
 	private class RolodexFilter extends Filter {
 		@Override
@@ -282,6 +398,7 @@ public abstract class RolodexAdapter<G, C> extends BaseExpandableListAdapter imp
 			return results;
 		}
 
+		@SuppressWarnings("unchecked")
 		@Override
 		protected void publishResults(CharSequence constraint, FilterResults results) {
 			mLastConstraint = constraint;
