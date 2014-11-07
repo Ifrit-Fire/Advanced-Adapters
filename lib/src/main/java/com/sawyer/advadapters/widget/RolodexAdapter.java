@@ -179,11 +179,11 @@ public abstract class RolodexAdapter<G, C> extends BaseExpandableListAdapter imp
 	}
 
 	/**
-	 * Creates a new group class object which represents the given child item. This is used to
-	 * determine what group item the child item will fall under. Internally this relationship is
-	 * cached to optimize how often this method is invoked. Ideally only once per child item.
-	 * However any changes to the child or it's parent group will result in additional invocations
-	 * of this method.
+	 * Creates a new group object which represents the parent of the given child item. This is used
+	 * to determine what group item the child item will fall under. Internally this relationship is
+	 * cached to optimize how often this method is invoked. Ideally only once per child. However any
+	 * changes to the child or it's parent group will result in additional invocations of this
+	 * method.
 	 *
 	 * @param childItem The child item for which a group instance will be created for.
 	 *
