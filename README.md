@@ -11,16 +11,16 @@ Some of the advantages to using this suite:
 Currently, this suite supports three different data structures with a filterable and non-filterable (NF) version.  More will be coming in time. Head on over to the [wiki](https://github.com/JaySoyer/Advanced-Adapters/wiki/) for referencing more detailed information for each one.
 
 **ArrayList Backed**
-- [AbsArrayAdapter]()
-- [NFArrayAdapter]()
+- [AbsArrayAdapter](http://www.jaysoyer.com/2014/07/arrayadapter-replacements/)
+- [NFArrayAdapter](http://www.jaysoyer.com/2014/07/arrayadapter-replacements/)
 
 **SparseArray Backed**
-- [SparseAdapter]()
-- [NFSparseAdapter]()
+- [SparseAdapter](http://www.jaysoyer.com/2014/08/sparseadapter-android/)
+- [NFSparseAdapter](http://www.jaysoyer.com/2014/08/sparseadapter-android/)
 
 **JSONArray Backed**
-- [JSONAdapter]()
-- [NFJSONAdapter]()
+- [JSONAdapter](http://www.jaysoyer.com/2014/11/jsonadapter-jsonarray-backed-adapters/)
+- [NFJSONAdapter](http://www.jaysoyer.com/2014/11/jsonadapter-jsonarray-backed-adapters/)
 
 ### Supports
 - Ice Cream Sandwich
