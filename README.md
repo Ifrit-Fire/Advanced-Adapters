@@ -1,16 +1,14 @@
-NOTE: This repo is in the middle of an overhaul.  While the code still works, the wiki and blog will be missing, out of date, or incorrect for a little bit.  For more details, [click here](http://jaysoyer.wordpress.com/2014/09/25/overhauling-advanced-adapters/).
-
 <p align="center"><img src="https://raw.githubusercontent.com/JaySoyer/Advanced-Adapters/master/app/src/main/logo.png" width="256px" height="256px"/></p>
 # Advanced-Adapters
-Advanced-Adapters is a suite of adapters designed to provide better alternatives to Android's provided adapters. For some time now, their adapters have been plagued with filtering issues, which was the primary drive to starting this opensource project. The following are some of the advantages to using this suite:
-- Additional methods for supporting data mutations.
-- Getters for obtaining adapter data
-- Filtering behaves correctly.
-- Slightly smarter use of `notifyDataSetChanged()` where possible.
-- LayoutInflater passed to all view creation methods.
-- No conflicting object instances during adapter construction.
+Advanced-Adapters is a suite of adapters designed to provide additional alternatives to Android's provided adapters. Originally started as a means to replae the flawed filtering logic for Android's ArrayAdapter, it has now expanded to provided a slew of different adapters backed by various data structures.
 
-Currently, this suite provides six different adapters.  More will be coming in time. Head on over to the [wiki](https://github.com/JaySoyer/Advanced-Adapters/wiki/) to read more about them and learn how to use them.
+Some of the advantages to using this suite:
+- Customizable filtering logic
+- Active filtering support
+- Easily obtain internal data for use with `onSavedInstanceState()`
+- `LayoutInflater` passed to all view creation methods.
+
+Currently, this suite supports three different data structures with a filterable and non-filterable (NF) version.  More will be coming in time. Head on over to the [wiki](https://github.com/JaySoyer/Advanced-Adapters/wiki/) for referencing more detailed information for each one.
 
 **ArrayList Backed**
 - [AbsArrayAdapter]()
@@ -30,10 +28,10 @@ Currently, this suite provides six different adapters.  More will be coming in t
 - Kit Kat
 - Lollipop
 
-There are no plans to specifically support Gingerbread at this time.  In fact, I'm purposely attempting to avoid using any android support library.
+There are no plans to support Gingerbread at this time.  In fact, I'm purposely attempting to avoid using any android support library. 
 
 ### Example
-Of course for those just skimming through, here's a quick example of using the ArrayBaseAdapter.  For now, every adapter is just an abstract class that requires subclassing. It's more or less just like using Android's ArrayAdapter.
+Of course for those just skimming through, here's a quick example of using the AbsArrayAdapter.  Every adapter is just an abstract class that requires subclassing. It's more or less just like using Android's ArrayAdapter.
 
 ```java
 public class MovieAdapter extends AbsArrayAdapter<MovieItem> {
@@ -61,7 +59,7 @@ public class MovieAdapter extends AbsArrayAdapter<MovieItem> {
 Thats it!
 
 ### Adding To Your Project
-All adapters are found within the `lib` directory.  Each adapter is a standalone class file which you can copy and paste into your eclipse project.  If using Android Studio, you can import the module directly into your app instead.
+All adapters are found within the `lib` directory.  Each adapter is a standalone class file which you can copy and paste into your code.  If using Android Studio, you can import the module directly into your app instead.
 
 Everything found within `app` is the source code for the Google Play store [demo app](https://play.google.com/store/apps/details?id=com.sawyer.advadapters.app&hl=en "Advanced-Adapters Demo App"). You can also use it for seeing how to use the adapters.
 	
