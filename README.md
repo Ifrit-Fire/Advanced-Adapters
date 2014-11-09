@@ -10,27 +10,33 @@ Advanced-Adapters is a suite of adapters designed to provide better alternatives
 - LayoutInflater passed to all view creation methods.
 - No conflicting object instances during adapter construction.
 
-Currently, this suite provides four different adapters.  More will be coming in time. Head on over to the [wiki](https://github.com/JaySoyer/Advanced-Adapters/wiki/) to read more about them and learn how to use them.
+Currently, this suite provides six different adapters.  More will be coming in time. Head on over to the [wiki](https://github.com/JaySoyer/Advanced-Adapters/wiki/) to read more about them and learn how to use them.
 
 **ArrayList Backed**
-- [ArrayBaseAdapter]()
-- [SimpleArrayBaseAdapter](https://github.com/JaySoyer/Advanced-Adapters/wiki/SimpleArrayBaseAdapter)
+- [AbsArrayAdapter]()
+- [NFArrayAdapter]()
 
 **SparseArray Backed**
-- [SparseArrayBaseAdapter](https://github.com/JaySoyer/Advanced-Adapters/wiki/SparseArrayBaseAdapter)
-- [SimpleSparseArrayBaseAdapter](https://github.com/JaySoyer/Advanced-Adapters/wiki/SimpleSparseArrayBaseAdapter)
+- [SparseAdapter]()
+- [NFSparseAdapter]()
+
+**JSONArray Backed**
+- [JSONAdapter]()
+- [NFJSONAdapter]()
 
 ### Supports
 - Ice Cream Sandwich
 - Jelly Bean
 - Kit Kat
+- Lollipop
 
-There are no plans to specifically support Gingerbread at this time.  In fact, I'm purposely attempting to avoid using any android support library.  However, I don't believe there's any API specific calls being used in the ArrayList based adapters themselves that aren't found on Gingerbread.  Meaning...it may work fine for the ArrayBaseAdapter and SimpleArrayBaseAdpater. Seeing that I lack a Gingerbread device, maybe someone can test that for me?  Otherwise, the SparseArray adapters will definitely not work on Gingerbread.
+There are no plans to specifically support Gingerbread at this time.  In fact, I'm purposely attempting to avoid using any android support library.
 
 ### Example
-Of course for those just skimming thru, here's a quick example of using the ArrayBaseAdapter.  For now, every adapter is just an abstract class that requires subclassing. This may or may not change in the future.  It's more or less just like using Android's ArrayAdapter.
+Of course for those just skimming through, here's a quick example of using the ArrayBaseAdapter.  For now, every adapter is just an abstract class that requires subclassing. It's more or less just like using Android's ArrayAdapter.
+
 ```java
-public class MovieAdapter extends ArrayBaseAdapter<MovieItem> {
+public class MovieAdapter extends AbsArrayAdapter<MovieItem> {
 	MovieAdapter(Context activity) {
 		super(activity);
 	}
@@ -47,8 +53,8 @@ public class MovieAdapter extends ArrayBaseAdapter<MovieItem> {
 	
 	//Easily customize your filtered results here.  Too easy!
 	@Override
-	public boolean isFilteredBy(MovieItem movie, CharSequence constraint) {
-		return movie.title.toLowerCase(Locale.US).contains(constraint.toString().toLowerCase(Locale.US));
+	public boolean isFilteredOut(MovieItem movie, CharSequence constraint) {
+		return !movie.title.toLowerCase(Locale.US).contains(constraint.toString().toLowerCase(Locale.US));
 	}
 }
 ```

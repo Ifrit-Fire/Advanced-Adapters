@@ -28,15 +28,19 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.sawyer.advadapters.app.adapters.androidarrayadapter.AndroidAdapterActivity;
-import com.sawyer.advadapters.app.adapters.arraybaseadapter.ArrayBaseAdapterActivity;
-import com.sawyer.advadapters.app.adapters.simplearraybaseadapter.SimpleArrayBaseAdapterActivity;
-import com.sawyer.advadapters.app.adapters.simplesparsearraybaseadapter.SimpleSparseArrayBaseAdapterActivity;
-import com.sawyer.advadapters.app.adapters.sparsearraybaseadapter.SparseArrayBaseAdapterActivity;
-import com.sawyer.advadapters.widget.SimpleArrayBaseAdapter;
+import com.sawyer.advadapters.app.adapters.absarrayadapter.ArrayAdapterActivity;
+import com.sawyer.advadapters.app.adapters.jsonadapter.JSONAdapterActivity;
+import com.sawyer.advadapters.app.adapters.nfarrayadapter.NFArrayAdapterActivity;
+import com.sawyer.advadapters.app.adapters.nfjsonadapter.NFJSONAdapterActivity;
+import com.sawyer.advadapters.app.adapters.nfsparseadapter.NFSparseAdapterActivity;
+import com.sawyer.advadapters.app.adapters.sparseadapter.SparseAdapterActivity;
+import com.sawyer.advadapters.widget.NFArrayAdapter;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+
+import butterknife.ButterKnife;
 
 public class MainActivity extends ListActivity {
 	private static final String EXTRA_INTENT_NAME = "Extra Intent Name";
@@ -45,21 +49,30 @@ public class MainActivity extends ListActivity {
 		List<Intent> intents = new ArrayList<>();
 		Intent intent;
 
-		intent = new Intent(this, ArrayBaseAdapterActivity.class);
-		intent.putExtra(EXTRA_INTENT_NAME, getString(R.string.activity_array_baseadapter));
+		intent = new Intent(this, ArrayAdapterActivity.class);
+		intent.putExtra(EXTRA_INTENT_NAME, getString(R.string.activity_absarrayadapter));
 		intents.add(intent);
 
-		intent = new Intent(this, SimpleArrayBaseAdapterActivity.class);
-		intent.putExtra(EXTRA_INTENT_NAME, getString(R.string.activity_simplearray_baseadapter));
+		intent = new Intent(this, NFArrayAdapterActivity.class);
+		intent.putExtra(EXTRA_INTENT_NAME, getString(R.string.activity_nfarrayadapter));
 		intents.add(intent);
 
-		intent = new Intent(this, SparseArrayBaseAdapterActivity.class);
-		intent.putExtra(EXTRA_INTENT_NAME, getString(R.string.activity_sparsearray_baseadapter));
+		intent = new Intent(this, SparseAdapterActivity.class);
+		intent.putExtra(EXTRA_INTENT_NAME, getString(R.string.activity_sparseadapter));
 		intents.add(intent);
 
-		intent = new Intent(this, SimpleSparseArrayBaseAdapterActivity.class);
+		intent = new Intent(this, NFSparseAdapterActivity.class);
 		intent.putExtra(EXTRA_INTENT_NAME,
-						getString(R.string.activity_simplesparsearray_baseadapter));
+						getString(R.string.activity_nfsparseadapter));
+		intents.add(intent);
+
+		intent = new Intent(this, JSONAdapterActivity.class);
+		intent.putExtra(EXTRA_INTENT_NAME, getString(R.string.activity_jsonadapter));
+		intents.add(intent);
+
+		intent = new Intent(this, NFJSONAdapterActivity.class);
+		intent.putExtra(EXTRA_INTENT_NAME,
+						getString(R.string.activity_nfjsonadapter));
 		intents.add(intent);
 
 		return intents;
@@ -68,7 +81,7 @@ public class MainActivity extends ListActivity {
 	private void initHeaders() {
 		ListView lv = getListView();
 		View v = getLayoutInflater().inflate(R.layout.item_simple_list_header_1, lv, false);
-		TextView tv = (TextView) v.findViewById(android.R.id.text1);
+		TextView tv = ButterKnife.findById(v, android.R.id.text1);
 		tv.setText(R.string.activity_android_arrayadapter);
 		v.setOnClickListener(new OnAndroidHeaderClickListener());
 		lv.addHeaderView(v);
@@ -108,7 +121,7 @@ public class MainActivity extends ListActivity {
 		}
 	}
 
-	private class DemoAdapter extends SimpleArrayBaseAdapter<Intent> {
+	private class DemoAdapter extends NFArrayAdapter<Intent> {
 		public DemoAdapter(Context activity, Collection<Intent> objects) {
 			super(activity, objects);
 		}

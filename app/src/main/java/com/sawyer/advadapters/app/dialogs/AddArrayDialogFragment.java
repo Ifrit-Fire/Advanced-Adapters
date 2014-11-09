@@ -91,6 +91,7 @@ public class AddArrayDialogFragment extends CustomDialogFragment {
 		return dialog;
 	}
 
+	@SuppressWarnings("UnusedDeclaration")
 	public void setEnableArgvargs(boolean enable) {
 		getArguments().putBoolean(STATE_ENABLE_ARGVARGS, enable);
 		mIsArgvargsEnabled = enable;

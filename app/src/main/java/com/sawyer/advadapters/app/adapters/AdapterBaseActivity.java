@@ -29,6 +29,9 @@ import com.sawyer.advadapters.app.Prefs;
 import com.sawyer.advadapters.app.R;
 import com.sawyer.advadapters.app.dialogs.InfoDialogFragment;
 
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+
 /**
  * Abstract class that establishes a structure for supporting all sorts of Adapter functionality.
  * Will adjust UI based on what subclasses enable/disable.  Subclasses should only need worrying
@@ -63,24 +66,19 @@ public abstract class AdapterBaseActivity extends Activity implements
 	}
 
 	private void initViews() {
-		Button btn = (Button) findViewById(R.id.button_add_random);
-		btn.setOnClickListener(new OnAddClickListener());
+		Button btn = ButterKnife.findById(this, R.id.button_add_random);
 		btn.setVisibility(isAddDialogEnabled() ? View.VISIBLE : View.GONE);
 
-		btn = (Button) findViewById(R.id.button_append_random);
-		btn.setOnClickListener(new OnAppendClickListener());
+		btn = ButterKnife.findById(this, R.id.button_append_random);
 		btn.setVisibility(isAppendDialogEnabled() ? View.VISIBLE : View.GONE);
 
-		btn = (Button) findViewById(R.id.button_contain);
-		btn.setOnClickListener(new OnContainsClickListener());
+		btn = ButterKnife.findById(this, R.id.button_contain);
 		btn.setVisibility(isContainsDialogEnabled() ? View.VISIBLE : View.GONE);
 
-		btn = (Button) findViewById(R.id.button_put);
-		btn.setOnClickListener(new OnPutClickListener());
+		btn = ButterKnife.findById(this, R.id.button_put);
 		btn.setVisibility(isPutDialogEnabled() ? View.VISIBLE : View.GONE);
 
-		btn = (Button) findViewById(R.id.button_insert_random);
-		btn.setOnClickListener(new OnInsertClickListener());
+		btn = ButterKnife.findById(this, R.id.button_insert_random);
 		btn.setVisibility(isInsertDialogEnabled() ? View.VISIBLE : View.GONE);
 	}
 
@@ -112,6 +110,7 @@ public abstract class AdapterBaseActivity extends Activity implements
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_adapter);
+		ButterKnife.inject(this);
 
 		initFrags();
 		initViews();
@@ -134,7 +133,7 @@ public abstract class AdapterBaseActivity extends Activity implements
 			item.setOnActionExpandListener(new OnSearchActionExpandListener());
 			item.setVisible(isSearchViewEnabled());
 		}
-		return true;
+		return super.onCreateOptionsMenu(menu);
 	}
 
 	@Override
@@ -210,18 +209,23 @@ public abstract class AdapterBaseActivity extends Activity implements
 
 	protected abstract void sort();
 
+	@OnClick(R.id.button_add_random)
 	protected void startAddDialog() {
 	}
 
+	@OnClick(R.id.button_append_random)
 	protected void startAppendDialog() {
 	}
 
+	@OnClick(R.id.button_contain)
 	protected void startContainsDialog() {
 	}
 
+	@OnClick(R.id.button_insert_random)
 	protected void startInsertDialog() {
 	}
 
+	@OnClick(R.id.button_put)
 	protected void startPutDialog() {
 	}
 
@@ -229,41 +233,6 @@ public abstract class AdapterBaseActivity extends Activity implements
 	protected void updateActionBar() {
 		String subtitle = (getListCount()) + " movies listed";
 		getActionBar().setSubtitle(subtitle);
-	}
-
-	private class OnAddClickListener implements View.OnClickListener {
-		@Override
-		public void onClick(View v) {
-			startAddDialog();
-		}
-	}
-
-	private class OnAppendClickListener implements View.OnClickListener {
-		@Override
-		public void onClick(View v) {
-			startAppendDialog();
-		}
-	}
-
-	private class OnContainsClickListener implements View.OnClickListener {
-		@Override
-		public void onClick(View v) {
-			startContainsDialog();
-		}
-	}
-
-	private class OnInsertClickListener implements View.OnClickListener {
-		@Override
-		public void onClick(View v) {
-			startInsertDialog();
-		}
-	}
-
-	private class OnPutClickListener implements View.OnClickListener {
-		@Override
-		public void onClick(View v) {
-			startPutDialog();
-		}
 	}
 
 	private class OnSearchActionExpandListener implements MenuItem.OnActionExpandListener {

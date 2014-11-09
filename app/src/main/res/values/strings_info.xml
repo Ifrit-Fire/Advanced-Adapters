@@ -51,15 +51,14 @@
 	</string>
 	<string name="info_android_arrayAdapter_url">https://github.com/JaySoyer/Advanced-Adapters/wiki/</string>
 
-	<!--Info Dialog - ArrayBaseAdapter-->
-	<string name="info_array_baseadapter_title">Adapter Demo Info</string>
-	<string name="info_array_baseadapter_message">
-		This is a demonstration of the ArrayBaseAdapter, which is an adapter backed by an ArrayList.
+	<!--Info Dialog - AbsArrayAdapter-->
+	<string name="info_absarrayadapter_title">Adapter Demo Info</string>
+	<string name="info_absarrayadapter_message">
+		This is a demonstration of the AbsArrayAdapter, which is an adapter backed by an ArrayList.
 		This adapter is an improved version of Android\'s ArrayAdapter, resolving many of it\'s
 		issues. Most notably, all the filtering problems.\n
 		\n
-		If filtering is not required, it\'s strongly recommended to use the SimpleArrayBaseAdapter
-		instead.
+		If filtering is not required, it\'s strongly recommended to use the NFArrayAdapter instead.
 	</string>
 
 	<!--About Screen - Credits Heading-->
@@ -75,6 +74,19 @@
 	<string name="info_credits_message_retain_url">http://thenounproject.com/term/crop/11553</string>
 	<string name="info_credits_message_plug_url">http://thenounproject.com/term/plug/33432</string>
 
+	<!-- Info Dialog - JSONAdapter -->
+	<string name="info_jsonadapter_title">Adapter Demo Info</string>
+	<string name="info_jsonadapter_message">
+		This is a demonstration of the JSONAdapter class, which is a full fledged adapter backed by
+		a JSONArray.  Keep in mind, JSONArray is not part of a Collection and does not behave like a
+		normal array.  It\'s ability to dynamically change the underlying data is very limited but
+		possible.\n
+		\n
+		This adapter specifically supports a highly customizable filtering process which allows easy
+		support for whatever data type is stored within. If filtering is not required, it\'s
+		strongly recommended to use the NFJSONAdapter instead.
+	</string>
+
 	<!--About Screen - License Heading-->
 	<string name="info_license_title">License</string>
 	<string name="info_license_message">
@@ -84,39 +96,64 @@
 	</string>
 	<string name="info_license_url">http://www.apache.org/licenses/LICENSE-2.0</string>
 
-	<!--Info Dialog - SimpleArrayBaseAdapter-->
-	<string name="info_simplearray_baseadapter_title">Adapter Demo Info</string>
-	<string name="info_simplearray_baseadapter_message">
-		This is a demonstration of the SimpleArrayBaseAdapter class, which is an adapter backed by
+	<!--Info Dialog - NFArrayAdapter-->
+	<string name="info_nfarrayadapter_title">Adapter Demo Info</string>
+	<string name="info_nfarrayadapter_message">
+		This is a demonstration of the NFArrayAdapter class, which is an adapter backed by
 		an ArrayList.  This adapter is an improved version of Android\'s ArrayAdapter but removes
 		filtering support.  As a result, there is no need for synchronized blocks which may help
 		those worried about performance.\n
  		\n
- 		If filtering is required, it\'s strongly recommended to use the ArrayBaseAdapter instead.
+ 		If filtering is required, it\'s strongly recommended to use the AbsArrayAdapter instead.
 	</string>
 
-	<!--Info Dialog - SimpleSparseArrayBaseAdapter-->
-	<string name="info_simplesparsearray_baseadapter_title">Adapter Demo Info</string>
-	<string name="info_simplesparsearray_baseadapter_message">
-		This is a demonstration of the SimpleSparseArrayBaseAdapter which, as the name suggests, is
-		an adapter backed by a SparseArray.  It exposes most of the SparseArray methods with the key
-		mapping to an adapter\'s row id and vice versa.  Keep in mind this behaves like a map, not
-		a list.  Putting to the adapter is not the same as adding to the adapter.\n
+	<!-- Info Dialog - NFJSONArrayAdapter -->
+	<string name="info_nfjsonadapter_title">Adapter Demo Info</string>
+	<string name="info_nfjsonadapter_message">
+		This is a demonstration of the NFJSONAdapter class, which is a full fledged adapter
+		backed by a JSONArray.  Keep in mind, JSONArray is not part of a Collection and does not
+		behave like a normal array.  It\'s ability to dynamically change the underlying data is
+		limited but possible.\n
+		\n
+		If filtering is required, it\'s strongly recommended to use the JSONAdapter instead.
+	</string>
+
+	<!--Info Dialog - NFSparseAdapter-->
+	<string name="info_nfsparseadapter_title">Adapter Demo Info</string>
+	<string name="info_nfsparseadapter_message">
+		This is a demonstration of the NFSparseAdapter which, as the name suggests, is an adapter
+		backed by a SparseArray.  It exposes most of the SparseArray methods with the key mapping to
+		an adapter\'s row id and vice versa.  Keep in mind this behaves like a map, not a list.
+		Putting to the adapter is not the same as adding to the adapter.\n
 		\n
 		This adapter does not support filtering and as a result contains no synchronized blocks
 		which may help those worried about performance.  If filtering is required, it\'s strongly
-		recommended to use the SparseArrayBaseAdapter instead.
+		recommended to use the SparseAdapter instead.
 	</string>
 
-	<!--Info Dialog - SparseArrayBaseAdapter-->
-	<string name="info_sparsearray_baseadapter_title">Adapter Demo Info</string>
-	<string name="info_sparsearray_baseadapter_message">
-		This is a demonstration of the SparseArrayBaseAdapter which, as the name suggests, is an
-		adapter backed by a SparseArray. It exposes most of the SparseArray methods with the key
-		mapping to an adapter\'s row id and vice versa.  Keep in mind this behaves like a map, not
-		a list.  Putting to the adapter is not the same as adding to the adapter.\n
+	<!--Info Dialog - SparseAdapter-->
+	<string name="info_sparseadapter_title">Adapter Demo Info</string>
+	<string name="info_sparseadapter_message">
+		This is a demonstration of the SparseAdapter which, as the name suggests, is an adapter
+		backed by a SparseArray. It exposes most of the SparseArray methods with the key mapping to
+		an adapter\'s row id and vice versa.  Keep in mind this behaves like a map, not a list.
+		Putting to the adapter is not the same as adding to the adapter.\n
 		\n
 		This adapter supports filtering.  If filtering is not required, it\'s strongly recommended
-		to use the SimpleSparseArrayBaseAdapter instead.
+		to use the NFSparseAdapter instead.
+	</string>
+
+	<!-- Info Dialog - JSONAdapter -->
+	<string name="info_unittest_jsonadapter_title">Adapter Unit Test</string>
+	<string name="info_unittest_jsonadapter_message">
+		A quick and dirty setup to test various aspects of the JSONAdapter that doesn\'t quite fit
+		with the normal presentable demo.
+	</string>
+
+	<!-- Info Dialog - NFJSONArrayAdapter -->
+	<string name="info_unittest_nfjsonadapter_title">Adapter Unit Test</string>
+	<string name="info_unittest_nfjsonadapter_message">
+		A quick and dirty setup to test various aspects of the NFJSONAdapter that doesn\'t quite fit
+		with the normal presentable demo.
 	</string>
 </resources>

@@ -43,7 +43,7 @@
 
 	<Button
 		android:id="@android:id/button1"
-		style="?android:buttonBarButtonStyle"
+		style="?android:borderlessButtonStyle"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:text="@android:string/ok"/>

@@ -20,10 +20,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.sawyer.advadapters.app.R;
+import com.sawyer.advadapters.app.adapters.MovieViewHolder;
 import com.sawyer.advadapters.app.data.MovieItem;
 
 import java.util.List;
@@ -43,23 +42,20 @@ class MovieAdapter extends ArrayAdapter<MovieItem> {
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
+		MovieViewHolder vh;
 		if (convertView == null) {
 			convertView = mInflater.inflate(R.layout.item_movie1, parent, false);
-			convertView.setTag(R.id.title, convertView.findViewById(R.id.title));
-			convertView.setTag(R.id.subtitle, convertView.findViewById(R.id.subtitle));
-			convertView.setTag(R.id.icon, convertView.findViewById(R.id.icon));
+			vh = new MovieViewHolder(convertView);
+			convertView.setTag(vh);
+		} else {
+			vh = (MovieViewHolder) convertView.getTag();
 		}
 
 		MovieItem movie = getItem(position);
-		TextView title = (TextView) convertView.getTag(R.id.title);
-		title.setText(movie.title);
-
-		TextView subtitle = (TextView) convertView.getTag(R.id.subtitle);
-		subtitle.setText(String.valueOf(movie.year));
-
-		ImageView icon = (ImageView) convertView.getTag(R.id.icon);
-		icon.setImageResource(
-				(movie.isRecommended) ? R.drawable.ic_rating_good : R.drawable.ic_rating_bad);
+		vh.title.setText(movie.title);
+		vh.subtitle.setText(String.valueOf(movie.year));
+		vh.icon.setImageResource(
+				movie.isRecommended ? R.drawable.ic_rating_good : R.drawable.ic_rating_bad);
 
 		return convertView;
 	}

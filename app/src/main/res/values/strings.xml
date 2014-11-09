@@ -20,10 +20,14 @@
 
 	<string name="app_name">Advanced-Adapters Demo</string>
 	<string name="activity_android_arrayadapter">Android\'s ArrayAdapter</string>
-	<string name="activity_array_baseadapter">Array BaseAdapter</string>
-	<string name="activity_simplearray_baseadapter">SimpleArray BaseAdapter</string>
-	<string name="activity_sparsearray_baseadapter">SparseArray BaseAdapter</string>
-	<string name="activity_simplesparsearray_baseadapter">SimpleSparseArray BaseAdapter</string>
+	<string name="activity_absarrayadapter">AbsArrayAdapter</string>
+	<string name="activity_nfarrayadapter">NFArrayAdapter</string>
+	<string name="activity_sparseadapter">SparseAdapter</string>
+	<string name="activity_nfsparseadapter">NFSparseAdapter</string>
+	<string name="activity_jsonadapter">JSONAdapter</string>
+	<string name="activity_jsonarray_unittest">JSONArray - Unit Test</string>
+	<string name="activity_nfjsonadapter">NFJSONAdapter</string>
+	<string name="activity_nfjsonarray_unittest">NFJSONArray - Unit Test</string>
 
 	<!-- Content Description Text -->
 	<string name="cd_rating_icon">Rating Icon</string>
@@ -51,10 +55,12 @@
 	<string name="menu_retain">Retain Selected</string>
 	<string name="menu_search">Search</string>
 	<string name="menu_sort">Sort</string>
+	<string name="menu_unit_test">Unit Test</string>
 
 	<!-- Button Text -->
 	<string name="btn_add">Add One</string>
 	<string name="btn_add_all_col">Add as Collection</string>
+	<string name="btn_add_all_json">Add as JSONArray</string>
 	<string name="btn_add_all_var">Add as Vararg</string>
 	<string name="btn_append_id">Append with Id</string>
 	<string name="btn_append_all">Append All</string>
@@ -72,6 +78,8 @@
 	<!-- Toast Messages -->
 	<string name="toast_contains_movie_true">Adapter contains:\n</string>
 	<string name="toast_contains_movie_false">Could not find:\n</string>
-	<string name="toast_retain_all_not_support">RetainAll not supported.</string>
+	<string name="toast_item_updates_not_supported">Item updates not supported</string>
+	<string name="toast_remove_not_supported">Remove not supported.</string>
+	<string name="toast_retain_all_not_supported">RetainAll not supported.</string>
 	<string name="toast_sort_not_supported">Sort not supported.</string>
 </resources>

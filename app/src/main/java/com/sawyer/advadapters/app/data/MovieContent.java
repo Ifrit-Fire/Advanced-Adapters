@@ -44,7 +44,7 @@ public class MovieContent {
 	public static SparseArray<MovieItem> ITEM_SPARSE = new SparseArray<>();
 
 	/** A JSON array of sample (movie) items */
-	public static JSONArray ITEM_JSON = new JSONArray();    //TODO: Research JSONArray Adapter
+	public static JSONArray ITEM_JSON = new JSONArray();
 
 	static {
 		addItem(newMovie("Primer", 2004, true));
@@ -93,7 +93,7 @@ public class MovieContent {
 		ITEM_SET.add(item);
 		ITEM_MAP.put(item.year, item);
 		ITEM_SPARSE.put(item.barcode(), item);
-		ITEM_JSON.put(item);
+		ITEM_JSON.put(item.toJSONObject());
 	}
 
 	private static MovieItem newMovie(String title, int year, boolean isRecommended) {
