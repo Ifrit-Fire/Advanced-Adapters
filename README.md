@@ -1,6 +1,6 @@
 <p align="center"><img src="https://raw.githubusercontent.com/JaySoyer/Advanced-Adapters/master/app/src/main/logo.png" width="256px" height="256px"/></p>
 # Advanced-Adapters
-Advanced-Adapters is a suite of adapters designed to provide additional alternatives to Android's provided adapters. Originally started as a means to replae the flawed filtering logic for Android's ArrayAdapter, it has now expanded to provided a slew of different adapters backed by various data structures.
+Advanced-Adapters is a suite of adapters designed to provide additional alternatives to Android's provided adapters. Originally starting as a means to replace the flawed filtering logic for Android's ArrayAdapter; it has now expanded to provided a slew of different adapters backed by various data structures.
 
 Some of the advantages to using this suite:
 - Customizable filtering logic
