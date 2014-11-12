@@ -62,7 +62,17 @@ Thats it!
 All adapters are found within the `lib` directory.  Each adapter is a standalone class file which you can copy and paste into your code.  If using Android Studio, you can import the module directly into your app instead.
 
 Everything found within `app` is the source code for the Google Play store [demo app](https://play.google.com/store/apps/details?id=com.sawyer.advadapters.app&hl=en "Advanced-Adapters Demo App"). You can also use it for seeing how to use the adapters.
-	
+
+### Proguard
+You'll need to add the following proguard rules if using the JSONAdapter:
+```Shell
+-keepclassmembers class com.sawyer.advadapters.widget.JSONAdapter {
+	boolean isFilteredOut(...);
+}
+-keepclassmembers class * extends com.sawyer.advadapters.widget.JSONAdapter {
+	boolean isFilteredOut(...);
+}
+```	
 	
 ### License
 
