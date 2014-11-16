@@ -72,6 +72,12 @@
 			android:label="@string/activity_nfjsonarray_unittest">
 		</activity>
 
+		<!-- Rolodex Adapter Activities-->
+		<activity
+			android:name=".adapters.rolodexadapter.RolodexAdapterActivity"
+			android:label="@string/activity_rolodexadapter">
+		</activity>
+
 		<!-- Misc Support Activities-->
 		<activity
 			android:name=".MainActivity"

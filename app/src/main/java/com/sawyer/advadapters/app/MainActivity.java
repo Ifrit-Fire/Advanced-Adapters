@@ -33,6 +33,7 @@ import com.sawyer.advadapters.app.adapters.jsonadapter.JSONAdapterActivity;
 import com.sawyer.advadapters.app.adapters.nfarrayadapter.NFArrayAdapterActivity;
 import com.sawyer.advadapters.app.adapters.nfjsonadapter.NFJSONAdapterActivity;
 import com.sawyer.advadapters.app.adapters.nfsparseadapter.NFSparseAdapterActivity;
+import com.sawyer.advadapters.app.adapters.rolodexadapter.RolodexAdapterActivity;
 import com.sawyer.advadapters.app.adapters.sparseadapter.SparseAdapterActivity;
 import com.sawyer.advadapters.widget.RolodexAdapter;
 
@@ -61,6 +62,11 @@ public class MainActivity extends ExpandableListActivity {
 
 		intent = new Intent(this, NFArrayAdapterActivity.class);
 		intent.putExtra(EXTRA_INTENT_NAME, getString(R.string.activity_nfarrayadapter));
+		intent.putExtra(EXTRA_GROUP_NAME, getString(R.string.title_group_arrays));
+		intents.add(intent);
+
+		intent = new Intent(this, RolodexAdapterActivity.class);
+		intent.putExtra(EXTRA_INTENT_NAME, getString(R.string.activity_rolodexadapter));
 		intent.putExtra(EXTRA_GROUP_NAME, getString(R.string.title_group_arrays));
 		intents.add(intent);
 
@@ -135,7 +141,7 @@ public class MainActivity extends ExpandableListActivity {
 		public View getChildView(LayoutInflater inflater, int groupPosition, int childPosition,
 								 boolean isLastChild, View convertView, ViewGroup parent) {
 			if (convertView == null) {
-				convertView = inflater.inflate(R.layout.item_simple_expandable_list, parent, false);
+				convertView = inflater.inflate(R.layout.item_expandable_child1, parent, false);
 			}
 			TextView tv = (TextView) convertView;
 			tv.setText(getChild(groupPosition, childPosition).getStringExtra(EXTRA_INTENT_NAME));
@@ -147,8 +153,7 @@ public class MainActivity extends ExpandableListActivity {
 		public View getGroupView(LayoutInflater inflater, int groupPosition, boolean isExpanded,
 								 View convertView, ViewGroup parent) {
 			if (convertView == null) {
-				convertView = inflater.inflate(R.layout.item_simple_expandable_list, parent, false);
-				convertView.setBackgroundResource(R.drawable.btn_borderless_holo_light);
+				convertView = inflater.inflate(R.layout.item_expandable_group1, parent, false);
 			}
 			TextView tv = (TextView) convertView;
 			tv.setText(getGroup(groupPosition));
