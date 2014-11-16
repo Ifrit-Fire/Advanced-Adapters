@@ -48,7 +48,7 @@ class MovieRolodexAdapter extends RolodexAdapter<Integer, MovieItem> {
 							 boolean isLastChild, View convertView, ViewGroup parent) {
 		MovieViewHolder vh;
 		if (convertView == null) {
-			convertView = inflater.inflate(R.layout.item_movie1, parent, false);
+			convertView = inflater.inflate(R.layout.item_movie2, parent, false);
 			vh = new MovieViewHolder(convertView);
 			convertView.setTag(vh);
 		} else {
@@ -68,7 +68,7 @@ class MovieRolodexAdapter extends RolodexAdapter<Integer, MovieItem> {
 	public View getGroupView(LayoutInflater inflater, int groupPosition, boolean isExpanded,
 							 View convertView, ViewGroup parent) {
 		if (convertView == null) {
-			convertView = inflater.inflate(android.R.layout.simple_list_item_1, parent, false);
+			convertView = inflater.inflate(R.layout.item_expandable_group2, parent, false);
 		}
 		TextView tv = (TextView) convertView;
 		tv.setText(getGroup(groupPosition).toString());
@@ -79,10 +79,12 @@ class MovieRolodexAdapter extends RolodexAdapter<Integer, MovieItem> {
 	@Override
 	protected boolean isChildFilteredOut(MovieItem childItem, CharSequence constraint) {
 		return false;
+		//TODO: Implement
 	}
 
 	@Override
 	protected boolean isGroupFilteredOut(Integer groupItem, CharSequence constraint) {
 		return false;
+		//TODO: Implement
 	}
 }

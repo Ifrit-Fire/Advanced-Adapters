@@ -27,10 +27,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.ExpandableListAdapter;
-import android.widget.ListView;
+import android.widget.ExpandableListView;
 
-import com.sawyer.advadapters.app.ExpandableListFragment;
 import com.sawyer.advadapters.app.R;
+import com.sawyer.advadapters.app.adapters.ExpandableListFragment;
 import com.sawyer.advadapters.app.data.MovieItem;
 
 import java.util.ArrayList;
@@ -64,12 +64,6 @@ public class RolodexAdapterFragment extends ExpandableListFragment {
 	}
 
 	@Override
-	public void onActivityCreated(Bundle savedInstanceState) {
-		super.onActivityCreated(savedInstanceState);
-		getListView().setAdapter(getListAdapter());
-	}
-
-	@Override
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
 		if (activity instanceof EventListener) {
@@ -78,6 +72,20 @@ public class RolodexAdapterFragment extends ExpandableListFragment {
 			throw new ClassCastException(
 					"Activity must implement " + EventListener.class.getSimpleName());
 		}
+	}
+
+	@Override
+	public boolean onChildItemClick(ExpandableListView parent, View v, int groupPosition,
+									int childPosition, long id) {
+		//Granted, making a whole new instance is not even necessary here.
+		//However I wanted to demonstrate updating with an entirely different instance.
+		MovieItem oldMovie = getListAdapter().getChild(groupPosition, childPosition);
+		MovieItem newMovie = new MovieItem(oldMovie.barcode());
+		newMovie.title = new StringBuilder(oldMovie.title).reverse().toString();
+		newMovie.year = oldMovie.year;
+		newMovie.isRecommended = !oldMovie.isRecommended;
+//		getListAdapter().update(position, newMovie);	//TODO: Implement
+		return true;
 	}
 
 	@Override
@@ -98,25 +106,16 @@ public class RolodexAdapterFragment extends ExpandableListFragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 							 Bundle savedInstanceState) {
-		ListView lv = (ListView) inflater.inflate(R.layout.listview, container, false);
-		lv.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
-		lv.setMultiChoiceModeListener(new OnCabMultiChoiceModeListener());
+		ExpandableListView lv = (ExpandableListView) super
+				.onCreateView(inflater, container, savedInstanceState);
+		//TODO: Figure out solution here
+//		lv.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
+//		lv.setMultiChoiceModeListener(new OnCabMultiChoiceModeListener());
 		return lv;
 	}
 
-//	@Override
-//	public void onListItemClick(ListView l, View v, int position, long id) {
-//		//Granted, making a whole new instance is not even necessary here.
-//		//However I wanted to demonstrate updating with an entirely different instance.
-//		MovieItem oldMovie = getListAdapter().getItem(position);
-//		MovieItem newMovie = new MovieItem(oldMovie.barcode());
-//		newMovie.title = new StringBuilder(oldMovie.title).reverse().toString();
-//		newMovie.year = oldMovie.year;
-//		newMovie.isRecommended = !oldMovie.isRecommended;
-//		getListAdapter().update(position, newMovie);
-//	}
-
 	private void onRemoveItemsClicked(Set<MovieItem> items) {
+		//TODO: Implement
 		if (items.size() == 1) {
 //			getListAdapter().remove(items.iterator().next());
 		} else {
@@ -125,13 +124,14 @@ public class RolodexAdapterFragment extends ExpandableListFragment {
 	}
 
 	private void onRetainItemsClicked(Set<MovieItem> items) {
+		//TODO: Maybe Implement
 //		getListAdapter().retainAll(items);
 	}
 
 	@Override
 	public void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
-//		outState.putParcelableArrayList(STATE_LIST, getListAdapter().getList());
+		outState.putParcelableArrayList(STATE_LIST, getListAdapter().getList());
 		outState.putParcelableArrayList(STATE_CAB_CHECKED_ITEMS,
 										new ArrayList<Parcelable>(mCheckedItems));
 	}
@@ -140,6 +140,7 @@ public class RolodexAdapterFragment extends ExpandableListFragment {
 		public void onAdapterCountUpdated();
 	}
 
+	//TODO: Figure out how to provide this behavior...if at all possible???
 	private class OnCabMultiChoiceModeListener implements AbsListView.MultiChoiceModeListener {
 		@Override
 		public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
@@ -184,10 +185,12 @@ public class RolodexAdapterFragment extends ExpandableListFragment {
 		@Override
 		public void onItemCheckedStateChanged(ActionMode mode, int position, long id,
 											  boolean checked) {
+			int group = ExpandableListView.getPackedPositionGroup(id);
+			int child = ExpandableListView.getPackedPositionChild(id);
 			if (checked) {
-//				mCheckedItems.add(getListAdapter().getItem(position));
+				mCheckedItems.add(getListAdapter().getChild(group, child));
 			} else {
-//				mCheckedItems.remove(getListAdapter().getItem(position));
+				mCheckedItems.remove(getListAdapter().getChild(group, child));
 			}
 			mode.setTitle(mCheckedItems.size() + " Selected");
 		}
