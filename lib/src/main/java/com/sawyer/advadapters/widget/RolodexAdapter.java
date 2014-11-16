@@ -1,3 +1,18 @@
+/**
+ * Copyright 2014 Jay Soyer
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.sawyer.advadapters.widget;
 
 import android.content.Context;
@@ -36,7 +51,7 @@ public abstract class RolodexAdapter<G, C> extends BaseExpandableListAdapter imp
 	 * will change as filtering occurs. All methods retrieving data about the adapter will always do
 	 * so from this list.
 	 */
-	private Map<G, List<C>> mObjects;
+	private Map<G, ArrayList<C>> mObjects;
 	private List<G> mGroupObjects;
 	private Map<C, G> mChild2Group;
 	/**
@@ -49,7 +64,7 @@ public abstract class RolodexAdapter<G, C> extends BaseExpandableListAdapter imp
 	 * Once initialized, it'll track the entire unfiltered data. Once the filter process completes,
 	 * it's contents are copied back over to mObjects and is set to null.
 	 */
-	private Map<G, List<C>> mOriginalValues;
+	private Map<G, ArrayList<C>> mOriginalValues;
 	private List<G> mGroupOriginalValues;
 	private RolodexFilter mFilter;
 	/**
@@ -88,15 +103,23 @@ public abstract class RolodexAdapter<G, C> extends BaseExpandableListAdapter imp
 		init(activity, items);
 	}
 
-	private static <G, C> void addChildToMap(C child, G group, Map<G, List<C>> map,
+	private static <G, C> void addChildToMap(C child, G group, Map<G, ArrayList<C>> map,
 											 List<G> groups) {
-		List<C> children = map.get(group);
+		ArrayList<C> children = map.get(group);
 		if (children == null) {
 			children = new ArrayList<>();
 			groups.add(group);
 		}
 		children.add(child);
 		map.put(group, children);
+	}
+
+	private static <G, C> ArrayList<C> toArrayList(Map<G, ArrayList<C>> map) {
+		ArrayList<C> joinedList = new ArrayList<>();
+		for (Map.Entry<G, ArrayList<C>> entry : map.entrySet()) {
+			joinedList.addAll(entry.getValue());
+		}
+		return joinedList;
 	}
 
 	/**
@@ -198,7 +221,7 @@ public abstract class RolodexAdapter<G, C> extends BaseExpandableListAdapter imp
 
 	@Override
 	public long getChildId(int groupPosition, int childPosition) {
-		return (long) groupPosition << 32 | childPosition & 0xFFFFFFFFL;
+		return childPosition;
 	}
 
 	@Override
@@ -270,6 +293,50 @@ public abstract class RolodexAdapter<G, C> extends BaseExpandableListAdapter imp
 									  boolean isExpanded, View convertView,
 									  ViewGroup parent);
 
+	/**
+	 * @return The original (unfiltered) list of items stored within the Adapter
+	 */
+	public ArrayList<C> getList() {
+		ArrayList<C> objects;
+		synchronized (mLock) {
+			if (mOriginalValues != null) {
+				objects = toArrayList(mOriginalValues);
+			} else {
+				objects = toArrayList(mObjects);
+			}
+		}
+		return objects;
+	}
+
+	/**
+	 * Resets the adapter to store a new list of items. Convenient way of calling {@link #clear()},
+	 * then {@link #addAll(java.util.Collection)} without having to worry about an extra {@link
+	 * #notifyDataSetChanged()} invoked in between. Will repeat the last filtering request if
+	 * invoked while filtered results are being displayed.
+	 *
+	 * @param items New list of items to store within the adapter.
+	 */
+	public void setList(Collection<? extends C> items) {
+		synchronized (mLock) {
+			mChild2Group.clear();
+			if (mOriginalValues != null) {
+				mOriginalValues.clear();
+				mGroupOriginalValues.clear();
+				for (C item : items) {
+					addChildToMap(item, getGroupFor(item), mOriginalValues, mGroupOriginalValues);
+				}
+				getFilter().filter(mLastConstraint);
+			} else {
+				mObjects.clear();
+				mGroupObjects.clear();
+				for (C item : items) {
+					addChildToMap(item, getGroupFor(item), mObjects, mGroupObjects);
+				}
+			}
+		}
+		if (mNotifyOnChange) notifyDataSetChanged();
+	}
+
 	@Override
 	public boolean hasStableIds() {
 		return false;
@@ -321,40 +388,11 @@ public abstract class RolodexAdapter<G, C> extends BaseExpandableListAdapter imp
 	 */
 	protected abstract boolean isGroupFilteredOut(G groupItem, CharSequence constraint);
 
-	/**
-	 * Resets the adapter to store a new list of items. Convenient way of calling {@link #clear()},
-	 * then {@link #addAll(java.util.Collection)} without having to worry about an extra {@link
-	 * #notifyDataSetChanged()} invoked in between. Will repeat the last filtering request if
-	 * invoked while filtered results are being displayed.
-	 *
-	 * @param items New list of items to store within the adapter.
-	 */
-	public void setList(Collection<? extends C> items) {
-		synchronized (mLock) {
-			mChild2Group.clear();
-			if (mOriginalValues != null) {
-				mOriginalValues.clear();
-				mGroupOriginalValues.clear();
-				for (C item : items) {
-					addChildToMap(item, getGroupFor(item), mOriginalValues, mGroupOriginalValues);
-				}
-				getFilter().filter(mLastConstraint);
-			} else {
-				mObjects.clear();
-				mGroupObjects.clear();
-				for (C item : items) {
-					addChildToMap(item, getGroupFor(item), mObjects, mGroupObjects);
-				}
-			}
-		}
-		if (mNotifyOnChange) notifyDataSetChanged();
-	}
-
 	private class RolodexFilter extends Filter {
 		@Override
 		protected FilterResults performFiltering(CharSequence constraint) {
 			FilterResults results = new FilterResults();
-			final Map<G, List<C>> values;
+			final Map<G, ArrayList<C>> values;
 			final List<G> groups;
 
 			synchronized (mLock) {
@@ -402,7 +440,7 @@ public abstract class RolodexAdapter<G, C> extends BaseExpandableListAdapter imp
 		@Override
 		protected void publishResults(CharSequence constraint, FilterResults results) {
 			mLastConstraint = constraint;
-			Pair<Map<G, List<C>>, List<G>> pair = (Pair<Map<G, List<C>>, List<G>>) results.values;
+			Pair<Map<G, ArrayList<C>>, List<G>> pair = (Pair<Map<G, ArrayList<C>>, List<G>>) results.values;
 			mObjects = pair.first;
 			mGroupObjects = pair.second;
 			if (results.count > 0) {
