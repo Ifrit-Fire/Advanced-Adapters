@@ -16,6 +16,7 @@
 package com.sawyer.advadapters.app.adapters.rolodexadapter;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,6 +28,7 @@ import com.sawyer.advadapters.app.data.MovieItem;
 import com.sawyer.advadapters.widget.RolodexAdapter;
 
 import java.util.List;
+import java.util.Locale;
 
 class MovieRolodexAdapter extends RolodexAdapter<Integer, MovieItem> {
 
@@ -77,14 +79,13 @@ class MovieRolodexAdapter extends RolodexAdapter<Integer, MovieItem> {
 	}
 
 	@Override
-	protected boolean isChildFilteredOut(MovieItem childItem, CharSequence constraint) {
-		return false;
-		//TODO: Implement
+	protected boolean isChildFilteredOut(MovieItem movie, CharSequence constraint) {
+		return !movie.title.toLowerCase(Locale.US)
+				.contains(constraint.toString().toLowerCase(Locale.US));
 	}
 
 	@Override
-	protected boolean isGroupFilteredOut(Integer groupItem, CharSequence constraint) {
-		return false;
-		//TODO: Implement
+	protected boolean isGroupFilteredOut(Integer year, CharSequence constraint) {
+		return TextUtils.isDigitsOnly(constraint) && !year.toString().contains(constraint);
 	}
 }

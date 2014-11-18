@@ -229,10 +229,9 @@ public abstract class AdapterBaseActivity extends Activity implements
 	protected void startPutDialog() {
 	}
 
-	@SuppressWarnings("ConstantConditions")
 	protected void updateActionBar() {
 		String subtitle = (getListCount()) + " movies listed";
-		getActionBar().setSubtitle(subtitle);
+		if (getActionBar() != null) getActionBar().setSubtitle(subtitle);
 	}
 
 	private class OnSearchActionExpandListener implements MenuItem.OnActionExpandListener {

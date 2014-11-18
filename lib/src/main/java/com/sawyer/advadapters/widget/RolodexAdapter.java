@@ -116,6 +116,7 @@ public abstract class RolodexAdapter<G, C> extends BaseExpandableListAdapter imp
 
 	private static <G, C> ArrayList<C> toArrayList(Map<G, ArrayList<C>> map) {
 		ArrayList<C> joinedList = new ArrayList<>();
+		//TODO: Ensure this returns in the same order
 		for (Map.Entry<G, ArrayList<C>> entry : map.entrySet()) {
 			joinedList.addAll(entry.getValue());
 		}
@@ -420,14 +421,16 @@ public abstract class RolodexAdapter<G, C> extends BaseExpandableListAdapter imp
 			final List<G> newGroups = new ArrayList<>();
 			for (G group : groups) {
 				if (!isGroupFilteredOut(group, constraint)) {
-					newGroups.add(group);
 					List<C> children = new ArrayList<>();
 					for (C child : values.get(group)) {
 						if (!isChildFilteredOut(child, constraint)) {
 							children.add(child);
 						}
 					}
-					newValues.put(group, children);
+					if (!children.isEmpty()) {
+						newGroups.add(group);
+						newValues.put(group, children);
+					}
 				}
 			}
 
