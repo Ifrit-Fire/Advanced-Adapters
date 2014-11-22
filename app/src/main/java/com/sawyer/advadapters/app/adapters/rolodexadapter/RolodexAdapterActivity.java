@@ -19,25 +19,36 @@ import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 
 import com.sawyer.advadapters.app.R;
+import com.sawyer.advadapters.app.ToastHelper;
 import com.sawyer.advadapters.app.adapters.AdapterBaseActivity;
 import com.sawyer.advadapters.app.data.MovieContent;
 import com.sawyer.advadapters.app.data.MovieItem;
 import com.sawyer.advadapters.app.dialogs.AddArrayDialogFragment;
+import com.sawyer.advadapters.app.dialogs.ContainsArrayDialogFragment;
 
 import java.util.List;
 
 public class RolodexAdapterActivity extends AdapterBaseActivity implements
-		RolodexAdapterFragment.EventListener, AddArrayDialogFragment.EventListener {
+		RolodexAdapterFragment.EventListener, AddArrayDialogFragment.EventListener,
+		ContainsArrayDialogFragment.EventListener {
 	private static final String TAG_ADAPTER_FRAG = "Tag Adapter Frag";
 	private static final String TAG_ADD_DIALOG_FRAG = "Tag Add Dialog Frag";
+	private static final String TAG_CONTAINS_DIALOG_FRAG = "Tag Contains Dialog Frag";
+	private static final String TAG_SORT_DIALOG_FRAG = "Tag Sort Dialog Frag";
 
 	private AddArrayDialogFragment mAddDialogFragment;
+	private ContainsArrayDialogFragment mContainsDialogFragment;
 	private RolodexAdapterFragment mListFragment;
 
 	@Override
 	protected void clear() {
 		mListFragment.getListAdapter().clear();
 		updateActionBar();
+	}
+
+	@Override
+	protected void clearAdapterFilter() {
+		mListFragment.getListAdapter().getFilter().filter("");
 	}
 
 	@Override
@@ -78,10 +89,21 @@ public class RolodexAdapterActivity extends AdapterBaseActivity implements
 		if (mAddDialogFragment != null) {
 			mAddDialogFragment.setEventListener(this);
 		}
+
+		mContainsDialogFragment = (ContainsArrayDialogFragment) manager
+				.findFragmentByTag(TAG_CONTAINS_DIALOG_FRAG);
+		if (mContainsDialogFragment != null) {
+			mContainsDialogFragment.setEventListener(this);
+		}
 	}
 
 	@Override
 	protected boolean isAddDialogEnabled() {
+		return true;
+	}
+
+	@Override
+	protected boolean isContainsDialogEnabled() {
 		return true;
 	}
 
@@ -117,6 +139,21 @@ public class RolodexAdapterActivity extends AdapterBaseActivity implements
 	}
 
 	@Override
+	public void onContainsMultipleMovieClick(List<MovieItem> movies) {
+		//Not supported
+	}
+
+	@Override
+	public void onContainsSingleMovieClick(MovieItem movie) {
+		if (mListFragment.getListAdapter().contains(movie)) {
+			ToastHelper.showContainsTrue(this, movie.title);
+		} else {
+			ToastHelper.showContainsFalse(this, movie.title);
+		}
+		mContainsDialogFragment.dismiss();
+	}
+
+	@Override
 	public boolean onQueryTextChange(String newText) {
 		mListFragment.getListAdapter().getFilter().filter(newText);
 		return true;
@@ -136,7 +173,7 @@ public class RolodexAdapterActivity extends AdapterBaseActivity implements
 
 	@Override
 	protected void sort() {
-		//TODO: Implement
+		mListFragment.getListAdapter().sortChildren(null);
 	}
 
 	@Override
@@ -144,5 +181,13 @@ public class RolodexAdapterActivity extends AdapterBaseActivity implements
 		mAddDialogFragment = AddArrayDialogFragment.newInstance();
 		mAddDialogFragment.setEventListener(this);
 		mAddDialogFragment.show(getFragmentManager(), TAG_ADD_DIALOG_FRAG);
+	}
+
+	@Override
+	protected void startContainsDialog() {
+		mContainsDialogFragment = ContainsArrayDialogFragment.newInstance();
+		mContainsDialogFragment.setEventListener(this);
+		mContainsDialogFragment.show(getFragmentManager(), TAG_CONTAINS_DIALOG_FRAG);
+		mContainsDialogFragment.setEnableContainsAll(false);
 	}
 }

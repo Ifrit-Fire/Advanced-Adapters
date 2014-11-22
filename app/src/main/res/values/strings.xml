@@ -44,9 +44,9 @@
 	<string name="title_dialog_insert_movies">Insert Movie(s) At Location</string>
 	<string name="title_dialog_put_movies">Put Movie(s) in List</string>
 	<string name="title_group_android">Android Demos</string>
-	<string name="title_group_arrays">AA Array Based Demos</string>
-	<string name="title_group_sparsearrays">AA SparseArray Based Demos</string>
-	<string name="title_group_jsonarrays">AA JSONArray Based Demos</string>
+	<string name="title_group_arrays">Array Based Demos</string>
+	<string name="title_group_sparsearrays">SparseArray Based Demos</string>
+	<string name="title_group_jsonarrays">JSONArray Based Demos</string>
 	<string name="title_insert">Insert</string>
 	<string name="title_put">Put</string>
 	<string name="title_screen_info">Screen Info</string>

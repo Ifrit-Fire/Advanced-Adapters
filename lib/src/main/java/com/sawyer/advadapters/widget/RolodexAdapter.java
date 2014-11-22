@@ -28,10 +28,13 @@ import android.widget.Filterable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 //TODO: Implement
 public abstract class RolodexAdapter<G, C> extends BaseExpandableListAdapter implements Filterable {
@@ -72,6 +75,11 @@ public abstract class RolodexAdapter<G, C> extends BaseExpandableListAdapter imp
 	 * following changes to the array of data
 	 */
 	private CharSequence mLastConstraint;
+	/**
+	 * Determines if groups will be auto sorted. Basically determines if the Map storing all the
+	 * data will be a TreeMap or LinkHashMap.
+	 */
+	private boolean mAutoSort = false;
 
 	/**
 	 * Constructor
@@ -203,6 +211,19 @@ public abstract class RolodexAdapter<G, C> extends BaseExpandableListAdapter imp
 	}
 
 	/**
+	 * Tests whether this adapter contains the specified item. Be aware that this is a linear
+	 * search.
+	 *
+	 * @param item The item to search for
+	 *
+	 * @return {@code true} if the item is an element of this adapter. {@code false} otherwise
+	 */
+	public boolean contains(C item) {
+		G group = mChild2Group.get(item);
+		return group != null && mObjects.get(group) != null && mObjects.get(group).contains(item);
+	}
+
+	/**
 	 * Creates a new group object which represents the parent of the given child item. This is used
 	 * to determine what group item the child item will fall under. Internally this relationship is
 	 * cached to optimize how often this method is invoked. Ideally only once per child. However any
@@ -254,6 +275,17 @@ public abstract class RolodexAdapter<G, C> extends BaseExpandableListAdapter imp
 			mFilter = new RolodexFilter();
 		}
 		return mFilter;
+	}
+
+	/**
+	 * @return The shown filtered list. If no filter is applied, then the original list is returned.
+	 */
+	public ArrayList<C> getFilteredList() {
+		ArrayList<C> objects;
+		synchronized (mLock) {
+			objects = toArrayList(mObjects);
+		}
+		return objects;
 	}
 
 	@Override
@@ -388,6 +420,46 @@ public abstract class RolodexAdapter<G, C> extends BaseExpandableListAdapter imp
 	 * given constraint. False if the item will continue to display in the adapter.
 	 */
 	protected abstract boolean isGroupFilteredOut(G groupItem, CharSequence constraint);
+
+	public boolean isHeaderAutoSortEnabled() {
+		return mAutoSort;
+	}
+
+	public void setEnableHeaderAutoSort(boolean isEnabled) {
+		if (mAutoSort == isEnabled) return;
+		synchronized (mLock) {
+			if (mOriginalValues != null) {
+				mOriginalValues = new TreeMap<>(mOriginalValues);
+			}
+			mObjects = new TreeMap<>(mObjects);
+		}
+		if (mNotifyOnChange) notifyDataSetChanged();
+	}
+
+	/**
+	 * Sorts the children of each grouping using the specified comparator. This will not sort the
+	 * groups themselves. Use {@link #setEnableHeaderAutoSort(boolean)} for group sorting.
+	 *
+	 * @param comparator Used to sort the child items contained in this adapter. Null to use an
+	 *                   item's {@code Comparable} interface.
+	 *
+	 * @throws java.lang.ClassCastException If the comparator is null and the stored items do not
+	 *                                      implement {@code Comparable} or if {@code compareTo}
+	 *                                      throws for any pair of items.
+	 */
+	public void sortChildren(Comparator<? super C> comparator) {
+		synchronized (mLock) {
+			if (mOriginalValues != null) {
+				for (Map.Entry<G, ArrayList<C>> entry : mOriginalValues.entrySet()) {
+					Collections.sort(entry.getValue(), comparator);
+				}
+			}
+			for (Map.Entry<G, ArrayList<C>> entry : mObjects.entrySet()) {
+				Collections.sort(entry.getValue(), comparator);
+			}
+		}
+		if (mNotifyOnChange) notifyDataSetChanged();
+	}
 
 	private class RolodexFilter extends Filter {
 		@Override
