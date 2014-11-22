@@ -43,6 +43,7 @@
 	<string name="title_dialog_contains_movies">Does List Contain?</string>
 	<string name="title_dialog_insert_movies">Insert Movie(s) At Location</string>
 	<string name="title_dialog_put_movies">Put Movie(s) in List</string>
+	<string name="title_dialog_sort_movies">Sort Movies Options</string>
 	<string name="title_group_android">Android Demos</string>
 	<string name="title_group_arrays">Array Based Demos</string>
 	<string name="title_group_sparsearrays">SparseArray Based Demos</string>
@@ -79,6 +80,9 @@
 	<string name="btn_put">Put</string>
 	<string name="btn_put_id">Put with Id</string>
 	<string name="btn_put_all">Put All</string>
+	<string name="btn_sort_children">Sort Children</string>
+	<string name="btn_sort_disable_auto_sort">Disable Auto Header Sort</string>
+	<string name="btn_sort_enable_auto_sort">Enable Auto Header Sort</string>
 
 	<!-- Toast Messages -->
 	<string name="toast_contains_movie_true">Adapter contains:\n</string>
