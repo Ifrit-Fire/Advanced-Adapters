@@ -25,12 +25,15 @@ import com.sawyer.advadapters.app.data.MovieContent;
 import com.sawyer.advadapters.app.data.MovieItem;
 import com.sawyer.advadapters.app.dialogs.AddArrayDialogFragment;
 import com.sawyer.advadapters.app.dialogs.ContainsArrayDialogFragment;
+import com.sawyer.advadapters.app.dialogs.SortDialogFragment;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class RolodexAdapterActivity extends AdapterBaseActivity implements
 		RolodexAdapterFragment.EventListener, AddArrayDialogFragment.EventListener,
-		ContainsArrayDialogFragment.EventListener {
+		ContainsArrayDialogFragment.EventListener, SortDialogFragment.EventListener {
 	private static final String TAG_ADAPTER_FRAG = "Tag Adapter Frag";
 	private static final String TAG_ADD_DIALOG_FRAG = "Tag Add Dialog Frag";
 	private static final String TAG_CONTAINS_DIALOG_FRAG = "Tag Contains Dialog Frag";
@@ -39,6 +42,7 @@ public class RolodexAdapterActivity extends AdapterBaseActivity implements
 	private AddArrayDialogFragment mAddDialogFragment;
 	private ContainsArrayDialogFragment mContainsDialogFragment;
 	private RolodexAdapterFragment mListFragment;
+	private SortDialogFragment mSortDialogFragment;
 
 	@Override
 	protected void clear() {
@@ -94,6 +98,11 @@ public class RolodexAdapterActivity extends AdapterBaseActivity implements
 				.findFragmentByTag(TAG_CONTAINS_DIALOG_FRAG);
 		if (mContainsDialogFragment != null) {
 			mContainsDialogFragment.setEventListener(this);
+		}
+
+		mSortDialogFragment = (SortDialogFragment) manager.findFragmentByTag(TAG_SORT_DIALOG_FRAG);
+		if (mSortDialogFragment != null) {
+			mSortDialogFragment.setEventListener(this);
 		}
 	}
 
@@ -154,6 +163,11 @@ public class RolodexAdapterActivity extends AdapterBaseActivity implements
 	}
 
 	@Override
+	public void onEnableAutoSort(boolean isEnabled) {
+		mListFragment.getListAdapter().setEnableHeaderAutoSort(isEnabled);
+	}
+
+	@Override
 	public boolean onQueryTextChange(String newText) {
 		mListFragment.getListAdapter().getFilter().filter(newText);
 		return true;
@@ -166,14 +180,26 @@ public class RolodexAdapterActivity extends AdapterBaseActivity implements
 	}
 
 	@Override
+	public void onSortChildren() {
+		mListFragment.getListAdapter().sort(null);
+	}
+
+	@Override
 	protected void reset() {
-		mListFragment.getListAdapter().setList(MovieContent.ITEM_LIST);
+		List<MovieItem> movies = new ArrayList<>(MovieContent.ITEM_LIST);
+		Collections.shuffle(movies);
+		movies = movies.subList(0, movies.size() / 2);
+		mListFragment.getListAdapter().setList(movies);
 		updateActionBar();
 	}
 
 	@Override
 	protected void sort() {
-		mListFragment.getListAdapter().sortChildren(null);
+		mSortDialogFragment = SortDialogFragment.newInstance();
+		mSortDialogFragment.setEventListener(this);
+		mSortDialogFragment.show(getFragmentManager(), TAG_SORT_DIALOG_FRAG);
+		mSortDialogFragment
+				.setAutoSortEnabled(mListFragment.getListAdapter().isHeaderAutoSortEnabled());
 	}
 
 	@Override

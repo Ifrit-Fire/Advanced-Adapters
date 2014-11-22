@@ -17,7 +17,6 @@ package com.sawyer.advadapters.widget;
 
 import android.content.Context;
 import android.text.TextUtils;
-import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -55,7 +54,7 @@ public abstract class RolodexAdapter<G, C> extends BaseExpandableListAdapter imp
 	 * so from this list.
 	 */
 	private Map<G, ArrayList<C>> mObjects;
-	private List<G> mGroupObjects;
+	private ArrayList<G> mGroupObjects;
 	private Map<C, G> mChild2Group;
 	/**
 	 * Indicates whether or not {@link #notifyDataSetChanged()} must be called whenever {@link
@@ -68,7 +67,6 @@ public abstract class RolodexAdapter<G, C> extends BaseExpandableListAdapter imp
 	 * it's contents are copied back over to mObjects and is set to null.
 	 */
 	private Map<G, ArrayList<C>> mOriginalValues;
-	private List<G> mGroupOriginalValues;
 	private RolodexFilter mFilter;
 	/**
 	 * Saves the constraint used during the last filtering operation. Used to re-filter the map
@@ -79,7 +77,7 @@ public abstract class RolodexAdapter<G, C> extends BaseExpandableListAdapter imp
 	 * Determines if groups will be auto sorted. Basically determines if the Map storing all the
 	 * data will be a TreeMap or LinkHashMap.
 	 */
-	private boolean mAutoSort = false;
+	private boolean mIsAutoSortEnabled = false;
 
 	/**
 	 * Constructor
@@ -111,17 +109,6 @@ public abstract class RolodexAdapter<G, C> extends BaseExpandableListAdapter imp
 		init(activity, items);
 	}
 
-	private static <G, C> void addChildToMap(C child, G group, Map<G, ArrayList<C>> map,
-											 List<G> groups) {
-		ArrayList<C> children = map.get(group);
-		if (children == null) {
-			children = new ArrayList<>();
-			groups.add(group);
-		}
-		children.add(child);
-		map.put(group, children);
-	}
-
 	private static <G, C> ArrayList<C> toArrayList(Map<G, ArrayList<C>> map) {
 		ArrayList<C> joinedList = new ArrayList<>();
 		//TODO: Ensure this returns in the same order
@@ -139,11 +126,27 @@ public abstract class RolodexAdapter<G, C> extends BaseExpandableListAdapter imp
 	 */
 	public void add(C item) {
 		synchronized (mLock) {
+			G group = getGroupFor(item);
 			if (mOriginalValues != null) {
-				addChildToMap(item, getGroupFor(item), mOriginalValues, mGroupOriginalValues);
+				ArrayList<C> children = mOriginalValues.get(group);
+				if (children == null) {
+					children = new ArrayList<>();
+					mOriginalValues.put(group, children);
+				}
+				children.add(item);
 				getFilter().filter(mLastConstraint);
 			} else {
-				addChildToMap(item, getGroupFor(item), mObjects, mGroupObjects);
+				ArrayList<C> children = mObjects.get(group);
+				if (children == null) {
+					children = new ArrayList<>();
+					mObjects.put(group, children);
+					if (mIsAutoSortEnabled) {
+						mGroupObjects = new ArrayList<>(mObjects.keySet());
+					} else {
+						mGroupObjects.add(group);
+					}
+				}
+				children.add(item);
 			}
 		}
 		if (mNotifyOnChange) notifyDataSetChanged();
@@ -158,14 +161,10 @@ public abstract class RolodexAdapter<G, C> extends BaseExpandableListAdapter imp
 	public void addAll(Collection<? extends C> items) {
 		synchronized (mLock) {
 			if (mOriginalValues != null) {
-				for (C item : items) {
-					addChildToMap(item, getGroupFor(item), mOriginalValues, mGroupOriginalValues);
-				}
+				addAllToOriginalValues(items);
 				getFilter().filter(mLastConstraint);
 			} else {
-				for (C item : items) {
-					addChildToMap(item, getGroupFor(item), mObjects, mGroupObjects);
-				}
+				addAllToObjects(items);
 			}
 		}
 		if (mNotifyOnChange) notifyDataSetChanged();
@@ -182,16 +181,80 @@ public abstract class RolodexAdapter<G, C> extends BaseExpandableListAdapter imp
 		synchronized (mLock) {
 			if (mOriginalValues != null) {
 				for (C item : items) {
-					addChildToMap(item, getGroupFor(item), mOriginalValues, mGroupOriginalValues);
+					G group = getGroupFor(item);
+					ArrayList<C> children = mOriginalValues.get(group);
+					if (children == null) {
+						children = new ArrayList<>();
+						mOriginalValues.put(group, children);
+					}
+					children.add(item);
 				}
 				getFilter().filter(mLastConstraint);
 			} else {
-				for (C item : items) {
-					addChildToMap(item, getGroupFor(item), mObjects, mGroupObjects);
+				if (mIsAutoSortEnabled) {
+					for (C item : items) {
+						G group = getGroupFor(item);
+						ArrayList<C> children = mObjects.get(group);
+						if (children == null) {
+							children = new ArrayList<>();
+							mObjects.put(group, children);
+						}
+						children.add(item);
+					}
+					mGroupObjects = new ArrayList<>(mObjects.keySet());
+				} else {
+					for (C item : items) {
+						G group = getGroupFor(item);
+						ArrayList<C> children = mObjects.get(group);
+						if (children == null) {
+							children = new ArrayList<>();
+							mObjects.put(group, children);
+							mGroupObjects.add(group);
+						}
+						children.add(item);
+					}
 				}
 			}
 		}
 		if (mNotifyOnChange) notifyDataSetChanged();
+	}
+
+	private void addAllToObjects(Collection<? extends C> items) {
+		if (mIsAutoSortEnabled) {
+			for (C item : items) {
+				G group = getGroupFor(item);
+				ArrayList<C> children = mObjects.get(group);
+				if (children == null) {
+					children = new ArrayList<>();
+					mObjects.put(group, children);
+				}
+				children.add(item);
+			}
+			mGroupObjects = new ArrayList<>(mObjects.keySet());
+		} else {
+			for (C item : items) {
+				G group = getGroupFor(item);
+				ArrayList<C> children = mObjects.get(group);
+				if (children == null) {
+					children = new ArrayList<>();
+					mObjects.put(group, children);
+					mGroupObjects.add(group);
+				}
+				children.add(item);
+			}
+		}
+	}
+
+	private void addAllToOriginalValues(Collection<? extends C> items) {
+		for (C item : items) {
+			G group = getGroupFor(item);
+			ArrayList<C> children = mOriginalValues.get(group);
+			if (children == null) {
+				children = new ArrayList<>();
+				mOriginalValues.put(group, children);
+			}
+			children.add(item);
+		}
 	}
 
 	/**
@@ -201,11 +264,9 @@ public abstract class RolodexAdapter<G, C> extends BaseExpandableListAdapter imp
 		synchronized (mLock) {
 			if (mOriginalValues != null) {
 				mOriginalValues.clear();
-				mGroupOriginalValues.clear();
 			}
 			mObjects.clear();
 			mGroupObjects.clear();
-			mChild2Group.clear();
 		}
 		if (mNotifyOnChange) notifyDataSetChanged();
 	}
@@ -351,20 +412,14 @@ public abstract class RolodexAdapter<G, C> extends BaseExpandableListAdapter imp
 	 */
 	public void setList(Collection<? extends C> items) {
 		synchronized (mLock) {
-			mChild2Group.clear();
 			if (mOriginalValues != null) {
 				mOriginalValues.clear();
-				mGroupOriginalValues.clear();
-				for (C item : items) {
-					addChildToMap(item, getGroupFor(item), mOriginalValues, mGroupOriginalValues);
-				}
+				addAllToOriginalValues(items);
 				getFilter().filter(mLastConstraint);
 			} else {
 				mObjects.clear();
 				mGroupObjects.clear();
-				for (C item : items) {
-					addChildToMap(item, getGroupFor(item), mObjects, mGroupObjects);
-				}
+				addAllToObjects(items);
 			}
 		}
 		if (mNotifyOnChange) notifyDataSetChanged();
@@ -378,13 +433,10 @@ public abstract class RolodexAdapter<G, C> extends BaseExpandableListAdapter imp
 	private void init(Context context, Collection<C> objects) {
 		mInflater = LayoutInflater.from(context);
 		mContext = context;
-		mObjects = new LinkedHashMap<>();
+		mObjects = mIsAutoSortEnabled ? new TreeMap<G, ArrayList<C>>() : new LinkedHashMap<G, ArrayList<C>>();
 		mGroupObjects = new ArrayList<>();
 		mChild2Group = new HashMap<>(objects.size());
-
-		for (C object : objects) {
-			addChildToMap(object, getGroupFor(object), mObjects, mGroupObjects);
-		}
+		addAllToObjects(objects);
 	}
 
 	/**
@@ -422,18 +474,43 @@ public abstract class RolodexAdapter<G, C> extends BaseExpandableListAdapter imp
 	protected abstract boolean isGroupFilteredOut(G groupItem, CharSequence constraint);
 
 	public boolean isHeaderAutoSortEnabled() {
-		return mAutoSort;
+		return mIsAutoSortEnabled;
 	}
 
 	public void setEnableHeaderAutoSort(boolean isEnabled) {
-		if (mAutoSort == isEnabled) return;
+		if (mIsAutoSortEnabled == isEnabled) return;
+		mIsAutoSortEnabled = isEnabled;
 		synchronized (mLock) {
-			if (mOriginalValues != null) {
-				mOriginalValues = new TreeMap<>(mOriginalValues);
+			if (mIsAutoSortEnabled) {
+				if (mOriginalValues != null) {
+					mOriginalValues = new TreeMap<>(mOriginalValues);
+				}
+				mObjects = new TreeMap<>(mObjects);
+			} else {
+				if (mOriginalValues != null) {
+					mOriginalValues = new LinkedHashMap<>(mOriginalValues);
+				}
+				mObjects = new LinkedHashMap<>(mObjects);
 			}
-			mObjects = new TreeMap<>(mObjects);
+			// Only need to update when switching to TreeMap
+			if (mIsAutoSortEnabled) {
+				mGroupObjects = new ArrayList<>(mObjects.keySet());
+				if (mNotifyOnChange) notifyDataSetChanged();
+			}
 		}
-		if (mNotifyOnChange) notifyDataSetChanged();
+	}
+
+	/**
+	 * Sorts the children of each grouping using the natural order of the stored children items
+	 * themselves. This requires the items to have implemented {@link java.lang.Comparable} and is
+	 * equivalent of passing null to {@link #sort(java.util.Comparator)}.
+	 *
+	 * @throws java.lang.ClassCastException If the comparator is null and the stored items do not
+	 *                                      implement {@code Comparable} or if {@code compareTo}
+	 *                                      throws for any pair of items.
+	 */
+	public void sort() {
+		sort(null);
 	}
 
 	/**
@@ -447,7 +524,7 @@ public abstract class RolodexAdapter<G, C> extends BaseExpandableListAdapter imp
 	 *                                      implement {@code Comparable} or if {@code compareTo}
 	 *                                      throws for any pair of items.
 	 */
-	public void sortChildren(Comparator<? super C> comparator) {
+	public void sort(Comparator<? super C> comparator) {
 		synchronized (mLock) {
 			if (mOriginalValues != null) {
 				for (Map.Entry<G, ArrayList<C>> entry : mOriginalValues.entrySet()) {
@@ -465,48 +542,40 @@ public abstract class RolodexAdapter<G, C> extends BaseExpandableListAdapter imp
 		@Override
 		protected FilterResults performFiltering(CharSequence constraint) {
 			FilterResults results = new FilterResults();
-			final Map<G, ArrayList<C>> values;
-			final List<G> groups;
+			Map<G, ArrayList<C>> values;
 
 			synchronized (mLock) {
 				if (TextUtils.isEmpty(constraint)) {    //Clearing out filtered results
 					if (mOriginalValues != null) {
 						mObjects = new LinkedHashMap<>(mOriginalValues);
-						mGroupObjects = new ArrayList<>(mGroupOriginalValues);
 						mOriginalValues = null;
-						mGroupOriginalValues = null;
 					}
-					results.values = new Pair<>(mObjects, mGroupObjects);
-					results.count = Math.max(mObjects.size(), mGroupObjects.size());
+					results.values = mObjects;
+					results.count = mObjects.size();
 					return results;
 				} else {    //Ready for filtering
 					if (mOriginalValues == null) {
 						mOriginalValues = new LinkedHashMap<>(mObjects);
-						mGroupOriginalValues = new ArrayList<>(mGroupObjects);
 					}
 					values = new LinkedHashMap<>(mOriginalValues);
-					groups = new ArrayList<>(mGroupOriginalValues);
 				}
 			}
-
-			final Map<G, List<C>> newValues = new LinkedHashMap<>();
-			final List<G> newGroups = new ArrayList<>();
-			for (G group : groups) {
-				if (!isGroupFilteredOut(group, constraint)) {
-					List<C> children = new ArrayList<>();
-					for (C child : values.get(group)) {
+			Map<G, ArrayList<C>> newValues = mIsAutoSortEnabled ? new TreeMap<G, ArrayList<C>>() : new LinkedHashMap<G, ArrayList<C>>();
+			for (Map.Entry<G, ArrayList<C>> entry : values.entrySet()) {
+				if (!isGroupFilteredOut(entry.getKey(), constraint)) {
+					ArrayList<C> children = new ArrayList<>();
+					for (C child : entry.getValue()) {
 						if (!isChildFilteredOut(child, constraint)) {
 							children.add(child);
 						}
 					}
 					if (!children.isEmpty()) {
-						newGroups.add(group);
-						newValues.put(group, children);
+						newValues.put(entry.getKey(), children);
 					}
 				}
 			}
 
-			results.values = new Pair<>(newValues, newGroups);
+			results.values = newValues;
 			results.count = newValues.size();
 			return results;
 		}
@@ -514,10 +583,12 @@ public abstract class RolodexAdapter<G, C> extends BaseExpandableListAdapter imp
 		@SuppressWarnings("unchecked")
 		@Override
 		protected void publishResults(CharSequence constraint, FilterResults results) {
-			mLastConstraint = constraint;
-			Pair<Map<G, ArrayList<C>>, List<G>> pair = (Pair<Map<G, ArrayList<C>>, List<G>>) results.values;
-			mObjects = pair.first;
-			mGroupObjects = pair.second;
+			synchronized (mLock) {
+				mLastConstraint = constraint;
+				mObjects = (Map<G, ArrayList<C>>) results.values;
+				mGroupObjects = new ArrayList<>(mObjects.keySet());
+			}
+
 			if (results.count > 0) {
 				notifyDataSetChanged();
 			} else {
