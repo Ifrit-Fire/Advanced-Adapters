@@ -18,44 +18,24 @@
 -->
 <LinearLayout
 	xmlns:android="http://schemas.android.com/apk/res/android"
+	style="?android:buttonBarStyle"
 	android:layout_width="match_parent"
 	android:layout_height="wrap_content"
 	android:divider="?android:dividerHorizontal"
 	android:orientation="vertical"
 	android:showDividers="middle">
 
-	<include layout="@layout/include_movie_single_list"/>
+	<Button
+		android:id="@+id/auto_sort_btn"
+		style="?android:buttonBarButtonStyle"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"/>
 
 	<Button
-		android:id="@+id/movie_single_btn"
-		style="?android:borderlessButtonStyle"
+		android:id="@+id/children_sort_btn"
+		style="?android:buttonBarButtonStyle"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		android:text="@string/btn_add"/>
-
-	<include layout="@layout/include_movie_multi_list"/>
-
-	<LinearLayout
-		style="?android:buttonBarStyle"
-		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		android:orientation="horizontal">
-
-		<Button
-			android:id="@+id/movies_collection_btn"
-			style="?android:buttonBarButtonStyle"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:layout_weight="1"
-			android:text="@string/btn_add_all_col"/>
-
-		<Button
-			android:id="@+id/movies_vararg_btn"
-			style="?android:buttonBarButtonStyle"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:layout_weight="1"
-			android:text="@string/btn_add_all_var"/>
-	</LinearLayout>
+		android:text="@string/btn_sort_children"/>
 
 </LinearLayout>
