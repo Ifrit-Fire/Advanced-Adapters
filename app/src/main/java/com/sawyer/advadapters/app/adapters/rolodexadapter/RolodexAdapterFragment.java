@@ -28,6 +28,7 @@ import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
+import android.widget.ListView;
 
 import com.sawyer.advadapters.app.R;
 import com.sawyer.advadapters.app.adapters.ExpandableListFragment;
@@ -109,8 +110,8 @@ public class RolodexAdapterFragment extends ExpandableListFragment {
 		ExpandableListView lv = (ExpandableListView) super
 				.onCreateView(inflater, container, savedInstanceState);
 		//TODO: Figure out solution here
-//		lv.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
-//		lv.setMultiChoiceModeListener(new OnCabMultiChoiceModeListener());
+		lv.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
+		lv.setMultiChoiceModeListener(new OnCabMultiChoiceModeListener());
 		return lv;
 	}
 
