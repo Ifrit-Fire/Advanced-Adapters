@@ -23,7 +23,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.sawyer.advadapters.app.R;
-import com.sawyer.advadapters.app.adapters.MovieViewHolder;
+import com.sawyer.advadapters.app.adapters.MovieNoSubViewHolder;
 import com.sawyer.advadapters.app.data.MovieItem;
 import com.sawyer.advadapters.widget.RolodexAdapter;
 
@@ -46,24 +46,33 @@ class MovieRolodexAdapter extends RolodexAdapter<Integer, MovieItem> {
 	}
 
 	@Override
+	public long getChildId(int groupPosition, int childPosition) {
+		return getChild(groupPosition, childPosition).barcodeLong();
+	}
+
+	@Override
 	public View getChildView(LayoutInflater inflater, int groupPosition, int childPosition,
 							 boolean isLastChild, View convertView, ViewGroup parent) {
-		MovieViewHolder vh;
+		MovieNoSubViewHolder vh;
 		if (convertView == null) {
 			convertView = inflater.inflate(R.layout.item_movie2, parent, false);
-			vh = new MovieViewHolder(convertView);
+			vh = new MovieNoSubViewHolder(convertView);
 			convertView.setTag(vh);
 		} else {
-			vh = (MovieViewHolder) convertView.getTag();
+			vh = (MovieNoSubViewHolder) convertView.getTag();
 		}
 
 		MovieItem movie = getChild(groupPosition, childPosition);
 		vh.title.setText(movie.title);
-		vh.subtitle.setText(String.valueOf(movie.year));
 		vh.icon.setImageResource(
 				movie.isRecommended ? R.drawable.ic_rating_good : R.drawable.ic_rating_bad);
 
 		return convertView;
+	}
+
+	@Override
+	public long getGroupId(int groupPosition) {
+		return getGroup(groupPosition);
 	}
 
 	@Override
@@ -80,8 +89,8 @@ class MovieRolodexAdapter extends RolodexAdapter<Integer, MovieItem> {
 
 	@Override
 	protected boolean isChildFilteredOut(MovieItem movie, CharSequence constraint) {
-		return !movie.title.toLowerCase(Locale.US)
-				.contains(constraint.toString().toLowerCase(Locale.US));
+		return !TextUtils.isDigitsOnly(constraint) && !movie.title.toLowerCase(Locale.US).contains(
+				constraint.toString().toLowerCase(Locale.US));
 	}
 
 	@Override
