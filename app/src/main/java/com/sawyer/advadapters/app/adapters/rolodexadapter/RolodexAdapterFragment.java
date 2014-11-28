@@ -18,11 +18,14 @@ package com.sawyer.advadapters.app.adapters.rolodexadapter;
 import android.app.Activity;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.util.Log;
 import android.view.ActionMode;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
 
@@ -74,7 +77,7 @@ public class RolodexAdapterFragment extends ExpandableListFragment {
 
 	@Override
 	public boolean onChildClick(ExpandableListView parent, View v, int groupPosition,
-									int childPosition, long id) {
+								int childPosition, long id) {
 		//Granted, making a whole new instance is not even necessary here.
 		//However I wanted to demonstrate updating with an entirely different instance.
 		MovieItem oldMovie = getListAdapter().getChild(groupPosition, childPosition);
@@ -87,20 +90,21 @@ public class RolodexAdapterFragment extends ExpandableListFragment {
 	}
 
 	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+							 Bundle savedInstanceState) {
+		View v = super.onCreateView(inflater, container, savedInstanceState);
 		if (savedInstanceState != null) {
 			ArrayList<MovieItem> checkItems = savedInstanceState
 					.getParcelableArrayList(STATE_CAB_CHECKED_ITEMS);
 			mCheckedItems.addAll(checkItems);
 			ArrayList<MovieItem> list = savedInstanceState.getParcelableArrayList(STATE_LIST);
-			setListAdapter(new MovieRolodexAdapter(getActivity(), list));
+			setListAdapter(new MovieRolodexAdapter(getExpandableListView(), list));
 		} else {
-			setListAdapter(new MovieRolodexAdapter(getActivity()));
+			setListAdapter(new MovieRolodexAdapter(getExpandableListView()));
 		}
 		getListAdapter().setChoiceMode(RolodexAdapter.CHOICE_MODE_MULTIPLE_MODAL);
 		getListAdapter().setMultiChoiceModeListener(new OnCabMultiChoiceModeListener());
+		return v;
 	}
 
 	private void onRemoveItemsClicked(Set<MovieItem> items) {

@@ -15,11 +15,11 @@
  */
 package com.sawyer.advadapters.app.adapters.rolodexadapter;
 
-import android.content.Context;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ExpandableListView;
 import android.widget.TextView;
 
 import com.sawyer.advadapters.app.R;
@@ -32,12 +32,12 @@ import java.util.Locale;
 
 class MovieRolodexAdapter extends RolodexAdapter<Integer, MovieItem> {
 
-	MovieRolodexAdapter(Context activity) {
-		super(activity);
+	MovieRolodexAdapter(ExpandableListView listView) {
+		super(listView);
 	}
 
-	MovieRolodexAdapter(Context activity, List<MovieItem> list) {
-		super(activity, list);
+	MovieRolodexAdapter(ExpandableListView listView, List<MovieItem> list) {
+		super(listView, list);
 	}
 
 	@Override

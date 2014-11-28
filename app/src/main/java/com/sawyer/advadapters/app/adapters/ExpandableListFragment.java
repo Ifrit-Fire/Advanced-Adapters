@@ -57,7 +57,7 @@ public class ExpandableListFragment extends Fragment implements
 		if (mExpandableListView != null) mExpandableListView.setAdapter(adapter);
 	}
 
-	public ExpandableListView getListView() {
+	public ExpandableListView getExpandableListView() {
 		return mExpandableListView;
 	}
 

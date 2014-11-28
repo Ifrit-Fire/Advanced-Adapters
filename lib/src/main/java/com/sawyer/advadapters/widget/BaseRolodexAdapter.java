@@ -27,9 +27,7 @@ public abstract class BaseRolodexAdapter extends BaseExpandableListAdapter {
 
 	private final OnDisableTouchListener mDisableTouchListener = new OnDisableTouchListener();
 	private final OnChoiceModeTouchListener mChoiceModeTouchListener = new OnChoiceModeTouchListener();
-	/**
-	 * Controls if/how the user may choose/check items in the list
-	 */
+	/** Controls if/how the user may choose/check items in the list */
 	int mChoiceMode;
 	boolean mIsChoiceModeActive;
 	WeakReference<ExpandableListView> mListView;
@@ -39,9 +37,11 @@ public abstract class BaseRolodexAdapter extends BaseExpandableListAdapter {
 
 	/** LayoutInflater created from the constructing context */
 	private LayoutInflater mInflater;
+	/** Activity Context used to construct this adapter * */
+	private Context mContext;
 
-	BaseRolodexAdapter(Context activity) {
-		init(activity);
+	BaseRolodexAdapter(ExpandableListView listView) {
+		init(listView);
 	}
 
 	static <G, C> ArrayList<C> toArrayList(Map<G, ArrayList<C>> map) {
@@ -99,6 +99,13 @@ public abstract class BaseRolodexAdapter extends BaseExpandableListAdapter {
 		return v;
 	}
 
+	/**
+	 * @return The Context associated with this adapter.
+	 */
+	public Context getContext() {
+		return mContext;
+	}
+
 	@Override
 	public final View getGroupView(int groupPosition, boolean isExpanded, View convertView,
 								   ViewGroup parent) {
@@ -145,11 +152,13 @@ public abstract class BaseRolodexAdapter extends BaseExpandableListAdapter {
 		return true;
 	}
 
-	private void init(Context context) {
-		mInflater = LayoutInflater.from(context);
-		mListView = new WeakReference<>(null);    //We want to always guarantee a non-null value
+	private void init(ExpandableListView lv) {
+		mContext = lv.getContext();
+		mInflater = LayoutInflater.from(mContext);
+		mListView = new WeakReference<>(lv);
 		mChoiceMode = ExpandableListView.CHOICE_MODE_NONE;
 		mIsChoiceModeActive = false;
+		initChoiceMode(lv);
 	}
 
 	private void initChoiceMode(ExpandableListView lv) {

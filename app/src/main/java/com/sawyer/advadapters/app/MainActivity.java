@@ -106,8 +106,9 @@ public class MainActivity extends ExpandableListActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setListAdapter(new DemoAdapter(this, createIntentList()));
 		getExpandableListView().setGroupIndicator(null);
+		DemoAdapter adapter = new DemoAdapter(getExpandableListView(), createIntentList());
+		setListAdapter(adapter);
 	}
 
 	@Override
@@ -129,8 +130,8 @@ public class MainActivity extends ExpandableListActivity {
 	}
 
 	private class DemoAdapter extends RolodexAdapter<String, Intent> {
-		public DemoAdapter(Context activity, List<Intent> objects) {
-			super(activity, objects);
+		public DemoAdapter(ExpandableListView listView, List<Intent> objects) {
+			super(listView, objects);
 		}
 
 		@Override

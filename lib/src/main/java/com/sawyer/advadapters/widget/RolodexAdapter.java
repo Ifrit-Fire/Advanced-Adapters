@@ -17,6 +17,7 @@ package com.sawyer.advadapters.widget;
 
 import android.content.Context;
 import android.text.TextUtils;
+import android.widget.ExpandableListView;
 import android.widget.Filter;
 import android.widget.Filterable;
 
@@ -39,8 +40,6 @@ public abstract class RolodexAdapter<G, C> extends BaseRolodexAdapter implements
 	 * #getFilter()} to make a synchronized copy of the original map of data.
 	 */
 	private final Object mLock = new Object();
-	/** Activity Context used to construct this adapter * */
-	private Context mContext;
 	/**
 	 * Contains the map of objects that represent the visible data of the adapter. It's contents
 	 * will change as filtering occurs. All methods retrieving data about the adapter will always do
@@ -75,34 +74,34 @@ public abstract class RolodexAdapter<G, C> extends BaseRolodexAdapter implements
 	/**
 	 * Constructor
 	 *
-	 * @param activity Context used for inflating views
+	 * @param listView ExpandableListView which will store the adapter
 	 */
-	public RolodexAdapter(Context activity) {
-		super(activity);
-		init(activity, new ArrayList<C>());
+	public RolodexAdapter(ExpandableListView listView) {
+		super(listView);
+		init(listView, new ArrayList<C>());
 	}
 
 	/**
 	 * Constructor
 	 *
-	 * @param activity Context used for inflating views
+	 * @param listView Context used for inflating views
 	 * @param items    The items to represent within the adapter.
 	 */
-	public RolodexAdapter(Context activity, C[] items) {
-		super(activity);
+	public RolodexAdapter(ExpandableListView listView, C[] items) {
+		super(listView);
 		List<C> list = Arrays.asList(items);
-		init(activity, list);
+		init(listView, list);
 	}
 
 	/**
 	 * Constructor
 	 *
-	 * @param activity Context used for inflating views
+	 * @param listView Context used for inflating views
 	 * @param items    The items to represent within the adapter.
 	 */
-	public RolodexAdapter(Context activity, Collection<C> items) {
-		super(activity);
-		init(activity, items);
+	public RolodexAdapter(ExpandableListView listView, Collection<C> items) {
+		super(listView);
+		init(listView, items);
 	}
 
 	/**
@@ -316,12 +315,7 @@ public abstract class RolodexAdapter<G, C> extends BaseRolodexAdapter implements
 		return mObjects.get(mGroupObjects.get(groupPosition)).size();
 	}
 
-	/**
-	 * @return The Context associated with this adapter.
-	 */
-	public Context getContext() {
-		return mContext;
-	}
+
 
 	@Override
 	public Filter getFilter() {
@@ -408,8 +402,7 @@ public abstract class RolodexAdapter<G, C> extends BaseRolodexAdapter implements
 		if (mNotifyOnChange) notifyDataSetChanged();
 	}
 
-	private void init(Context context, Collection<C> objects) {
-		mContext = context;
+	private void init(ExpandableListView listView, Collection<C> objects) {
 		mObjects = mAreGroupsSorted ? new TreeMap<G, ArrayList<C>>() : new LinkedHashMap<G, ArrayList<C>>();
 		mGroupObjects = new ArrayList<>();
 		mChild2Group = new HashMap<>(objects.size());
