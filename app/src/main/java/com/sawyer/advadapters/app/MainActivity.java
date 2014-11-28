@@ -162,12 +162,22 @@ public class MainActivity extends ExpandableListActivity {
 		}
 
 		@Override
+		public boolean hasAutoExpandingGroups() {
+			return true;
+		}
+
+		@Override
 		protected boolean isChildFilteredOut(Intent childItem, CharSequence constraint) {
 			return false;
 		}
 
 		@Override
 		protected boolean isGroupFilteredOut(String groupItem, CharSequence constraint) {
+			return false;
+		}
+
+		@Override
+		public boolean isGroupSelectable(int groupPosition) {
 			return false;
 		}
 	}

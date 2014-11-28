@@ -17,6 +17,8 @@ package com.sawyer.advadapters.app.adapters.rolodexadapter;
 
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.view.Menu;
+import android.view.MenuItem;
 
 import com.sawyer.advadapters.app.R;
 import com.sawyer.advadapters.app.ToastHelper;
@@ -155,6 +157,28 @@ public class RolodexAdapterActivity extends AdapterBaseActivity implements
 	}
 
 	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		getMenuInflater().inflate(R.menu.rolodex, menu);
+		return super.onCreateOptionsMenu(menu);
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case R.id.menu_action_collapse:
+			mListFragment.getListAdapter().collapseAll();
+			return true;
+
+		case R.id.menu_action_expand:
+			mListFragment.getListAdapter().expandAll();
+			return true;
+
+		default:
+			return super.onOptionsItemSelected(item);
+		}
+	}
+
+	@Override
 	public boolean onQueryTextChange(String newText) {
 		mListFragment.getListAdapter().getFilter().filter(newText);
 		return true;
@@ -169,7 +193,7 @@ public class RolodexAdapterActivity extends AdapterBaseActivity implements
 	@Override
 	protected void reset() {
 		List<MovieItem> movies = new ArrayList<>(MovieContent.ITEM_LIST);
-		Collections.shuffle(movies);
+		Collections.shuffle(movies);    //Test to ensure group ordering is working
 		movies = movies.subList(0, movies.size() / 2);
 		mListFragment.getListAdapter().setList(movies);
 		updateActionBar();

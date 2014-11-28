@@ -18,12 +18,15 @@ package com.sawyer.advadapters.widget;
 import android.content.Context;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
+import android.widget.ExpandableListView;
 import android.widget.Filter;
 import android.widget.Filterable;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -37,13 +40,14 @@ import java.util.TreeMap;
 
 //TODO: Implement
 public abstract class RolodexAdapter<G, C> extends BaseExpandableListAdapter implements Filterable {
+	private static final String TAG = "RolodexAdapter";
 	/**
 	 * Lock used to modify the content of {@link #mObjects}. Any write operation performed on the
 	 * map should be synchronized on this lock. This lock is also used by the filter (see {@link
 	 * #getFilter()} to make a synchronized copy of the original map of data.
 	 */
 	private final Object mLock = new Object();
-
+	private final View.OnTouchListener mDisableTouchListener = new OnDisableTouchListener();
 	/** LayoutInflater created from the constructing context */
 	private LayoutInflater mInflater;
 	/** Activity Context used to construct this adapter * */
@@ -77,7 +81,8 @@ public abstract class RolodexAdapter<G, C> extends BaseExpandableListAdapter imp
 	 * Determines if groups will be auto sorted. Basically determines if the Map storing all the
 	 * data will be a TreeMap or LinkHashMap.
 	 */
-	private boolean mIsAutoSortEnabled = false;
+	private boolean mAreGroupsSorted = true;
+	private WeakReference<ExpandableListView> mListView;
 
 	/**
 	 * Constructor
@@ -111,7 +116,6 @@ public abstract class RolodexAdapter<G, C> extends BaseExpandableListAdapter imp
 
 	private static <G, C> ArrayList<C> toArrayList(Map<G, ArrayList<C>> map) {
 		ArrayList<C> joinedList = new ArrayList<>();
-		//TODO: Ensure this returns in the same order
 		for (Map.Entry<G, ArrayList<C>> entry : map.entrySet()) {
 			joinedList.addAll(entry.getValue());
 		}
@@ -140,7 +144,7 @@ public abstract class RolodexAdapter<G, C> extends BaseExpandableListAdapter imp
 				if (children == null) {
 					children = new ArrayList<>();
 					mObjects.put(group, children);
-					if (mIsAutoSortEnabled) {
+					if (mAreGroupsSorted) {
 						mGroupObjects = new ArrayList<>(mObjects.keySet());
 					} else {
 						mGroupObjects.add(group);
@@ -191,7 +195,7 @@ public abstract class RolodexAdapter<G, C> extends BaseExpandableListAdapter imp
 				}
 				getFilter().filter(mLastConstraint);
 			} else {
-				if (mIsAutoSortEnabled) {
+				if (mAreGroupsSorted) {
 					for (C item : items) {
 						G group = getGroupFor(item);
 						ArrayList<C> children = mObjects.get(group);
@@ -220,7 +224,7 @@ public abstract class RolodexAdapter<G, C> extends BaseExpandableListAdapter imp
 	}
 
 	private void addAllToObjects(Collection<? extends C> items) {
-		if (mIsAutoSortEnabled) {
+		if (mAreGroupsSorted) {
 			for (C item : items) {
 				G group = getGroupFor(item);
 				ArrayList<C> children = mObjects.get(group);
@@ -258,6 +262,13 @@ public abstract class RolodexAdapter<G, C> extends BaseExpandableListAdapter imp
 	}
 
 	/**
+	 * @return Whether groups are automatically sorted. Default is true.
+	 */
+	public boolean areGroupsSorted() {
+		return mAreGroupsSorted;
+	}
+
+	/**
 	 * Remove all elements from the adapter.
 	 */
 	public void clear() {
@@ -269,6 +280,21 @@ public abstract class RolodexAdapter<G, C> extends BaseExpandableListAdapter imp
 			mGroupObjects.clear();
 		}
 		if (mNotifyOnChange) notifyDataSetChanged();
+	}
+
+	/**
+	 * Collapse all groups in the adapter.
+	 *
+	 * @return False if adapter failed to attempt collapsing. Otherwise True.
+	 */
+	public boolean collapseAll() {
+		ExpandableListView lv = mListView.get();
+		if (lv == null) return false;
+
+		for (int index = 0; index < mGroupObjects.size(); ++index) {
+			lv.collapseGroup(index);
+		}
+		return true;
 	}
 
 	/**
@@ -297,6 +323,33 @@ public abstract class RolodexAdapter<G, C> extends BaseExpandableListAdapter imp
 	 */
 	public abstract G createGroupFor(C childItem);
 
+	/**
+	 * Expand all groups in the adapter with no animation. Convenience wrapper call for {@link
+	 * #expandAll(boolean)} with false passed in.
+	 *
+	 * @return False if adapter failed to attempt an expansion. Otherwise True.
+	 */
+	public boolean expandAll() {
+		return expandAll(false);
+	}
+
+	/**
+	 * Expand all groups in the adapter.
+	 *
+	 * @param animate True if the expanding groups should be animated in
+	 *
+	 * @return False if adapter failed to attempt an expansion. Otherwise True.
+	 */
+	public boolean expandAll(boolean animate) {
+		ExpandableListView lv = mListView.get();
+		if (lv == null) return false;
+
+		for (int index = 0; index < mGroupObjects.size(); ++index) {
+			lv.expandGroup(index, animate);
+		}
+		return true;
+	}
+
 	@Override
 	public C getChild(int groupPosition, int childPosition) {
 		return mObjects.get(mGroupObjects.get(groupPosition)).get(childPosition);
@@ -304,7 +357,7 @@ public abstract class RolodexAdapter<G, C> extends BaseExpandableListAdapter imp
 
 	@Override
 	public long getChildId(int groupPosition, int childPosition) {
-		return childPosition;
+		return ExpandableListView.getPackedPositionForChild(groupPosition, childPosition);
 	}
 
 	@Override
@@ -380,7 +433,26 @@ public abstract class RolodexAdapter<G, C> extends BaseExpandableListAdapter imp
 	@Override
 	public final View getGroupView(int groupPosition, boolean isExpanded, View convertView,
 								   ViewGroup parent) {
-		return getGroupView(mInflater, groupPosition, isExpanded, convertView, parent);
+		ExpandableListView lv = mListView.get();
+		if (lv == null) {
+			if (parent instanceof ExpandableListView) {
+				lv = (ExpandableListView) parent;
+				mListView = new WeakReference<>(lv);
+			} else {
+				//TODO: Consider supporting custom implementations of ListView or higher
+			}
+		}
+
+		if (!isExpanded && hasAutoExpandingGroups()) {
+			lv.expandGroup(groupPosition);
+		}
+
+		View v = getGroupView(mInflater, groupPosition, isExpanded, convertView, parent);
+		if (!isGroupSelectable(groupPosition)) {
+			v.setOnTouchListener(mDisableTouchListener);
+		}
+
+		return v;
 	}
 
 	public abstract View getGroupView(LayoutInflater inflater, int groupPosition,
@@ -425,17 +497,25 @@ public abstract class RolodexAdapter<G, C> extends BaseExpandableListAdapter imp
 		if (mNotifyOnChange) notifyDataSetChanged();
 	}
 
+	/**
+	 * @return Whether groups are always forced to render expanded. Default is false.
+	 */
+	public boolean hasAutoExpandingGroups() {
+		return false;
+	}
+
 	@Override
 	public boolean hasStableIds() {
-		return false;
+		return true;
 	}
 
 	private void init(Context context, Collection<C> objects) {
 		mInflater = LayoutInflater.from(context);
 		mContext = context;
-		mObjects = mIsAutoSortEnabled ? new TreeMap<G, ArrayList<C>>() : new LinkedHashMap<G, ArrayList<C>>();
+		mObjects = mAreGroupsSorted ? new TreeMap<G, ArrayList<C>>() : new LinkedHashMap<G, ArrayList<C>>();
 		mGroupObjects = new ArrayList<>();
 		mChild2Group = new HashMap<>(objects.size());
+		mListView = new WeakReference<>(null);    //We want to always guarantee a non-null value
 		addAllToObjects(objects);
 	}
 
@@ -473,31 +553,15 @@ public abstract class RolodexAdapter<G, C> extends BaseExpandableListAdapter imp
 	 */
 	protected abstract boolean isGroupFilteredOut(G groupItem, CharSequence constraint);
 
-	public boolean isHeaderAutoSortEnabled() {
-		return mIsAutoSortEnabled;
-	}
-
-	public void setEnableHeaderAutoSort(boolean isEnabled) {
-		if (mIsAutoSortEnabled == isEnabled) return;
-		mIsAutoSortEnabled = isEnabled;
-		synchronized (mLock) {
-			if (mIsAutoSortEnabled) {
-				if (mOriginalValues != null) {
-					mOriginalValues = new TreeMap<>(mOriginalValues);
-				}
-				mObjects = new TreeMap<>(mObjects);
-			} else {
-				if (mOriginalValues != null) {
-					mOriginalValues = new LinkedHashMap<>(mOriginalValues);
-				}
-				mObjects = new LinkedHashMap<>(mObjects);
-			}
-			// Only need to update when switching to TreeMap
-			if (mIsAutoSortEnabled) {
-				mGroupObjects = new ArrayList<>(mObjects.keySet());
-				if (mNotifyOnChange) notifyDataSetChanged();
-			}
-		}
+	/**
+	 * Whether the group at the specified position is selectable.
+	 *
+	 * @param groupPosition The position of the group that contains the child
+	 *
+	 * @return Whether the group is selectable. Default is true.
+	 */
+	public boolean isGroupSelectable(int groupPosition) {
+		return true;
 	}
 
 	/**
@@ -514,8 +578,8 @@ public abstract class RolodexAdapter<G, C> extends BaseExpandableListAdapter imp
 	}
 
 	/**
-	 * Sorts the children of each grouping using the specified comparator. This will not sort the
-	 * groups themselves. Use {@link #setEnableHeaderAutoSort(boolean)} for group sorting.
+	 * Sorts the children of each grouping using the specified comparator. By default groups are
+	 * sorted.
 	 *
 	 * @param comparator Used to sort the child items contained in this adapter. Null to use an
 	 *                   item's {@code Comparable} interface.
@@ -536,6 +600,13 @@ public abstract class RolodexAdapter<G, C> extends BaseExpandableListAdapter imp
 			}
 		}
 		if (mNotifyOnChange) notifyDataSetChanged();
+	}
+
+	private static class OnDisableTouchListener implements View.OnTouchListener {
+		@Override
+		public boolean onTouch(View v, MotionEvent event) {
+			return true;    //Do nothing but consume touch event
+		}
 	}
 
 	private class RolodexFilter extends Filter {
@@ -560,7 +631,7 @@ public abstract class RolodexAdapter<G, C> extends BaseExpandableListAdapter imp
 					values = new LinkedHashMap<>(mOriginalValues);
 				}
 			}
-			Map<G, ArrayList<C>> newValues = mIsAutoSortEnabled ? new TreeMap<G, ArrayList<C>>() : new LinkedHashMap<G, ArrayList<C>>();
+			Map<G, ArrayList<C>> newValues = mAreGroupsSorted ? new TreeMap<G, ArrayList<C>>() : new LinkedHashMap<G, ArrayList<C>>();
 			for (Map.Entry<G, ArrayList<C>> entry : values.entrySet()) {
 				if (!isGroupFilteredOut(entry.getKey(), constraint)) {
 					ArrayList<C> children = new ArrayList<>();

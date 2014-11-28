@@ -55,6 +55,8 @@
 	<!-- Menu Text -->
 	<string name="menu_about">About</string>
 	<string name="menu_clear">Clear</string>
+	<string name="menu_collapse">Collapse All</string>
+	<string name="menu_expand">Expand All</string>
 	<string name="menu_info">Info</string>
 	<string name="menu_remove">Remove Selected</string>
 	<string name="menu_reset">Reset</string>
