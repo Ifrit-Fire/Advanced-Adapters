@@ -24,6 +24,7 @@ import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
 
 import com.sawyer.advadapters.app.R;
+import com.sawyer.advadapters.widget.BaseRolodexAdapter;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -32,9 +33,10 @@ import butterknife.InjectView;
  * A quick implementation of a fragment that exposes the same required methods as a ListFragment,
  * expect for use as an ExpandableListView.
  */
-public class ExpandableListFragment extends Fragment {
+public class ExpandableListFragment extends Fragment implements
+		ExpandableListView.OnGroupClickListener, ExpandableListView.OnChildClickListener {
 
-	@InjectView(android.R.id.list) ExpandableListView mList;
+	@InjectView(android.R.id.list) ExpandableListView mExpandableListView;
 	private ExpandableListAdapter mAdapter;
 
 	public ExpandableListFragment() {
@@ -52,26 +54,16 @@ public class ExpandableListFragment extends Fragment {
 	 */
 	public void setListAdapter(ExpandableListAdapter adapter) {
 		mAdapter = adapter;
-		if (mList != null) mList.setAdapter(adapter);
+		if (mExpandableListView != null) mExpandableListView.setAdapter(adapter);
 	}
 
 	public ExpandableListView getListView() {
-		return mList;
+		return mExpandableListView;
 	}
 
-	/**
-	 * Callback method to be invoked when a child in this expandable list has been clicked.
-	 *
-	 * @param parent        The ExpandableListView where the click happened
-	 * @param v             The view within the expandable list/ListView that was clicked
-	 * @param groupPosition The group position that contains the child that was clicked
-	 * @param childPosition The child position within the group
-	 * @param id            The row id of the child that was clicked
-	 *
-	 * @return True if the click was handled
-	 */
-	public boolean onChildItemClick(ExpandableListView parent, View v, int groupPosition,
-									int childPosition, long id) {
+	@Override
+	public boolean onChildClick(ExpandableListView parent, View v, int groupPosition,
+								int childPosition, long id) {
 		return false;
 	}
 
@@ -89,17 +81,8 @@ public class ExpandableListFragment extends Fragment {
 		ButterKnife.reset(this);
 	}
 
-	/**
-	 * Callback method to be invoked when a group in this expandable list has been clicked.
-	 *
-	 * @param parent        The ExpandableListConnector where the click happened
-	 * @param v             The view within the expandable list/ListView that was clicked
-	 * @param groupPosition The group position that was clicked
-	 * @param id            The row id of the group that was clicked
-	 *
-	 * @return True if the click was handled
-	 */
-	public boolean onGroupItemClick(ExpandableListView parent, View v, int groupPosition, long id) {
+	@Override
+	public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
 		return false;
 	}
 
@@ -107,24 +90,14 @@ public class ExpandableListFragment extends Fragment {
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 		//In case adapter set before ListView inflated
-		if (mAdapter != null) mList.setAdapter(mAdapter);
-		mList.setOnGroupClickListener(new OnInternalGroupClickListener());
-		mList.setOnChildClickListener(new OnInternalChildClickListener());
-	}
-
-	private class OnInternalChildClickListener implements ExpandableListView.OnChildClickListener {
-		@Override
-		public boolean onChildClick(ExpandableListView parent, View v, int groupPosition,
-									int childPosition, long id) {
-			return onChildItemClick(parent, v, groupPosition, childPosition, id);
-		}
-	}
-
-	private class OnInternalGroupClickListener implements ExpandableListView.OnGroupClickListener {
-		@Override
-		public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition,
-									long id) {
-			return onGroupItemClick(parent, v, groupPosition, id);
+		if (mAdapter != null) mExpandableListView.setAdapter(mAdapter);
+		if (mAdapter instanceof BaseRolodexAdapter) {
+			BaseRolodexAdapter adapter = (BaseRolodexAdapter) mAdapter;
+			adapter.setOnGroupClickListener(this);
+			adapter.setOnChildClickListener(this);
+		} else {
+			mExpandableListView.setOnGroupClickListener(this);
+			mExpandableListView.setOnChildClickListener(this);
 		}
 	}
 }

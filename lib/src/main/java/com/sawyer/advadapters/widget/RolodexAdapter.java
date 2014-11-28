@@ -17,16 +17,9 @@ package com.sawyer.advadapters.widget;
 
 import android.content.Context;
 import android.text.TextUtils;
-import android.view.LayoutInflater;
-import android.view.MotionEvent;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.BaseExpandableListAdapter;
-import android.widget.ExpandableListView;
 import android.widget.Filter;
 import android.widget.Filterable;
 
-import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -39,17 +32,13 @@ import java.util.Map;
 import java.util.TreeMap;
 
 //TODO: Implement
-public abstract class RolodexAdapter<G, C> extends BaseExpandableListAdapter implements Filterable {
-	private static final String TAG = "RolodexAdapter";
+public abstract class RolodexAdapter<G, C> extends BaseRolodexAdapter implements Filterable {
 	/**
 	 * Lock used to modify the content of {@link #mObjects}. Any write operation performed on the
 	 * map should be synchronized on this lock. This lock is also used by the filter (see {@link
 	 * #getFilter()} to make a synchronized copy of the original map of data.
 	 */
 	private final Object mLock = new Object();
-	private final View.OnTouchListener mDisableTouchListener = new OnDisableTouchListener();
-	/** LayoutInflater created from the constructing context */
-	private LayoutInflater mInflater;
 	/** Activity Context used to construct this adapter * */
 	private Context mContext;
 	/**
@@ -82,7 +71,6 @@ public abstract class RolodexAdapter<G, C> extends BaseExpandableListAdapter imp
 	 * data will be a TreeMap or LinkHashMap.
 	 */
 	private boolean mAreGroupsSorted = true;
-	private WeakReference<ExpandableListView> mListView;
 
 	/**
 	 * Constructor
@@ -90,6 +78,7 @@ public abstract class RolodexAdapter<G, C> extends BaseExpandableListAdapter imp
 	 * @param activity Context used for inflating views
 	 */
 	public RolodexAdapter(Context activity) {
+		super(activity);
 		init(activity, new ArrayList<C>());
 	}
 
@@ -100,6 +89,7 @@ public abstract class RolodexAdapter<G, C> extends BaseExpandableListAdapter imp
 	 * @param items    The items to represent within the adapter.
 	 */
 	public RolodexAdapter(Context activity, C[] items) {
+		super(activity);
 		List<C> list = Arrays.asList(items);
 		init(activity, list);
 	}
@@ -111,15 +101,8 @@ public abstract class RolodexAdapter<G, C> extends BaseExpandableListAdapter imp
 	 * @param items    The items to represent within the adapter.
 	 */
 	public RolodexAdapter(Context activity, Collection<C> items) {
+		super(activity);
 		init(activity, items);
-	}
-
-	private static <G, C> ArrayList<C> toArrayList(Map<G, ArrayList<C>> map) {
-		ArrayList<C> joinedList = new ArrayList<>();
-		for (Map.Entry<G, ArrayList<C>> entry : map.entrySet()) {
-			joinedList.addAll(entry.getValue());
-		}
-		return joinedList;
 	}
 
 	/**
@@ -283,21 +266,6 @@ public abstract class RolodexAdapter<G, C> extends BaseExpandableListAdapter imp
 	}
 
 	/**
-	 * Collapse all groups in the adapter.
-	 *
-	 * @return False if adapter failed to attempt collapsing. Otherwise True.
-	 */
-	public boolean collapseAll() {
-		ExpandableListView lv = mListView.get();
-		if (lv == null) return false;
-
-		for (int index = 0; index < mGroupObjects.size(); ++index) {
-			lv.collapseGroup(index);
-		}
-		return true;
-	}
-
-	/**
 	 * Tests whether this adapter contains the specified item. Be aware that this is a linear
 	 * search.
 	 *
@@ -333,23 +301,6 @@ public abstract class RolodexAdapter<G, C> extends BaseExpandableListAdapter imp
 		return expandAll(false);
 	}
 
-	/**
-	 * Expand all groups in the adapter.
-	 *
-	 * @param animate True if the expanding groups should be animated in
-	 *
-	 * @return False if adapter failed to attempt an expansion. Otherwise True.
-	 */
-	public boolean expandAll(boolean animate) {
-		ExpandableListView lv = mListView.get();
-		if (lv == null) return false;
-
-		for (int index = 0; index < mGroupObjects.size(); ++index) {
-			lv.expandGroup(index, animate);
-		}
-		return true;
-	}
-
 	@Override
 	public C getChild(int groupPosition, int childPosition) {
 		return mObjects.get(mGroupObjects.get(groupPosition)).get(childPosition);
@@ -357,19 +308,8 @@ public abstract class RolodexAdapter<G, C> extends BaseExpandableListAdapter imp
 
 	@Override
 	public long getChildId(int groupPosition, int childPosition) {
-		return ExpandableListView.getPackedPositionForChild(groupPosition, childPosition);
+		return childPosition;
 	}
-
-	@Override
-	public View getChildView(int groupPosition, int childPosition, boolean isLastChild,
-							 View convertView, ViewGroup parent) {
-		return getChildView(mInflater, groupPosition, childPosition, isLastChild, convertView,
-							parent);
-	}
-
-	public abstract View getChildView(LayoutInflater inflater, int groupPosition, int childPosition,
-									  boolean isLastChild,
-									  View convertView, ViewGroup parent);
 
 	@Override
 	public int getChildrenCount(int groupPosition) {
@@ -430,35 +370,6 @@ public abstract class RolodexAdapter<G, C> extends BaseExpandableListAdapter imp
 		return groupPosition;
 	}
 
-	@Override
-	public final View getGroupView(int groupPosition, boolean isExpanded, View convertView,
-								   ViewGroup parent) {
-		ExpandableListView lv = mListView.get();
-		if (lv == null) {
-			if (parent instanceof ExpandableListView) {
-				lv = (ExpandableListView) parent;
-				mListView = new WeakReference<>(lv);
-			} else {
-				//TODO: Consider supporting custom implementations of ListView or higher
-			}
-		}
-
-		if (!isExpanded && hasAutoExpandingGroups()) {
-			lv.expandGroup(groupPosition);
-		}
-
-		View v = getGroupView(mInflater, groupPosition, isExpanded, convertView, parent);
-		if (!isGroupSelectable(groupPosition)) {
-			v.setOnTouchListener(mDisableTouchListener);
-		}
-
-		return v;
-	}
-
-	public abstract View getGroupView(LayoutInflater inflater, int groupPosition,
-									  boolean isExpanded, View convertView,
-									  ViewGroup parent);
-
 	/**
 	 * @return The original (unfiltered) list of items stored within the Adapter
 	 */
@@ -497,25 +408,11 @@ public abstract class RolodexAdapter<G, C> extends BaseExpandableListAdapter imp
 		if (mNotifyOnChange) notifyDataSetChanged();
 	}
 
-	/**
-	 * @return Whether groups are always forced to render expanded. Default is false.
-	 */
-	public boolean hasAutoExpandingGroups() {
-		return false;
-	}
-
-	@Override
-	public boolean hasStableIds() {
-		return true;
-	}
-
 	private void init(Context context, Collection<C> objects) {
-		mInflater = LayoutInflater.from(context);
 		mContext = context;
 		mObjects = mAreGroupsSorted ? new TreeMap<G, ArrayList<C>>() : new LinkedHashMap<G, ArrayList<C>>();
 		mGroupObjects = new ArrayList<>();
 		mChild2Group = new HashMap<>(objects.size());
-		mListView = new WeakReference<>(null);    //We want to always guarantee a non-null value
 		addAllToObjects(objects);
 	}
 
@@ -533,11 +430,6 @@ public abstract class RolodexAdapter<G, C> extends BaseExpandableListAdapter imp
 	 */
 	protected abstract boolean isChildFilteredOut(C childItem, CharSequence constraint);
 
-	@Override
-	public boolean isChildSelectable(int groupPosition, int childPosition) {
-		return true;
-	}
-
 	/**
 	 * Determines whether the provided constraint filters out the given group item. If filtered out,
 	 * all it's children will automatically be filtered out as well. This method allows easy,
@@ -552,17 +444,6 @@ public abstract class RolodexAdapter<G, C> extends BaseExpandableListAdapter imp
 	 * given constraint. False if the item will continue to display in the adapter.
 	 */
 	protected abstract boolean isGroupFilteredOut(G groupItem, CharSequence constraint);
-
-	/**
-	 * Whether the group at the specified position is selectable.
-	 *
-	 * @param groupPosition The position of the group that contains the child
-	 *
-	 * @return Whether the group is selectable. Default is true.
-	 */
-	public boolean isGroupSelectable(int groupPosition) {
-		return true;
-	}
 
 	/**
 	 * Sorts the children of each grouping using the natural order of the stored children items
@@ -600,13 +481,6 @@ public abstract class RolodexAdapter<G, C> extends BaseExpandableListAdapter imp
 			}
 		}
 		if (mNotifyOnChange) notifyDataSetChanged();
-	}
-
-	private static class OnDisableTouchListener implements View.OnTouchListener {
-		@Override
-		public boolean onTouch(View v, MotionEvent event) {
-			return true;    //Do nothing but consume touch event
-		}
 	}
 
 	private class RolodexFilter extends Filter {

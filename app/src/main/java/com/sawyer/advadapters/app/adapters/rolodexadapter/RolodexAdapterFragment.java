@@ -19,20 +19,17 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.view.ActionMode;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.AbsListView;
 import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
-import android.widget.ListView;
 
 import com.sawyer.advadapters.app.R;
 import com.sawyer.advadapters.app.adapters.ExpandableListFragment;
 import com.sawyer.advadapters.app.data.MovieItem;
+import com.sawyer.advadapters.widget.RolodexAdapter;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -76,7 +73,7 @@ public class RolodexAdapterFragment extends ExpandableListFragment {
 	}
 
 	@Override
-	public boolean onChildItemClick(ExpandableListView parent, View v, int groupPosition,
+	public boolean onChildClick(ExpandableListView parent, View v, int groupPosition,
 									int childPosition, long id) {
 		//Granted, making a whole new instance is not even necessary here.
 		//However I wanted to demonstrate updating with an entirely different instance.
@@ -102,17 +99,8 @@ public class RolodexAdapterFragment extends ExpandableListFragment {
 		} else {
 			setListAdapter(new MovieRolodexAdapter(getActivity()));
 		}
-	}
-
-	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-							 Bundle savedInstanceState) {
-		ExpandableListView lv = (ExpandableListView) super
-				.onCreateView(inflater, container, savedInstanceState);
-		//TODO: Figure out solution here
-		lv.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
-		lv.setMultiChoiceModeListener(new OnCabMultiChoiceModeListener());
-		return lv;
+		getListAdapter().setChoiceMode(RolodexAdapter.CHOICE_MODE_MULTIPLE_MODAL);
+		getListAdapter().setMultiChoiceModeListener(new OnCabMultiChoiceModeListener());
 	}
 
 	private void onRemoveItemsClicked(Set<MovieItem> items) {
@@ -141,8 +129,7 @@ public class RolodexAdapterFragment extends ExpandableListFragment {
 		public void onAdapterCountUpdated();
 	}
 
-	//TODO: Figure out how to provide this behavior...if at all possible???
-	private class OnCabMultiChoiceModeListener implements AbsListView.MultiChoiceModeListener {
+	private class OnCabMultiChoiceModeListener implements RolodexAdapter.MultiChoiceModeListener {
 		@Override
 		public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
 			boolean result;
@@ -171,6 +158,17 @@ public class RolodexAdapterFragment extends ExpandableListFragment {
 		}
 
 		@Override
+		public void onChildCheckedStateChanged(ActionMode mode, int groupPosition, long groupId,
+											   int childPosition, long childId, boolean checked) {
+			if (checked) {
+				mCheckedItems.add(getListAdapter().getChild(groupPosition, childPosition));
+			} else {
+				mCheckedItems.remove(getListAdapter().getChild(groupPosition, childPosition));
+			}
+			mode.setTitle(mCheckedItems.size() + " Selected");
+		}
+
+		@Override
 		public boolean onCreateActionMode(ActionMode mode, Menu menu) {
 			MenuInflater inflater = mode.getMenuInflater();
 			inflater.inflate(R.menu.cab_array, menu);
@@ -184,16 +182,9 @@ public class RolodexAdapterFragment extends ExpandableListFragment {
 		}
 
 		@Override
-		public void onItemCheckedStateChanged(ActionMode mode, int position, long id,
-											  boolean checked) {
-			int group = ExpandableListView.getPackedPositionGroup(id);
-			int child = ExpandableListView.getPackedPositionChild(id);
-			if (checked) {
-				mCheckedItems.add(getListAdapter().getChild(group, child));
-			} else {
-				mCheckedItems.remove(getListAdapter().getChild(group, child));
-			}
-			mode.setTitle(mCheckedItems.size() + " Selected");
+		public void onGroupCheckedStateChanged(ActionMode mode, int groupPosition, long groupId,
+											   boolean checked) {
+
 		}
 
 		@Override
