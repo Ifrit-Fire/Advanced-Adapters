@@ -107,6 +107,7 @@ public class MainActivity extends ExpandableListActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setListAdapter(new DemoAdapter(this, createIntentList()));
+		getExpandableListView().setGroupIndicator(null);
 	}
 
 	@Override

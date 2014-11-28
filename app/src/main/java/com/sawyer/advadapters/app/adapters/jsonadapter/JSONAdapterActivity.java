@@ -140,7 +140,7 @@ public class JSONAdapterActivity extends AdapterBaseActivity implements
 	public boolean onOptionsItemSelected(MenuItem item) {
 		int id = item.getItemId();
 		switch (id) {
-		case R.id.menu_unit_test:
+		case R.id.menu_action_unit_test:
 			Intent intent = new Intent(this, UnitTestJSONArrayActivity.class);
 			startActivity(intent);
 			return true;

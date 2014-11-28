@@ -14,13 +14,11 @@
  limitations under the License.
 -->
 <TextView xmlns:android="http://schemas.android.com/apk/res/android"
-		  xmlns:tools="http://schemas.android.com/tools"
 		  android:id="@android:id/text1"
 		  android:layout_width="match_parent"
-		  android:layout_height="?android:attr/listPreferredItemHeightSmall"
-		  android:paddingLeft="?android:attr/expandableListPreferredItemPaddingLeft"
-		  android:paddingStart="?android:attr/expandableListPreferredItemPaddingLeft"
+		  android:layout_height="wrap_content"
 		  android:textAppearance="?android:attr/textAppearanceListItemSmall"
+		  android:textStyle="bold"
+		  android:padding="@dimen/spacing_half"
 		  android:background="@drawable/btn_borderless_holo_light"
-		  android:gravity="center_vertical"
-		  tools:ignore="NewApi"/>
+		  android:gravity="center_vertical"/>
