@@ -18,7 +18,6 @@ package com.sawyer.advadapters.app.adapters.rolodexadapter;
 import android.app.Activity;
 import android.os.Bundle;
 import android.os.Parcelable;
-import android.util.Log;
 import android.view.ActionMode;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -188,7 +187,6 @@ public class RolodexAdapterFragment extends ExpandableListFragment {
 		@Override
 		public void onGroupCheckedStateChanged(ActionMode mode, int groupPosition, long groupId,
 											   boolean checked) {
-
 		}
 
 		@Override

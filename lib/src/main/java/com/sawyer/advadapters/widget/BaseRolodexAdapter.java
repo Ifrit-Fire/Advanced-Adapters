@@ -26,7 +26,7 @@ public abstract class BaseRolodexAdapter extends BaseExpandableListAdapter {
 	private static final String TAG = "BaseRolodexAdapter";
 
 	private final OnDisableTouchListener mDisableTouchListener = new OnDisableTouchListener();
-	private final OnChoiceModeTouchListener mChoiceModeTouchListener = new OnChoiceModeTouchListener();
+	private final OnChoiceModeClickListener mChoiceModeClickListener = new OnChoiceModeClickListener();
 	/** Controls if/how the user may choose/check items in the list */
 	int mChoiceMode;
 	boolean mIsChoiceModeActive;
@@ -44,6 +44,10 @@ public abstract class BaseRolodexAdapter extends BaseExpandableListAdapter {
 		init(listView);
 	}
 
+	private static void logLostReference(String method) {
+		Log.w(TAG, "Lost reference to ExpandableListView in " + method);
+	}
+
 	static <G, C> ArrayList<C> toArrayList(Map<G, ArrayList<C>> map) {
 		ArrayList<C> joinedList = new ArrayList<>();
 		for (Map.Entry<G, ArrayList<C>> entry : map.entrySet()) {
@@ -59,7 +63,10 @@ public abstract class BaseRolodexAdapter extends BaseExpandableListAdapter {
 	 */
 	public boolean collapseAll() {
 		ExpandableListView lv = mListView.get();
-		if (lv == null) return false;
+		if (lv == null) {
+			logLostReference("collapseAll");
+			return false;
+		}
 
 		for (int index = 0; index < getGroupCount(); ++index) {
 			lv.collapseGroup(index);
@@ -76,7 +83,10 @@ public abstract class BaseRolodexAdapter extends BaseExpandableListAdapter {
 	 */
 	public boolean expandAll(boolean animate) {
 		ExpandableListView lv = mListView.get();
-		if (lv == null) return false;
+		if (lv == null) {
+			logLostReference("expandAll");
+			return false;
+		}
 
 		for (int index = 0; index < getGroupCount(); ++index) {
 			lv.expandGroup(index, animate);
@@ -93,9 +103,6 @@ public abstract class BaseRolodexAdapter extends BaseExpandableListAdapter {
 								   View convertView, ViewGroup parent) {
 		View v = getChildView(mInflater, groupPosition, childPosition, isLastChild, convertView,
 							  parent);
-		if (mChoiceMode != ExpandableListView.CHOICE_MODE_NONE) {
-			v.setOnTouchListener(mChoiceModeTouchListener);
-		}
 		return v;
 	}
 
@@ -111,15 +118,17 @@ public abstract class BaseRolodexAdapter extends BaseExpandableListAdapter {
 								   ViewGroup parent) {
 		ExpandableListView lv = mListView.get();
 		if (lv == null) {
+			logLostReference("getGroupView");
 			if (parent instanceof ExpandableListView) {
 				lv = (ExpandableListView) parent;
 				mListView = new WeakReference<>(lv);
-				initChoiceMode(lv);
+				initChoiceMode(mChoiceMode, lv);
 			} else {
-				//TODO: Consider supporting custom implementations of ListView or AbsListView
+				throw new IllegalStateException(
+						"Expecting ExpandableListView when refreshing referenced state. Instead found unsupported " +
+						parent.getClass().getName());
 			}
 		}
-
 		if (!isExpanded && hasAutoExpandingGroups()) {
 			lv.expandGroup(groupPosition);
 		}
@@ -127,10 +136,6 @@ public abstract class BaseRolodexAdapter extends BaseExpandableListAdapter {
 		View v = getGroupView(mInflater, groupPosition, isExpanded, convertView, parent);
 		if (!isGroupSelectable(groupPosition)) {
 			v.setOnTouchListener(mDisableTouchListener);
-		} else {
-			if (mChoiceMode != ExpandableListView.CHOICE_MODE_NONE) {
-				v.setOnTouchListener(mChoiceModeTouchListener);
-			}
 		}
 
 		return v;
@@ -156,22 +161,20 @@ public abstract class BaseRolodexAdapter extends BaseExpandableListAdapter {
 		mContext = lv.getContext();
 		mInflater = LayoutInflater.from(mContext);
 		mListView = new WeakReference<>(lv);
-		mChoiceMode = ExpandableListView.CHOICE_MODE_NONE;
-		mIsChoiceModeActive = false;
-		initChoiceMode(lv);
+		initChoiceMode(CHOICE_MODE_NONE, lv);
 	}
 
-	private void initChoiceMode(ExpandableListView lv) {
-		if (mChoiceMode != lv.getChoiceMode()) {
-			lv.setChoiceMode(mChoiceMode);
-			if (mChoiceMode == CHOICE_MODE_NONE) {
-				//TODO: Test setting this while mIsChoiceModeActive is true
-				mIsChoiceModeActive = false;
-				lv.setMultiChoiceModeListener(null);
-			} else {
-				mIsChoiceModeActive = false;
-				lv.setMultiChoiceModeListener(new InternalMultiChoiceModeListener());
-			}
+	private void initChoiceMode(int choiceMode, ExpandableListView lv) {
+		mChoiceMode = choiceMode;
+		lv.setChoiceMode(choiceMode);
+		mIsChoiceModeActive = false;
+		lv.setOnGroupClickListener(mOnGroupClickListener);
+		lv.setOnChildClickListener(mOnChildClickListener);
+		if (choiceMode == CHOICE_MODE_NONE) {
+			//TODO: Test setting this while ActionMode is displaying
+			lv.setMultiChoiceModeListener(null);
+		} else {
+			lv.setMultiChoiceModeListener(new InternalMultiChoiceModeListener());
 		}
 	}
 
@@ -208,7 +211,11 @@ public abstract class BaseRolodexAdapter extends BaseExpandableListAdapter {
 	public void setChoiceMode(int choiceMode) {
 		mChoiceMode = choiceMode;
 		ExpandableListView lv = mListView.get();
-		if (lv != null) initChoiceMode(lv);
+		if (lv == null) {
+			logLostReference("setChoiceMode");
+		} else {
+			initChoiceMode(choiceMode, lv);
+		}
 	}
 
 	/**
@@ -226,11 +233,27 @@ public abstract class BaseRolodexAdapter extends BaseExpandableListAdapter {
 	public void setOnChildClickListener(
 			ExpandableListView.OnChildClickListener onChildClickListener) {
 		mOnChildClickListener = onChildClickListener;
+		if (!mIsChoiceModeActive) {
+			ExpandableListView lv = mListView.get();
+			if (lv == null) {
+				logLostReference("setOnChildClickListener");
+			} else {
+				lv.setOnChildClickListener(mOnChildClickListener);
+			}
+		}
 	}
 
 	public void setOnGroupClickListener(
 			ExpandableListView.OnGroupClickListener onGroupClickListener) {
 		mOnGroupClickListener = onGroupClickListener;
+		ExpandableListView lv = mListView.get();
+		if (!mIsChoiceModeActive) {
+			if (lv == null) {
+				logLostReference("setOnGroupClickListener");
+			} else {
+				lv.setOnGroupClickListener(mOnGroupClickListener);
+			}
+		}
 	}
 
 	public static interface MultiChoiceModeListener {
@@ -267,6 +290,16 @@ public abstract class BaseRolodexAdapter extends BaseExpandableListAdapter {
 		public boolean onCreateActionMode(ActionMode mode, Menu menu) {
 			mIsChoiceModeActive = mMultiChoiceModeListener != null &&
 								  mMultiChoiceModeListener.onCreateActionMode(mode, menu);
+			if (mIsChoiceModeActive) {
+				ExpandableListView lv = mListView.get();
+				if (lv == null) {
+					logLostReference("onCreateActionMode");
+					mIsChoiceModeActive = false;
+				} else {
+					lv.setOnChildClickListener(mChoiceModeClickListener);
+					lv.setOnGroupClickListener(mChoiceModeClickListener);
+				}
+			}
 			return mIsChoiceModeActive;
 		}
 
@@ -275,6 +308,13 @@ public abstract class BaseRolodexAdapter extends BaseExpandableListAdapter {
 			if (mMultiChoiceModeListener != null)
 				mMultiChoiceModeListener.onDestroyActionMode(mode);
 			mIsChoiceModeActive = false;
+			ExpandableListView lv = mListView.get();
+			if (lv == null) {
+				logLostReference("onDestroyActionMode");
+			} else {
+				lv.setOnChildClickListener(mOnChildClickListener);
+				lv.setOnGroupClickListener(mOnGroupClickListener);
+			}
 		}
 
 		@Override
@@ -282,7 +322,7 @@ public abstract class BaseRolodexAdapter extends BaseExpandableListAdapter {
 											  boolean checked) {
 			ExpandableListView lv = mListView.get();
 			if (lv == null) {
-				Log.w(TAG, "Lost ExpandableListView reference in onItemCheckedStateChanged");
+				logLostReference("onItemCheckedStateChanged");
 				return;
 			}
 			long packedPosition = lv.getExpandableListPosition(position);
@@ -295,6 +335,7 @@ public abstract class BaseRolodexAdapter extends BaseExpandableListAdapter {
 							.onGroupCheckedStateChanged(mode, groupPosition, groupId, checked);
 				}
 				break;
+
 			case ExpandableListView.PACKED_POSITION_TYPE_CHILD:
 				if (mMultiChoiceModeListener != null) {
 					int groupPosition = ExpandableListView.getPackedPositionGroup(packedPosition);
@@ -344,28 +385,6 @@ public abstract class BaseRolodexAdapter extends BaseExpandableListAdapter {
 			} else {
 				return false;
 			}
-		}
-	}
-
-	private class OnChoiceModeTouchListener implements View.OnTouchListener {
-		private OnChoiceModeClickListener mListener = new OnChoiceModeClickListener();
-
-		@Override
-		public boolean onTouch(View v, MotionEvent event) {
-			ExpandableListView lv = mListView.get();
-			if (lv == null) {
-				Log.w(TAG, "Lost ExpandableListView reference in OnChoiceModeTouchListener");
-				return false;
-			}
-
-			if (mIsChoiceModeActive) {
-				lv.setOnChildClickListener(mListener);
-				lv.setOnGroupClickListener(mListener);
-			} else {
-				lv.setOnChildClickListener(mOnChildClickListener);
-				lv.setOnGroupClickListener(mOnGroupClickListener);
-			}
-			return false;
 		}
 	}
 }
