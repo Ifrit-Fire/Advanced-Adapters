@@ -109,7 +109,7 @@ public class RolodexAdapterFragment extends ExpandableListFragment {
 	private void onRemoveItemsClicked(Set<MovieItem> items) {
 		//TODO: Implement
 		if (items.size() == 1) {
-//			getListAdapter().remove(items.iterator().next());
+			getListAdapter().remove(items.iterator().next());
 		} else {
 //			getListAdapter().removeAll(items);
 		}

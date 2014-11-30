@@ -15,7 +15,6 @@
  */
 package com.sawyer.advadapters.widget;
 
-import android.content.Context;
 import android.text.TextUtils;
 import android.widget.ExpandableListView;
 import android.widget.Filter;
@@ -26,11 +25,11 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.WeakHashMap;
 
 //TODO: Implement
 public abstract class RolodexAdapter<G, C> extends BaseRolodexAdapter implements Filterable {
@@ -47,6 +46,12 @@ public abstract class RolodexAdapter<G, C> extends BaseRolodexAdapter implements
 	 */
 	private Map<G, ArrayList<C>> mObjects;
 	private ArrayList<G> mGroupObjects;
+	/**
+	 * Cache of the child to group relationship as a way to reduce how often {@link #createGroupFor}
+	 * is invoked. Since the key can be mutable, be careful on interrupting what a returned null
+	 * value actually means. While it's not recommended to modify a child item outside of the
+	 * adapter, it can and probably will happen.
+	 */
 	private Map<C, G> mChild2Group;
 	/**
 	 * Indicates whether or not {@link #notifyDataSetChanged()} must be called whenever {@link
@@ -65,11 +70,6 @@ public abstract class RolodexAdapter<G, C> extends BaseRolodexAdapter implements
 	 * following changes to the array of data
 	 */
 	private CharSequence mLastConstraint;
-	/**
-	 * Determines if groups will be auto sorted. Basically determines if the Map storing all the
-	 * data will be a TreeMap or LinkHashMap.
-	 */
-	private boolean mAreGroupsSorted = true;
 
 	/**
 	 * Constructor
@@ -78,7 +78,7 @@ public abstract class RolodexAdapter<G, C> extends BaseRolodexAdapter implements
 	 */
 	public RolodexAdapter(ExpandableListView listView) {
 		super(listView);
-		init(listView, new ArrayList<C>());
+		init(new ArrayList<C>());
 	}
 
 	/**
@@ -90,7 +90,7 @@ public abstract class RolodexAdapter<G, C> extends BaseRolodexAdapter implements
 	public RolodexAdapter(ExpandableListView listView, C[] items) {
 		super(listView);
 		List<C> list = Arrays.asList(items);
-		init(listView, list);
+		init(list);
 	}
 
 	/**
@@ -101,7 +101,15 @@ public abstract class RolodexAdapter<G, C> extends BaseRolodexAdapter implements
 	 */
 	public RolodexAdapter(ExpandableListView listView, Collection<C> items) {
 		super(listView);
-		init(listView, items);
+		init(items);
+	}
+
+	private static <G, C> Map<G, ArrayList<C>> createNewMap(boolean areGroupsSorted,
+															Map<G, ArrayList<C>> dataToCopy) {
+		if (dataToCopy == null)
+			return areGroupsSorted ? new TreeMap<G, ArrayList<C>>() : new LinkedHashMap<G, ArrayList<C>>();
+		else
+			return areGroupsSorted ? new TreeMap<>(dataToCopy) : new LinkedHashMap<>(dataToCopy);
 	}
 
 	/**
@@ -126,7 +134,7 @@ public abstract class RolodexAdapter<G, C> extends BaseRolodexAdapter implements
 				if (children == null) {
 					children = new ArrayList<>();
 					mObjects.put(group, children);
-					if (mAreGroupsSorted) {
+					if (areGroupsSorted()) {
 						mGroupObjects = new ArrayList<>(mObjects.keySet());
 					} else {
 						mGroupObjects.add(group);
@@ -177,7 +185,7 @@ public abstract class RolodexAdapter<G, C> extends BaseRolodexAdapter implements
 				}
 				getFilter().filter(mLastConstraint);
 			} else {
-				if (mAreGroupsSorted) {
+				if (areGroupsSorted()) {
 					for (C item : items) {
 						G group = getGroupFor(item);
 						ArrayList<C> children = mObjects.get(group);
@@ -206,7 +214,7 @@ public abstract class RolodexAdapter<G, C> extends BaseRolodexAdapter implements
 	}
 
 	private void addAllToObjects(Collection<? extends C> items) {
-		if (mAreGroupsSorted) {
+		if (areGroupsSorted()) {
 			for (C item : items) {
 				G group = getGroupFor(item);
 				ArrayList<C> children = mObjects.get(group);
@@ -247,7 +255,7 @@ public abstract class RolodexAdapter<G, C> extends BaseRolodexAdapter implements
 	 * @return Whether groups are automatically sorted. Default is true.
 	 */
 	public boolean areGroupsSorted() {
-		return mAreGroupsSorted;
+		return true;
 	}
 
 	/**
@@ -273,16 +281,15 @@ public abstract class RolodexAdapter<G, C> extends BaseRolodexAdapter implements
 	 * @return {@code true} if the item is an element of this adapter. {@code false} otherwise
 	 */
 	public boolean contains(C item) {
-		G group = mChild2Group.get(item);
+		G group = getGroupFor(item);
 		return group != null && mObjects.get(group) != null && mObjects.get(group).contains(item);
 	}
 
 	/**
 	 * Creates a new group object which represents the parent of the given child item. This is used
-	 * to determine what group item the child item will fall under. Internally this relationship is
-	 * cached to optimize how often this method is invoked. Ideally only once per child. However any
-	 * changes to the child or it's parent group will result in additional invocations of this
-	 * method.
+	 * to determine what group the child item will fall under. While not enforced, it's highly
+	 * recommended to only ever return an immutable object. Internally the child/group relationship
+	 * is cached to help reduce how often this method is invoked.
 	 *
 	 * @param childItem The child item for which a group instance will be created for.
 	 *
@@ -315,8 +322,6 @@ public abstract class RolodexAdapter<G, C> extends BaseRolodexAdapter implements
 		return mObjects.get(mGroupObjects.get(groupPosition)).size();
 	}
 
-
-
 	@Override
 	public Filter getFilter() {
 		if (mFilter == null) {
@@ -346,6 +351,16 @@ public abstract class RolodexAdapter<G, C> extends BaseRolodexAdapter implements
 		return mGroupObjects.size();
 	}
 
+	/**
+	 * Retrieves a group object for the given child. Attempts to look in cache before
+	 * requesting the object from subclasses. Cache may fail for various reasons; such as it's the
+	 * first time we've seen this child, or its an old child that was GCed, or the child was mutated
+	 * in such a way that the hashcode has changed.
+	 *
+	 * @param child Child item to look for
+	 *
+	 * @return Group associated with child. Will never return null.
+	 */
 	private G getGroupFor(C child) {
 		G group = mChild2Group.get(child);
 		if (group == null) {
@@ -402,10 +417,10 @@ public abstract class RolodexAdapter<G, C> extends BaseRolodexAdapter implements
 		if (mNotifyOnChange) notifyDataSetChanged();
 	}
 
-	private void init(ExpandableListView listView, Collection<C> objects) {
-		mObjects = mAreGroupsSorted ? new TreeMap<G, ArrayList<C>>() : new LinkedHashMap<G, ArrayList<C>>();
+	private void init(Collection<C> objects) {
+		mObjects = createNewMap(areGroupsSorted(), null);
 		mGroupObjects = new ArrayList<>();
-		mChild2Group = new HashMap<>(objects.size());
+		mChild2Group = new WeakHashMap<>(objects.size());
 		addAllToObjects(objects);
 	}
 
@@ -439,9 +454,61 @@ public abstract class RolodexAdapter<G, C> extends BaseRolodexAdapter implements
 	protected abstract boolean isGroupFilteredOut(G groupItem, CharSequence constraint);
 
 	/**
-	 * Sorts the children of each grouping using the natural order of the stored children items
-	 * themselves. This requires the items to have implemented {@link java.lang.Comparable} and is
-	 * equivalent of passing null to {@link #sort(java.util.Comparator)}.
+	 * Removes the first occurrence of the specified item from the adapter.
+	 *
+	 * @param item The item to remove.
+	 */
+	public void remove(C item) {
+		boolean isModified = false;
+
+		SYNC_BLOCK:
+		synchronized (mLock) {
+			G group = getGroupFor(item);
+			if (mOriginalValues != null) {
+				ArrayList<C> children = mOriginalValues.get(group);
+				if (children == null) {
+					group = searchForGroup(item, mOriginalValues);
+					if (group == null) return;    //Can't find group, guess item doesn't exist
+					children = mOriginalValues.get(group);
+				}
+				isModified = children.remove(item);
+				if (isModified && children.isEmpty()) {
+					mOriginalValues.remove(group);
+					if (mObjects.remove(group) != null) mGroupObjects.remove(group);
+					break SYNC_BLOCK;
+				}
+			}
+			//No matter what, remove from mObjects. This avoids having to re-filter the data. If
+			//mOriginalValues != null, then our group object will be correct. Otherwise, we may need
+			//to do a manual search.
+			ArrayList<C> children = mObjects.get(group);
+			if (children == null) {
+				group = searchForGroup(item, mObjects);
+				if (group == null) return;    //Can't find group, guess item doesn't exist
+				children = mObjects.get(group);
+			}
+			isModified |= children.remove(item);
+			if (isModified && children.isEmpty()) {
+				mObjects.remove(group);
+				mGroupObjects.remove(group);
+			}
+		}
+		if (isModified && mNotifyOnChange) notifyDataSetChanged();
+	}
+
+	private G searchForGroup(C item, Map<G, ArrayList<C>> map) {
+		for (Map.Entry<G, ArrayList<C>> entry : map.entrySet()) {
+			if (entry.getValue().contains(item)) {
+				return entry.getKey();
+			}
+		}
+		return null;
+	}
+
+	/**
+	 * Sorts the children of each grouping using the natural order of the items themselves. This
+	 * requires the items to have implemented {@link java.lang.Comparable} and is equivalent of
+	 * passing null to {@link #sort(java.util.Comparator)}. This will not sort groups.
 	 *
 	 * @throws java.lang.ClassCastException If the comparator is null and the stored items do not
 	 *                                      implement {@code Comparable} or if {@code compareTo}
@@ -452,8 +519,8 @@ public abstract class RolodexAdapter<G, C> extends BaseRolodexAdapter implements
 	}
 
 	/**
-	 * Sorts the children of each grouping using the specified comparator. By default groups are
-	 * sorted.
+	 * Sorts the children of each grouping using the specified comparator. Tis will not sort
+	 * groups.
 	 *
 	 * @param comparator Used to sort the child items contained in this adapter. Null to use an
 	 *                   item's {@code Comparable} interface.
@@ -485,7 +552,7 @@ public abstract class RolodexAdapter<G, C> extends BaseRolodexAdapter implements
 			synchronized (mLock) {
 				if (TextUtils.isEmpty(constraint)) {    //Clearing out filtered results
 					if (mOriginalValues != null) {
-						mObjects = new LinkedHashMap<>(mOriginalValues);
+						mObjects = createNewMap(areGroupsSorted(), mOriginalValues);
 						mOriginalValues = null;
 					}
 					results.values = mObjects;
@@ -493,12 +560,12 @@ public abstract class RolodexAdapter<G, C> extends BaseRolodexAdapter implements
 					return results;
 				} else {    //Ready for filtering
 					if (mOriginalValues == null) {
-						mOriginalValues = new LinkedHashMap<>(mObjects);
+						mOriginalValues = createNewMap(areGroupsSorted(), mObjects);
 					}
-					values = new LinkedHashMap<>(mOriginalValues);
+					values = createNewMap(areGroupsSorted(), mOriginalValues);
 				}
 			}
-			Map<G, ArrayList<C>> newValues = mAreGroupsSorted ? new TreeMap<G, ArrayList<C>>() : new LinkedHashMap<G, ArrayList<C>>();
+			Map<G, ArrayList<C>> newValues = createNewMap(areGroupsSorted(), null);
 			for (Map.Entry<G, ArrayList<C>> entry : values.entrySet()) {
 				if (!isGroupFilteredOut(entry.getKey(), constraint)) {
 					ArrayList<C> children = new ArrayList<>();
