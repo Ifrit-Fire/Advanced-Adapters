@@ -380,8 +380,7 @@ public abstract class AbsArrayAdapter<T> extends BaseAdapter implements Filterab
 	}
 
 	/**
-	 * Removes the first occurrence of the specified item from the adapter. Will repeat the last
-	 * filtering request if invoked while filtered results are being displayed.
+	 * Removes the first occurrence of the specified item from the adapter.
 	 *
 	 * @param item The item to remove.
 	 */
@@ -396,8 +395,7 @@ public abstract class AbsArrayAdapter<T> extends BaseAdapter implements Filterab
 	}
 
 	/**
-	 * Removes all occurrences in the adapter of each item in the specified collection. Will repeat
-	 * the last filter operation if one occurred.
+	 * Removes all occurrences in the adapter of each item in the specified collection.
 	 *
 	 * @param items The collection of items to remove
 	 */
@@ -411,8 +409,7 @@ public abstract class AbsArrayAdapter<T> extends BaseAdapter implements Filterab
 	}
 
 	/**
-	 * Removes all items from this adapter that are not contained in the specified collection. Will
-	 * repeat the last filtering request if invoked while filtered results are being displayed.
+	 * Removes all items from this adapter that are not contained in the specified collection.
 	 *
 	 * @param items The collection of items to retain
 	 */

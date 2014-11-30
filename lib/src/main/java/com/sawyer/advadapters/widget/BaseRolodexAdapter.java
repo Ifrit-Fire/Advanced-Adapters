@@ -126,7 +126,7 @@ public abstract class BaseRolodexAdapter extends BaseExpandableListAdapter {
 			} else {
 				throw new IllegalStateException(
 						"Expecting ExpandableListView when refreshing referenced state. Instead found unsupported " +
-						parent.getClass().getName());
+						parent.getClass().getSimpleName());
 			}
 		}
 		if (!isExpanded && hasAutoExpandingGroups()) {
