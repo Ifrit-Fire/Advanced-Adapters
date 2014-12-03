@@ -352,10 +352,10 @@ public abstract class RolodexAdapter<G, C> extends BaseRolodexAdapter implements
 	}
 
 	/**
-	 * Retrieves a group object for the given child. Attempts to look in cache before
-	 * requesting the object from subclasses. Cache may fail for various reasons; such as it's the
-	 * first time we've seen this child, or its an old child that was GCed, or the child was mutated
-	 * in such a way that the hashcode has changed.
+	 * Retrieves a group object for the given child. Attempts to look in cache before requesting the
+	 * object from subclasses. Cache may fail for various reasons; such as it's the first time we've
+	 * seen this child, or its an old child that was GCed, or the child was mutated in such a way
+	 * that the hashcode has changed.
 	 *
 	 * @param child Child item to look for
 	 *
@@ -548,7 +548,6 @@ public abstract class RolodexAdapter<G, C> extends BaseRolodexAdapter implements
 		protected FilterResults performFiltering(CharSequence constraint) {
 			FilterResults results = new FilterResults();
 			Map<G, ArrayList<C>> values;
-
 			synchronized (mLock) {
 				if (TextUtils.isEmpty(constraint)) {    //Clearing out filtered results
 					if (mOriginalValues != null) {

@@ -154,7 +154,7 @@ public abstract class BaseRolodexAdapter extends BaseExpandableListAdapter {
 
 	@Override
 	public boolean hasStableIds() {
-		return true;
+		return false;
 	}
 
 	private void init(ExpandableListView lv) {
