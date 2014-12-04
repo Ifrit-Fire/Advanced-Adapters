@@ -30,7 +30,7 @@
 
 		<!-- Android Adapter Activities -->
 		<activity
-			android:name=".adapters.androidarrayadapter.AndroidAdapterActivity"
+			android:name=".adapters.android.arrayadapter.AndroidAdapterActivity"
 			android:label="@string/activity_android_arrayadapter">
 		</activity>
 

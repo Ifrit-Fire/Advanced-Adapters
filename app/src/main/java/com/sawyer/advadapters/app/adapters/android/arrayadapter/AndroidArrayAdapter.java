@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.sawyer.advadapters.app.adapters.androidarrayadapter;
+package com.sawyer.advadapters.app.adapters.android.arrayadapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -27,15 +27,15 @@ import com.sawyer.advadapters.app.data.MovieItem;
 
 import java.util.List;
 
-class MovieAdapter extends ArrayAdapter<MovieItem> {
+class AndroidArrayAdapter extends ArrayAdapter<MovieItem> {
 	private LayoutInflater mInflater;
 
-	MovieAdapter(Context activity) {
+	AndroidArrayAdapter(Context activity) {
 		super(activity, R.layout.item_movie1);
 		init();
 	}
 
-	MovieAdapter(Context activity, List<MovieItem> list) {
+	AndroidArrayAdapter(Context activity, List<MovieItem> list) {
 		super(activity, R.layout.item_movie1, list);
 		init();
 	}

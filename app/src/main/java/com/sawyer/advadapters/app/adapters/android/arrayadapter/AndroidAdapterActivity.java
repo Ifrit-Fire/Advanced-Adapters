@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.sawyer.advadapters.app.adapters.androidarrayadapter;
+package com.sawyer.advadapters.app.adapters.android.arrayadapter;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
@@ -201,7 +201,7 @@ public class AndroidAdapterActivity extends AdapterBaseActivity implements
 
 	@Override
 	protected void reset() {
-		MovieAdapter adapter = mListFragment.getListAdapter();
+		AndroidArrayAdapter adapter = mListFragment.getListAdapter();
 		adapter.setNotifyOnChange(false);
 		adapter.clear();
 		adapter.addAll(MovieContent.ITEM_LIST.subList(0, 4));

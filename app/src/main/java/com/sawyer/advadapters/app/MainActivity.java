@@ -16,7 +16,6 @@
 package com.sawyer.advadapters.app;
 
 import android.app.ExpandableListActivity;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -28,7 +27,7 @@ import android.widget.ExpandableListView;
 import android.widget.TextView;
 
 import com.sawyer.advadapters.app.adapters.absarrayadapter.ArrayAdapterActivity;
-import com.sawyer.advadapters.app.adapters.androidarrayadapter.AndroidAdapterActivity;
+import com.sawyer.advadapters.app.adapters.android.arrayadapter.AndroidAdapterActivity;
 import com.sawyer.advadapters.app.adapters.jsonadapter.JSONAdapterActivity;
 import com.sawyer.advadapters.app.adapters.nfarrayadapter.NFArrayAdapterActivity;
 import com.sawyer.advadapters.app.adapters.nfjsonadapter.NFJSONAdapterActivity;
@@ -108,6 +107,8 @@ public class MainActivity extends ExpandableListActivity {
 		super.onCreate(savedInstanceState);
 		getExpandableListView().setGroupIndicator(null);
 		DemoAdapter adapter = new DemoAdapter(getExpandableListView(), createIntentList());
+		adapter.setChoiceMode(DemoAdapter.CHOICE_MODE_MULTIPLE_MODAL);
+		adapter.setOnChildClickListener(this);
 		setListAdapter(adapter);
 	}
 
