@@ -20,9 +20,7 @@ import android.util.SparseArray;
 import org.json.JSONArray;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 /**
  * Helper class for providing sample content for sample lists
@@ -31,9 +29,6 @@ public class MovieContent {
 
 	/** An array of sample (movie) items. */
 	public static List<MovieItem> ITEM_LIST = new ArrayList<>();
-
-	/** A set of sample (movie) items */
-	public static Set<MovieItem> ITEM_SET = new HashSet<>();    //TODO: Research a HashSet Adapter
 
 	/** A sparse array of sample (movie) items */
 	public static SparseArray<MovieItem> ITEM_SPARSE = new SparseArray<>();
@@ -85,7 +80,6 @@ public class MovieContent {
 
 	private static void addItem(MovieItem item) {
 		ITEM_LIST.add(item);
-		ITEM_SET.add(item);
 		ITEM_SPARSE.put(item.barcode(), item);
 		ITEM_JSON.put(item.toJSONObject());
 	}
