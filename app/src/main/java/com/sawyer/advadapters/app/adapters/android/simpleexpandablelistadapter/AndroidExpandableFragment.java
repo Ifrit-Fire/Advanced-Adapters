@@ -129,13 +129,12 @@ public class AndroidExpandableFragment extends ExpandableListFragment {
 	@Override
 	public boolean onChildClick(ExpandableListView parent, View v, int groupPosition,
 								int childPosition, long id) {
-		//TODO: implement
-//		MovieItem oldMovie = getListAdapter().getChild(groupPosition, childPosition);
-//		MovieItem newMovie = new MovieItem(oldMovie.barcode());
-//		newMovie.title = new StringBuilder(oldMovie.title).reverse().toString();
-//		newMovie.year = oldMovie.year;
-//		newMovie.isRecommended = !oldMovie.isRecommended;
-//		getListAdapter().update(position, newMovie);	//TODO: Implement
+		//While this will modify the adapter's data...it's not really recommended.
+		Map<String, String> movieMap = (Map<String, String>) getListAdapter()
+				.getChild(groupPosition, childPosition);
+		String newTitle = new StringBuilder(movieMap.get(MovieItem.KEY_TITLE)).reverse().toString();
+		movieMap.put(MovieItem.KEY_TITLE, newTitle);
+		getListAdapter().notifyDataSetChanged();
 		return true;
 	}
 
@@ -161,8 +160,7 @@ public class AndroidExpandableFragment extends ExpandableListFragment {
 	@Override
 	public void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
-		//Because we can't actually mutate any of the data once this is constructed, we don't
-		//actually have to worry about restoring from a savedInstanceState. Sigh of relief huh?
+		//TODO: Correction to self....we can modify the adapter so figure out how to persist the data
 	}
 
 	public interface EventListener {

@@ -30,10 +30,17 @@ import java.util.Random;
 
 public class MovieItem implements Comparable<MovieItem>, Parcelable {
 	public static final Creator<MovieItem> CREATOR = new MovieCreator();
+	//For use when working with a MovieItem converted to a JSONObject
 	public static final String JSON_TITLE = "title";
 	public static final String JSON_YEAR = "year";
 	public static final String JSON_IS_RECOMMENDED = "recommended";
 	public static final String JSON_BARCODE = "barcode";
+
+	//For use when working with a MovieItem converted to a Map<String, String>
+	public static final String KEY_TITLE = JSON_TITLE;
+	public static final String KEY_YEAR = JSON_YEAR;
+	public static final String KEY_IS_RECOMMENDED = JSON_IS_RECOMMENDED;
+	public static final String KEY_BARCODE = JSON_BARCODE;
 
 	public static final String[] MAP_KEYS = {JSON_TITLE, JSON_YEAR, JSON_IS_RECOMMENDED, JSON_BARCODE};
 
@@ -114,10 +121,10 @@ public class MovieItem implements Comparable<MovieItem>, Parcelable {
 
 	public Map<String, String> toMap() {
 		Map<String, String> map = new HashMap<>();
-		map.put(JSON_TITLE, title);
-		map.put(JSON_YEAR, String.valueOf(year));
-		map.put(JSON_IS_RECOMMENDED, String.valueOf(isRecommended));
-		map.put(JSON_BARCODE, String.valueOf(mBarcode));
+		map.put(KEY_TITLE, title);
+		map.put(KEY_YEAR, String.valueOf(year));
+		map.put(KEY_IS_RECOMMENDED, String.valueOf(isRecommended));
+		map.put(KEY_BARCODE, String.valueOf(mBarcode));
 		return map;
 	}
 
