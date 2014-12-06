@@ -23,7 +23,9 @@ import android.util.Log;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Random;
 
 public class MovieItem implements Comparable<MovieItem>, Parcelable {
@@ -33,11 +35,14 @@ public class MovieItem implements Comparable<MovieItem>, Parcelable {
 	public static final String JSON_IS_RECOMMENDED = "recommended";
 	public static final String JSON_BARCODE = "barcode";
 
+	public static final String[] MAP_KEYS = {JSON_TITLE, JSON_YEAR, JSON_IS_RECOMMENDED, JSON_BARCODE};
+
 	private static Random sRand = new Random();
 
 	public String title;
 	public int year;
 	public boolean isRecommended;
+
 	private int mBarcode;
 	private long mBarcodeLong;
 
@@ -99,12 +104,21 @@ public class MovieItem implements Comparable<MovieItem>, Parcelable {
 			object.put(JSON_TITLE, title);
 			object.put(JSON_YEAR, year);
 			object.put(JSON_IS_RECOMMENDED, isRecommended);
-			object.put(JSON_BARCODE, barcode());
+			object.put(JSON_BARCODE, mBarcode);
 		} catch (JSONException e) {
 			Log.e(MovieItem.class.getSimpleName(), "Error converting to JSON", e);
 		}
 
 		return object;
+	}
+
+	public Map<String, String> toMap() {
+		Map<String, String> map = new HashMap<>();
+		map.put(JSON_TITLE, title);
+		map.put(JSON_YEAR, String.valueOf(year));
+		map.put(JSON_IS_RECOMMENDED, String.valueOf(isRecommended));
+		map.put(JSON_BARCODE, String.valueOf(mBarcode));
+		return map;
 	}
 
 	@Override

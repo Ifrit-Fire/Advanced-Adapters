@@ -22,9 +22,10 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Does this seem useless? You bet. I have here in for quick testing purposes during development or
- * whenever I need to quickly test a using a custom version of the SimpleExpandableListAdapter for
- * whatever reason. Otherwise, for purposes of the Demo App, this class could be removed.
+ * Does this seem useless? You bet. Its here in for solely for quick testing purposes during
+ * development or whenever I need to quickly test a using a custom version of the
+ * SimpleExpandableListAdapter for whatever reason. Otherwise, for purposes of the Demo App, this
+ * class is not needed.
  */
 public class AndroidExpandableAdapter extends SimpleExpandableListAdapter {
 
