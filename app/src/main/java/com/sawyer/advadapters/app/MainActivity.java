@@ -28,6 +28,7 @@ import android.widget.TextView;
 
 import com.sawyer.advadapters.app.adapters.absarrayadapter.ArrayAdapterActivity;
 import com.sawyer.advadapters.app.adapters.android.arrayadapter.AndroidAdapterActivity;
+import com.sawyer.advadapters.app.adapters.android.simpleexpandablelistadapter.AndroidExpandableActivity;
 import com.sawyer.advadapters.app.adapters.jsonadapter.JSONAdapterActivity;
 import com.sawyer.advadapters.app.adapters.nfarrayadapter.NFArrayAdapterActivity;
 import com.sawyer.advadapters.app.adapters.nfjsonadapter.NFJSONAdapterActivity;
@@ -50,6 +51,11 @@ public class MainActivity extends ExpandableListActivity {
 		/* Android Demos */
 		intent = new Intent(this, AndroidAdapterActivity.class);
 		intent.putExtra(EXTRA_INTENT_NAME, getString(R.string.activity_android_arrayadapter));
+		intent.putExtra(EXTRA_GROUP_NAME, getString(R.string.title_group_android));
+		intents.add(intent);
+
+		intent = new Intent(this, AndroidExpandableActivity.class);
+		intent.putExtra(EXTRA_INTENT_NAME, getString(R.string.activity_android_simpleexpandable));
 		intent.putExtra(EXTRA_GROUP_NAME, getString(R.string.title_group_android));
 		intents.add(intent);
 

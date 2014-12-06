@@ -33,6 +33,10 @@
 			android:name=".adapters.android.arrayadapter.AndroidAdapterActivity"
 			android:label="@string/activity_android_arrayadapter">
 		</activity>
+		<activity
+			android:name=".adapters.android.simpleexpandablelistadapter.AndroidExpandableActivity"
+			android:label="@string/activity_android_simpleexpandable">
+		</activity>
 
 		<!-- Array Adapter Activities -->
 		<activity

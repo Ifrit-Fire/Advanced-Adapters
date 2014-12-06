@@ -20,6 +20,7 @@
 
 	<string name="app_name">Advanced-Adapters</string>
 	<string name="activity_android_arrayadapter">ArrayAdapter</string>
+	<string name="activity_android_simpleexpandable">SimpleExpandableListAdapter</string>
 	<string name="activity_absarrayadapter">AbsArrayAdapter</string>
 	<string name="activity_nfarrayadapter">NFArrayAdapter</string>
 	<string name="activity_sparseadapter">SparseAdapter</string>
