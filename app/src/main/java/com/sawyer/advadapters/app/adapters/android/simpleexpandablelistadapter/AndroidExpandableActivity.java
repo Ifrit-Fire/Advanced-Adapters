@@ -32,8 +32,7 @@ public class AndroidExpandableActivity extends AdapterBaseActivity implements
 
 	@Override
 	protected void clear() {
-		//TODO: Implement (reset with new adapter)
-		updateActionBar();
+		ToastHelper.showClearNotSupported(this);
 	}
 
 	@Override
@@ -94,8 +93,7 @@ public class AndroidExpandableActivity extends AdapterBaseActivity implements
 
 	@Override
 	protected void reset() {
-		//TODO: Implement, set new adapter
-		updateActionBar();
+		mListFragment.reset();
 	}
 
 	@Override

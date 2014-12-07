@@ -15,7 +15,6 @@
  */
 package com.sawyer.advadapters.app.adapters.android.simpleexpandablelistadapter;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.view.ActionMode;
 import android.view.LayoutInflater;
@@ -32,6 +31,7 @@ import com.sawyer.advadapters.app.data.MovieContent;
 import com.sawyer.advadapters.app.data.MovieItem;
 import com.sawyer.advadapters.widget.RolodexAdapter;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -40,9 +40,9 @@ import java.util.Map;
 import java.util.Set;
 
 public class AndroidExpandableFragment extends ExpandableListFragment {
-	private static final String STATE_LIST = "State List";
+	private static final String STATE_GROUP_LIST = "State Group List";
+	private static final String STATE_CHILD_LIST = "State Child List";
 
-	private EventListener mEventListener;
 	private String[] mGroupKeys = {"KEY_YEAR"};
 	private String[] mChildKeys = {MovieItem.MAP_KEYS[0], MovieItem.MAP_KEYS[1]};
 	private int[] mGroupIds = {android.R.id.text1};
@@ -115,17 +115,7 @@ public class AndroidExpandableFragment extends ExpandableListFragment {
 		}
 	}
 
-	@Override
-	public void onAttach(Activity activity) {
-		super.onAttach(activity);
-		if (activity instanceof EventListener) {
-			mEventListener = (EventListener) activity;
-		} else {
-			throw new ClassCastException(
-					"Activity must implement " + EventListener.class.getSimpleName());
-		}
-	}
-
+	@SuppressWarnings("unchecked")
 	@Override
 	public boolean onChildClick(ExpandableListView parent, View v, int groupPosition,
 								int childPosition, long id) {
@@ -138,12 +128,57 @@ public class AndroidExpandableFragment extends ExpandableListFragment {
 		return true;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 							 Bundle savedInstanceState) {
 		View v = super.onCreateView(inflater, container, savedInstanceState);
-
+		List<Map<String, String>> groupData;
+		List<List<Map<String, String>>> childData;
+		if (savedInstanceState != null) {
+			groupData = (List<Map<String, String>>) savedInstanceState.getSerializable(
+					STATE_GROUP_LIST);
+			childData = (List<List<Map<String, String>>>) savedInstanceState.getSerializable(
+					STATE_CHILD_LIST);
+		} else {
+			groupData = getGroupData(MovieContent.ITEM_LIST);
+			childData = getChildData(MovieContent.ITEM_LIST);
+		}
 		//Yup this isn't confusing or complicated. Not one bit.
+		setListAdapter(new AndroidExpandableAdapter(getActivity(),
+													groupData,
+													android.R.layout.simple_expandable_list_item_1,
+													mGroupKeys, mGroupIds,
+													childData,
+													android.R.layout.simple_expandable_list_item_2,
+													mChildKeys, mChildIds));
+		getExpandableListView().setChoiceMode(RolodexAdapter.CHOICE_MODE_MULTIPLE_MODAL);
+		getExpandableListView().setMultiChoiceModeListener(new OnCabMultiChoiceModeListener());
+		return v;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+		List<Map<String, String>> groupData = new ArrayList<>();
+		List<List<Map<String, String>>> childData = new ArrayList<>();
+		int groupCount = getListAdapter().getGroupCount();
+		for (int index = 0; index < groupCount; ++index) {
+			groupData.add((Map<String, String>) getListAdapter().getGroup(index));
+			int childCount = getListAdapter().getChildrenCount(index);
+			List<Map<String, String>> groupChildren = new ArrayList<>();
+			for (int ind = 0; ind < childCount; ++ind) {
+				groupChildren.add((Map<String, String>) getListAdapter().getChild(index, ind));
+			}
+			childData.add(groupChildren);
+		}
+		outState.putSerializable(STATE_GROUP_LIST, (Serializable) groupData);
+		outState.putSerializable(STATE_CHILD_LIST, (Serializable) childData);
+	}
+
+	public void reset() {
+		//Can anyone say, convoluted constructor?
 		setListAdapter(new AndroidExpandableAdapter(getActivity(),
 													getGroupData(MovieContent.ITEM_LIST),
 													android.R.layout.simple_expandable_list_item_1,
@@ -151,20 +186,6 @@ public class AndroidExpandableFragment extends ExpandableListFragment {
 													getChildData(MovieContent.ITEM_LIST),
 													android.R.layout.simple_expandable_list_item_2,
 													mChildKeys, mChildIds));
-
-		getExpandableListView().setChoiceMode(RolodexAdapter.CHOICE_MODE_MULTIPLE_MODAL);
-		getExpandableListView().setMultiChoiceModeListener(new OnCabMultiChoiceModeListener());
-		return v;
-	}
-
-	@Override
-	public void onSaveInstanceState(Bundle outState) {
-		super.onSaveInstanceState(outState);
-		//TODO: Correction to self....we can modify the adapter so figure out how to persist the data
-	}
-
-	public interface EventListener {
-		//TODO: Do I even need this?
 	}
 
 	private class OnCabMultiChoiceModeListener implements ListView.MultiChoiceModeListener {
@@ -181,7 +202,6 @@ public class AndroidExpandableFragment extends ExpandableListFragment {
 
 		@Override
 		public void onDestroyActionMode(ActionMode mode) {
-
 		}
 
 		@Override

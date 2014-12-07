@@ -22,6 +22,10 @@ import static android.widget.Toast.LENGTH_SHORT;
 
 public class ToastHelper {
 
+	public static void showClearNotSupported(Context activity) {
+		Toast.makeText(activity, R.string.toast_clear_not_supported, LENGTH_SHORT).show();
+	}
+
 	public static void showContainsFalse(Context activity, String text) {
 		Toast.makeText(activity, activity.getString(R.string.toast_contains_movie_false) + text,
 					   LENGTH_SHORT).show();
