@@ -88,10 +88,11 @@
 	<string name="btn_sort_enable_auto_sort">Enable Auto Header Sort</string>
 
 	<!-- Toast Messages -->
+	<string name="toast_choice_mode_not_supported">Choice Mode not supported.</string>
 	<string name="toast_clear_not_supported">Clear not supported.</string>
 	<string name="toast_contains_movie_true">Adapter contains:\n</string>
 	<string name="toast_contains_movie_false">Could not find:\n</string>
-	<string name="toast_item_updates_not_supported">Item updates not supported</string>
+	<string name="toast_item_updates_not_supported">Item updates not supported.</string>
 	<string name="toast_remove_not_supported">Remove not supported.</string>
 	<string name="toast_retain_all_not_supported">RetainAll not supported.</string>
 	<string name="toast_sort_not_supported">Sort not supported.</string>

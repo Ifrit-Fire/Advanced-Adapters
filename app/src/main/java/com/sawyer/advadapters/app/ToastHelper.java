@@ -51,4 +51,8 @@ public class ToastHelper {
 	public static void showSortNotSupported(Context activity) {
 		Toast.makeText(activity, R.string.toast_sort_not_supported, LENGTH_SHORT).show();
 	}
+
+	public static void showChoiceModeNotSupported(Context activity) {
+		Toast.makeText(activity, R.string.toast_choice_mode_not_supported, LENGTH_SHORT).show();
+	}
 }

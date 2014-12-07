@@ -26,6 +26,7 @@ import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
 import android.widget.ListView;
 
+import com.sawyer.advadapters.app.ToastHelper;
 import com.sawyer.advadapters.app.adapters.ExpandableListFragment;
 import com.sawyer.advadapters.app.data.MovieContent;
 import com.sawyer.advadapters.app.data.MovieItem;
@@ -33,8 +34,8 @@ import com.sawyer.advadapters.widget.RolodexAdapter;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
+import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -56,10 +57,13 @@ public class AndroidExpandableFragment extends ExpandableListFragment {
 	 * Just when you thought the {@link #getGroupData(List)} was getting complicated, we go one step
 	 * further. This converts our List of movies into the data structure required by the {@link
 	 * android.widget.SimpleExpandableListAdapter}. Totally makes sense right?
+	 * <p/>
+	 * The child data syncs up with the group data solely because we assume the movies List is
+	 * already sorted based on movie release year...and that we sorted the groupData by year.
 	 */
 	private List<List<Map<String, String>>> getChildData(List<MovieItem> movies) {
 		//Build a mapping of movies that belong to each year
-		Map<Integer, List<Map<String, String>>> yearToMovies = new HashMap<>();
+		Map<Integer, List<Map<String, String>>> yearToMovies = new LinkedHashMap<>();
 		for (MovieItem movie : movies) {
 			List<Map<String, String>> movieList = yearToMovies.get(movie.year);
 			if (movieList == null) {
@@ -81,10 +85,12 @@ public class AndroidExpandableFragment extends ExpandableListFragment {
 	/**
 	 * Given a list of movies, builds the required List of Maps based on the found movie years. This
 	 * will go on to act as our group data required by the {@link android.widget.SimpleExpandableListAdapter}.
+	 * <p/>
+	 * Group data must be sorted by year to more easily allow the childData to sync up correctly.
 	 */
 	private List<Map<String, String>> getGroupData(List<MovieItem> movies) {
 		//Lets first find all the movie years we need
-		Set<String> years = new HashSet<>();
+		Set<String> years = new LinkedHashSet<>();
 		for (MovieItem movie : movies) {
 			years.add(String.valueOf(movie.year));
 		}
@@ -92,7 +98,7 @@ public class AndroidExpandableFragment extends ExpandableListFragment {
 		//Build a map for each year, then add to group listing
 		List<Map<String, String>> groupData = new ArrayList<>();
 		for (String year : years) {
-			Map<String, String> map = new HashMap<>();
+			Map<String, String> map = new LinkedHashMap<>();
 			map.put(mGroupKeys[0], year);
 			groupData.add(map);
 		}
@@ -196,7 +202,7 @@ public class AndroidExpandableFragment extends ExpandableListFragment {
 
 		@Override
 		public boolean onCreateActionMode(ActionMode mode, Menu menu) {
-			//TODO: Show unsupported toast
+			ToastHelper.showChoiceModeNotSupported(getActivity());
 			return false;
 		}
 

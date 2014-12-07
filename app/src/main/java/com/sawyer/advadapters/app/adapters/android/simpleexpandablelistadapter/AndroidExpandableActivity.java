@@ -24,8 +24,7 @@ import com.sawyer.advadapters.app.R;
 import com.sawyer.advadapters.app.ToastHelper;
 import com.sawyer.advadapters.app.adapters.AdapterBaseActivity;
 
-public class AndroidExpandableActivity extends AdapterBaseActivity implements
-		AndroidExpandableFragment.EventListener {
+public class AndroidExpandableActivity extends AdapterBaseActivity {
 	private static final String TAG_ADAPTER_FRAG = "Tag Adapter Frag";
 
 	private AndroidExpandableFragment mListFragment;
@@ -33,6 +32,20 @@ public class AndroidExpandableActivity extends AdapterBaseActivity implements
 	@Override
 	protected void clear() {
 		ToastHelper.showClearNotSupported(this);
+	}
+
+	private void collapseAll() {
+		int groupCount = mListFragment.getListAdapter().getGroupCount();
+		for (int index = 0; index < groupCount; ++index) {
+			mListFragment.getExpandableListView().collapseGroup(index);
+		}
+	}
+
+	private void expandAll() {
+		int groupCount = mListFragment.getListAdapter().getGroupCount();
+		for (int index = 0; index < groupCount; ++index) {
+			mListFragment.getExpandableListView().expandGroup(index);
+		}
 	}
 
 	@Override
@@ -79,11 +92,11 @@ public class AndroidExpandableActivity extends AdapterBaseActivity implements
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case R.id.menu_action_collapse:
-			//TODO: Manually implement
+			collapseAll();
 			return true;
 
 		case R.id.menu_action_expand:
-			//TODO: Manually implement
+			expandAll();
 			return true;
 
 		default:
