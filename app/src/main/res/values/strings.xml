@@ -89,7 +89,6 @@
 
 	<!-- Toast Messages -->
 	<string name="toast_choice_mode_not_supported">Choice Mode not supported.</string>
-	<string name="toast_clear_not_supported">Clear not supported.</string>
 	<string name="toast_contains_movie_true">Adapter contains:\n</string>
 	<string name="toast_contains_movie_false">Could not find:\n</string>
 	<string name="toast_item_updates_not_supported">Item updates not supported.</string>

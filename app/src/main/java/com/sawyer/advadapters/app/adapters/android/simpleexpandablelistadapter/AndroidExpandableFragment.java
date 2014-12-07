@@ -53,6 +53,15 @@ public class AndroidExpandableFragment extends ExpandableListFragment {
 		return new AndroidExpandableFragment();
 	}
 
+	public AndroidExpandableAdapter createEmptyAdapter() {
+		return new AndroidExpandableAdapter(getActivity(), new ArrayList<Map<String, String>>(),
+											android.R.layout.simple_expandable_list_item_1,
+											mGroupKeys, mGroupIds,
+											new ArrayList<List<Map<String, String>>>(),
+											android.R.layout.simple_expandable_list_item_2,
+											mChildKeys, mChildIds);
+	}
+
 	/**
 	 * Just when you thought the {@link #getGroupData(List)} was getting complicated, we go one step
 	 * further. This converts our List of movies into the data structure required by the {@link
@@ -139,25 +148,22 @@ public class AndroidExpandableFragment extends ExpandableListFragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 							 Bundle savedInstanceState) {
 		View v = super.onCreateView(inflater, container, savedInstanceState);
-		List<Map<String, String>> groupData;
-		List<List<Map<String, String>>> childData;
 		if (savedInstanceState != null) {
-			groupData = (List<Map<String, String>>) savedInstanceState.getSerializable(
-					STATE_GROUP_LIST);
-			childData = (List<List<Map<String, String>>>) savedInstanceState.getSerializable(
-					STATE_CHILD_LIST);
+			List<Map<String, String>> groupData = (List<Map<String, String>>) savedInstanceState
+					.getSerializable(STATE_GROUP_LIST);
+			List<List<Map<String, String>>> childData = (List<List<Map<String, String>>>) savedInstanceState
+					.getSerializable(STATE_CHILD_LIST);
+			//Yup this isn't confusing or complicated. Not one bit.
+			setListAdapter(new AndroidExpandableAdapter(getActivity(),
+														groupData,
+														android.R.layout.simple_expandable_list_item_1,
+														mGroupKeys, mGroupIds,
+														childData,
+														android.R.layout.simple_expandable_list_item_2,
+														mChildKeys, mChildIds));
 		} else {
-			groupData = getGroupData(MovieContent.ITEM_LIST);
-			childData = getChildData(MovieContent.ITEM_LIST);
+			setListAdapter(createEmptyAdapter());
 		}
-		//Yup this isn't confusing or complicated. Not one bit.
-		setListAdapter(new AndroidExpandableAdapter(getActivity(),
-													groupData,
-													android.R.layout.simple_expandable_list_item_1,
-													mGroupKeys, mGroupIds,
-													childData,
-													android.R.layout.simple_expandable_list_item_2,
-													mChildKeys, mChildIds));
 		getExpandableListView().setChoiceMode(RolodexAdapter.CHOICE_MODE_MULTIPLE_MODAL);
 		getExpandableListView().setMultiChoiceModeListener(new OnCabMultiChoiceModeListener());
 		return v;

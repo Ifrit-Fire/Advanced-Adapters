@@ -22,8 +22,8 @@ import static android.widget.Toast.LENGTH_SHORT;
 
 public class ToastHelper {
 
-	public static void showClearNotSupported(Context activity) {
-		Toast.makeText(activity, R.string.toast_clear_not_supported, LENGTH_SHORT).show();
+	public static void showChoiceModeNotSupported(Context activity) {
+		Toast.makeText(activity, R.string.toast_choice_mode_not_supported, LENGTH_SHORT).show();
 	}
 
 	public static void showContainsFalse(Context activity, String text) {
@@ -50,9 +50,5 @@ public class ToastHelper {
 
 	public static void showSortNotSupported(Context activity) {
 		Toast.makeText(activity, R.string.toast_sort_not_supported, LENGTH_SHORT).show();
-	}
-
-	public static void showChoiceModeNotSupported(Context activity) {
-		Toast.makeText(activity, R.string.toast_choice_mode_not_supported, LENGTH_SHORT).show();
 	}
 }

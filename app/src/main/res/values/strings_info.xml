@@ -51,6 +51,18 @@
 	</string>
 	<string name="info_android_arrayAdapter_url">https://github.com/JaySoyer/Advanced-Adapters/wiki/</string>
 
+	<!--Info Dialog - Android's SimpleExpandableListAdapter-->
+	<string name="info_android_simpleexpandable_title">Adapter Demo Info</string>
+	<string name="info_android_simpleexpandable_message">
+		The following is a demonstration of Android\'s SimpleExpanadableListAdapter in action. While
+		there are no bugs with the adapter, it is severely lacking in functionality, usability, and
+		easability. Yes despite the name, it\'s a pain to convert your data for it. Just check out
+		the source code.\n
+		\n
+		After playing around here, check out the Rolodex Adapter demos. Far more capable and easier
+		to use.
+	</string>
+
 	<!--Info Dialog - AbsArrayAdapter-->
 	<string name="info_absarrayadapter_title">Adapter Demo Info</string>
 	<string name="info_absarrayadapter_message">

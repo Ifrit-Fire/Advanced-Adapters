@@ -31,7 +31,8 @@ public class AndroidExpandableActivity extends AdapterBaseActivity {
 
 	@Override
 	protected void clear() {
-		ToastHelper.showClearNotSupported(this);
+		//Only way to clear the adapter is by creating a new one with no data
+		mListFragment.setListAdapter(mListFragment.createEmptyAdapter());
 	}
 
 	private void collapseAll() {
@@ -50,12 +51,12 @@ public class AndroidExpandableActivity extends AdapterBaseActivity {
 
 	@Override
 	protected String getInfoDialogMessage() {
-		return "";    //TODO: Implement
+		return getString(R.string.info_android_simpleexpandable_message);
 	}
 
 	@Override
 	protected String getInfoDialogTitle() {
-		return "";    //TODO: Implement
+		return getString(R.string.info_android_simpleexpandable_title);
 	}
 
 	@Override
