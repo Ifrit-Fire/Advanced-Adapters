@@ -57,10 +57,8 @@ public abstract class BaseRolodexAdapter extends BaseExpandableListAdapter {
 	 * once a new reference has been re-established.
 	 * <p/>
 	 * This mainly solves the edge case where an adapter is attached to a ExpandableListView and
-	 * told to expand all before any View's are drawn. Since the ExpandableListView is not known
-	 * until View generation, the expand all request would then fail to do anything.
-	 * <p/>
-	 * For now this only supports expanding/collapsing groups.
+	 * told to expand/collapse all before any View's are drawn. Since the ExpandableListView is not
+	 * known until View generation, the request would fail to do anything.
 	 */
 	private static enum QueueAction {
 		EXPAND_ALL,
