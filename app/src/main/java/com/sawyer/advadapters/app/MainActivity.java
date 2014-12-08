@@ -16,6 +16,7 @@
 package com.sawyer.advadapters.app;
 
 import android.app.ExpandableListActivity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -112,8 +113,7 @@ public class MainActivity extends ExpandableListActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		getExpandableListView().setGroupIndicator(null);
-		DemoAdapter adapter = new DemoAdapter(getExpandableListView(), createIntentList());
-		adapter.setChoiceMode(DemoAdapter.CHOICE_MODE_MULTIPLE_MODAL);
+		DemoAdapter adapter = new DemoAdapter(this, createIntentList());
 		adapter.setOnChildClickListener(this);
 		setListAdapter(adapter);
 	}
@@ -137,8 +137,8 @@ public class MainActivity extends ExpandableListActivity {
 	}
 
 	private class DemoAdapter extends RolodexAdapter<String, Intent> {
-		public DemoAdapter(ExpandableListView listView, List<Intent> objects) {
-			super(listView, objects);
+		public DemoAdapter(Context activity, List<Intent> objects) {
+			super(activity, objects);
 		}
 
 		@Override

@@ -24,26 +24,56 @@ public abstract class BaseRolodexAdapter extends BaseExpandableListAdapter {
 	public static final int CHOICE_MODE_MULTIPLE_MODAL = AbsListView.CHOICE_MODE_MULTIPLE_MODAL;
 
 	private static final String TAG = "BaseRolodexAdapter";
-
 	private final OnDisableTouchListener mDisableTouchListener = new OnDisableTouchListener();
 	private final OnChoiceModeClickListener mChoiceModeClickListener = new OnChoiceModeClickListener();
+
 	/** Controls if/how the user may choose/check items in the list */
 	int mChoiceMode;
+	/** Flag indicating if the ActionMode CAB is active and being displayed */
 	boolean mIsChoiceModeActive;
+	/** {@link WeakReference} to {@link ExpandableListView} which the adapter is currently attached. */
 	WeakReference<ExpandableListView> mListView;
+	/** User defined callback to be invoked when a group view has been clicked. */
 	ExpandableListView.OnGroupClickListener mOnGroupClickListener;
+	/** User defined callback to be invoked when a child view has been clicked. */
 	ExpandableListView.OnChildClickListener mOnChildClickListener;
+	/** */
 	MultiChoiceModeListener mMultiChoiceModeListener;
 
 	/** LayoutInflater created from the constructing context */
 	private LayoutInflater mInflater;
-	/** Activity Context used to construct this adapter * */
+	/** Activity Context used to construct this adapter */
 	private Context mContext;
+	/**
+	 * Indicates if there are any pending actions that need to be performed. Certain actions will
+	 * get queued up when they fail to complete due to having no reference to the attached {@link
+	 * ExpandableListView}
+	 */
+	private QueueAction mQueueAction;
 
-	BaseRolodexAdapter(ExpandableListView listView) {
-		init(listView);
+	/**
+	 * Defines actions which could be requested but fail to happen because the adapter has no
+	 * reference to it's {@link ExpandableListView}. These actions then must be queued up to occur
+	 * once a new reference has been re-established.
+	 * <p/>
+	 * This mainly solves the edge case where an adapter is attached to a ExpandableListView and
+	 * told to expand all before any View's are drawn. Since the ExpandableListView is not known
+	 * until View generation, the expand all request would then fail to do anything.
+	 * <p/>
+	 * For now this only supports expanding/collapsing groups.
+	 */
+	private static enum QueueAction {
+		EXPAND_ALL,
+		EXPAND_ALL_ANIMATE,
+		COLLAPSE_ALL,
+		DO_NOTHING
 	}
 
+	BaseRolodexAdapter(Context activity) {
+		init(activity);
+	}
+
+	/** Convenience method to log when we unexpectedly lost our ExpandableListView reference. */
 	private static void logLostReference(String method) {
 		Log.w(TAG, "Lost reference to ExpandableListView in " + method);
 	}
@@ -56,42 +86,62 @@ public abstract class BaseRolodexAdapter extends BaseExpandableListAdapter {
 		return joinedList;
 	}
 
-	/**
-	 * Collapse all groups in the adapter.
-	 *
-	 * @return False if adapter failed to attempt collapsing. Otherwise True.
-	 */
-	public boolean collapseAll() {
+	/** Collapse all groups in the adapter. */
+	public void collapseAll() {
 		ExpandableListView lv = mListView.get();
 		if (lv == null) {
-			logLostReference("collapseAll");
-			return false;
+			mQueueAction = QueueAction.COLLAPSE_ALL;
+			return;
 		}
 
+		mQueueAction = QueueAction.DO_NOTHING;
+		if (hasAutoExpandingGroups()) return;
 		for (int index = 0; index < getGroupCount(); ++index) {
 			lv.collapseGroup(index);
 		}
-		return true;
+	}
+
+	public void doAction() {
+		switch (mQueueAction) {
+		case COLLAPSE_ALL:
+			collapseAll();
+			break;
+		case EXPAND_ALL:
+			expandAll(false);
+			break;
+		case EXPAND_ALL_ANIMATE:
+			expandAll(true);
+			break;
+		default:
+			//Do nothing
+		}
+	}
+
+	/**
+	 * Expand all groups in the adapter with no animation. Convenience wrapper call for {@link
+	 * #expandAll(boolean)} with false passed in.
+	 */
+	public void expandAll() {
+		expandAll(false);
 	}
 
 	/**
 	 * Expand all groups in the adapter.
 	 *
 	 * @param animate True if the expanding groups should be animated in
-	 *
-	 * @return False if adapter failed to attempt an expansion. Otherwise True.
 	 */
-	public boolean expandAll(boolean animate) {
+	public void expandAll(boolean animate) {
 		ExpandableListView lv = mListView.get();
 		if (lv == null) {
-			logLostReference("expandAll");
-			return false;
+			mQueueAction = animate ? QueueAction.EXPAND_ALL_ANIMATE : QueueAction.EXPAND_ALL;
+			return;
 		}
 
+		mQueueAction = QueueAction.DO_NOTHING;
+		if (hasAutoExpandingGroups()) return;
 		for (int index = 0; index < getGroupCount(); ++index) {
 			lv.expandGroup(index, animate);
 		}
-		return true;
 	}
 
 	public abstract View getChildView(LayoutInflater inflater, int groupPosition, int childPosition,
@@ -101,9 +151,8 @@ public abstract class BaseRolodexAdapter extends BaseExpandableListAdapter {
 	@Override
 	public final View getChildView(int groupPosition, int childPosition, boolean isLastChild,
 								   View convertView, ViewGroup parent) {
-		View v = getChildView(mInflater, groupPosition, childPosition, isLastChild, convertView,
-							  parent);
-		return v;
+		return getChildView(mInflater, groupPosition, childPosition, isLastChild, convertView,
+							parent);
 	}
 
 	/**
@@ -118,11 +167,14 @@ public abstract class BaseRolodexAdapter extends BaseExpandableListAdapter {
 								   ViewGroup parent) {
 		ExpandableListView lv = mListView.get();
 		if (lv == null) {
-			logLostReference("getGroupView");
 			if (parent instanceof ExpandableListView) {
 				lv = (ExpandableListView) parent;
 				mListView = new WeakReference<>(lv);
-				initChoiceMode(mChoiceMode, lv);
+				lv.setOnGroupClickListener(mOnGroupClickListener);
+				lv.setOnChildClickListener(mOnChildClickListener);
+				lv.setChoiceMode(mChoiceMode);
+				lv.setMultiChoiceModeListener(new InternalMultiChoiceModeListener());
+				doAction();
 			} else {
 				throw new IllegalStateException(
 						"Expecting ExpandableListView when refreshing referenced state. Instead found unsupported " +
@@ -157,25 +209,13 @@ public abstract class BaseRolodexAdapter extends BaseExpandableListAdapter {
 		return false;
 	}
 
-	private void init(ExpandableListView lv) {
-		mContext = lv.getContext();
+	private void init(Context activity) {
+		mContext = activity;
 		mInflater = LayoutInflater.from(mContext);
-		mListView = new WeakReference<>(lv);
-		initChoiceMode(CHOICE_MODE_NONE, lv);
-	}
-
-	private void initChoiceMode(int choiceMode, ExpandableListView lv) {
-		mChoiceMode = choiceMode;
-		lv.setChoiceMode(choiceMode);
+		mListView = new WeakReference<>(null);
+		mChoiceMode = CHOICE_MODE_NONE;
 		mIsChoiceModeActive = false;
-		lv.setOnGroupClickListener(mOnGroupClickListener);
-		lv.setOnChildClickListener(mOnChildClickListener);
-		if (choiceMode == CHOICE_MODE_NONE) {
-			//TODO: Test setting this while ActionMode is displaying
-			lv.setMultiChoiceModeListener(null);
-		} else {
-			lv.setMultiChoiceModeListener(new InternalMultiChoiceModeListener());
-		}
+		mQueueAction = QueueAction.DO_NOTHING;
 	}
 
 	@Override
@@ -200,22 +240,22 @@ public abstract class BaseRolodexAdapter extends BaseExpandableListAdapter {
 	 * List allows up to one item to  be in a chosen state. By setting the choiceMode to {@link
 	 * #CHOICE_MODE_MULTIPLE}, the list allows any number of items to be chosen.
 	 * <p/>
-	 * Use this method instead of {@link AbsListView#setChoiceMode(int)}. By setting to the behavior
-	 * to anything but {@link #CHOICE_MODE_NONE} will have this adapter take owner ship of the
-	 * {@link ExpandableListView.OnChildClickListener} and {@link ExpandableListView.OnGroupClickListener}
+	 * Use this method instead of {@link AbsListView#setChoiceMode(int)}. By setting the behavior to
+	 * anything but {@link #CHOICE_MODE_NONE} will have this adapter take ownership of the {@link
+	 * ExpandableListView.OnChildClickListener} and {@link ExpandableListView.OnGroupClickListener}
 	 * listeners.
 	 *
 	 * @param choiceMode One of {@link #CHOICE_MODE_NONE}, {@link #CHOICE_MODE_SINGLE}, or {@link
 	 *                   #CHOICE_MODE_MULTIPLE}
 	 */
-	public void setChoiceMode(int choiceMode) {
+	public void setChoiceMode(final int choiceMode) {
+		if (mChoiceMode == choiceMode) return;
 		mChoiceMode = choiceMode;
-		ExpandableListView lv = mListView.get();
-		if (lv == null) {
-			logLostReference("setChoiceMode");
-		} else {
-			initChoiceMode(choiceMode, lv);
-		}
+		final ExpandableListView lv = mListView.get();
+		if (lv == null) return;
+		lv.setOnGroupClickListener(mOnGroupClickListener);
+		lv.setOnChildClickListener(mOnChildClickListener);
+		lv.setChoiceMode(choiceMode);
 	}
 
 	/**
@@ -235,11 +275,7 @@ public abstract class BaseRolodexAdapter extends BaseExpandableListAdapter {
 		mOnChildClickListener = onChildClickListener;
 		if (!mIsChoiceModeActive) {
 			ExpandableListView lv = mListView.get();
-			if (lv == null) {
-				logLostReference("setOnChildClickListener");
-			} else {
-				lv.setOnChildClickListener(mOnChildClickListener);
-			}
+			if (lv != null) lv.setOnChildClickListener(mOnChildClickListener);
 		}
 	}
 
@@ -248,11 +284,7 @@ public abstract class BaseRolodexAdapter extends BaseExpandableListAdapter {
 		mOnGroupClickListener = onGroupClickListener;
 		ExpandableListView lv = mListView.get();
 		if (!mIsChoiceModeActive) {
-			if (lv == null) {
-				logLostReference("setOnGroupClickListener");
-			} else {
-				lv.setOnGroupClickListener(mOnGroupClickListener);
-			}
+			if (lv != null) lv.setOnGroupClickListener(mOnGroupClickListener);
 		}
 	}
 

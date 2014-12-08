@@ -15,8 +15,8 @@
  */
 package com.sawyer.advadapters.widget;
 
+import android.content.Context;
 import android.text.TextUtils;
-import android.widget.ExpandableListView;
 import android.widget.Filter;
 import android.widget.Filterable;
 
@@ -74,21 +74,21 @@ public abstract class RolodexAdapter<G, C> extends BaseRolodexAdapter implements
 	/**
 	 * Constructor
 	 *
-	 * @param listView ExpandableListView which will store the adapter
+	 * @param activity Context used for inflating views
 	 */
-	public RolodexAdapter(ExpandableListView listView) {
-		super(listView);
+	public RolodexAdapter(Context activity) {
+		super(activity);
 		init(new ArrayList<C>());
 	}
 
 	/**
 	 * Constructor
 	 *
-	 * @param listView Context used for inflating views
+	 * @param activity Context used for inflating views
 	 * @param items    The items to represent within the adapter.
 	 */
-	public RolodexAdapter(ExpandableListView listView, C[] items) {
-		super(listView);
+	public RolodexAdapter(Context activity, C[] items) {
+		super(activity);
 		List<C> list = Arrays.asList(items);
 		init(list);
 	}
@@ -96,11 +96,11 @@ public abstract class RolodexAdapter<G, C> extends BaseRolodexAdapter implements
 	/**
 	 * Constructor
 	 *
-	 * @param listView Context used for inflating views
+	 * @param activity Context used for inflating views
 	 * @param items    The items to represent within the adapter.
 	 */
-	public RolodexAdapter(ExpandableListView listView, Collection<C> items) {
-		super(listView);
+	public RolodexAdapter(Context activity, Collection<C> items) {
+		super(activity);
 		init(items);
 	}
 
@@ -296,16 +296,6 @@ public abstract class RolodexAdapter<G, C> extends BaseRolodexAdapter implements
 	 * @return The group class object which represents the give child. Do not return null.
 	 */
 	public abstract G createGroupFor(C childItem);
-
-	/**
-	 * Expand all groups in the adapter with no animation. Convenience wrapper call for {@link
-	 * #expandAll(boolean)} with false passed in.
-	 *
-	 * @return False if adapter failed to attempt an expansion. Otherwise True.
-	 */
-	public boolean expandAll() {
-		return expandAll(false);
-	}
 
 	@Override
 	public C getChild(int groupPosition, int childPosition) {

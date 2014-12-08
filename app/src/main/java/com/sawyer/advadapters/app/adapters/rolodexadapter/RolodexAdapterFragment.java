@@ -97,9 +97,9 @@ public class RolodexAdapterFragment extends ExpandableListFragment {
 					.getParcelableArrayList(STATE_CAB_CHECKED_ITEMS);
 			mCheckedItems.addAll(checkItems);
 			ArrayList<MovieItem> list = savedInstanceState.getParcelableArrayList(STATE_LIST);
-			setListAdapter(new MovieRolodexAdapter(getExpandableListView(), list));
+			setListAdapter(new MovieRolodexAdapter(getActivity(), list));
 		} else {
-			setListAdapter(new MovieRolodexAdapter(getExpandableListView()));
+			setListAdapter(new MovieRolodexAdapter(getActivity()));
 		}
 		getListAdapter().setChoiceMode(RolodexAdapter.CHOICE_MODE_MULTIPLE_MODAL);
 		getListAdapter().setMultiChoiceModeListener(new OnCabMultiChoiceModeListener());
