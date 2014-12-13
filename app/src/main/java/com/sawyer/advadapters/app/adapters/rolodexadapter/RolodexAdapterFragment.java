@@ -187,6 +187,21 @@ public class RolodexAdapterFragment extends ExpandableListFragment {
 		@Override
 		public void onGroupCheckedStateChanged(ActionMode mode, int groupPosition, long groupId,
 											   boolean checked) {
+			//If group is expanded, then the onChildCheckedStateChanged method will be invoked. Which
+			//means it'll safely take care of updating our screen.
+			if (getExpandableListView().isGroupExpanded(groupPosition)) return;
+
+			int childCount = getListAdapter().getChildrenCount(groupPosition);
+			if (checked) {
+				for (int index = 0; index < childCount; ++index) {
+					mCheckedItems.add(getListAdapter().getChild(groupPosition, index));
+				}
+			} else {
+				for (int index = 0; index < childCount; ++index) {
+					mCheckedItems.remove(getListAdapter().getChild(groupPosition, index));
+				}
+			}
+			mode.setTitle(mCheckedItems.size() + " Selected");
 		}
 
 		@Override

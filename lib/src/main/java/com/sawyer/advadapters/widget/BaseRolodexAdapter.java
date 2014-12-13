@@ -1,6 +1,7 @@
 package com.sawyer.advadapters.widget;
 
 import android.content.Context;
+import android.os.Parcelable;
 import android.util.Log;
 import android.view.ActionMode;
 import android.view.LayoutInflater;
@@ -37,7 +38,7 @@ public abstract class BaseRolodexAdapter extends BaseExpandableListAdapter {
 	ExpandableListView.OnGroupClickListener mOnGroupClickListener;
 	/** User defined callback to be invoked when a child view has been clicked. */
 	ExpandableListView.OnChildClickListener mOnChildClickListener;
-	/** */
+	/** TODO: Write this */
 	MultiChoiceModeListener mMultiChoiceModeListener;
 
 	/** LayoutInflater created from the constructing context */
@@ -50,6 +51,7 @@ public abstract class BaseRolodexAdapter extends BaseExpandableListAdapter {
 	 * ExpandableListView}
 	 */
 	private QueueAction mQueueAction;
+	private Parcelable mParcelState;
 
 	/**
 	 * Defines actions which could be requested but fail to happen because the adapter has no
@@ -99,7 +101,7 @@ public abstract class BaseRolodexAdapter extends BaseExpandableListAdapter {
 		}
 	}
 
-	public void doAction() {
+	private void doAction() {
 		switch (mQueueAction) {
 		case COLLAPSE_ALL:
 			collapseAll();
@@ -153,6 +155,34 @@ public abstract class BaseRolodexAdapter extends BaseExpandableListAdapter {
 							parent);
 	}
 
+	public int getChoiceMode() {
+		return mChoiceMode;
+	}
+
+	/**
+	 * Defines the choice behavior for the List. By default, Lists do not have any choice behavior
+	 * ({@link #CHOICE_MODE_NONE}). By setting the choiceMode to {@link #CHOICE_MODE_SINGLE}, the
+	 * List allows up to one item to  be in a chosen state. By setting the choiceMode to {@link
+	 * #CHOICE_MODE_MULTIPLE}, the list allows any number of items to be chosen.
+	 * <p/>
+	 * Use this method instead of {@link AbsListView#setChoiceMode(int)}. By setting the behavior to
+	 * anything but {@link #CHOICE_MODE_NONE} will have this adapter take ownership of the {@link
+	 * ExpandableListView.OnChildClickListener} and {@link ExpandableListView.OnGroupClickListener}
+	 * listeners.
+	 *
+	 * @param choiceMode One of {@link #CHOICE_MODE_NONE}, {@link #CHOICE_MODE_SINGLE}, or {@link
+	 *                   #CHOICE_MODE_MULTIPLE}
+	 */
+	public void setChoiceMode(int choiceMode) {
+		if (mChoiceMode == choiceMode) return;
+		mChoiceMode = choiceMode;
+		final ExpandableListView lv = mListView.get();
+		if (lv == null) return;
+		lv.setOnGroupClickListener(mOnGroupClickListener);
+		lv.setOnChildClickListener(mOnChildClickListener);
+		lv.setChoiceMode(choiceMode);
+	}
+
 	/**
 	 * @return The Context associated with this adapter.
 	 */
@@ -172,6 +202,7 @@ public abstract class BaseRolodexAdapter extends BaseExpandableListAdapter {
 				lv.setOnChildClickListener(mOnChildClickListener);
 				lv.setChoiceMode(mChoiceMode);
 				lv.setMultiChoiceModeListener(new InternalMultiChoiceModeListener());
+				if (mParcelState != null) lv.onRestoreInstanceState(mParcelState);
 				doAction();
 			} else {
 				throw new IllegalStateException(
@@ -232,28 +263,20 @@ public abstract class BaseRolodexAdapter extends BaseExpandableListAdapter {
 		return true;
 	}
 
-	/**
-	 * Defines the choice behavior for the List. By default, Lists do not have any choice behavior
-	 * ({@link #CHOICE_MODE_NONE}). By setting the choiceMode to {@link #CHOICE_MODE_SINGLE}, the
-	 * List allows up to one item to  be in a chosen state. By setting the choiceMode to {@link
-	 * #CHOICE_MODE_MULTIPLE}, the list allows any number of items to be chosen.
-	 * <p/>
-	 * Use this method instead of {@link AbsListView#setChoiceMode(int)}. By setting the behavior to
-	 * anything but {@link #CHOICE_MODE_NONE} will have this adapter take ownership of the {@link
-	 * ExpandableListView.OnChildClickListener} and {@link ExpandableListView.OnGroupClickListener}
-	 * listeners.
-	 *
-	 * @param choiceMode One of {@link #CHOICE_MODE_NONE}, {@link #CHOICE_MODE_SINGLE}, or {@link
-	 *                   #CHOICE_MODE_MULTIPLE}
-	 */
-	public void setChoiceMode(final int choiceMode) {
-		if (mChoiceMode == choiceMode) return;
-		mChoiceMode = choiceMode;
-		final ExpandableListView lv = mListView.get();
-		if (lv == null) return;
-		lv.setOnGroupClickListener(mOnGroupClickListener);
-		lv.setOnChildClickListener(mOnChildClickListener);
-		lv.setChoiceMode(choiceMode);
+	public void onRestoreExpandableListViewState(Parcelable state) {
+		if (state == null) return;
+		ExpandableListView lv = mListView.get();
+		if (lv == null) {
+			mParcelState = state;
+		} else {
+			lv.onRestoreInstanceState(mParcelState);
+		}
+	}
+
+	public Parcelable onSaveExpandableListViewState() {
+		ExpandableListView lv = mListView.get();
+		if (lv == null) return null;
+		return lv.onSaveInstanceState();
 	}
 
 	/**
@@ -309,6 +332,12 @@ public abstract class BaseRolodexAdapter extends BaseExpandableListAdapter {
 		}
 	}
 
+	/**
+	 * Wraps around the {@link AbsListView.MultiChoiceModeListener} to provide the missing
+	 * functionality to support choice mode with an {@link ExpandableListView}. This includes
+	 * delegating the {@link #onItemCheckedStateChanged} to either a child or group event handler.
+	 * It also handles switching out the group and child click listeners when the CAB (dis)appears.
+	 */
 	private class InternalMultiChoiceModeListener implements AbsListView.MultiChoiceModeListener {
 		@Override
 		public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
@@ -363,6 +392,17 @@ public abstract class BaseRolodexAdapter extends BaseExpandableListAdapter {
 					long groupId = getGroupId(groupPosition);
 					mMultiChoiceModeListener
 							.onGroupCheckedStateChanged(mode, groupPosition, groupId, checked);
+
+					//Gotta check expansion first, else we'll crash if changing checked state for a non-visible child
+					if (lv.isGroupExpanded(groupPosition)) {
+						int childCount = getChildrenCount(groupPosition);
+						for (int index = 0; index < childCount; ++index) {
+							packedPosition = ExpandableListView.getPackedPositionForChild(
+									groupPosition, index);
+							int flatPosition = lv.getFlatListPosition(packedPosition);
+							lv.setItemChecked(flatPosition, checked);
+						}
+					}
 				}
 				break;
 

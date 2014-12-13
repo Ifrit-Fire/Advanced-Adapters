@@ -17,6 +17,7 @@ package com.sawyer.advadapters.app.adapters;
 
 import android.app.Fragment;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,11 +36,16 @@ import butterknife.InjectView;
  */
 public class ExpandableListFragment extends Fragment implements
 		ExpandableListView.OnGroupClickListener, ExpandableListView.OnChildClickListener {
+	private static final String STATE_EXPANDABLE_LISTVIEW = "State Expandable ListView";
 
 	@InjectView(android.R.id.list) ExpandableListView mExpandableListView;
 	private ExpandableListAdapter mAdapter;
 
 	public ExpandableListFragment() {
+	}
+
+	public ExpandableListView getExpandableListView() {
+		return mExpandableListView;
 	}
 
 	/**
@@ -55,10 +61,6 @@ public class ExpandableListFragment extends Fragment implements
 	public void setListAdapter(ExpandableListAdapter adapter) {
 		mAdapter = adapter;
 		if (mExpandableListView != null) mExpandableListView.setAdapter(adapter);
-	}
-
-	public ExpandableListView getExpandableListView() {
-		return mExpandableListView;
 	}
 
 	@Override
@@ -77,13 +79,26 @@ public class ExpandableListFragment extends Fragment implements
 
 	@Override
 	public void onDestroyView() {
-		super.onDestroyView();
 		ButterKnife.reset(this);
+		super.onDestroyView();
 	}
 
 	@Override
 	public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
 		return false;
+	}
+
+	@Override
+	public void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+		if (getListAdapter() instanceof BaseRolodexAdapter) {
+			BaseRolodexAdapter adapter = (BaseRolodexAdapter) getListAdapter();
+			//TODO: For now just enable for modal...will need to test other modes first
+			if (adapter.getChoiceMode() == BaseRolodexAdapter.CHOICE_MODE_MULTIPLE_MODAL) {
+				Parcelable parcel = adapter.onSaveExpandableListViewState();
+				outState.putParcelable(STATE_EXPANDABLE_LISTVIEW, parcel);
+			}
+		}
 	}
 
 	@Override
@@ -95,6 +110,10 @@ public class ExpandableListFragment extends Fragment implements
 			BaseRolodexAdapter adapter = (BaseRolodexAdapter) mAdapter;
 			adapter.setOnGroupClickListener(this);
 			adapter.setOnChildClickListener(this);
+			if (savedInstanceState != null) {
+				Parcelable parcel = savedInstanceState.getParcelable(STATE_EXPANDABLE_LISTVIEW);
+				adapter.onRestoreExpandableListViewState(parcel);
+			}
 		} else {
 			mExpandableListView.setOnGroupClickListener(this);
 			mExpandableListView.setOnChildClickListener(this);
