@@ -496,7 +496,7 @@ public abstract class RolodexArrayAdapter<G, C> extends RolodexBaseAdapter imple
 					break SYNC_BLOCK;
 				}
 			}
-			//No matter what, remove from mObjects. This avoids having to re-filter the data. If
+			//No matter what, remove from mObjects. This avoids having to re-filter the data if
 			//mOriginalValues != null, then our group object will be correct. Otherwise, we may need
 			//to do a manual search.
 			ArrayList<C> children = mObjects.get(group);
@@ -540,7 +540,7 @@ public abstract class RolodexArrayAdapter<G, C> extends RolodexBaseAdapter imple
 						continue;
 					}
 				}
-				//No matter what, remove from mObjects. This avoids having to re-filter the data. If
+				//No matter what, remove from mObjects. This avoids having to re-filter the data if
 				//mOriginalValues != null, then our group object will be correct. Otherwise, we may need
 				//to do a manual search.
 				ArrayList<C> children = mObjects.get(group);
@@ -639,6 +639,81 @@ public abstract class RolodexArrayAdapter<G, C> extends RolodexBaseAdapter imple
 			}
 			for (Map.Entry<G, ArrayList<C>> entry : mObjects.entrySet()) {
 				Collections.sort(entry.getValue(), comparator);
+			}
+		}
+		if (mNotifyOnChange) notifyDataSetChanged();
+	}
+
+	/**
+	 * Updates the item at the specified position in the adapter with the specified item. This
+	 * operation does not change the overall size of the adapter but will relocate the item to a new
+	 * group if needed. Will repeat the last filtering request if invoked while filtered results are
+	 * being displayed.
+	 *
+	 * @param groupPosition The group location at which to put the specified child
+	 * @param childPosition The child location at which to put the specified item
+	 * @param item          The new item to replace with the old
+	 */
+	public void update(int groupPosition, int childPosition, C item) {
+		synchronized (mLock) {
+			G oldGroup = mGroupObjects.get(groupPosition);
+			G newGroup = createGroupFor(item);    //Can't rely on cache.
+
+			//Easy case, group hasn't changed
+			if (oldGroup.equals(newGroup)) {
+				if (mOriginalValues != null) {
+					C child = mObjects.get(oldGroup).get(childPosition);
+					ArrayList<C> children = mOriginalValues.get(oldGroup);
+					children.set(children.indexOf(child), item);
+					getFilter().filter(mLastConstraint);
+				} else {
+					mObjects.get(oldGroup).set(childPosition, item);
+				}
+
+				//Hard case, group has changed. Must remove and re-add appropriately
+			} else {
+				if (mOriginalValues != null) {
+					//Remove old item and all references
+					C child = mObjects.get(oldGroup).get(childPosition);
+					ArrayList<C> children = mOriginalValues.get(oldGroup);
+					children.remove(child);
+					mChild2Group.remove(child);
+					if (children.isEmpty()) {
+						mOriginalValues.remove(oldGroup);
+					}
+
+					//Add new item and form new references
+					mChild2Group.put(item, newGroup);
+					children = mOriginalValues.get(newGroup);
+					if (children == null) {
+						children = new ArrayList<>();
+						mOriginalValues.put(newGroup, children);
+					}
+					children.add(item);
+					getFilter().filter(mLastConstraint);
+				} else {
+					//Remove old item and all references
+					ArrayList<C> children = mObjects.get(oldGroup);
+					mChild2Group.remove(children.remove(childPosition));
+					if (children.isEmpty()) {
+						mObjects.remove(oldGroup);
+						mGroupObjects.remove(groupPosition);
+					}
+
+					//Add new item and form new references
+					mChild2Group.put(item, newGroup);
+					children = mObjects.get(newGroup);
+					if (children == null) {
+						children = new ArrayList<>();
+						mObjects.put(newGroup, children);
+						if (areGroupsSorted()) {
+							mGroupObjects = new ArrayList<>(mObjects.keySet());
+						} else {
+							mGroupObjects.add(newGroup);
+						}
+					}
+					children.add(item);
+				}
 			}
 		}
 		if (mNotifyOnChange) notifyDataSetChanged();
