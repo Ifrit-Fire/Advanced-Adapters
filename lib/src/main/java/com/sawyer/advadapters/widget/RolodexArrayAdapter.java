@@ -25,6 +25,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -110,6 +111,15 @@ public abstract class RolodexArrayAdapter<G, C> extends RolodexBaseAdapter imple
 			return areGroupsSorted ? new TreeMap<G, ArrayList<C>>() : new LinkedHashMap<G, ArrayList<C>>();
 		else
 			return areGroupsSorted ? new TreeMap<>(dataToCopy) : new LinkedHashMap<>(dataToCopy);
+	}
+
+	private static <G, C> G searchForGroup(C item, Map<G, ArrayList<C>> map) {
+		for (Map.Entry<G, ArrayList<C>> entry : map.entrySet()) {
+			if (entry.getValue().contains(item)) {
+				return entry.getKey();
+			}
+		}
+		return null;
 	}
 
 	/**
@@ -462,7 +472,7 @@ public abstract class RolodexArrayAdapter<G, C> extends RolodexBaseAdapter imple
 	protected abstract boolean isGroupFilteredOut(G groupItem, CharSequence constraint);
 
 	/**
-	 * Removes the first occurrence of the specified item from the adapter.
+	 * Removes all occurrences in the adapter of each item in the specified collection.
 	 *
 	 * @param item The item to remove.
 	 */
@@ -480,7 +490,7 @@ public abstract class RolodexArrayAdapter<G, C> extends RolodexBaseAdapter imple
 					children = mOriginalValues.get(group);
 				}
 				isModified = children.remove(item);
-				if (isModified && children.isEmpty()) {
+				if (children.isEmpty()) {
 					mOriginalValues.remove(group);
 					if (mObjects.remove(group) != null) mGroupObjects.remove(group);
 					break SYNC_BLOCK;
@@ -496,7 +506,7 @@ public abstract class RolodexArrayAdapter<G, C> extends RolodexBaseAdapter imple
 				children = mObjects.get(group);
 			}
 			isModified |= children.remove(item);
-			if (isModified && children.isEmpty()) {
+			if (children.isEmpty()) {
 				mObjects.remove(group);
 				mGroupObjects.remove(group);
 			}
@@ -504,13 +514,96 @@ public abstract class RolodexArrayAdapter<G, C> extends RolodexBaseAdapter imple
 		if (isModified && mNotifyOnChange) notifyDataSetChanged();
 	}
 
-	private G searchForGroup(C item, Map<G, ArrayList<C>> map) {
-		for (Map.Entry<G, ArrayList<C>> entry : map.entrySet()) {
-			if (entry.getValue().contains(item)) {
-				return entry.getKey();
+	/**
+	 * Convenience method which removes all occurrences in the adapter of each item in the specified
+	 * collection.
+	 *
+	 * @param items The collection of items to remove
+	 */
+	public void removeAll(Collection<? extends C> items) {
+		boolean isModified = false;
+
+		synchronized (mLock) {
+			for (C item : items) {
+				G group = getGroupFor(item);
+				if (mOriginalValues != null) {
+					ArrayList<C> children = mOriginalValues.get(group);
+					if (children == null) {
+						group = searchForGroup(item, mOriginalValues);
+						if (group == null) return;    //Can't find group, guess item doesn't exist
+						children = mOriginalValues.get(group);
+					}
+					isModified = children.remove(item);
+					if (children.isEmpty()) {
+						mOriginalValues.remove(group);
+						mObjects.remove(group);
+						continue;
+					}
+				}
+				//No matter what, remove from mObjects. This avoids having to re-filter the data. If
+				//mOriginalValues != null, then our group object will be correct. Otherwise, we may need
+				//to do a manual search.
+				ArrayList<C> children = mObjects.get(group);
+				if (children == null) {
+					group = searchForGroup(item, mObjects);
+					if (group == null) return;    //Can't find group, guess item doesn't exist
+					children = mObjects.get(group);
+				}
+				isModified |= children.remove(item);
+				if (children.isEmpty()) mObjects.remove(group);
 			}
+			mGroupObjects = new ArrayList<>(mObjects.keySet());
 		}
-		return null;
+		if (isModified && mNotifyOnChange) notifyDataSetChanged();
+	}
+
+	/**
+	 * Removes all items from this adapter that are not contained in the specified collection.
+	 *
+	 * @param items The collection of items to retain
+	 */
+	public void retainAll(Collection<?> items) {
+		boolean isModified = false;
+
+		synchronized (mLock) {
+			if (mOriginalValues != null) {
+				Iterator<Map.Entry<G, ArrayList<C>>> it = mOriginalValues.entrySet().iterator();
+				while (it.hasNext()) {
+					Map.Entry<G, ArrayList<C>> entry = it.next();
+					isModified |= entry.getValue().retainAll(items);
+					if (entry.getValue().isEmpty()) {
+						mObjects.remove(entry.getKey());
+						it.remove();
+					}
+				}
+			}
+
+			//No matter what, remove from mObjects so as to avoid re-filtering if mOriginalValues != null
+			Iterator<Map.Entry<G, ArrayList<C>>> it = mObjects.entrySet().iterator();
+			while (it.hasNext()) {
+				Map.Entry<G, ArrayList<C>> entry = it.next();
+				isModified |= entry.getValue().retainAll(items);
+				if (entry.getValue().isEmpty()) {
+					it.remove();
+				}
+			}
+			if (isModified) mGroupObjects = new ArrayList<>(mObjects.keySet());
+		}
+		if (isModified && mNotifyOnChange) notifyDataSetChanged();
+	}
+
+	/**
+	 * Control whether methods that change the list ({@link #add}, {@link #remove}, {@link #clear})
+	 * automatically call {@link #notifyDataSetChanged}.  If set to false, caller must manually call
+	 * notifyDataSetChanged() to have the changes reflected in the attached view.
+	 * <p/>
+	 * The default is true, and calling notifyDataSetChanged() resets the flag to true.
+	 *
+	 * @param notifyOnChange if true, modifications to the list will automatically call {@link
+	 *                       #notifyDataSetChanged}
+	 */
+	public void setNotifyOnChange(boolean notifyOnChange) {
+		mNotifyOnChange = notifyOnChange;
 	}
 
 	/**

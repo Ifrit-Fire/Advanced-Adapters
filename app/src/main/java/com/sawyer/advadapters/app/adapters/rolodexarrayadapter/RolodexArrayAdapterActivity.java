@@ -56,12 +56,12 @@ public class RolodexArrayAdapterActivity extends AdapterBaseActivity implements
 
 	@Override
 	protected String getInfoDialogMessage() {
-		return "";    //TODO: Implement
+		return getString(R.string.info_rolodex_arrayadapter_message);
 	}
 
 	@Override
 	protected String getInfoDialogTitle() {
-		return "";    //TODO: Implement
+		return getString(R.string.info_rolodex_arrayadapter_title);
 	}
 
 	@Override

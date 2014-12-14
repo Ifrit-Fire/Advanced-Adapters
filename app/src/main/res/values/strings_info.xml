@@ -60,7 +60,7 @@
 		the source code.\n
 		\n
 		After playing around here, check out the Rolodex Adapter demos. Far more capable and easier
-		to use.
+		solutions to use.
 	</string>
 
 	<!--Info Dialog - AbsArrayAdapter-->
@@ -141,6 +141,12 @@
 		This adapter does not support filtering and as a result contains no synchronized blocks
 		which may help those worried about performance.  If filtering is required, it\'s strongly
 		recommended to use the SparseAdapter instead.
+	</string>
+
+	<!--Info Dialog - RolodexArrayAdapter-->
+	<string name="info_rolodex_arrayadapter_title">Adapter Demo Info</string>
+	<string name="info_rolodex_arrayadapter_message">
+		<!--TODO: Implement-->
 	</string>
 
 	<!--Info Dialog - SparseAdapter-->

@@ -72,7 +72,7 @@ public class MainActivity extends ExpandableListActivity {
 		intents.add(intent);
 
 		intent = new Intent(this, RolodexArrayAdapterActivity.class);
-		intent.putExtra(EXTRA_INTENT_NAME, getString(R.string.activity_rolodexadapter));
+		intent.putExtra(EXTRA_INTENT_NAME, getString(R.string.activity_rolodex_arrayadapter));
 		intent.putExtra(EXTRA_GROUP_NAME, getString(R.string.title_group_arrays));
 		intents.add(intent);
 

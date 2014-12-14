@@ -29,7 +29,7 @@
 	<string name="activity_jsonarray_unittest">JSONArray - Unit Test</string>
 	<string name="activity_nfjsonadapter">NFJSONAdapter</string>
 	<string name="activity_nfjsonarray_unittest">NFJSONArray - Unit Test</string>
-	<string name="activity_rolodexadapter">RolodexAdapter</string>
+	<string name="activity_rolodex_arrayadapter">RolodexArrayAdapter</string>
 
 	<!-- Content Description Text -->
 	<string name="cd_rating_icon">Rating Icon</string>

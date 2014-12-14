@@ -107,17 +107,15 @@ public class RolodexArrayAdapterFragment extends ExpandableListFragment {
 	}
 
 	private void onRemoveItemsClicked(Set<MovieItem> items) {
-		//TODO: Implement
 		if (items.size() == 1) {
 			getListAdapter().remove(items.iterator().next());
 		} else {
-//			getListAdapter().removeAll(items);
+			getListAdapter().removeAll(items);
 		}
 	}
 
 	private void onRetainItemsClicked(Set<MovieItem> items) {
-		//TODO: Maybe Implement
-//		getListAdapter().retainAll(items);
+		getListAdapter().retainAll(items);
 	}
 
 	@Override
@@ -132,7 +130,8 @@ public class RolodexArrayAdapterFragment extends ExpandableListFragment {
 		public void onAdapterCountUpdated();
 	}
 
-	private class OnCabMultiChoiceModeListener implements RolodexArrayAdapter.MultiChoiceModeListener {
+	private class OnCabMultiChoiceModeListener implements
+			RolodexArrayAdapter.MultiChoiceModeListener {
 		@Override
 		public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
 			boolean result;
