@@ -31,8 +31,9 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 
 /**
- * A quick implementation of a fragment that exposes the same required methods as a ListFragment,
- * expect for use as an ExpandableListView.
+ * A quick implementation of a fragment that wraps around an {@link ExpandableListView}, very
+ * similar to a {@link android.app.ListFragment} but far less capable. It'll more or les suffice for
+ * our needs.
  */
 public class ExpandableListFragment extends Fragment implements
 		ExpandableListView.OnGroupClickListener, ExpandableListView.OnChildClickListener {

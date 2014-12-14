@@ -113,6 +113,24 @@ public abstract class RolodexAdapter<G, C> extends BaseRolodexAdapter implements
 	}
 
 	/**
+	 * Convenience method which joins all {@link ArrayList} values of a {@link Map} into one giant
+	 * ArrayList. Order of the newly generated list will match the iteration order of the Map.
+	 *
+	 * @param map {@link Map} which stores an {@link ArrayList} of values to be joined.
+	 * @param <G> Key class used with Map
+	 * @param <C> Value class used with ArrayList
+	 *
+	 * @return All values of the given Map joined together. Will never return null.
+	 */
+	static <G, C> ArrayList<C> toArrayList(Map<G, ArrayList<C>> map) {
+		ArrayList<C> joinedList = new ArrayList<>();
+		for (Map.Entry<G, ArrayList<C>> entry : map.entrySet()) {
+			joinedList.addAll(entry.getValue());
+		}
+		return joinedList;
+	}
+
+	/**
 	 * Adds the specified items at the end of the adapter. Will repeat the last filtering request if
 	 * invoked while filtered results are being displayed.
 	 *

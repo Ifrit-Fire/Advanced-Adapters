@@ -15,8 +15,6 @@ import android.widget.BaseExpandableListAdapter;
 import android.widget.ExpandableListView;
 
 import java.lang.ref.WeakReference;
-import java.util.ArrayList;
-import java.util.Map;
 
 public abstract class BaseRolodexAdapter extends BaseExpandableListAdapter {
 	public static final int CHOICE_MODE_NONE = AbsListView.CHOICE_MODE_NONE;
@@ -25,6 +23,7 @@ public abstract class BaseRolodexAdapter extends BaseExpandableListAdapter {
 	public static final int CHOICE_MODE_MULTIPLE_MODAL = AbsListView.CHOICE_MODE_MULTIPLE_MODAL;
 
 	private static final String TAG = "BaseRolodexAdapter";
+
 	private final OnDisableTouchListener mDisableTouchListener = new OnDisableTouchListener();
 	private final OnChoiceModeClickListener mChoiceModeClickListener = new OnChoiceModeClickListener();
 
@@ -40,7 +39,6 @@ public abstract class BaseRolodexAdapter extends BaseExpandableListAdapter {
 	ExpandableListView.OnChildClickListener mOnChildClickListener;
 	/** TODO: Write this */
 	MultiChoiceModeListener mMultiChoiceModeListener;
-
 	/** LayoutInflater created from the constructing context */
 	private LayoutInflater mInflater;
 	/** Activity Context used to construct this adapter */
@@ -51,6 +49,10 @@ public abstract class BaseRolodexAdapter extends BaseExpandableListAdapter {
 	 * ExpandableListView}
 	 */
 	private QueueAction mQueueAction;
+	/**
+	 * The saved state of the previously attached {@link ExpandableListView}. This is used solely
+	 * for restoring the state of the CAB when setChoiceMode is turned on.
+	 */
 	private Parcelable mParcelState;
 
 	/**
@@ -69,6 +71,11 @@ public abstract class BaseRolodexAdapter extends BaseExpandableListAdapter {
 		DO_NOTHING
 	}
 
+	/**
+	 * Constructor
+	 *
+	 * @param activity Context used for inflating views
+	 */
 	BaseRolodexAdapter(Context activity) {
 		init(activity);
 	}
@@ -76,14 +83,6 @@ public abstract class BaseRolodexAdapter extends BaseExpandableListAdapter {
 	/** Convenience method to log when we unexpectedly lost our ExpandableListView reference. */
 	private static void logLostReference(String method) {
 		Log.w(TAG, "Lost reference to ExpandableListView in " + method);
-	}
-
-	static <G, C> ArrayList<C> toArrayList(Map<G, ArrayList<C>> map) {
-		ArrayList<C> joinedList = new ArrayList<>();
-		for (Map.Entry<G, ArrayList<C>> entry : map.entrySet()) {
-			joinedList.addAll(entry.getValue());
-		}
-		return joinedList;
 	}
 
 	/** Collapse all groups in the adapter. */
@@ -144,6 +143,23 @@ public abstract class BaseRolodexAdapter extends BaseExpandableListAdapter {
 		}
 	}
 
+	/**
+	 * Gets a View that displays the data for the given child within the given group.
+	 *
+	 * @param inflater      The LayoutInflater object that can be used to inflate each view.
+	 * @param groupPosition The position of the group that contains the child
+	 * @param childPosition The position of the child (for which the View is returned) within the
+	 *                      group
+	 * @param isLastChild   Whether the child is the last child within the group
+	 * @param convertView   The old view to reuse, if possible. You should check that this view is
+	 *                      non-null and of an appropriate type before using. If it is not possible
+	 *                      to convert this view to display the correct data, this method can create
+	 *                      a new view. It is not guaranteed that the convertView will have been
+	 *                      previously created by this method.
+	 * @param parent        The parent that this view will eventually be attached to
+	 *
+	 * @return the View corresponding to the child at the specified position
+	 */
 	public abstract View getChildView(LayoutInflater inflater, int groupPosition, int childPosition,
 									  boolean isLastChild,
 									  View convertView, ViewGroup parent);
@@ -155,6 +171,11 @@ public abstract class BaseRolodexAdapter extends BaseExpandableListAdapter {
 							parent);
 	}
 
+	/**
+	 * @return The current choice mode
+	 *
+	 * @see #setChoiceMode(int)
+	 */
 	public int getChoiceMode() {
 		return mChoiceMode;
 	}
@@ -222,6 +243,23 @@ public abstract class BaseRolodexAdapter extends BaseExpandableListAdapter {
 		return v;
 	}
 
+	/**
+	 * Gets a View that displays the given group. This View is only for the group--the Views for the
+	 * group's children will be fetched using {@link #getChildView(LayoutInflater, int, int,
+	 * boolean, View, ViewGroup)}.
+	 *
+	 * @param inflater      The LayoutInflater object that can be used to inflate each view.
+	 * @param groupPosition The position of the group for which the View is returned
+	 * @param isExpanded    Whether the group is expanded or collapsed
+	 * @param convertView   The old view to reuse, if possible. You should check that this view is
+	 *                      non-null and of an appropriate type before using. If it is not possible
+	 *                      to convert this view to display the correct data, this method can create
+	 *                      a new view. It is not guaranteed that the convertView will have been
+	 *                      previously created by this method.
+	 * @param parent        The parent that this view will eventually be attached to
+	 *
+	 * @return The View corresponding to the group at the specified position
+	 */
 	public abstract View getGroupView(LayoutInflater inflater, int groupPosition,
 									  boolean isExpanded, View convertView,
 									  ViewGroup parent);
@@ -241,7 +279,7 @@ public abstract class BaseRolodexAdapter extends BaseExpandableListAdapter {
 	private void init(Context activity) {
 		mContext = activity;
 		mInflater = LayoutInflater.from(mContext);
-		mListView = new WeakReference<>(null);
+		mListView = new WeakReference<>(null);    //We'll obtain reference in getGroupView
 		mChoiceMode = CHOICE_MODE_NONE;
 		mIsChoiceModeActive = false;
 		mQueueAction = QueueAction.DO_NOTHING;
@@ -263,6 +301,9 @@ public abstract class BaseRolodexAdapter extends BaseExpandableListAdapter {
 		return true;
 	}
 
+	/**
+	 * TODO: Write doc once all the choice modes are tested
+	 */
 	public void onRestoreExpandableListViewState(Parcelable state) {
 		if (state == null) return;
 		ExpandableListView lv = mListView.get();
@@ -273,6 +314,9 @@ public abstract class BaseRolodexAdapter extends BaseExpandableListAdapter {
 		}
 	}
 
+	/**
+	 * TODO: Write doc once all the choice modes are tested
+	 */
 	public Parcelable onSaveExpandableListViewState() {
 		ExpandableListView lv = mListView.get();
 		if (lv == null) return null;
@@ -291,6 +335,9 @@ public abstract class BaseRolodexAdapter extends BaseExpandableListAdapter {
 		mMultiChoiceModeListener = listener;
 	}
 
+	/**
+	 * TODO: Write doc once all choice modes have been tested
+	 */
 	public void setOnChildClickListener(
 			ExpandableListView.OnChildClickListener onChildClickListener) {
 		mOnChildClickListener = onChildClickListener;
@@ -300,6 +347,9 @@ public abstract class BaseRolodexAdapter extends BaseExpandableListAdapter {
 		}
 	}
 
+	/**
+	 * TODO: Write doc once all choice modes have been tested
+	 */
 	public void setOnGroupClickListener(
 			ExpandableListView.OnGroupClickListener onGroupClickListener) {
 		mOnGroupClickListener = onGroupClickListener;
@@ -309,20 +359,42 @@ public abstract class BaseRolodexAdapter extends BaseExpandableListAdapter {
 		}
 	}
 
-	public static interface MultiChoiceModeListener {
-		public boolean onActionItemClicked(ActionMode mode, MenuItem item);
+	/**
+	 * An interface definition for callbacks that receive events for {@link
+	 * AbsListView#CHOICE_MODE_MULTIPLE_MODAL}. It acts as the {@link ActionMode.Callback} for the
+	 * selection mode and also receives checked state change events when the user selects and
+	 * deselects groups or children views.
+	 */
+	public static interface MultiChoiceModeListener extends ActionMode.Callback {
 
+		/**
+		 * Called when a child item is checked or unchecked during selection mode.
+		 *
+		 * @param mode          The {@link ActionMode} providing the selection mode
+		 * @param childPosition Adapter position of the child item that was checked or unchecked
+		 * @param childId       Adapter ID of the child item that was checked or unchecked
+		 * @param groupPosition Adapter position of the group this child belongs to.
+		 * @param groupId       Adapter ID of the group this child belongs to.
+		 * @param checked       <code>true</code> if the item is now checked, <code>false</code> if
+		 *                      the item is now unchecked.
+		 */
 		public void onChildCheckedStateChanged(ActionMode mode, int groupPosition, long groupId,
 											   int childPosition, long childId, boolean checked);
 
-		public boolean onCreateActionMode(ActionMode mode, Menu menu);
-
-		public void onDestroyActionMode(ActionMode mode);
-
+		/**
+		 * Called when a group item is checked or unchecked during selection mode. If the group is
+		 * expanded, then all of it's children will have their checked state changed to match and
+		 * {@link #onChildCheckedStateChanged(ActionMode, int, long, int, long, boolean)} will be
+		 * appropriately invoked for each.
+		 *
+		 * @param mode          The {@link ActionMode} providing the selection mode
+		 * @param groupPosition Adapter position of the group item that was checked or unchecked
+		 * @param groupId       Adapter ID of the group item that was checked or unchecked
+		 * @param checked       <code>true</code> if the item is now checked, <code>false</code> if
+		 *                      the item is now unchecked.
+		 */
 		public void onGroupCheckedStateChanged(ActionMode mode, int groupPosition, long groupId,
 											   boolean checked);
-
-		public boolean onPrepareActionMode(ActionMode mode, Menu menu);
 	}
 
 	private static class OnDisableTouchListener implements View.OnTouchListener {
@@ -333,10 +405,9 @@ public abstract class BaseRolodexAdapter extends BaseExpandableListAdapter {
 	}
 
 	/**
-	 * Wraps around the {@link AbsListView.MultiChoiceModeListener} to provide the missing
-	 * functionality to support choice mode with an {@link ExpandableListView}. This includes
-	 * delegating the {@link #onItemCheckedStateChanged} to either a child or group event handler.
-	 * It also handles switching out the group and child click listeners when the CAB (dis)appears.
+	 * Wraps around the {@link AbsListView.MultiChoiceModeListener} and converts it's item checked
+	 * change callbacks to group or child checked changed events. In addition, the user defined
+	 * group and child click listeners will be bypassed when the CAB appears.
 	 */
 	private class InternalMultiChoiceModeListener implements AbsListView.MultiChoiceModeListener {
 		@Override
@@ -429,6 +500,11 @@ public abstract class BaseRolodexAdapter extends BaseExpandableListAdapter {
 		}
 	}
 
+	/**
+	 * Special click listener attached to group and child items when the ActionMode starts and
+	 * removed when it's destroyed. Handles activating the items that were clicked by the user
+	 * during this period.
+	 */
 	private class OnChoiceModeClickListener implements ExpandableListView.OnChildClickListener,
 			ExpandableListView.OnGroupClickListener {
 		@Override

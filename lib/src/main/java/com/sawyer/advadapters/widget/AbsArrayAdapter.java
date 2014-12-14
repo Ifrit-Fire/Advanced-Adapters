@@ -332,7 +332,7 @@ public abstract class AbsArrayAdapter<T> extends BaseAdapter implements Filterab
 	 * {@link android.view.LayoutInflater#inflate(int, android.view.ViewGroup, boolean)} to specify
 	 * a root view and to prevent attachment to the root.
 	 *
-	 * @param inflater    the LayoutInflater object that can be used to inflate each view.
+	 * @param inflater    The LayoutInflater object that can be used to inflate each view.
 	 * @param position    The position of the item within the adapter's data set of the item whose
 	 *                    view we want.
 	 * @param convertView The old view to reuse, if possible. Note: You should check that this view
