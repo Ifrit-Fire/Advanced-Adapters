@@ -32,7 +32,7 @@ import java.util.TreeMap;
 import java.util.WeakHashMap;
 
 //TODO: Implement
-public abstract class RolodexAdapter<G, C> extends RolodexBaseAdapter implements Filterable {
+public abstract class RolodexArrayAdapter<G, C> extends RolodexBaseAdapter implements Filterable {
 	/**
 	 * Lock used to modify the content of {@link #mObjects}. Any write operation performed on the
 	 * map should be synchronized on this lock. This lock is also used by the filter (see {@link
@@ -76,7 +76,7 @@ public abstract class RolodexAdapter<G, C> extends RolodexBaseAdapter implements
 	 *
 	 * @param activity Context used for inflating views
 	 */
-	public RolodexAdapter(Context activity) {
+	public RolodexArrayAdapter(Context activity) {
 		super(activity);
 		init(new ArrayList<C>());
 	}
@@ -87,7 +87,7 @@ public abstract class RolodexAdapter<G, C> extends RolodexBaseAdapter implements
 	 * @param activity Context used for inflating views
 	 * @param items    The items to represent within the adapter.
 	 */
-	public RolodexAdapter(Context activity, C[] items) {
+	public RolodexArrayAdapter(Context activity, C[] items) {
 		super(activity);
 		List<C> list = Arrays.asList(items);
 		init(list);
@@ -99,7 +99,7 @@ public abstract class RolodexAdapter<G, C> extends RolodexBaseAdapter implements
 	 * @param activity Context used for inflating views
 	 * @param items    The items to represent within the adapter.
 	 */
-	public RolodexAdapter(Context activity, Collection<C> items) {
+	public RolodexArrayAdapter(Context activity, Collection<C> items) {
 		super(activity);
 		init(items);
 	}

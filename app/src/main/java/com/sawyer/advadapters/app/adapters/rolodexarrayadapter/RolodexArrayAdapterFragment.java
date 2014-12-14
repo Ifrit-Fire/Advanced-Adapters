@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.sawyer.advadapters.app.adapters.rolodexadapter;
+package com.sawyer.advadapters.app.adapters.rolodexarrayadapter;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -31,35 +31,35 @@ import android.widget.ExpandableListView;
 import com.sawyer.advadapters.app.R;
 import com.sawyer.advadapters.app.adapters.ExpandableListFragment;
 import com.sawyer.advadapters.app.data.MovieItem;
-import com.sawyer.advadapters.widget.RolodexAdapter;
+import com.sawyer.advadapters.widget.RolodexArrayAdapter;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
-public class RolodexAdapterFragment extends ExpandableListFragment {
+public class RolodexArrayAdapterFragment extends ExpandableListFragment {
 	private static final String STATE_CAB_CHECKED_ITEMS = "State Cab Checked Items";
 	private static final String STATE_LIST = "State List";
 
 	private Set<MovieItem> mCheckedItems = new HashSet<>();
 	private EventListener mEventListener;
 
-	public static RolodexAdapterFragment newInstance() {
-		return new RolodexAdapterFragment();
+	public static RolodexArrayAdapterFragment newInstance() {
+		return new RolodexArrayAdapterFragment();
 	}
 
 	@Override
-	public MovieRolodexAdapter getListAdapter() {
-		return (MovieRolodexAdapter) super.getListAdapter();
+	public MovieRolodexArrayAdapter getListAdapter() {
+		return (MovieRolodexArrayAdapter) super.getListAdapter();
 	}
 
 	@Override
 	public void setListAdapter(ExpandableListAdapter adapter) {
-		if (adapter instanceof MovieRolodexAdapter) {
+		if (adapter instanceof MovieRolodexArrayAdapter) {
 			super.setListAdapter(adapter);
 		} else {
 			throw new ClassCastException(
-					"Adapter must be of type " + MovieRolodexAdapter.class.getSimpleName());
+					"Adapter must be of type " + MovieRolodexArrayAdapter.class.getSimpleName());
 		}
 	}
 
@@ -97,11 +97,11 @@ public class RolodexAdapterFragment extends ExpandableListFragment {
 					.getParcelableArrayList(STATE_CAB_CHECKED_ITEMS);
 			mCheckedItems.addAll(checkItems);
 			ArrayList<MovieItem> list = savedInstanceState.getParcelableArrayList(STATE_LIST);
-			setListAdapter(new MovieRolodexAdapter(getActivity(), list));
+			setListAdapter(new MovieRolodexArrayAdapter(getActivity(), list));
 		} else {
-			setListAdapter(new MovieRolodexAdapter(getActivity()));
+			setListAdapter(new MovieRolodexArrayAdapter(getActivity()));
 		}
-		getListAdapter().setChoiceMode(RolodexAdapter.CHOICE_MODE_MULTIPLE_MODAL);
+		getListAdapter().setChoiceMode(RolodexArrayAdapter.CHOICE_MODE_MULTIPLE_MODAL);
 		getListAdapter().setMultiChoiceModeListener(new OnCabMultiChoiceModeListener());
 		return v;
 	}
@@ -132,7 +132,7 @@ public class RolodexAdapterFragment extends ExpandableListFragment {
 		public void onAdapterCountUpdated();
 	}
 
-	private class OnCabMultiChoiceModeListener implements RolodexAdapter.MultiChoiceModeListener {
+	private class OnCabMultiChoiceModeListener implements RolodexArrayAdapter.MultiChoiceModeListener {
 		@Override
 		public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
 			boolean result;

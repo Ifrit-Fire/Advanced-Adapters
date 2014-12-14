@@ -34,9 +34,9 @@ import com.sawyer.advadapters.app.adapters.jsonadapter.JSONAdapterActivity;
 import com.sawyer.advadapters.app.adapters.nfarrayadapter.NFArrayAdapterActivity;
 import com.sawyer.advadapters.app.adapters.nfjsonadapter.NFJSONAdapterActivity;
 import com.sawyer.advadapters.app.adapters.nfsparseadapter.NFSparseAdapterActivity;
-import com.sawyer.advadapters.app.adapters.rolodexadapter.RolodexAdapterActivity;
+import com.sawyer.advadapters.app.adapters.rolodexarrayadapter.RolodexArrayAdapterActivity;
 import com.sawyer.advadapters.app.adapters.sparseadapter.SparseAdapterActivity;
-import com.sawyer.advadapters.widget.RolodexAdapter;
+import com.sawyer.advadapters.widget.RolodexArrayAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -71,7 +71,7 @@ public class MainActivity extends ExpandableListActivity {
 		intent.putExtra(EXTRA_GROUP_NAME, getString(R.string.title_group_arrays));
 		intents.add(intent);
 
-		intent = new Intent(this, RolodexAdapterActivity.class);
+		intent = new Intent(this, RolodexArrayAdapterActivity.class);
 		intent.putExtra(EXTRA_INTENT_NAME, getString(R.string.activity_rolodexadapter));
 		intent.putExtra(EXTRA_GROUP_NAME, getString(R.string.title_group_arrays));
 		intents.add(intent);
@@ -136,7 +136,7 @@ public class MainActivity extends ExpandableListActivity {
 		}
 	}
 
-	private class DemoAdapter extends RolodexAdapter<String, Intent> {
+	private class DemoAdapter extends RolodexArrayAdapter<String, Intent> {
 		public DemoAdapter(Context activity, List<Intent> objects) {
 			super(activity, objects);
 		}

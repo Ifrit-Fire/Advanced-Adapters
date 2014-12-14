@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.sawyer.advadapters.app.adapters.rolodexadapter;
+package com.sawyer.advadapters.app.adapters.rolodexarrayadapter;
 
 import android.content.Context;
 import android.text.TextUtils;
@@ -25,18 +25,18 @@ import android.widget.TextView;
 import com.sawyer.advadapters.app.R;
 import com.sawyer.advadapters.app.adapters.MovieNoSubViewHolder;
 import com.sawyer.advadapters.app.data.MovieItem;
-import com.sawyer.advadapters.widget.RolodexAdapter;
+import com.sawyer.advadapters.widget.RolodexArrayAdapter;
 
 import java.util.List;
 import java.util.Locale;
 
-class MovieRolodexAdapter extends RolodexAdapter<Integer, MovieItem> {
+class MovieRolodexArrayAdapter extends RolodexArrayAdapter<Integer, MovieItem> {
 
-	MovieRolodexAdapter(Context activity) {
+	MovieRolodexArrayAdapter(Context activity) {
 		super(activity);
 	}
 
-	MovieRolodexAdapter(Context activity, List<MovieItem> list) {
+	MovieRolodexArrayAdapter(Context activity, List<MovieItem> list) {
 		super(activity, list);
 	}
 

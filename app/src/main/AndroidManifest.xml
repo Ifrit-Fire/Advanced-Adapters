@@ -78,7 +78,7 @@
 
 		<!-- Rolodex Adapter Activities-->
 		<activity
-			android:name=".adapters.rolodexadapter.RolodexAdapterActivity"
+			android:name=".adapters.rolodexarrayadapter.RolodexArrayAdapterActivity"
 			android:label="@string/activity_rolodexadapter">
 		</activity>
 

@@ -30,7 +30,7 @@ import com.sawyer.advadapters.app.ToastHelper;
 import com.sawyer.advadapters.app.adapters.ExpandableListFragment;
 import com.sawyer.advadapters.app.data.MovieContent;
 import com.sawyer.advadapters.app.data.MovieItem;
-import com.sawyer.advadapters.widget.RolodexAdapter;
+import com.sawyer.advadapters.widget.RolodexArrayAdapter;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -164,7 +164,7 @@ public class AndroidExpandableFragment extends ExpandableListFragment {
 		} else {
 			setListAdapter(createEmptyAdapter());
 		}
-		getExpandableListView().setChoiceMode(RolodexAdapter.CHOICE_MODE_MULTIPLE_MODAL);
+		getExpandableListView().setChoiceMode(RolodexArrayAdapter.CHOICE_MODE_MULTIPLE_MODAL);
 		getExpandableListView().setMultiChoiceModeListener(new OnCabMultiChoiceModeListener());
 		return v;
 	}

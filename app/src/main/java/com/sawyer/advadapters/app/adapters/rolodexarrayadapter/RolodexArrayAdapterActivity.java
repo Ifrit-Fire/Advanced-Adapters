@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.sawyer.advadapters.app.adapters.rolodexadapter;
+package com.sawyer.advadapters.app.adapters.rolodexarrayadapter;
 
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
@@ -32,8 +32,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class RolodexAdapterActivity extends AdapterBaseActivity implements
-		RolodexAdapterFragment.EventListener, AddArrayDialogFragment.EventListener,
+public class RolodexArrayAdapterActivity extends AdapterBaseActivity implements
+		RolodexArrayAdapterFragment.EventListener, AddArrayDialogFragment.EventListener,
 		ContainsArrayDialogFragment.EventListener {
 	private static final String TAG_ADAPTER_FRAG = "Tag Adapter Frag";
 	private static final String TAG_ADD_DIALOG_FRAG = "Tag Add Dialog Frag";
@@ -41,7 +41,7 @@ public class RolodexAdapterActivity extends AdapterBaseActivity implements
 
 	private AddArrayDialogFragment mAddDialogFragment;
 	private ContainsArrayDialogFragment mContainsDialogFragment;
-	private RolodexAdapterFragment mListFragment;
+	private RolodexArrayAdapterFragment mListFragment;
 
 	@Override
 	protected void clear() {
@@ -78,10 +78,10 @@ public class RolodexAdapterActivity extends AdapterBaseActivity implements
 	protected void initFrags() {
 		super.initFrags();
 		FragmentManager manager = getFragmentManager();
-		mListFragment = (RolodexAdapterFragment) manager
+		mListFragment = (RolodexArrayAdapterFragment) manager
 				.findFragmentByTag(TAG_ADAPTER_FRAG);
 		if (mListFragment == null) {
-			mListFragment = RolodexAdapterFragment.newInstance();
+			mListFragment = RolodexArrayAdapterFragment.newInstance();
 			FragmentTransaction transaction = manager.beginTransaction();
 			transaction.replace(R.id.frag_container, mListFragment, TAG_ADAPTER_FRAG);
 			transaction.commit();
