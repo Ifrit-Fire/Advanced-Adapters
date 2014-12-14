@@ -25,7 +25,7 @@ import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
 
 import com.sawyer.advadapters.app.R;
-import com.sawyer.advadapters.widget.BaseRolodexAdapter;
+import com.sawyer.advadapters.widget.RolodexBaseAdapter;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -92,10 +92,10 @@ public class ExpandableListFragment extends Fragment implements
 	@Override
 	public void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
-		if (getListAdapter() instanceof BaseRolodexAdapter) {
-			BaseRolodexAdapter adapter = (BaseRolodexAdapter) getListAdapter();
+		if (getListAdapter() instanceof RolodexBaseAdapter) {
+			RolodexBaseAdapter adapter = (RolodexBaseAdapter) getListAdapter();
 			//TODO: For now just enable for modal...will need to test other modes first
-			if (adapter.getChoiceMode() == BaseRolodexAdapter.CHOICE_MODE_MULTIPLE_MODAL) {
+			if (adapter.getChoiceMode() == RolodexBaseAdapter.CHOICE_MODE_MULTIPLE_MODAL) {
 				Parcelable parcel = adapter.onSaveExpandableListViewState();
 				outState.putParcelable(STATE_EXPANDABLE_LISTVIEW, parcel);
 			}
@@ -107,8 +107,8 @@ public class ExpandableListFragment extends Fragment implements
 		super.onViewCreated(view, savedInstanceState);
 		//In case adapter set before ListView inflated
 		if (mAdapter != null) mExpandableListView.setAdapter(mAdapter);
-		if (mAdapter instanceof BaseRolodexAdapter) {
-			BaseRolodexAdapter adapter = (BaseRolodexAdapter) mAdapter;
+		if (mAdapter instanceof RolodexBaseAdapter) {
+			RolodexBaseAdapter adapter = (RolodexBaseAdapter) mAdapter;
 			adapter.setOnGroupClickListener(this);
 			adapter.setOnChildClickListener(this);
 			if (savedInstanceState != null) {

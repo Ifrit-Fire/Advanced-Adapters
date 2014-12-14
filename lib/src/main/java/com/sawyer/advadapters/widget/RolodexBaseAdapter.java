@@ -16,13 +16,16 @@ import android.widget.ExpandableListView;
 
 import java.lang.ref.WeakReference;
 
-public abstract class BaseRolodexAdapter extends BaseExpandableListAdapter {
+/**
+ * TODO: Write this
+ */
+public abstract class RolodexBaseAdapter extends BaseExpandableListAdapter {
 	public static final int CHOICE_MODE_NONE = AbsListView.CHOICE_MODE_NONE;
 	public static final int CHOICE_MODE_SINGLE = AbsListView.CHOICE_MODE_SINGLE;
 	public static final int CHOICE_MODE_MULTIPLE = AbsListView.CHOICE_MODE_MULTIPLE;
 	public static final int CHOICE_MODE_MULTIPLE_MODAL = AbsListView.CHOICE_MODE_MULTIPLE_MODAL;
 
-	private static final String TAG = "BaseRolodexAdapter";
+	private static final String TAG = "RolodexBaseAdapter";
 
 	private final OnDisableTouchListener mDisableTouchListener = new OnDisableTouchListener();
 	private final OnChoiceModeClickListener mChoiceModeClickListener = new OnChoiceModeClickListener();
@@ -76,7 +79,7 @@ public abstract class BaseRolodexAdapter extends BaseExpandableListAdapter {
 	 *
 	 * @param activity Context used for inflating views
 	 */
-	BaseRolodexAdapter(Context activity) {
+	RolodexBaseAdapter(Context activity) {
 		init(activity);
 	}
 

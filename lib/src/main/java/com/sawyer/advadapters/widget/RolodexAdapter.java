@@ -32,7 +32,7 @@ import java.util.TreeMap;
 import java.util.WeakHashMap;
 
 //TODO: Implement
-public abstract class RolodexAdapter<G, C> extends BaseRolodexAdapter implements Filterable {
+public abstract class RolodexAdapter<G, C> extends RolodexBaseAdapter implements Filterable {
 	/**
 	 * Lock used to modify the content of {@link #mObjects}. Any write operation performed on the
 	 * map should be synchronized on this lock. This lock is also used by the filter (see {@link
