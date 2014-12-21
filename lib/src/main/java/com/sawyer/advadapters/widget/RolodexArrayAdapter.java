@@ -30,7 +30,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
-import java.util.WeakHashMap;
 
 //TODO: Implement
 public abstract class RolodexArrayAdapter<G, C> extends RolodexBaseAdapter implements Filterable {
@@ -47,13 +46,6 @@ public abstract class RolodexArrayAdapter<G, C> extends RolodexBaseAdapter imple
 	 */
 	private Map<G, ArrayList<C>> mObjects;
 	private ArrayList<G> mGroupObjects;
-	/**
-	 * Cache of the child to group relationship as a way to reduce how often {@link #createGroupFor}
-	 * is invoked. Since the key can be mutable, be careful on interrupting what a returned null
-	 * value actually means. While it's not recommended to modify a child item outside of the
-	 * adapter, it can and probably will happen.
-	 */
-	private Map<C, G> mChild2Group;
 	/**
 	 * Indicates whether or not {@link #notifyDataSetChanged()} must be called whenever {@link
 	 * #mObjects} is modified.
@@ -144,18 +136,18 @@ public abstract class RolodexArrayAdapter<G, C> extends RolodexBaseAdapter imple
 	 * Adds the specified items at the end of the adapter. Will repeat the last filtering request if
 	 * invoked while filtered results are being displayed.
 	 *
-	 * @param item The item to add at the end of the adapter.
+	 * @param childItem The child item to add at the end of the adapter.
 	 */
-	public void add(C item) {
+	public void add(C childItem) {
 		synchronized (mLock) {
-			G group = getGroupFor(item);
+			G group = getGroupFor(childItem);
 			if (mOriginalValues != null) {
 				ArrayList<C> children = mOriginalValues.get(group);
 				if (children == null) {
 					children = new ArrayList<>();
 					mOriginalValues.put(group, children);
 				}
-				children.add(item);
+				children.add(childItem);
 				getFilter().filter(mLastConstraint);
 			} else {
 				ArrayList<C> children = mObjects.get(group);
@@ -168,7 +160,7 @@ public abstract class RolodexArrayAdapter<G, C> extends RolodexBaseAdapter imple
 						mGroupObjects.add(group);
 					}
 				}
-				children.add(item);
+				children.add(childItem);
 			}
 		}
 		if (mNotifyOnChange) notifyDataSetChanged();
@@ -178,72 +170,42 @@ public abstract class RolodexArrayAdapter<G, C> extends RolodexBaseAdapter imple
 	 * Adds the specified Collection at the end of the adapter. Will repeat the last filtering
 	 * request if invoked while filtered results are being displayed.
 	 *
-	 * @param items The Collection to add at the end of the adapter.
+	 * @param childItems The Collection of children items to add at the end of the adapter.
 	 */
-	public void addAll(Collection<? extends C> items) {
+	public void addAll(Collection<? extends C> childItems) {
 		synchronized (mLock) {
 			if (mOriginalValues != null) {
-				addAllToOriginalValues(items);
+				addAllToOriginalValues(childItems);
 				getFilter().filter(mLastConstraint);
 			} else {
-				addAllToObjects(items);
+				addAllToObjects(childItems);
 			}
 		}
 		if (mNotifyOnChange) notifyDataSetChanged();
 	}
 
 	/**
-	 * Adds the specified items at the end of the adapter. Will repeat the last filtering request if
-	 * invoked while filtered results are being displayed.
+	 * Adds the specified child items at the end of the adapter. Will repeat the last filtering
+	 * request if invoked while filtered results are being displayed.
 	 *
-	 * @param items The items to add at the end of the adapter.
+	 * @param childItems The child items to add at the end of the adapter.
 	 */
 	@SafeVarargs
-	public final void addAll(C... items) {
+	public final void addAll(C... childItems) {
 		synchronized (mLock) {
 			if (mOriginalValues != null) {
-				for (C item : items) {
-					G group = getGroupFor(item);
-					ArrayList<C> children = mOriginalValues.get(group);
-					if (children == null) {
-						children = new ArrayList<>();
-						mOriginalValues.put(group, children);
-					}
-					children.add(item);
-				}
+				addAllToOriginalValues(Arrays.asList(childItems));
 				getFilter().filter(mLastConstraint);
 			} else {
-				if (areGroupsSorted()) {
-					for (C item : items) {
-						G group = getGroupFor(item);
-						ArrayList<C> children = mObjects.get(group);
-						if (children == null) {
-							children = new ArrayList<>();
-							mObjects.put(group, children);
-						}
-						children.add(item);
-					}
-					mGroupObjects = new ArrayList<>(mObjects.keySet());
-				} else {
-					for (C item : items) {
-						G group = getGroupFor(item);
-						ArrayList<C> children = mObjects.get(group);
-						if (children == null) {
-							children = new ArrayList<>();
-							mObjects.put(group, children);
-							mGroupObjects.add(group);
-						}
-						children.add(item);
-					}
-				}
+				addAllToObjects(Arrays.asList(childItems));
 			}
 		}
 		if (mNotifyOnChange) notifyDataSetChanged();
 	}
 
-	private void addAllToObjects(Collection<? extends C> items) {
+	private void addAllToObjects(Collection<? extends C> childItems) {
 		if (areGroupsSorted()) {
-			for (C item : items) {
+			for (C item : childItems) {
 				G group = getGroupFor(item);
 				ArrayList<C> children = mObjects.get(group);
 				if (children == null) {
@@ -254,7 +216,7 @@ public abstract class RolodexArrayAdapter<G, C> extends RolodexBaseAdapter imple
 			}
 			mGroupObjects = new ArrayList<>(mObjects.keySet());
 		} else {
-			for (C item : items) {
+			for (C item : childItems) {
 				G group = getGroupFor(item);
 				ArrayList<C> children = mObjects.get(group);
 				if (children == null) {
@@ -267,8 +229,8 @@ public abstract class RolodexArrayAdapter<G, C> extends RolodexBaseAdapter imple
 		}
 	}
 
-	private void addAllToOriginalValues(Collection<? extends C> items) {
-		for (C item : items) {
+	private void addAllToOriginalValues(Collection<? extends C> childItems) {
+		for (C item : childItems) {
 			G group = getGroupFor(item);
 			ArrayList<C> children = mOriginalValues.get(group);
 			if (children == null) {
@@ -301,23 +263,23 @@ public abstract class RolodexArrayAdapter<G, C> extends RolodexBaseAdapter imple
 	}
 
 	/**
-	 * Tests whether this adapter contains the specified item. Be aware that this is a linear
+	 * Tests whether this adapter contains the specified child item. Be aware that this is a linear
 	 * search.
 	 *
-	 * @param item The item to search for
+	 * @param childItem The child item to search for
 	 *
-	 * @return {@code true} if the item is an element of this adapter. {@code false} otherwise
+	 * @return {@code true} if the child item is an element of this adapter. {@code false} otherwise
 	 */
-	public boolean contains(C item) {
-		G group = getGroupFor(item);
-		return group != null && mObjects.get(group) != null && mObjects.get(group).contains(item);
+	public boolean contains(C childItem) {
+		G group = getGroupFor(childItem);
+		return group != null && mObjects.get(group) != null &&
+			   mObjects.get(group).contains(childItem);
 	}
 
 	/**
 	 * Creates a new group object which represents the parent of the given child item. This is used
-	 * to determine what group the child item will fall under. While not enforced, it's highly
-	 * recommended to only ever return an immutable object. Internally the child/group relationship
-	 * is cached to help reduce how often this method is invoked.
+	 * to determine what group the child item will fall under. Do not attempt to return a cached
+	 * group object here. See {@link #getGroupFromCacheFor(Object)} for that behavior.
 	 *
 	 * @param childItem The child item for which a group instance will be created for.
 	 *
@@ -370,26 +332,47 @@ public abstract class RolodexArrayAdapter<G, C> extends RolodexBaseAdapter imple
 	}
 
 	/**
-	 * Retrieves a group object for the given child. Attempts to look in cache before requesting the
-	 * object from subclasses. Cache may fail for various reasons; such as it's the first time we've
-	 * seen this child, or its an old child that was GCed, or the child was mutated in such a way
-	 * that the hashcode has changed.
+	 * Retrieves a group object for the given child. Attempts to look in cache before requesting
+	 * constructing one. By default nothing is cached. Override {@link
+	 * #getGroupFromCacheFor(Object)} if you wish to provide your own cache implementation.
 	 *
-	 * @param child Child item to look for
+	 * @param childItem Child item to look for
 	 *
 	 * @return Group associated with child. Will never return null.
 	 */
-	private G getGroupFor(C child) {
-		G group = mChild2Group.get(child);
+	private G getGroupFor(C childItem) {
+		G group = getGroupFromCacheFor(childItem);
 		if (group == null) {
-			group = createGroupFor(child);
+			group = createGroupFor(childItem);
 			if (group == null) {
 				throw new NullPointerException(
 						"createGroupFor(child) must return a non-null value");
 			}
-			mChild2Group.put(child, group);
 		}
 		return group;
+	}
+
+	/**
+	 * Override to provide a caching mechanism for retrieving a group item. Caching can help reduce
+	 * the number of {@link #createGroupFor(Object)} invocations. By default, no caching is provided
+	 * by the adapter. This method normally returns null.
+	 * <p/>
+	 * It's only recommended to implement this method if one of the following are true: <ul> <li>You
+	 * can pre-populate the cache with all the child to group relations.</li> <li>The cache will be
+	 * lazy-loaded and saved for later re-use.</li> <li>Instantiating your group object is a pretty
+	 * hefty call.</li> <li>You are constantly mutating the adapter. </li> </ul>
+	 * <p/>
+	 * Pulling from cache is primarily used when mutating the adapter. It is never used nor needed
+	 * by any of the getters.
+	 *
+	 * @param childItem The child item for which a group object will be returned for.
+	 *
+	 * @return The group object from cache which represents the given child item. Null if the group
+	 * is not found in cache.
+	 */
+	@SuppressWarnings("UnusedParameters")
+	protected G getGroupFromCacheFor(C childItem) {
+		return null;
 	}
 
 	@Override
@@ -413,23 +396,23 @@ public abstract class RolodexArrayAdapter<G, C> extends RolodexBaseAdapter imple
 	}
 
 	/**
-	 * Resets the adapter to store a new list of items. Convenient way of calling {@link #clear()},
-	 * then {@link #addAll(java.util.Collection)} without having to worry about an extra {@link
-	 * #notifyDataSetChanged()} invoked in between. Will repeat the last filtering request if
+	 * Resets the adapter to store a new list of children items. Convenient way of calling {@link
+	 * #clear()}, then {@link #addAll(java.util.Collection)} without having to worry about an extra
+	 * {@link #notifyDataSetChanged()} invoked in between. Will repeat the last filtering request if
 	 * invoked while filtered results are being displayed.
 	 *
-	 * @param items New list of items to store within the adapter.
+	 * @param childItems New list of children items to store within the adapter.
 	 */
-	public void setList(Collection<? extends C> items) {
+	public void setList(Collection<? extends C> childItems) {
 		synchronized (mLock) {
 			if (mOriginalValues != null) {
 				mOriginalValues.clear();
-				addAllToOriginalValues(items);
+				addAllToOriginalValues(childItems);
 				getFilter().filter(mLastConstraint);
 			} else {
 				mObjects.clear();
 				mGroupObjects.clear();
-				addAllToObjects(items);
+				addAllToObjects(childItems);
 			}
 		}
 		if (mNotifyOnChange) notifyDataSetChanged();
@@ -438,7 +421,6 @@ public abstract class RolodexArrayAdapter<G, C> extends RolodexBaseAdapter imple
 	private void init(Collection<C> objects) {
 		mObjects = createNewMap(areGroupsSorted(), null);
 		mGroupObjects = new ArrayList<>();
-		mChild2Group = new WeakHashMap<>(objects.size());
 		addAllToObjects(objects);
 	}
 
@@ -472,40 +454,41 @@ public abstract class RolodexArrayAdapter<G, C> extends RolodexBaseAdapter imple
 	protected abstract boolean isGroupFilteredOut(G groupItem, CharSequence constraint);
 
 	/**
-	 * Removes all occurrences in the adapter of each item in the specified collection.
+	 * Removes all occurrences in the adapter of each child item in the specified collection.
 	 *
-	 * @param item The item to remove.
+	 * @param childItem The child item to remove.
 	 */
-	public void remove(C item) {
+	public void remove(C childItem) {
 		boolean isModified = false;
 
 		SYNC_BLOCK:
 		synchronized (mLock) {
-			G group = getGroupFor(item);
+			G group = getGroupFor(childItem);
 			if (mOriginalValues != null) {
 				ArrayList<C> children = mOriginalValues.get(group);
 				if (children == null) {
-					group = searchForGroup(item, mOriginalValues);
+					//TODO: Possibly remove this assumption
+					group = searchForGroup(childItem, mOriginalValues);
 					if (group == null) return;    //Can't find group, guess item doesn't exist
 					children = mOriginalValues.get(group);
 				}
-				isModified = children.remove(item);
+				isModified = children.remove(childItem);
 				if (children.isEmpty()) {
 					mOriginalValues.remove(group);
 					if (mObjects.remove(group) != null) mGroupObjects.remove(group);
 					break SYNC_BLOCK;
 				}
 			}
-			//No matter what, remove from mObjects. This avoids having to re-filter the data if
+			//No matter what, remove from mObjects. This avoids having to re-filter the data when
 			//mOriginalValues != null, then our group object will be correct. Otherwise, we may need
 			//to do a manual search.
 			ArrayList<C> children = mObjects.get(group);
 			if (children == null) {
-				group = searchForGroup(item, mObjects);
+				group = searchForGroup(childItem, mObjects);
 				if (group == null) return;    //Can't find group, guess item doesn't exist
 				children = mObjects.get(group);
 			}
-			isModified |= children.remove(item);
+			isModified |= children.remove(childItem);
 			if (children.isEmpty()) {
 				mObjects.remove(group);
 				mGroupObjects.remove(group);
@@ -518,13 +501,13 @@ public abstract class RolodexArrayAdapter<G, C> extends RolodexBaseAdapter imple
 	 * Convenience method which removes all occurrences in the adapter of each item in the specified
 	 * collection.
 	 *
-	 * @param items The collection of items to remove
+	 * @param childItems The collection of child items to remove
 	 */
-	public void removeAll(Collection<? extends C> items) {
+	public void removeAll(Collection<? extends C> childItems) {
 		boolean isModified = false;
 
 		synchronized (mLock) {
-			for (C item : items) {
+			for (C item : childItems) {
 				G group = getGroupFor(item);
 				if (mOriginalValues != null) {
 					ArrayList<C> children = mOriginalValues.get(group);
@@ -540,7 +523,7 @@ public abstract class RolodexArrayAdapter<G, C> extends RolodexBaseAdapter imple
 						continue;
 					}
 				}
-				//No matter what, remove from mObjects. This avoids having to re-filter the data if
+				//No matter what, remove from mObjects. This avoids having to re-filter the data when
 				//mOriginalValues != null, then our group object will be correct. Otherwise, we may need
 				//to do a manual search.
 				ArrayList<C> children = mObjects.get(group);
@@ -558,11 +541,12 @@ public abstract class RolodexArrayAdapter<G, C> extends RolodexBaseAdapter imple
 	}
 
 	/**
-	 * Removes all items from this adapter that are not contained in the specified collection.
+	 * Removes all children items from this adapter that are not contained in the specified
+	 * collection.
 	 *
-	 * @param items The collection of items to retain
+	 * @param childItems The collection of children items to retain
 	 */
-	public void retainAll(Collection<?> items) {
+	public void retainAll(Collection<?> childItems) {
 		boolean isModified = false;
 
 		synchronized (mLock) {
@@ -570,7 +554,7 @@ public abstract class RolodexArrayAdapter<G, C> extends RolodexBaseAdapter imple
 				Iterator<Map.Entry<G, ArrayList<C>>> it = mOriginalValues.entrySet().iterator();
 				while (it.hasNext()) {
 					Map.Entry<G, ArrayList<C>> entry = it.next();
-					isModified |= entry.getValue().retainAll(items);
+					isModified |= entry.getValue().retainAll(childItems);
 					if (entry.getValue().isEmpty()) {
 						mObjects.remove(entry.getKey());
 						it.remove();
@@ -578,11 +562,11 @@ public abstract class RolodexArrayAdapter<G, C> extends RolodexBaseAdapter imple
 				}
 			}
 
-			//No matter what, remove from mObjects so as to avoid re-filtering if mOriginalValues != null
+			//No matter what, remove from mObjects so as to avoid re-filtering when mOriginalValues != null
 			Iterator<Map.Entry<G, ArrayList<C>>> it = mObjects.entrySet().iterator();
 			while (it.hasNext()) {
 				Map.Entry<G, ArrayList<C>> entry = it.next();
-				isModified |= entry.getValue().retainAll(items);
+				isModified |= entry.getValue().retainAll(childItems);
 				if (entry.getValue().isEmpty()) {
 					it.remove();
 				}
@@ -652,56 +636,53 @@ public abstract class RolodexArrayAdapter<G, C> extends RolodexBaseAdapter imple
 	 *
 	 * @param groupPosition The group location at which to put the specified child
 	 * @param childPosition The child location at which to put the specified item
-	 * @param item          The new item to replace with the old
+	 * @param childItem     The new item to replace with the old
 	 */
-	public void update(int groupPosition, int childPosition, C item) {
+	public void update(int groupPosition, int childPosition, C childItem) {
 		synchronized (mLock) {
 			G oldGroup = mGroupObjects.get(groupPosition);
-			G newGroup = createGroupFor(item);    //Can't rely on cache.
+			G newGroup = createGroupFor(childItem);    //Can't rely on cache.
 
 			//Easy case, group hasn't changed
 			if (oldGroup.equals(newGroup)) {
 				if (mOriginalValues != null) {
 					C child = mObjects.get(oldGroup).get(childPosition);
 					ArrayList<C> children = mOriginalValues.get(oldGroup);
-					children.set(children.indexOf(child), item);
+					children.set(children.indexOf(child), childItem);
 					getFilter().filter(mLastConstraint);
 				} else {
-					mObjects.get(oldGroup).set(childPosition, item);
+					mObjects.get(oldGroup).set(childPosition, childItem);
 				}
 
 				//Hard case, group has changed. Must remove and re-add appropriately
 			} else {
 				if (mOriginalValues != null) {
-					//Remove old item and all references
+					//Remove old item
 					C child = mObjects.get(oldGroup).get(childPosition);
 					ArrayList<C> children = mOriginalValues.get(oldGroup);
 					children.remove(child);
-					mChild2Group.remove(child);
 					if (children.isEmpty()) {
 						mOriginalValues.remove(oldGroup);
 					}
 
-					//Add new item and form new references
-					mChild2Group.put(item, newGroup);
+					//Add new item
 					children = mOriginalValues.get(newGroup);
 					if (children == null) {
 						children = new ArrayList<>();
 						mOriginalValues.put(newGroup, children);
 					}
-					children.add(item);
+					children.add(childItem);
 					getFilter().filter(mLastConstraint);
 				} else {
-					//Remove old item and all references
+					//Remove old item
 					ArrayList<C> children = mObjects.get(oldGroup);
-					mChild2Group.remove(children.remove(childPosition));
+					children.remove(childItem);
 					if (children.isEmpty()) {
 						mObjects.remove(oldGroup);
 						mGroupObjects.remove(groupPosition);
 					}
 
-					//Add new item and form new references
-					mChild2Group.put(item, newGroup);
+					//Add new item
 					children = mObjects.get(newGroup);
 					if (children == null) {
 						children = new ArrayList<>();
@@ -712,7 +693,7 @@ public abstract class RolodexArrayAdapter<G, C> extends RolodexBaseAdapter imple
 							mGroupObjects.add(newGroup);
 						}
 					}
-					children.add(item);
+					children.add(childItem);
 				}
 			}
 		}

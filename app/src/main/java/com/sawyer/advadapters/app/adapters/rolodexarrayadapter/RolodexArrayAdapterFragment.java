@@ -82,9 +82,14 @@ public class RolodexArrayAdapterFragment extends ExpandableListFragment {
 		MovieItem oldMovie = getListAdapter().getChild(groupPosition, childPosition);
 		MovieItem newMovie = new MovieItem(oldMovie.barcode());
 		newMovie.title = new StringBuilder(oldMovie.title).reverse().toString();
+
+		//Test relocating to a new group
 		String year = new StringBuilder(String.valueOf(oldMovie.year)).reverse().toString();
 		if (year.charAt(0) == '0') year += "0";  //In case there are leading zeroes
 		newMovie.year = Integer.valueOf(year);
+		//Test keeping in same group
+		//newMovie.year = oldMovie.year;
+
 		newMovie.isRecommended = !oldMovie.isRecommended;
 		getListAdapter().update(groupPosition, childPosition, newMovie);
 		return true;
