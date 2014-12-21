@@ -453,6 +453,12 @@ public abstract class RolodexArrayAdapter<G, C> extends RolodexBaseAdapter imple
 	 */
 	protected abstract boolean isGroupFilteredOut(G groupItem, CharSequence constraint);
 
+	@Override
+	public void notifyDataSetChanged() {
+		super.notifyDataSetChanged();
+		mNotifyOnChange = true;
+	}
+
 	/**
 	 * Removes all occurrences in the adapter of each child item in the specified collection.
 	 *
