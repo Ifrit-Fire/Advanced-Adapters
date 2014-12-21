@@ -16,6 +16,7 @@
 package com.sawyer.advadapters.app;
 
 import android.app.ExpandableListActivity;
+import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -36,14 +37,19 @@ import com.sawyer.advadapters.app.adapters.nfjsonadapter.NFJSONAdapterActivity;
 import com.sawyer.advadapters.app.adapters.nfsparseadapter.NFSparseAdapterActivity;
 import com.sawyer.advadapters.app.adapters.rolodexarrayadapter.RolodexArrayAdapterActivity;
 import com.sawyer.advadapters.app.adapters.sparseadapter.SparseAdapterActivity;
+import com.sawyer.advadapters.app.dialogs.ChoiceModeDialogFragment;
 import com.sawyer.advadapters.widget.RolodexArrayAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends ExpandableListActivity {
+public class MainActivity extends ExpandableListActivity implements
+		ChoiceModeDialogFragment.EventListener {
+	public static final String EXTRA_CHOICE_MODE = "Extra Choice Mode";
+
 	private static final String EXTRA_INTENT_NAME = "Extra Intent Name";
 	private static final String EXTRA_GROUP_NAME = "Extra Group Name";
+	private static final String TAG_CHOICE_MODE_DIALOG_FRAG = "Choice Mode Dialog Frag";
 
 	private List<Intent> createIntentList() {
 		List<Intent> intents = new ArrayList<>();
@@ -74,6 +80,7 @@ public class MainActivity extends ExpandableListActivity {
 		intent = new Intent(this, RolodexArrayAdapterActivity.class);
 		intent.putExtra(EXTRA_INTENT_NAME, getString(R.string.activity_rolodex_arrayadapter));
 		intent.putExtra(EXTRA_GROUP_NAME, getString(R.string.title_group_arrays));
+		intent.putExtra(EXTRA_CHOICE_MODE, 1);
 		intents.add(intent);
 
 		/* SparseArray Based Demos */
@@ -102,10 +109,23 @@ public class MainActivity extends ExpandableListActivity {
 	}
 
 	@Override
+	public void onAttachFragment(Fragment fragment) {
+		if (fragment instanceof ChoiceModeDialogFragment) {
+			ChoiceModeDialogFragment frag = (ChoiceModeDialogFragment) fragment;
+			frag.setEventListener(this);
+		}
+	}
+
+	@Override
 	public boolean onChildClick(ExpandableListView parent, View v, int groupPosition,
 								int childPosition, long id) {
 		Intent intent = (Intent) getExpandableListAdapter().getChild(groupPosition, childPosition);
-		startActivity(intent);
+		if (intent.getIntExtra(EXTRA_CHOICE_MODE, 0) != 0) {
+			ChoiceModeDialogFragment frag = ChoiceModeDialogFragment.newInstance(intent);
+			frag.show(getFragmentManager(), TAG_CHOICE_MODE_DIALOG_FRAG);
+		} else {
+			startActivity(intent);
+		}
 		return true;
 	}
 
@@ -134,6 +154,12 @@ public class MainActivity extends ExpandableListActivity {
 		default:
 			return super.onOptionsItemSelected(item);
 		}
+	}
+
+	@Override
+	public void onSelectedChoiceMode(int choiceMode, Intent intent) {
+		intent.putExtra(EXTRA_CHOICE_MODE, choiceMode);
+		startActivity(intent);
 	}
 
 	private class DemoAdapter extends RolodexArrayAdapter<String, Intent> {

@@ -39,6 +39,7 @@
 	<string name="title_contains">Contains</string>
 	<string name="title_dialog_add_movies">Add Movie(s) To List</string>
 	<string name="title_dialog_append_movies">Append Movie(s) To List</string>
+	<string name="title_dialog_choice_mode">Select Choice Mode</string>
 	<string name="title_dialog_contains_movies">Does List Contain?</string>
 	<string name="title_dialog_insert_movies">Insert Movie(s) At Location</string>
 	<string name="title_dialog_put_movies">Put Movie(s) in List</string>
@@ -71,6 +72,9 @@
 	<string name="btn_add_all_var">Add as Vararg</string>
 	<string name="btn_append_id">Append with Id</string>
 	<string name="btn_append_all">Append All</string>
+	<string name="btn_choice_mode_single">Single</string>
+	<string name="btn_choice_mode_multiple">Multiple</string>
+	<string name="btn_choice_mode_modal">Modal</string>
 	<string name="btn_contains">Contains One</string>
 	<string name="btn_contains_all">Contains All</string>
 	<string name="btn_contains_id">Contains Id</string>
