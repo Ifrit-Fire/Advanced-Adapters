@@ -105,15 +105,6 @@ public abstract class RolodexArrayAdapter<G, C> extends RolodexBaseAdapter imple
 			return areGroupsSorted ? new TreeMap<>(dataToCopy) : new LinkedHashMap<>(dataToCopy);
 	}
 
-	private static <G, C> G searchForGroup(C item, Map<G, ArrayList<C>> map) {
-		for (Map.Entry<G, ArrayList<C>> entry : map.entrySet()) {
-			if (entry.getValue().contains(item)) {
-				return entry.getKey();
-			}
-		}
-		return null;
-	}
-
 	/**
 	 * Convenience method which joins all {@link ArrayList} values of a {@link Map} into one giant
 	 * ArrayList. Order of the newly generated list will match the iteration order of the Map.
@@ -472,12 +463,7 @@ public abstract class RolodexArrayAdapter<G, C> extends RolodexBaseAdapter imple
 			G group = getGroupFor(childItem);
 			if (mOriginalValues != null) {
 				ArrayList<C> children = mOriginalValues.get(group);
-				if (children == null) {
-					//TODO: Possibly remove this assumption
-					group = searchForGroup(childItem, mOriginalValues);
-					if (group == null) return;    //Can't find group, guess item doesn't exist
-					children = mOriginalValues.get(group);
-				}
+				if (children == null) return; //Can't find group, assume item doesn't exist
 				isModified = children.remove(childItem);
 				if (children.isEmpty()) {
 					mOriginalValues.remove(group);
@@ -489,11 +475,7 @@ public abstract class RolodexArrayAdapter<G, C> extends RolodexBaseAdapter imple
 			//mOriginalValues != null, then our group object will be correct. Otherwise, we may need
 			//to do a manual search.
 			ArrayList<C> children = mObjects.get(group);
-			if (children == null) {
-				group = searchForGroup(childItem, mObjects);
-				if (group == null) return;    //Can't find group, guess item doesn't exist
-				children = mObjects.get(group);
-			}
+			if (children == null) return; //Can't find group, item already removed or doesn't exist
 			isModified |= children.remove(childItem);
 			if (children.isEmpty()) {
 				mObjects.remove(group);
@@ -517,11 +499,7 @@ public abstract class RolodexArrayAdapter<G, C> extends RolodexBaseAdapter imple
 				G group = getGroupFor(item);
 				if (mOriginalValues != null) {
 					ArrayList<C> children = mOriginalValues.get(group);
-					if (children == null) {
-						group = searchForGroup(item, mOriginalValues);
-						if (group == null) return;    //Can't find group, guess item doesn't exist
-						children = mOriginalValues.get(group);
-					}
+					if (children == null) return; //Can't find group, assume item doesn't exist
 					isModified = children.remove(item);
 					if (children.isEmpty()) {
 						mOriginalValues.remove(group);
@@ -533,11 +511,7 @@ public abstract class RolodexArrayAdapter<G, C> extends RolodexBaseAdapter imple
 				//mOriginalValues != null, then our group object will be correct. Otherwise, we may need
 				//to do a manual search.
 				ArrayList<C> children = mObjects.get(group);
-				if (children == null) {
-					group = searchForGroup(item, mObjects);
-					if (group == null) return;    //Can't find group, guess item doesn't exist
-					children = mObjects.get(group);
-				}
+				if (children == null) return; //Can't find group, already removed or doesn't exist
 				isModified |= children.remove(item);
 				if (children.isEmpty()) mObjects.remove(group);
 			}
