@@ -340,7 +340,7 @@ public abstract class RolodexArrayAdapter<G, C> extends RolodexBaseAdapter imple
 	 *
 	 * @return Group associated with child. Will never return null.
 	 */
-	private G getGroupFor(C childItem) {
+	public G getGroupFor(C childItem) {
 		G group = getGroupFromCacheFor(childItem);
 		if (group == null) {
 			group = createGroupFor(childItem);
@@ -371,7 +371,7 @@ public abstract class RolodexArrayAdapter<G, C> extends RolodexBaseAdapter imple
 	 * is not found in cache.
 	 */
 	@SuppressWarnings("UnusedParameters")
-	protected G getGroupFromCacheFor(C childItem) {
+	public G getGroupFromCacheFor(C childItem) {
 		return null;
 	}
 
