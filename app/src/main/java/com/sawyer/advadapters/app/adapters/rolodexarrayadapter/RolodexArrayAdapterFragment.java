@@ -25,6 +25,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
 
@@ -32,6 +33,7 @@ import com.sawyer.advadapters.app.R;
 import com.sawyer.advadapters.app.adapters.ExpandableListFragment;
 import com.sawyer.advadapters.app.data.MovieItem;
 import com.sawyer.advadapters.widget.RolodexArrayAdapter;
+import com.sawyer.advadapters.widget.RolodexBaseAdapter;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -77,6 +79,10 @@ public class RolodexArrayAdapterFragment extends ExpandableListFragment {
 	@Override
 	public boolean onChildClick(ExpandableListView parent, View v, int groupPosition,
 								int childPosition, long id) {
+		//Only modal should update child click.  All others will cause activation state change
+		if (mEventListener.getChoiceMode() != RolodexBaseAdapter.CHOICE_MODE_MULTIPLE_MODAL)
+			return false;
+
 		//Granted, making a whole new instance is not even necessary here.
 		//However I wanted to demonstrate updating with an entirely different instance.
 		MovieItem oldMovie = getListAdapter().getChild(groupPosition, childPosition);
@@ -108,7 +114,7 @@ public class RolodexArrayAdapterFragment extends ExpandableListFragment {
 		} else {
 			setListAdapter(new MovieRolodexArrayAdapter(getActivity()));
 		}
-		getListAdapter().setChoiceMode(RolodexArrayAdapter.CHOICE_MODE_MULTIPLE_MODAL);
+		getListAdapter().setChoiceMode(mEventListener.getChoiceMode());
 		getListAdapter().setMultiChoiceModeListener(new OnCabMultiChoiceModeListener());
 		return v;
 	}
@@ -134,6 +140,8 @@ public class RolodexArrayAdapterFragment extends ExpandableListFragment {
 	}
 
 	public interface EventListener {
+		public int getChoiceMode();
+
 		public void onAdapterCountUpdated();
 	}
 
