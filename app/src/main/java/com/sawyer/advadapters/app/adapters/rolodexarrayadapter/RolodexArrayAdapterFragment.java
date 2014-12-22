@@ -25,7 +25,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AbsListView;
 import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
 
@@ -33,7 +32,6 @@ import com.sawyer.advadapters.app.R;
 import com.sawyer.advadapters.app.adapters.ExpandableListFragment;
 import com.sawyer.advadapters.app.data.MovieItem;
 import com.sawyer.advadapters.widget.RolodexArrayAdapter;
-import com.sawyer.advadapters.widget.RolodexBaseAdapter;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -80,7 +78,7 @@ public class RolodexArrayAdapterFragment extends ExpandableListFragment {
 	public boolean onChildClick(ExpandableListView parent, View v, int groupPosition,
 								int childPosition, long id) {
 		//Only modal should update child click.  All others will cause activation state change
-		if (mEventListener.getChoiceMode() != RolodexBaseAdapter.CHOICE_MODE_MULTIPLE_MODAL)
+		if (mEventListener.getChoiceMode() != ExpandableListView.CHOICE_MODE_MULTIPLE_MODAL)
 			return false;
 
 		//Granted, making a whole new instance is not even necessary here.
@@ -101,6 +99,7 @@ public class RolodexArrayAdapterFragment extends ExpandableListFragment {
 		return true;
 	}
 
+	@SuppressWarnings("ConstantConditions")
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 							 Bundle savedInstanceState) {
@@ -114,7 +113,7 @@ public class RolodexArrayAdapterFragment extends ExpandableListFragment {
 		} else {
 			setListAdapter(new MovieRolodexArrayAdapter(getActivity()));
 		}
-		getListAdapter().setChoiceMode(mEventListener.getChoiceMode());
+		((ExpandableListView) v).setChoiceMode(mEventListener.getChoiceMode());
 		getListAdapter().setMultiChoiceModeListener(new OnCabMultiChoiceModeListener());
 		return v;
 	}

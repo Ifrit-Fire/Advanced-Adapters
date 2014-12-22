@@ -24,13 +24,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
-import android.widget.ListView;
 
 import com.sawyer.advadapters.app.ToastHelper;
 import com.sawyer.advadapters.app.adapters.ExpandableListFragment;
 import com.sawyer.advadapters.app.data.MovieContent;
 import com.sawyer.advadapters.app.data.MovieItem;
-import com.sawyer.advadapters.widget.RolodexArrayAdapter;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -164,7 +162,7 @@ public class AndroidExpandableFragment extends ExpandableListFragment {
 		} else {
 			setListAdapter(createEmptyAdapter());
 		}
-		getExpandableListView().setChoiceMode(RolodexArrayAdapter.CHOICE_MODE_MULTIPLE_MODAL);
+		getExpandableListView().setChoiceMode(ExpandableListView.CHOICE_MODE_MULTIPLE_MODAL);
 		getExpandableListView().setMultiChoiceModeListener(new OnCabMultiChoiceModeListener());
 		return v;
 	}
@@ -200,7 +198,7 @@ public class AndroidExpandableFragment extends ExpandableListFragment {
 													mChildKeys, mChildIds));
 	}
 
-	private class OnCabMultiChoiceModeListener implements ListView.MultiChoiceModeListener {
+	private class OnCabMultiChoiceModeListener implements ExpandableListView.MultiChoiceModeListener {
 		@Override
 		public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
 			return false;

@@ -19,6 +19,7 @@ import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ListView;
 
 import com.sawyer.advadapters.app.MainActivity;
 import com.sawyer.advadapters.app.R;
@@ -28,7 +29,6 @@ import com.sawyer.advadapters.app.data.MovieContent;
 import com.sawyer.advadapters.app.data.MovieItem;
 import com.sawyer.advadapters.app.dialogs.AddArrayDialogFragment;
 import com.sawyer.advadapters.app.dialogs.ContainsArrayDialogFragment;
-import com.sawyer.advadapters.widget.RolodexArrayAdapter;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -58,8 +58,7 @@ public class RolodexArrayAdapterActivity extends AdapterBaseActivity implements
 
 	@Override
 	public int getChoiceMode() {
-		return getIntent().getIntExtra(MainActivity.EXTRA_CHOICE_MODE,
-									   RolodexArrayAdapter.CHOICE_MODE_NONE);
+		return getIntent().getIntExtra(MainActivity.EXTRA_CHOICE_MODE, ListView.CHOICE_MODE_NONE);
 	}
 
 	@Override

@@ -21,10 +21,10 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AbsListView;
 import android.widget.RadioGroup;
 
 import com.sawyer.advadapters.app.R;
-import com.sawyer.advadapters.widget.RolodexBaseAdapter;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -78,16 +78,16 @@ public class ChoiceModeDialogFragment extends CustomDialogFragment {
 		int choiceMode;
 		switch (mRadioGroup.getCheckedRadioButtonId()) {
 		case R.id.choice_mode_single:
-			choiceMode = RolodexBaseAdapter.CHOICE_MODE_SINGLE;
+			choiceMode = AbsListView.CHOICE_MODE_SINGLE;
 			break;
 		case R.id.choice_mode_multiple:
-			choiceMode = RolodexBaseAdapter.CHOICE_MODE_MULTIPLE;
+			choiceMode = AbsListView.CHOICE_MODE_MULTIPLE;
 			break;
 		case R.id.choice_mode_modal:
-			choiceMode = RolodexBaseAdapter.CHOICE_MODE_MULTIPLE_MODAL;
+			choiceMode = AbsListView.CHOICE_MODE_MULTIPLE_MODAL;
 			break;
 		default:
-			choiceMode = RolodexBaseAdapter.CHOICE_MODE_NONE;
+			choiceMode = AbsListView.CHOICE_MODE_NONE;
 			break;
 		}
 		dismiss();
