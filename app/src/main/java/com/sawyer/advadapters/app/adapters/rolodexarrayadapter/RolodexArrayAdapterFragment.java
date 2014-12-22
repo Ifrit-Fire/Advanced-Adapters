@@ -113,8 +113,10 @@ public class RolodexArrayAdapterFragment extends ExpandableListFragment {
 		} else {
 			setListAdapter(new MovieRolodexArrayAdapter(getActivity()));
 		}
-		((ExpandableListView) v).setChoiceMode(mEventListener.getChoiceMode());
-		getListAdapter().setMultiChoiceModeListener(new OnCabMultiChoiceModeListener());
+		int choiceMode = mEventListener.getChoiceMode();
+		((ExpandableListView) v).setChoiceMode(choiceMode);
+		if (choiceMode == ExpandableListView.CHOICE_MODE_MULTIPLE_MODAL)
+			getListAdapter().setMultiChoiceModeListener(new OnCabMultiChoiceModeListener());
 		return v;
 	}
 

@@ -17,6 +17,7 @@ package com.sawyer.advadapters.widget;
 
 import android.content.Context;
 import android.text.TextUtils;
+import android.widget.ExpandableListView;
 import android.widget.Filter;
 import android.widget.Filterable;
 
@@ -689,6 +690,7 @@ public abstract class RolodexArrayAdapter<G, C> extends RolodexBaseAdapter imple
 				if (TextUtils.isEmpty(constraint)) {    //Clearing out filtered results
 					if (mOriginalValues != null) {
 						mObjects = createNewMap(areGroupsSorted(), mOriginalValues);
+						mGroupObjects = new ArrayList<>(mObjects.keySet());
 						mOriginalValues = null;
 					}
 					results.values = mObjects;
@@ -724,16 +726,28 @@ public abstract class RolodexArrayAdapter<G, C> extends RolodexBaseAdapter imple
 		@SuppressWarnings("unchecked")
 		@Override
 		protected void publishResults(CharSequence constraint, FilterResults results) {
+			mLastConstraint = constraint;
 			synchronized (mLock) {
-				mLastConstraint = constraint;
 				mObjects = (Map<G, ArrayList<C>>) results.values;
 				mGroupObjects = new ArrayList<>(mObjects.keySet());
 			}
 
-			if (results.count > 0) {
+			if (getChoiceMode() == ExpandableListView.CHOICE_MODE_MULTIPLE_MODAL) {
+				/* Work around for a crash bug during modal mode. The idea here is to never invoke
+				notifyDataSetInvalidated(). Crash repo steps:
+				 - getGroupID() accesses the internal data via a position # (eg getGroup(position))
+				 - hasStableIds() returns true
+				 - Remove an item from adapter
+				 - Fling/Scroll to the bottom of the list
+				 - Perform filter search that has zero results (Eg invoke notifyDataSetInvalidated())
+				 */
 				notifyDataSetChanged();
 			} else {
-				notifyDataSetInvalidated();
+				if (results.count > 0) {
+					notifyDataSetChanged();
+				} else {
+					notifyDataSetInvalidated();
+				}
 			}
 		}
 	}

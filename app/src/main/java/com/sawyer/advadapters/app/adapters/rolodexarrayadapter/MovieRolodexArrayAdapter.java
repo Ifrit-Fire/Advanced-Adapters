@@ -20,6 +20,7 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.TextView;
 
 import com.sawyer.advadapters.app.R;
@@ -27,6 +28,7 @@ import com.sawyer.advadapters.app.adapters.MovieNoSubViewHolder;
 import com.sawyer.advadapters.app.data.MovieItem;
 import com.sawyer.advadapters.widget.RolodexArrayAdapter;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
 
@@ -85,6 +87,11 @@ class MovieRolodexArrayAdapter extends RolodexArrayAdapter<Integer, MovieItem> {
 		tv.setText(getGroup(groupPosition).toString());
 
 		return convertView;
+	}
+
+	@Override
+	public boolean hasAutoExpandingGroups() {
+		return getChoiceMode() == AbsListView.CHOICE_MODE_MULTIPLE;
 	}
 
 	@Override

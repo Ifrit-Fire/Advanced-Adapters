@@ -18,6 +18,7 @@ package com.sawyer.advadapters.widget;
 
 import android.content.Context;
 import android.os.Parcelable;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.ActionMode;
 import android.view.LayoutInflater;
@@ -183,6 +184,18 @@ public abstract class RolodexBaseAdapter extends BaseExpandableListAdapter {
 	}
 
 	/**
+	 * @return The current choice mode of the attached {@link ExpandableListView}. This may return
+	 * null if the adapter has no reference to it's ExpandableListView.
+	 */
+	public Integer getChoiceMode() {
+		ExpandableListView lv = mListView.get();
+		if (lv != null)
+			return lv.getChoiceMode();
+		else
+			return null;
+	}
+
+	/**
 	 * @return The Context associated with this adapter.
 	 */
 	public Context getContext() {
@@ -197,8 +210,7 @@ public abstract class RolodexBaseAdapter extends BaseExpandableListAdapter {
 			if (parent instanceof ExpandableListView) {
 				lv = (ExpandableListView) parent;
 				mListView = new WeakReference<>(lv);
-				lv.setOnGroupClickListener(mOnGroupClickListener);
-				lv.setOnChildClickListener(mOnChildClickListener);
+				updateClickListeners("getGroupView");
 				lv.setMultiChoiceModeListener(new InternalMultiChoiceModeListener());
 				if (mParcelState != null) lv.onRestoreInstanceState(mParcelState);
 				doAction();
@@ -250,7 +262,7 @@ public abstract class RolodexBaseAdapter extends BaseExpandableListAdapter {
 
 	@Override
 	public boolean hasStableIds() {
-		return false;
+		return true;
 	}
 
 	private void init(Context activity) {
@@ -315,10 +327,7 @@ public abstract class RolodexBaseAdapter extends BaseExpandableListAdapter {
 	public void setOnChildClickListener(
 			ExpandableListView.OnChildClickListener onChildClickListener) {
 		mOnChildClickListener = onChildClickListener;
-		if (!mIsActionModeActive) {
-			ExpandableListView lv = mListView.get();
-			if (lv != null) lv.setOnChildClickListener(mOnChildClickListener);
-		}
+		updateClickListeners(null);
 	}
 
 	/**
@@ -327,9 +336,36 @@ public abstract class RolodexBaseAdapter extends BaseExpandableListAdapter {
 	public void setOnGroupClickListener(
 			ExpandableListView.OnGroupClickListener onGroupClickListener) {
 		mOnGroupClickListener = onGroupClickListener;
+		updateClickListeners(null);
+	}
+
+	private void updateClickListeners(String debugTag) {
 		ExpandableListView lv = mListView.get();
-		if (!mIsActionModeActive) {
-			if (lv != null) lv.setOnGroupClickListener(mOnGroupClickListener);
+		if (lv == null) {
+			if (!TextUtils.isEmpty(debugTag)) logLostReference(debugTag);
+			mIsActionModeActive = false;
+			return;
+		}
+		switch (lv.getChoiceMode()) {
+		case ExpandableListView.CHOICE_MODE_SINGLE:
+		case ExpandableListView.CHOICE_MODE_MULTIPLE:
+			lv.setOnChildClickListener(mChoiceModeClickListener);
+			lv.setOnGroupClickListener(mChoiceModeClickListener);
+			break;
+		case ExpandableListView.CHOICE_MODE_MULTIPLE_MODAL:
+			if (mIsActionModeActive) {
+				lv.setOnChildClickListener(mChoiceModeClickListener);
+				lv.setOnGroupClickListener(mChoiceModeClickListener);
+			} else {
+				lv.setOnGroupClickListener(mOnGroupClickListener);
+				lv.setOnChildClickListener(mOnChildClickListener);
+			}
+			break;
+		case ExpandableListView.CHOICE_MODE_NONE:
+		default:
+			lv.setOnGroupClickListener(mOnGroupClickListener);
+			lv.setOnChildClickListener(mOnChildClickListener);
+			break;
 		}
 	}
 
@@ -395,16 +431,7 @@ public abstract class RolodexBaseAdapter extends BaseExpandableListAdapter {
 		public boolean onCreateActionMode(ActionMode mode, Menu menu) {
 			mIsActionModeActive = mMultiChoiceModeListener != null &&
 								  mMultiChoiceModeListener.onCreateActionMode(mode, menu);
-			if (mIsActionModeActive) {
-				ExpandableListView lv = mListView.get();
-				if (lv == null) {
-					logLostReference("onCreateActionMode");
-					mIsActionModeActive = false;
-				} else {
-					lv.setOnChildClickListener(mChoiceModeClickListener);
-					lv.setOnGroupClickListener(mChoiceModeClickListener);
-				}
-			}
+			updateClickListeners("onCreateActionMode");
 			return mIsActionModeActive;
 		}
 
@@ -413,13 +440,7 @@ public abstract class RolodexBaseAdapter extends BaseExpandableListAdapter {
 			if (mMultiChoiceModeListener != null)
 				mMultiChoiceModeListener.onDestroyActionMode(mode);
 			mIsActionModeActive = false;
-			ExpandableListView lv = mListView.get();
-			if (lv == null) {
-				logLostReference("onDestroyActionMode");
-			} else {
-				lv.setOnChildClickListener(mOnChildClickListener);
-				lv.setOnGroupClickListener(mOnGroupClickListener);
-			}
+			updateClickListeners("onDestroyActionMode");
 		}
 
 		@Override
@@ -485,27 +506,19 @@ public abstract class RolodexBaseAdapter extends BaseExpandableListAdapter {
 		@Override
 		public boolean onChildClick(ExpandableListView parent, View v, int groupPosition,
 									int childPosition, long id) {
-			if (mIsActionModeActive) {
-				long packedPosition = ExpandableListView
-						.getPackedPositionForChild(groupPosition, childPosition);
-				int position = parent.getFlatListPosition(packedPosition);
-				parent.setItemChecked(position, !parent.isItemChecked(position));
-				return true;
-			} else {
-				return false;
-			}
+			long packedPosition = ExpandableListView
+					.getPackedPositionForChild(groupPosition, childPosition);
+			int position = parent.getFlatListPosition(packedPosition);
+			parent.setItemChecked(position, !parent.isItemChecked(position));
+			return true;
 		}
 
 		@Override
 		public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
-			if (mIsActionModeActive) {
-				long packedPosition = ExpandableListView.getPackedPositionForGroup(groupPosition);
-				int position = parent.getFlatListPosition(packedPosition);
-				parent.setItemChecked(position, !parent.isItemChecked(position));
-				return true;
-			} else {
-				return false;
-			}
+			long packedPosition = ExpandableListView.getPackedPositionForGroup(groupPosition);
+			int position = parent.getFlatListPosition(packedPosition);
+			parent.setItemChecked(position, !parent.isItemChecked(position));
+			return true;
 		}
 	}
 }
