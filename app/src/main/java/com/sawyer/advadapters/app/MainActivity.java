@@ -39,6 +39,7 @@ import com.sawyer.advadapters.app.adapters.rolodexarrayadapter.RolodexArrayAdapt
 import com.sawyer.advadapters.app.adapters.sparseadapter.SparseAdapterActivity;
 import com.sawyer.advadapters.app.dialogs.ChoiceModeDialogFragment;
 import com.sawyer.advadapters.widget.RolodexArrayAdapter;
+import com.sawyer.advadapters.widget.RolodexBaseAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -80,7 +81,7 @@ public class MainActivity extends ExpandableListActivity implements
 		intent = new Intent(this, RolodexArrayAdapterActivity.class);
 		intent.putExtra(EXTRA_INTENT_NAME, getString(R.string.activity_rolodex_arrayadapter));
 		intent.putExtra(EXTRA_GROUP_NAME, getString(R.string.title_group_arrays));
-		intent.putExtra(EXTRA_CHOICE_MODE, 1);
+		intent.putExtra(EXTRA_CHOICE_MODE, RolodexBaseAdapter.ChoiceMode.NONE);
 		intents.add(intent);
 
 		/* SparseArray Based Demos */
@@ -120,7 +121,7 @@ public class MainActivity extends ExpandableListActivity implements
 	public boolean onChildClick(ExpandableListView parent, View v, int groupPosition,
 								int childPosition, long id) {
 		Intent intent = (Intent) getExpandableListAdapter().getChild(groupPosition, childPosition);
-		if (intent.getIntExtra(EXTRA_CHOICE_MODE, 0) != 0) {
+		if (intent.getSerializableExtra(EXTRA_CHOICE_MODE) != null) {
 			ChoiceModeDialogFragment frag = ChoiceModeDialogFragment.newInstance(intent);
 			frag.show(getFragmentManager(), TAG_CHOICE_MODE_DIALOG_FRAG);
 		} else {
@@ -157,7 +158,7 @@ public class MainActivity extends ExpandableListActivity implements
 	}
 
 	@Override
-	public void onSelectedChoiceMode(int choiceMode, Intent intent) {
+	public void onSelectedChoiceMode(RolodexBaseAdapter.ChoiceMode choiceMode, Intent intent) {
 		intent.putExtra(EXTRA_CHOICE_MODE, choiceMode);
 		startActivity(intent);
 	}

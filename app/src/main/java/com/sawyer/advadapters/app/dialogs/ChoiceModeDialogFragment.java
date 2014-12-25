@@ -21,10 +21,10 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.AbsListView;
 import android.widget.RadioGroup;
 
 import com.sawyer.advadapters.app.R;
+import com.sawyer.advadapters.widget.RolodexBaseAdapter;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -75,19 +75,19 @@ public class ChoiceModeDialogFragment extends CustomDialogFragment {
 	@OnClick(R.id.ok)
 	public void onOk(View v) {
 		if (mEventListener == null) return;
-		int choiceMode;
+		RolodexBaseAdapter.ChoiceMode choiceMode;
 		switch (mRadioGroup.getCheckedRadioButtonId()) {
 		case R.id.choice_mode_single:
-			choiceMode = AbsListView.CHOICE_MODE_SINGLE;
+			choiceMode = RolodexBaseAdapter.ChoiceMode.SINGLE;
 			break;
 		case R.id.choice_mode_multiple:
-			choiceMode = AbsListView.CHOICE_MODE_MULTIPLE;
+			choiceMode = RolodexBaseAdapter.ChoiceMode.MULTIPLE;
 			break;
 		case R.id.choice_mode_modal:
-			choiceMode = AbsListView.CHOICE_MODE_MULTIPLE_MODAL;
+			choiceMode = RolodexBaseAdapter.ChoiceMode.MULTIPLE_MODAL;
 			break;
 		default:
-			choiceMode = AbsListView.CHOICE_MODE_NONE;
+			choiceMode = RolodexBaseAdapter.ChoiceMode.NONE;
 			break;
 		}
 		dismiss();
@@ -100,6 +100,6 @@ public class ChoiceModeDialogFragment extends CustomDialogFragment {
 	}
 
 	public interface EventListener {
-		public void onSelectedChoiceMode(int choiceMode, Intent intent);
+		public void onSelectedChoiceMode(RolodexBaseAdapter.ChoiceMode choiceMode, Intent intent);
 	}
 }

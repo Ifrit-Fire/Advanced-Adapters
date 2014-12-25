@@ -31,7 +31,7 @@ import android.widget.ExpandableListView;
 import com.sawyer.advadapters.app.R;
 import com.sawyer.advadapters.app.adapters.ExpandableListFragment;
 import com.sawyer.advadapters.app.data.MovieItem;
-import com.sawyer.advadapters.widget.RolodexArrayAdapter;
+import com.sawyer.advadapters.widget.RolodexBaseAdapter;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -77,8 +77,8 @@ public class RolodexArrayAdapterFragment extends ExpandableListFragment {
 	@Override
 	public boolean onChildClick(ExpandableListView parent, View v, int groupPosition,
 								int childPosition, long id) {
-		//Only modal should update child click.  All others will cause activation state change
-		if (mEventListener.getChoiceMode() != ExpandableListView.CHOICE_MODE_MULTIPLE_MODAL)
+		//Only modal should update child click.  All others should just cause activation state change
+		if (!mEventListener.getChoiceMode().isModal())
 			return false;
 
 		//Granted, making a whole new instance is not even necessary here.
@@ -88,11 +88,12 @@ public class RolodexArrayAdapterFragment extends ExpandableListFragment {
 		newMovie.title = new StringBuilder(oldMovie.title).reverse().toString();
 
 		//Test relocating to a new group
-		String year = new StringBuilder(String.valueOf(oldMovie.year)).reverse().toString();
-		if (year.charAt(0) == '0') year += "0";  //In case there are leading zeroes
-		newMovie.year = Integer.valueOf(year);
+		//String year = new StringBuilder(String.valueOf(oldMovie.year)).reverse().toString();
+		//if (year.charAt(0) == '0') year += "0";  //In case there are leading zeroes
+		//newMovie.year = Integer.valueOf(year);
+
 		//Test keeping in same group
-		//newMovie.year = oldMovie.year;
+		newMovie.year = oldMovie.year;
 
 		newMovie.isRecommended = !oldMovie.isRecommended;
 		getListAdapter().update(groupPosition, childPosition, newMovie);
@@ -113,10 +114,14 @@ public class RolodexArrayAdapterFragment extends ExpandableListFragment {
 		} else {
 			setListAdapter(new MovieRolodexArrayAdapter(getActivity()));
 		}
-		int choiceMode = mEventListener.getChoiceMode();
-		((ExpandableListView) v).setChoiceMode(choiceMode);
-		if (choiceMode == ExpandableListView.CHOICE_MODE_MULTIPLE_MODAL)
-			getListAdapter().setMultiChoiceModeListener(new OnCabMultiChoiceModeListener());
+		switch (mEventListener.getChoiceMode()) {
+		case SINGLE_MODAL:
+		case MULTIPLE_MODAL:
+			getListAdapter().setMultiChoiceModeListener(new OnCabModalChoiceModeListener());
+		default:
+			//Do nothing else
+		}
+		getListAdapter().setChoiceMode(mEventListener.getChoiceMode());
 		return v;
 	}
 
@@ -141,13 +146,13 @@ public class RolodexArrayAdapterFragment extends ExpandableListFragment {
 	}
 
 	public interface EventListener {
-		public int getChoiceMode();
+		public RolodexBaseAdapter.ChoiceMode getChoiceMode();
 
 		public void onAdapterCountUpdated();
 	}
 
-	private class OnCabMultiChoiceModeListener implements
-			RolodexArrayAdapter.MultiChoiceModeListener {
+	private class OnCabModalChoiceModeListener implements
+			RolodexBaseAdapter.ModalChoiceModeListener {
 		@Override
 		public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
 			boolean result;
