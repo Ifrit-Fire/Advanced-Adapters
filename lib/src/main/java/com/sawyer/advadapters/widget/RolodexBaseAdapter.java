@@ -35,7 +35,9 @@ import android.widget.ExpandableListView;
 
 import java.lang.ref.WeakReference;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * TODO: Write this
@@ -62,7 +64,7 @@ public abstract class RolodexBaseAdapter extends BaseExpandableListAdapter {
 	CheckedState mCheckStates;
 
 	/** {@link WeakReference} to {@link ExpandableListView} which the adapter is currently attached. */
-	WeakReference<ExpandableListView> mListView;
+	WeakReference<ExpandableListView> mExpandableListView;
 	/** User defined callback to be invoked when a group view has been clicked. */
 	ExpandableListView.OnGroupClickListener mOnGroupClickListener;
 	/** User defined callback to be invoked when a child view has been clicked. */
@@ -142,17 +144,16 @@ public abstract class RolodexBaseAdapter extends BaseExpandableListAdapter {
 	}
 
 	/**
-	 * Clear any choices previously set
+	 * Clear any choices previously set. This will only be valid if the choice mode is not {@link
+	 * ChoiceMode#NONE} (default).
 	 */
 	public void clearChoices() {
-		if (mCheckStates != null) {
-			mCheckStates.clear();
-		}
+		if (mCheckStates != null) mCheckStates.clear();
 	}
 
 	/** Collapse all groups in the adapter. */
 	public void collapseAll() {
-		ExpandableListView lv = mListView.get();
+		ExpandableListView lv = mExpandableListView.get();
 		if (lv == null) {
 			mQueueAction = QueueAction.COLLAPSE_ALL;
 			return;
@@ -195,7 +196,7 @@ public abstract class RolodexBaseAdapter extends BaseExpandableListAdapter {
 	 * @param animate True if the expanding groups should be animated in
 	 */
 	public void expandAll(boolean animate) {
-		ExpandableListView lv = mListView.get();
+		ExpandableListView lv = mExpandableListView.get();
 		if (lv == null) {
 			mQueueAction = animate ? QueueAction.EXPAND_ALL_ANIMATE : QueueAction.EXPAND_ALL;
 			return;
@@ -209,18 +210,84 @@ public abstract class RolodexBaseAdapter extends BaseExpandableListAdapter {
 	}
 
 	/**
-	 * Returns the number of items currently checked. This will only be valid if the choice mode is
-	 * not {@link ChoiceMode#NONE} (default).
+	 * Returns the number of child items currently checked. This will only be valid if the choice
+	 * mode is not {@link ChoiceMode#NONE} (default).
+	 * <p/>
+	 * To determine the specific items that are currently checked, use one of the
+	 * <code>getChecked*</code> methods.
+	 *
+	 * @return The number of children currently checked.
+	 *
+	 * @see #getCheckedChildIds()
+	 * @see #getCheckedGroupIds()
+	 * @see #getCheckedGroupPositions()
+	 * @see #getCheckedChildPositions()
+	 */
+	public int getCheckedChildCount() {
+		return (mCheckStates == null) ? 0 : mCheckStates.getCheckedChildCount();
+	}
+
+	/**
+	 * Returns the set of checked children item ids. The result is only valid if the choice mode has
+	 * not been set to {@link ChoiceMode#NONE} and the adapter has stable IDs. ({@link
+	 * #hasStableIds()} == {@code true})
+	 *
+	 * @return A new array which contains the id of each checked item in the list. Will never
+	 * contain a null value.
+	 */
+	public Long[] getCheckedChildIds() {
+		return (mCheckStates == null) ? new Long[]{0L} : mCheckStates.getCheckedChildIds();
+	}
+
+	/**
+	 * Returns the set of child items in the list which are checked. The result is only valid if the
+	 * choice mode has not been set to {@link ChoiceMode#NONE}.
+	 *
+	 * @return A Long array which contains only those children positions which are checked. Note
+	 * these are packed positions.
+	 */
+	public Long[] getCheckedChildPositions() {
+		return (mCheckStates == null) ? new Long[]{-1L} : mCheckStates.getCheckedChildPositions();
+	}
+
+	/**
+	 * Returns the number of group items currently checked. This will only be valid if the choice
+	 * mode is not {@link ChoiceMode#NONE} (default).
 	 * <p/>
 	 * <p>To determine the specific items that are currently checked, use one of the
 	 * <code>getChecked*</code> methods.
 	 *
 	 * @return The number of items currently checked
-	 * <p/>
-	 * see getCheckedItemPosition() see getCheckedItemPositions() see getCheckedItemIds()
+	 *
+	 * @see #getCheckedChildIds()
+	 * @see #getCheckedGroupIds()
+	 * @see #getCheckedGroupPositions()
+	 * @see #getCheckedChildPositions()
 	 */
-	public int getCheckedItemCount() {
-		return mCheckStates == null ? 0 : mCheckStates.getTotalCheckCount();
+	public int getCheckedGroupCount() {
+		return (mCheckStates == null) ? 0 : mCheckStates.getCheckedGroupCount();
+	}
+
+	/**
+	 * Returns the set of checked group item ids. The result is only valid if the choice mode has
+	 * not been set to {@link ChoiceMode#NONE} and the adapter has stable IDs. ({@link
+	 * #hasStableIds()} == {@code true})
+	 *
+	 * @return A new array which contains the id of each checked item in the list. Will never
+	 * contain a null value.
+	 */
+	public Long[] getCheckedGroupIds() {
+		return (mCheckStates == null) ? new Long[]{0L} : mCheckStates.getCheckedGroupIds();
+	}
+
+	/**
+	 * Returns the set of group items in the list which are checked. The result is only valid if the
+	 * choice mode has not been set to {@link ChoiceMode#NONE}.
+	 *
+	 * @return An Integer array which contains only those group positions which are checked.
+	 */
+	public Integer[] getCheckedGroupPositions() {
+		return (mCheckStates == null) ? new Integer[]{-1} : mCheckStates.getCheckedGroupPositions();
 	}
 
 	/**
@@ -302,7 +369,7 @@ public abstract class RolodexBaseAdapter extends BaseExpandableListAdapter {
 	@Override
 	public final View getGroupView(int groupPosition, boolean isExpanded, View convertView,
 								   ViewGroup parent) {
-		ExpandableListView lv = mListView.get();
+		ExpandableListView lv = mExpandableListView.get();
 		if (lv == null) {
 			if (parent instanceof ExpandableListView) {
 				lv = (ExpandableListView) parent;
@@ -310,7 +377,7 @@ public abstract class RolodexBaseAdapter extends BaseExpandableListAdapter {
 					throw new RuntimeException(
 							"Set choiceMode through attached adapter, not on the ExpandableListView itself");
 				}
-				mListView = new WeakReference<>(lv);
+				mExpandableListView = new WeakReference<>(lv);
 				updateClickListeners("getGroupView");
 				if (mParcelState != null) lv.onRestoreInstanceState(mParcelState);
 				doAction();
@@ -369,7 +436,7 @@ public abstract class RolodexBaseAdapter extends BaseExpandableListAdapter {
 	private void init(Context activity) {
 		mContext = activity;
 		mInflater = LayoutInflater.from(mContext);
-		mListView = new WeakReference<>(null);    //We'll obtain reference in getGroupView
+		mExpandableListView = new WeakReference<>(null);    //We'll obtain reference in getGroupView
 		mChoiceMode = ChoiceMode.NONE;
 		mQueueAction = QueueAction.DO_NOTHING;
 	}
@@ -386,10 +453,7 @@ public abstract class RolodexBaseAdapter extends BaseExpandableListAdapter {
 	 * @see #setChoiceMode(ChoiceMode)
 	 */
 	public boolean isChildChecked(int groupPosition, int childPosition) {
-		if (mCheckStates == null) return false;
-		long key = hasStableIds() ? getChildId(groupPosition, childPosition) : ExpandableListView
-				.getPackedPositionForChild(groupPosition, childPosition);
-		return mCheckStates.getChild(key);
+		return mCheckStates != null && mCheckStates.getChild(groupPosition, childPosition);
 	}
 
 	@Override
@@ -408,10 +472,7 @@ public abstract class RolodexBaseAdapter extends BaseExpandableListAdapter {
 	 * @see #setChoiceMode(ChoiceMode)
 	 */
 	public boolean isGroupChecked(int groupPosition) {
-		if (mCheckStates == null) return false;
-		long key = hasStableIds() ? getGroupId(groupPosition) : ExpandableListView
-				.getPackedPositionForGroup(groupPosition);
-		return mCheckStates.getGroup(key);
+		return mCheckStates != null && mCheckStates.getGroup(groupPosition);
 	}
 
 	//TODO: Investigate how to handle areAllItemsEnabled
@@ -432,7 +493,7 @@ public abstract class RolodexBaseAdapter extends BaseExpandableListAdapter {
 	 */
 	public void onRestoreExpandableListViewState(Parcelable state) {
 		if (state == null) return;
-		ExpandableListView lv = mListView.get();
+		ExpandableListView lv = mExpandableListView.get();
 		if (lv == null) {
 			mParcelState = state;
 		} else {
@@ -444,7 +505,7 @@ public abstract class RolodexBaseAdapter extends BaseExpandableListAdapter {
 	 * TODO: Replace
 	 */
 	public Parcelable onSaveExpandableListViewState() {
-		ExpandableListView lv = mListView.get();
+		ExpandableListView lv = mExpandableListView.get();
 		if (lv == null) return null;
 		return lv.onSaveInstanceState();
 	}
@@ -465,10 +526,8 @@ public abstract class RolodexBaseAdapter extends BaseExpandableListAdapter {
 		//Update child checked state
 		long groupId = getGroupId(groupPosition);
 		long childId = getChildId(groupPosition, childPosition);
-		long key = hasStableIds() ? childId : ExpandableListView.getPackedPositionForChild(
-				groupPosition, childPosition);
 		if (mChoiceMode.isSingle()) {
-			oldCheck = mCheckStates.getChild(key);
+			oldCheck = mCheckStates.getChild(groupPosition, childPosition);
 			mCheckStates.clear();
 			mCheckStates.putChild(groupPosition, childPosition, childId, isChecked);
 		} else {
@@ -479,7 +538,7 @@ public abstract class RolodexBaseAdapter extends BaseExpandableListAdapter {
 		//If modal, verify ActionMode and invoke it's listener
 		boolean treatAsModal = mChoiceMode.isModal();
 		if (treatAsModal) {
-			ExpandableListView lv = mListView.get();
+			ExpandableListView lv = mExpandableListView.get();
 			if (lv == null) {
 				//In a bad modal state, reset and ignore modal behavior
 				treatAsModal = false;
@@ -489,7 +548,7 @@ public abstract class RolodexBaseAdapter extends BaseExpandableListAdapter {
 				}
 			} else {
 				//We are activating for the first time, ensure ActionMode is launched
-				if (mCheckStates.getTotalCheckCount() > 0) {
+				if (mCheckStates.getCheckedChildCount() + mCheckStates.getCheckedGroupCount() > 0) {
 					if (mChoiceActionMode == null) {
 						mChoiceActionMode = lv.startActionMode(mModalChoiceModeWrapper);
 						updateClickListeners(null);
@@ -509,18 +568,14 @@ public abstract class RolodexBaseAdapter extends BaseExpandableListAdapter {
 			int childrenCount = getChildrenCount(groupPosition);
 			boolean expectedGroupState = isChecked;
 			for (childPosition = 0; childPosition < childrenCount; ++childPosition) {
-				key = hasStableIds() ? getChildId(groupPosition, childPosition) :
-						ExpandableListView.getPackedPositionForChild(groupPosition, childPosition);
-				if (mCheckStates.getChild(key) != isChecked) {
+				if (mCheckStates.getChild(groupPosition, childPosition) != isChecked) {
 					expectedGroupState = false;
 					break;
 				}
 			}
 
 			//Only if group check state is different from what we expect, then update
-			key = hasStableIds() ? groupId : ExpandableListView.getPackedPositionForGroup(
-					groupPosition);
-			if (mCheckStates.getGroup(key) != expectedGroupState) {
+			if (mCheckStates.getGroup(groupPosition) != expectedGroupState) {
 				updateViews = true;
 				mCheckStates.putGroup(groupPosition, groupId, isChecked);
 				//Notify ActionMode if change actually occurred
@@ -552,10 +607,8 @@ public abstract class RolodexBaseAdapter extends BaseExpandableListAdapter {
 
 		//Update group checked state
 		long groupId = getGroupId(groupPosition);
-		long key = hasStableIds() ? groupId : ExpandableListView.getPackedPositionForGroup(
-				groupPosition);
 		if (mChoiceMode.isSingle()) {
-			oldCheck = mCheckStates.getGroup(key);
+			oldCheck = mCheckStates.getGroup(groupPosition);
 			mCheckStates.clear();
 			mCheckStates.putGroup(groupPosition, groupId, isChecked);
 		} else {
@@ -564,7 +617,7 @@ public abstract class RolodexBaseAdapter extends BaseExpandableListAdapter {
 		updateViews = (oldCheck != isChecked);
 
 		//If modal, verify ActionMode and invoke it's listener
-		ExpandableListView lv = mListView.get();
+		ExpandableListView lv = mExpandableListView.get();
 		boolean treatAsModal = mChoiceMode.isModal();
 		if (treatAsModal) {
 			if (lv == null) {
@@ -576,7 +629,7 @@ public abstract class RolodexBaseAdapter extends BaseExpandableListAdapter {
 				}
 			} else {
 				//We are activating for the first time, ensure ActionMode is launched
-				if (mCheckStates.getTotalCheckCount() > 0) {
+				if (mCheckStates.getCheckedChildCount() + mCheckStates.getCheckedGroupCount() > 0) {
 					if (mChoiceActionMode == null) {
 						mChoiceActionMode = lv.startActionMode(mModalChoiceModeWrapper);
 						updateClickListeners(null);
@@ -596,8 +649,6 @@ public abstract class RolodexBaseAdapter extends BaseExpandableListAdapter {
 			if (treatAsModal) {
 				for (int childPosition = 0; childPosition < childrenCount; ++childPosition) {
 					long childId = getChildId(groupPosition, childPosition);
-					key = hasStableIds() ? childId : ExpandableListView
-							.getPackedPositionForChild(groupPosition, childPosition);
 					//Only notify ActionMode if there was an actual change
 					if (mCheckStates.putChild(groupPosition, childPosition, childId, isChecked) !=
 						isChecked) {
@@ -611,8 +662,6 @@ public abstract class RolodexBaseAdapter extends BaseExpandableListAdapter {
 			} else {
 				for (int childPosition = 0; childPosition < childrenCount; ++childPosition) {
 					long childId = getChildId(groupPosition, childPosition);
-					key = hasStableIds() ? childId : ExpandableListView
-							.getPackedPositionForChild(groupPosition, childPosition);
 					if (mCheckStates.putChild(groupPosition, childPosition, childId, isChecked) !=
 						isChecked) updateViews = true;
 				}
@@ -657,12 +706,10 @@ public abstract class RolodexBaseAdapter extends BaseExpandableListAdapter {
 
 	private void updateChildCheckedView(int groupPosition, int childPosition, View v) {
 		if (mCheckStates == null) return;
-		long key = hasStableIds() ? getChildId(groupPosition, childPosition) :
-				ExpandableListView.getPackedPositionForChild(groupPosition, childPosition);
 		if (v instanceof Checkable)
-			((Checkable) v).setChecked(mCheckStates.getChild(key));
+			((Checkable) v).setChecked(mCheckStates.getChild(groupPosition, childPosition));
 		else
-			v.setActivated(mCheckStates.getChild(key));
+			v.setActivated(mCheckStates.getChild(groupPosition, childPosition));
 	}
 
 	/**
@@ -672,7 +719,7 @@ public abstract class RolodexBaseAdapter extends BaseExpandableListAdapter {
 	 *                 if we don't care and nothing will be logged.
 	 */
 	private void updateClickListeners(String debugTag) {
-		ExpandableListView lv = mListView.get();
+		ExpandableListView lv = mExpandableListView.get();
 		if (lv == null) {
 			if (!TextUtils.isEmpty(debugTag)) logLostReference(debugTag);
 			return;
@@ -705,12 +752,10 @@ public abstract class RolodexBaseAdapter extends BaseExpandableListAdapter {
 
 	private void updateGroupCheckedView(int groupPosition, View v) {
 		if (mCheckStates == null) return;
-		long key = hasStableIds() ? getGroupId(groupPosition) :
-				ExpandableListView.getPackedPositionForGroup(groupPosition);
 		if (v instanceof Checkable)
-			((Checkable) v).setChecked(mCheckStates.getGroup(key));
+			((Checkable) v).setChecked(mCheckStates.getGroup(groupPosition));
 		else
-			v.setActivated(mCheckStates.getGroup(key));
+			v.setActivated(mCheckStates.getGroup(groupPosition));
 	}
 
 	/**
@@ -718,7 +763,7 @@ public abstract class RolodexBaseAdapter extends BaseExpandableListAdapter {
 	 * This should only be called when a valid choice mode is active.
 	 */
 	private void updateOnScreenCheckedViews() {
-		ExpandableListView lv = mListView.get();
+		ExpandableListView lv = mExpandableListView.get();
 		if (lv == null) return;
 		final int firstPos = lv.getFirstVisiblePosition();
 		final int lastPos = lv.getChildCount();
@@ -726,23 +771,15 @@ public abstract class RolodexBaseAdapter extends BaseExpandableListAdapter {
 		for (int index = 0; index < lastPos; ++index) {
 			View child = lv.getChildAt(index);
 			long packedPosition = lv.getExpandableListPosition(firstPos + index);
-			long key;
+			int groupPosition = ExpandableListView.getPackedPositionGroup(packedPosition);
+			int childPosition = ExpandableListView.getPackedPositionChild(packedPosition);
 			boolean isChecked;
 			switch (ExpandableListView.getPackedPositionType(packedPosition)) {
 			case ExpandableListView.PACKED_POSITION_TYPE_GROUP:
-				if (hasStableIds())
-					key = getGroupId(ExpandableListView.getPackedPositionGroup(packedPosition));
-				else
-					key = packedPosition;
-				isChecked = mCheckStates.getGroup(key);
+				isChecked = mCheckStates.getGroup(groupPosition);
 				break;
 			case ExpandableListView.PACKED_POSITION_TYPE_CHILD:
-				if (hasStableIds())
-					key = getChildId(ExpandableListView.getPackedPositionGroup(packedPosition),
-									 ExpandableListView.getPackedPositionChild(packedPosition));
-				else
-					key = packedPosition;
-				isChecked = mCheckStates.getChild(key);
+				isChecked = mCheckStates.getChild(groupPosition, childPosition);
 				break;
 			default:
 				Log.w(TAG, "updateOnScreenCheckedViews received unknown packed position?");
@@ -800,50 +837,112 @@ public abstract class RolodexBaseAdapter extends BaseExpandableListAdapter {
 		}
 	}
 
-	//TODO: Implement
+	/**
+	 * TODO: Write this
+	 */
 	private class CheckedState {
-		public Map<Long, Long> mGroupIdState = new HashMap<>();    //Id, Packed position.
-		public Map<Long, Long> mChildIdState = new HashMap<>();
-		public Map<Long, Boolean> mPositionState = new HashMap<>();    //Packed position, is checked
+		//Inclusion in collections means checked. Exclusion from collections means false.
+		public Map<Long, Integer> groupIds;    //Id, group position.
+		public Map<Long, Long> childIds;    //Id, packed position
+		public Set<Integer> groupPositions;
+		public Set<Long> childPositions;
+
+		public CheckedState() {
+			if (hasStableIds()) {
+				groupIds = new HashMap<>();
+				childIds = new HashMap<>();
+			} else {
+				groupPositions = new HashSet<>();
+				childPositions = new HashSet<>();
+			}
+		}
 
 		public void clear() {
-			mGroupIdState.clear();
-			mChildIdState.clear();
-			mPositionState.clear();
+			if (hasStableIds()) {
+				groupIds.clear();
+				childIds.clear();
+			} else {
+				groupPositions.clear();
+				childPositions.clear();
+			}
 		}
 
-		public boolean getChild(long key) {
-			return Boolean.TRUE.equals(
-					hasStableIds() ? mChildIdState.containsKey(key) : mPositionState.get(key));
+		public int getCheckedChildCount() {
+			return hasStableIds() ? childIds.size() : childPositions.size();
 		}
 
-		public boolean getGroup(long key) {
-			return Boolean.TRUE.equals(
-					hasStableIds() ? mGroupIdState.containsKey(key) : mPositionState.get(key));
+		public Long[] getCheckedChildIds() {
+			if (hasStableIds())
+				return childIds.keySet().toArray(new Long[childIds.size()]);
+			else
+				return new Long[]{0L};
 		}
 
-		public int getTotalCheckCount() {
-			return mGroupIdState.size() + mChildIdState.size();
+		public Long[] getCheckedChildPositions() {
+			if (hasStableIds())
+				return childIds.values().toArray(new Long[childIds.size()]);
+			else
+				return childPositions.toArray(new Long[childPositions.size()]);
+		}
+
+		public int getCheckedGroupCount() {
+			return hasStableIds() ? groupIds.size() : groupPositions.size();
+		}
+
+		public Long[] getCheckedGroupIds() {
+			if (hasStableIds())
+				return groupIds.keySet().toArray(new Long[groupIds.size()]);
+			else
+				return new Long[]{0L};
+		}
+
+		public Integer[] getCheckedGroupPositions() {
+			if (hasStableIds())
+				return groupIds.values().toArray(new Integer[groupIds.size()]);
+			else
+				return groupPositions.toArray(new Integer[groupPositions.size()]);
+		}
+
+		public boolean getChild(int groupPosition, int childPosition) {
+			if (hasStableIds()) {
+				return childIds.containsKey(getChildId(groupPosition, childPosition));
+			} else {
+				long packedPosition = ExpandableListView
+						.getPackedPositionForChild(groupPosition, childPosition);
+				return childPositions.contains(packedPosition);
+			}
+		}
+
+		public boolean getGroup(int groupPosition) {
+			if (hasStableIds())
+				return groupIds.containsKey(getGroupId(groupPosition));
+			else
+				return groupPositions.contains(groupPosition);
 		}
 
 		public boolean putChild(int groupPosition, int childPosition, long childId,
 								boolean isChecked) {
-			long packedPosition = ExpandableListView
-					.getPackedPositionForChild(groupPosition, childPosition);
-			if (isChecked)
-				mChildIdState.put(childId, packedPosition);
-			else
-				mChildIdState.remove(childId);
-			return Boolean.TRUE.equals(mPositionState.put(packedPosition, isChecked));
+			long packedPosition = ExpandableListView.getPackedPositionForChild(groupPosition,
+																			   childPosition);
+			if (hasStableIds()) {
+				Long result = (isChecked) ? childIds.put(childId, packedPosition) : childIds
+						.remove(childId);
+				return result != null;
+			} else {
+				return (isChecked) ? childPositions.add(packedPosition) : childPositions
+						.remove(packedPosition);
+			}
 		}
 
 		public boolean putGroup(int groupPosition, long groupId, boolean isChecked) {
-			long packedPosition = ExpandableListView.getPackedPositionForGroup(groupPosition);
-			if (isChecked)
-				mGroupIdState.put(groupId, packedPosition);
-			else
-				mGroupIdState.remove(groupId);
-			return Boolean.TRUE.equals(mPositionState.put(packedPosition, isChecked));
+			if (hasStableIds()) {
+				Integer result = (isChecked) ? groupIds.put(groupId, groupPosition) : groupIds
+						.remove(groupId);
+				return result != null;
+			} else {
+				return (isChecked) ? groupPositions.add(groupPosition) : groupPositions
+						.remove(groupPosition);
+			}
 		}
 	}
 
@@ -869,7 +968,8 @@ public abstract class RolodexBaseAdapter extends BaseExpandableListAdapter {
 											   int childPosition, long childId, boolean checked) {
 			mWrapped.onChildCheckedStateChanged(mode, groupPosition, groupId, childPosition,
 												childId, checked);
-			if (mCheckStates.getTotalCheckCount() == 0) mode.finish();
+			if (mCheckStates.getCheckedChildCount() + mCheckStates.getCheckedGroupCount() == 0)
+				mode.finish();
 		}
 
 		@Override
@@ -882,7 +982,7 @@ public abstract class RolodexBaseAdapter extends BaseExpandableListAdapter {
 			mWrapped.onDestroyActionMode(mode);
 			mChoiceActionMode = null;
 			updateClickListeners("onDestroyActionMode");
-			if (mCheckStates.getTotalCheckCount() != 0) {
+			if (mCheckStates.getCheckedChildCount() + mCheckStates.getCheckedGroupCount() != 0) {
 				clearChoices();
 				updateOnScreenCheckedViews();
 			}
@@ -892,7 +992,8 @@ public abstract class RolodexBaseAdapter extends BaseExpandableListAdapter {
 		public void onGroupCheckedStateChanged(ActionMode mode, int groupPosition, long groupId,
 											   boolean checked) {
 			mWrapped.onGroupCheckedStateChanged(mode, groupPosition, groupId, checked);
-			if (mCheckStates.getTotalCheckCount() == 0) mode.finish();
+			if (mCheckStates.getCheckedChildCount() + mCheckStates.getCheckedGroupCount() == 0)
+				mode.finish();
 		}
 
 		@Override
@@ -915,17 +1016,14 @@ public abstract class RolodexBaseAdapter extends BaseExpandableListAdapter {
 		@Override
 		public boolean onChildClick(ExpandableListView parent, View v, int groupPosition,
 									int childPosition, long id) {
-			long key = hasStableIds() ? id : ExpandableListView
-					.getPackedPositionForChild(groupPosition, childPosition);
-			setChildChecked(groupPosition, childPosition, !mCheckStates.getChild(key));
+			boolean isChecked = mCheckStates.getChild(groupPosition, childPosition);
+			setChildChecked(groupPosition, childPosition, !isChecked);
 			return true;
 		}
 
 		@Override
 		public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
-			long key = hasStableIds() ? id : ExpandableListView
-					.getPackedPositionForGroup(groupPosition);
-			setGroupChecked(groupPosition, !mCheckStates.getGroup(key));
+			setGroupChecked(groupPosition, !mCheckStates.getGroup(groupPosition));
 			return true;
 		}
 
