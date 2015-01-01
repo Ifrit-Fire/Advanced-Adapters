@@ -42,6 +42,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+//TODO: Test checking item before ref for ExpandableListView is established
+
 /**
  * TODO: Write this
  */
@@ -1013,6 +1015,9 @@ public abstract class RolodexBaseAdapter extends BaseExpandableListAdapter {
 				return groupPositions.toArray(new Integer[groupPositions.size()]);
 		}
 
+		/**
+		 * @return The checked state of a child with the given positions.
+		 */
 		public boolean getChild(int groupPosition, int childPosition) {
 			if (hasStableIds()) {
 				return childIds.containsKey(getChildId(groupPosition, childPosition));
@@ -1023,6 +1028,9 @@ public abstract class RolodexBaseAdapter extends BaseExpandableListAdapter {
 			}
 		}
 
+		/**
+		 * @return The checked state of a group with the given group position
+		 */
 		public boolean getGroup(int groupPosition) {
 			if (hasStableIds())
 				return groupIds.containsKey(getGroupId(groupPosition));
@@ -1030,6 +1038,11 @@ public abstract class RolodexBaseAdapter extends BaseExpandableListAdapter {
 				return groupPositions.contains(groupPosition);
 		}
 
+		/**
+		 * Records the checked state of the given child positions.
+		 *
+		 * @return The previous checked state of the child position.
+		 */
 		public boolean putChild(int groupPosition, int childPosition, long childId,
 								boolean isChecked) {
 			long packedPosition = ExpandableListView.getPackedPositionForChild(groupPosition,
@@ -1039,18 +1052,23 @@ public abstract class RolodexBaseAdapter extends BaseExpandableListAdapter {
 						.remove(childId);
 				return result != null;
 			} else {
-				return (isChecked) ? childPositions.add(packedPosition) : childPositions
+				return (isChecked) ? !childPositions.add(packedPosition) : childPositions
 						.remove(packedPosition);
 			}
 		}
 
+		/**
+		 * Records the checked state of the given group position.
+		 *
+		 * @return The previous checked state of the group position.
+		 */
 		public boolean putGroup(int groupPosition, long groupId, boolean isChecked) {
 			if (hasStableIds()) {
 				Integer result = (isChecked) ? groupIds.put(groupId, groupPosition) : groupIds
 						.remove(groupId);
 				return result != null;
 			} else {
-				return (isChecked) ? groupPositions.add(groupPosition) : groupPositions
+				return (isChecked) ? !groupPositions.add(groupPosition) : groupPositions
 						.remove(groupPosition);
 			}
 		}
