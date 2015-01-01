@@ -13,9 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.sawyer.advadapters.app;
 
+package com.sawyer.advadapters.app.adapters;
+
+import android.app.ActionBar;
 import android.app.ExpandableListActivity;
+import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -27,85 +30,47 @@ import android.view.ViewGroup;
 import android.widget.ExpandableListView;
 import android.widget.TextView;
 
-import com.sawyer.advadapters.app.adapters.absarrayadapter.ArrayAdapterActivity;
-import com.sawyer.advadapters.app.adapters.android.arrayadapter.AndroidAdapterActivity;
-import com.sawyer.advadapters.app.adapters.android.simpleexpandablelistadapter.AndroidExpandableActivity;
-import com.sawyer.advadapters.app.adapters.jsonadapter.JSONAdapterActivity;
-import com.sawyer.advadapters.app.adapters.nfarrayadapter.NFArrayAdapterActivity;
-import com.sawyer.advadapters.app.adapters.nfjsonadapter.NFJSONAdapterActivity;
-import com.sawyer.advadapters.app.adapters.nfsparseadapter.NFSparseAdapterActivity;
-import com.sawyer.advadapters.app.adapters.rolodexarrayadapter.PickDemoActivity;
-import com.sawyer.advadapters.app.adapters.sparseadapter.SparseAdapterActivity;
+import com.sawyer.advadapters.app.AboutActivity;
+import com.sawyer.advadapters.app.R;
+import com.sawyer.advadapters.app.dialogs.ChoiceModeDialogFragment;
 import com.sawyer.advadapters.widget.RolodexArrayAdapter;
+import com.sawyer.advadapters.widget.RolodexBaseAdapter;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends ExpandableListActivity {
-	private static final String EXTRA_INTENT_NAME = "Extra Intent Name";
-	private static final String EXTRA_GROUP_NAME = "Extra Group Name";
+public abstract class BasePickDemoActivity extends ExpandableListActivity implements
+		ChoiceModeDialogFragment.EventListener {
+	public static final String EXTRA_CHOICE_MODE = "Extra Choice Mode";
+	public static final String EXTRA_INTENT_NAME = "Extra Intent Name";
+	public static final String EXTRA_GROUP_NAME = "Extra Group Name";
+	public static final String TAG_CHOICE_MODE_DIALOG_FRAG = "Choice Mode Dialog Frag";
 
-	private List<Intent> createIntentList() {
-		List<Intent> intents = new ArrayList<>();
-		Intent intent;
+	public abstract List<Intent> createIntentList();
 
-		/* Android Demos */
-		intent = new Intent(this, AndroidAdapterActivity.class);
-		intent.putExtra(EXTRA_INTENT_NAME, getString(R.string.activity_android_arrayadapter));
-		intent.putExtra(EXTRA_GROUP_NAME, getString(R.string.title_group_android));
-		intents.add(intent);
+	private void initActionBar() {
+		ActionBar actionBar = getActionBar();
+		if (actionBar == null) throw new AssertionError("No actionbar?");
+		actionBar.setDisplayHomeAsUpEnabled(true);
+	}
 
-		intent = new Intent(this, AndroidExpandableActivity.class);
-		intent.putExtra(EXTRA_INTENT_NAME, getString(R.string.activity_android_simpleexpandable));
-		intent.putExtra(EXTRA_GROUP_NAME, getString(R.string.title_group_android));
-		intents.add(intent);
-
-		/* Array Based Demos */
-		intent = new Intent(this, ArrayAdapterActivity.class);
-		intent.putExtra(EXTRA_INTENT_NAME, getString(R.string.activity_absarrayadapter));
-		intent.putExtra(EXTRA_GROUP_NAME, getString(R.string.title_group_arrays));
-		intents.add(intent);
-
-		intent = new Intent(this, NFArrayAdapterActivity.class);
-		intent.putExtra(EXTRA_INTENT_NAME, getString(R.string.activity_nfarrayadapter));
-		intent.putExtra(EXTRA_GROUP_NAME, getString(R.string.title_group_arrays));
-		intents.add(intent);
-
-		intent = new Intent(this, PickDemoActivity.class);
-		intent.putExtra(EXTRA_INTENT_NAME, getString(R.string.activity_rolodex_arrayadapter));
-		intent.putExtra(EXTRA_GROUP_NAME, getString(R.string.title_group_arrays));
-		intents.add(intent);
-
-		/* SparseArray Based Demos */
-		intent = new Intent(this, SparseAdapterActivity.class);
-		intent.putExtra(EXTRA_INTENT_NAME, getString(R.string.activity_sparseadapter));
-		intent.putExtra(EXTRA_GROUP_NAME, getString(R.string.title_group_sparsearrays));
-		intents.add(intent);
-
-		intent = new Intent(this, NFSparseAdapterActivity.class);
-		intent.putExtra(EXTRA_INTENT_NAME, getString(R.string.activity_nfsparseadapter));
-		intent.putExtra(EXTRA_GROUP_NAME, getString(R.string.title_group_sparsearrays));
-		intents.add(intent);
-
-		/* JSONArray Based Demos */
-		intent = new Intent(this, JSONAdapterActivity.class);
-		intent.putExtra(EXTRA_INTENT_NAME, getString(R.string.activity_jsonadapter));
-		intent.putExtra(EXTRA_GROUP_NAME, getString(R.string.title_group_jsonarrays));
-		intents.add(intent);
-
-		intent = new Intent(this, NFJSONAdapterActivity.class);
-		intent.putExtra(EXTRA_INTENT_NAME, getString(R.string.activity_nfjsonadapter));
-		intent.putExtra(EXTRA_GROUP_NAME, getString(R.string.title_group_jsonarrays));
-		intents.add(intent);
-
-		return intents;
+	@Override
+	public void onAttachFragment(Fragment fragment) {
+		if (fragment instanceof ChoiceModeDialogFragment) {
+			ChoiceModeDialogFragment frag = (ChoiceModeDialogFragment) fragment;
+			frag.setEventListener(this);
+		}
 	}
 
 	@Override
 	public boolean onChildClick(ExpandableListView parent, View v, int groupPosition,
 								int childPosition, long id) {
 		Intent intent = (Intent) getExpandableListAdapter().getChild(groupPosition, childPosition);
-		startActivity(intent);
+		if (intent.getSerializableExtra(EXTRA_CHOICE_MODE) != null) {
+			ChoiceModeDialogFragment frag = ChoiceModeDialogFragment.newInstance(intent);
+			frag.show(getFragmentManager(), TAG_CHOICE_MODE_DIALOG_FRAG);
+		} else {
+			startActivity(intent);
+		}
 		return true;
 	}
 
@@ -116,6 +81,7 @@ public class MainActivity extends ExpandableListActivity {
 		DemoAdapter adapter = new DemoAdapter(this, createIntentList());
 		adapter.setOnChildClickListener(this);
 		setListAdapter(adapter);
+		initActionBar();
 	}
 
 	@Override
@@ -131,9 +97,18 @@ public class MainActivity extends ExpandableListActivity {
 			Intent intent = new Intent(this, AboutActivity.class);
 			startActivity(intent);
 			return true;
+		case android.R.id.home:
+			finish();
+			return true;
 		default:
 			return super.onOptionsItemSelected(item);
 		}
+	}
+
+	@Override
+	public void onSelectedChoiceMode(RolodexBaseAdapter.ChoiceMode choiceMode, Intent intent) {
+		intent.putExtra(EXTRA_CHOICE_MODE, choiceMode);
+		startActivity(intent);
 	}
 
 	private class DemoAdapter extends RolodexArrayAdapter<String, Intent> {

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.sawyer.advadapters.app.adapters.rolodexarrayadapter;
+package com.sawyer.advadapters.app.adapters.rolodexarrayadapter.fulldemo;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -37,29 +37,29 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
-public class RolodexArrayAdapterFragment extends ExpandableListFragment {
+public class FullDemoFragment extends ExpandableListFragment {
 	private static final String STATE_CAB_CHECKED_ITEMS = "State Cab Checked Items";
 	private static final String STATE_LIST = "State List";
 
 	private Set<MovieItem> mCheckedItems = new HashSet<>();
 	private EventListener mEventListener;
 
-	public static RolodexArrayAdapterFragment newInstance() {
-		return new RolodexArrayAdapterFragment();
+	public static FullDemoFragment newInstance() {
+		return new FullDemoFragment();
 	}
 
 	@Override
-	public MovieRolodexArrayAdapter getListAdapter() {
-		return (MovieRolodexArrayAdapter) super.getListAdapter();
+	public FullDemoAdapter getListAdapter() {
+		return (FullDemoAdapter) super.getListAdapter();
 	}
 
 	@Override
 	public void setListAdapter(ExpandableListAdapter adapter) {
-		if (adapter instanceof MovieRolodexArrayAdapter) {
+		if (adapter instanceof FullDemoAdapter) {
 			super.setListAdapter(adapter);
 		} else {
 			throw new ClassCastException(
-					"Adapter must be of type " + MovieRolodexArrayAdapter.class.getSimpleName());
+					"Adapter must be of type " + FullDemoAdapter.class.getSimpleName());
 		}
 	}
 
@@ -110,9 +110,9 @@ public class RolodexArrayAdapterFragment extends ExpandableListFragment {
 					.getParcelableArrayList(STATE_CAB_CHECKED_ITEMS);
 			mCheckedItems.addAll(checkItems);
 			ArrayList<MovieItem> list = savedInstanceState.getParcelableArrayList(STATE_LIST);
-			setListAdapter(new MovieRolodexArrayAdapter(getActivity(), list));
+			setListAdapter(new FullDemoAdapter(getActivity(), list));
 		} else {
-			setListAdapter(new MovieRolodexArrayAdapter(getActivity()));
+			setListAdapter(new FullDemoAdapter(getActivity()));
 		}
 		switch (mEventListener.getChoiceMode()) {
 		case SINGLE_MODAL:

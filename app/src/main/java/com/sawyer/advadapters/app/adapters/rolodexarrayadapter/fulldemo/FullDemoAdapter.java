@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.sawyer.advadapters.app.adapters.rolodexarrayadapter;
+package com.sawyer.advadapters.app.adapters.rolodexarrayadapter.fulldemo;
 
 import android.content.Context;
 import android.text.TextUtils;
@@ -30,13 +30,13 @@ import com.sawyer.advadapters.widget.RolodexArrayAdapter;
 import java.util.List;
 import java.util.Locale;
 
-class MovieRolodexArrayAdapter extends RolodexArrayAdapter<Integer, MovieItem> {
+class FullDemoAdapter extends RolodexArrayAdapter<Integer, MovieItem> {
 
-	MovieRolodexArrayAdapter(Context activity) {
+	FullDemoAdapter(Context activity) {
 		super(activity);
 	}
 
-	MovieRolodexArrayAdapter(Context activity, List<MovieItem> list) {
+	FullDemoAdapter(Context activity, List<MovieItem> list) {
 		super(activity, list);
 	}
 

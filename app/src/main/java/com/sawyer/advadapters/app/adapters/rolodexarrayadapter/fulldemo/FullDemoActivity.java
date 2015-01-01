@@ -13,17 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.sawyer.advadapters.app.adapters.rolodexarrayadapter;
+package com.sawyer.advadapters.app.adapters.rolodexarrayadapter.fulldemo;
 
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.sawyer.advadapters.app.MainActivity;
 import com.sawyer.advadapters.app.R;
 import com.sawyer.advadapters.app.ToastHelper;
 import com.sawyer.advadapters.app.adapters.AdapterBaseActivity;
+import com.sawyer.advadapters.app.adapters.rolodexarrayadapter.PickDemoActivity;
 import com.sawyer.advadapters.app.data.MovieContent;
 import com.sawyer.advadapters.app.data.MovieItem;
 import com.sawyer.advadapters.app.dialogs.AddArrayDialogFragment;
@@ -34,8 +34,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class RolodexArrayAdapterActivity extends AdapterBaseActivity implements
-		RolodexArrayAdapterFragment.EventListener, AddArrayDialogFragment.EventListener,
+public class FullDemoActivity extends AdapterBaseActivity implements
+		FullDemoFragment.EventListener, AddArrayDialogFragment.EventListener,
 		ContainsArrayDialogFragment.EventListener {
 	private static final String TAG_ADAPTER_FRAG = "Tag Adapter Frag";
 	private static final String TAG_ADD_DIALOG_FRAG = "Tag Add Dialog Frag";
@@ -43,7 +43,7 @@ public class RolodexArrayAdapterActivity extends AdapterBaseActivity implements
 
 	private AddArrayDialogFragment mAddDialogFragment;
 	private ContainsArrayDialogFragment mContainsDialogFragment;
-	private RolodexArrayAdapterFragment mListFragment;
+	private FullDemoFragment mListFragment;
 
 	@Override
 	protected void clear() {
@@ -59,7 +59,7 @@ public class RolodexArrayAdapterActivity extends AdapterBaseActivity implements
 	@Override
 	public RolodexBaseAdapter.ChoiceMode getChoiceMode() {
 		RolodexBaseAdapter.ChoiceMode choiceMode = (RolodexBaseAdapter.ChoiceMode) getIntent()
-				.getSerializableExtra(MainActivity.EXTRA_CHOICE_MODE);
+				.getSerializableExtra(PickDemoActivity.EXTRA_CHOICE_MODE);
 		return (choiceMode == null) ? RolodexBaseAdapter.ChoiceMode.NONE : choiceMode;
 	}
 
@@ -87,10 +87,10 @@ public class RolodexArrayAdapterActivity extends AdapterBaseActivity implements
 	protected void initFrags() {
 		super.initFrags();
 		FragmentManager manager = getFragmentManager();
-		mListFragment = (RolodexArrayAdapterFragment) manager
+		mListFragment = (FullDemoFragment) manager
 				.findFragmentByTag(TAG_ADAPTER_FRAG);
 		if (mListFragment == null) {
-			mListFragment = RolodexArrayAdapterFragment.newInstance();
+			mListFragment = FullDemoFragment.newInstance();
 			FragmentTransaction transaction = manager.beginTransaction();
 			transaction.replace(R.id.frag_container, mListFragment, TAG_ADAPTER_FRAG);
 			transaction.commit();

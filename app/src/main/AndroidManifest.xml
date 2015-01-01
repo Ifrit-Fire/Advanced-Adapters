@@ -76,8 +76,12 @@
 
 		<!-- Rolodex Adapter Activities-->
 		<activity
-			android:name=".adapters.rolodexarrayadapter.RolodexArrayAdapterActivity"
+			android:name=".adapters.rolodexarrayadapter.PickDemoActivity"
 			android:label="@string/activity_rolodex_arrayadapter">
+		</activity>
+		<activity
+			android:name=".adapters.rolodexarrayadapter.fulldemo.FullDemoActivity"
+			android:label="@string/activity_rolodex_movie_demo">
 		</activity>
 
 		<!-- Misc Support Activities-->

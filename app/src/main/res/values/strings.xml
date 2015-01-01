@@ -28,6 +28,7 @@
 	<string name="activity_nfjsonadapter">NFJSONAdapter</string>
 	<string name="activity_nfjsonarray_unittest">NFJSONArray - Unit Test</string>
 	<string name="activity_rolodex_arrayadapter">RolodexArrayAdapter</string>
+	<string name="activity_rolodex_movie_demo">Movie Demo</string>
 
 	<!-- Content Description Text -->
 	<string name="cd_rating_icon">Rating Icon</string>
@@ -46,6 +47,7 @@
 	<string name="title_dialog_sort_movies">Sort Movies Options</string>
 	<string name="title_group_android">Android Demos</string>
 	<string name="title_group_arrays">Array Based Demos</string>
+	<string name="title_group_fulldemos">Full Demos</string>
 	<string name="title_group_sparsearrays">SparseArray Based Demos</string>
 	<string name="title_group_jsonarrays">JSONArray Based Demos</string>
 	<string name="title_insert">Insert</string>
