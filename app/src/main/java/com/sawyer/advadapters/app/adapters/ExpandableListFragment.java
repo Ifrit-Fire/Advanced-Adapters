@@ -21,7 +21,6 @@ import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AbsListView;
 import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
 
@@ -95,11 +94,8 @@ public class ExpandableListFragment extends Fragment implements
 		super.onSaveInstanceState(outState);
 		if (getListAdapter() instanceof RolodexBaseAdapter) {
 			RolodexBaseAdapter adapter = (RolodexBaseAdapter) getListAdapter();
-			//TODO: For now just enable for modal...will need to test other modes first
-			if (getExpandableListView().getChoiceMode() == AbsListView.CHOICE_MODE_MULTIPLE_MODAL) {
-				Parcelable parcel = adapter.onSaveExpandableListViewState();
-				outState.putParcelable(STATE_EXPANDABLE_LISTVIEW, parcel);
-			}
+			Parcelable parcel = adapter.onSaveInstanceState();
+			outState.putParcelable(STATE_EXPANDABLE_LISTVIEW, parcel);
 		}
 	}
 
@@ -114,7 +110,7 @@ public class ExpandableListFragment extends Fragment implements
 			adapter.setOnChildClickListener(this);
 			if (savedInstanceState != null) {
 				Parcelable parcel = savedInstanceState.getParcelable(STATE_EXPANDABLE_LISTVIEW);
-				adapter.onRestoreExpandableListViewState(parcel);
+				adapter.onRestoreInstanceState(parcel);
 			}
 		} else {
 			mExpandableListView.setOnGroupClickListener(this);
