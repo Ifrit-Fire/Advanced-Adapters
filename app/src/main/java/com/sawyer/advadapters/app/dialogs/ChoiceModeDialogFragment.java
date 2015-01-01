@@ -62,7 +62,7 @@ public class ChoiceModeDialogFragment extends CustomDialogFragment {
 		dialog.setContentView(R.layout.dialog_choice_mode);
 		dialog.setTitle(R.string.title_dialog_choice_mode);
 		ButterKnife.inject(this, dialog);
-		mRadioGroup.check(R.id.choice_mode_modal);
+		mRadioGroup.check(R.id.choice_mode_multiple_modal);
 		return dialog;
 	}
 
@@ -80,10 +80,13 @@ public class ChoiceModeDialogFragment extends CustomDialogFragment {
 		case R.id.choice_mode_single:
 			choiceMode = RolodexBaseAdapter.ChoiceMode.SINGLE;
 			break;
+		case R.id.choice_mode_single_modal:
+			choiceMode = RolodexBaseAdapter.ChoiceMode.SINGLE_MODAL;
+			break;
 		case R.id.choice_mode_multiple:
 			choiceMode = RolodexBaseAdapter.ChoiceMode.MULTIPLE;
 			break;
-		case R.id.choice_mode_modal:
+		case R.id.choice_mode_multiple_modal:
 			choiceMode = RolodexBaseAdapter.ChoiceMode.MULTIPLE_MODAL;
 			break;
 		default:

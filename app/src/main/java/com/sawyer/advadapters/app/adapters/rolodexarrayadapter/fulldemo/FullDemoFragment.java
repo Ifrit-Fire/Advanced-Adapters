@@ -35,13 +35,14 @@ import com.sawyer.advadapters.widget.RolodexBaseAdapter;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 public class FullDemoFragment extends ExpandableListFragment {
 	private static final String STATE_CAB_CHECKED_ITEMS = "State Cab Checked Items";
 	private static final String STATE_LIST = "State List";
 
-	private Set<MovieItem> mCheckedItems = new HashSet<>();
+	private Set<MovieItem> mCheckedItems = new HashSet<>();    //TODO: Remove entirely???
 	private EventListener mEventListener;
 
 	public static FullDemoFragment newInstance() {
@@ -125,7 +126,7 @@ public class FullDemoFragment extends ExpandableListFragment {
 		return v;
 	}
 
-	private void onRemoveItemsClicked(Set<MovieItem> items) {
+	private void onRemoveItemsClicked(List<MovieItem> items) {
 		if (items.size() == 1) {
 			getListAdapter().remove(items.iterator().next());
 		} else {
@@ -133,7 +134,7 @@ public class FullDemoFragment extends ExpandableListFragment {
 		}
 	}
 
-	private void onRetainItemsClicked(Set<MovieItem> items) {
+	private void onRetainItemsClicked(List<MovieItem> items) {
 		getListAdapter().retainAll(items);
 	}
 
@@ -156,15 +157,32 @@ public class FullDemoFragment extends ExpandableListFragment {
 		@Override
 		public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
 			boolean result;
+			Long[] packedPositions;
+			List<MovieItem> movies;
+
 			switch (item.getItemId()) {
 			case R.id.menu_context_remove:
-				onRemoveItemsClicked(mCheckedItems);
+				packedPositions = getListAdapter().getCheckedChildPositions();
+				movies = new ArrayList<>(packedPositions.length);
+				for (Long packedPos : packedPositions) {
+					int groupPosition = ExpandableListView.getPackedPositionGroup(packedPos);
+					int childPosition = ExpandableListView.getPackedPositionChild(packedPos);
+					movies.add(getListAdapter().getChild(groupPosition, childPosition));
+				}
+				onRemoveItemsClicked(movies);
 				mode.finish();
 				result = true;
 				break;
 
 			case R.id.menu_context_retain:
-				onRetainItemsClicked(mCheckedItems);
+				packedPositions = getListAdapter().getCheckedChildPositions();
+				movies = new ArrayList<>(packedPositions.length);
+				for (Long packedPos : packedPositions) {
+					int groupPosition = ExpandableListView.getPackedPositionGroup(packedPos);
+					int childPosition = ExpandableListView.getPackedPositionChild(packedPos);
+					movies.add(getListAdapter().getChild(groupPosition, childPosition));
+				}
+				onRetainItemsClicked(movies);
 				mode.finish();
 				result = true;
 				break;
@@ -188,14 +206,14 @@ public class FullDemoFragment extends ExpandableListFragment {
 			} else {
 				mCheckedItems.remove(getListAdapter().getChild(groupPosition, childPosition));
 			}
-			mode.setTitle(mCheckedItems.size() + " Selected");
+			mode.setTitle(getListAdapter().getCheckedChildCount() + " Selected");
 		}
 
 		@Override
 		public boolean onCreateActionMode(ActionMode mode, Menu menu) {
 			MenuInflater inflater = mode.getMenuInflater();
 			inflater.inflate(R.menu.cab_array, menu);
-			mode.setTitle(mCheckedItems.size() + " Selected");
+			mode.setTitle(getListAdapter().getCheckedChildCount() + " Selected");
 			return true;
 		}
 
@@ -221,7 +239,7 @@ public class FullDemoFragment extends ExpandableListFragment {
 					mCheckedItems.remove(getListAdapter().getChild(groupPosition, index));
 				}
 			}
-			mode.setTitle(mCheckedItems.size() + " Selected");
+			mode.setTitle(getListAdapter().getCheckedChildCount() + " Selected");
 		}
 
 		@Override

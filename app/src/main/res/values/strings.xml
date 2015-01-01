@@ -75,8 +75,9 @@
 	<string name="btn_append_id">Append with Id</string>
 	<string name="btn_append_all">Append All</string>
 	<string name="btn_choice_mode_single">Single</string>
+	<string name="btn_choice_mode_single_modal">Single Modal</string>
 	<string name="btn_choice_mode_multiple">Multiple</string>
-	<string name="btn_choice_mode_modal">Modal</string>
+	<string name="btn_choice_mode_multiple_modal">Multiple Modal</string>
 	<string name="btn_contains">Contains One</string>
 	<string name="btn_contains_all">Contains All</string>
 	<string name="btn_contains_id">Contains Id</string>

@@ -39,16 +39,22 @@
 			android:text="@string/btn_choice_mode_single"/>
 
 		<RadioButton
+			android:id="@+id/choice_mode_single_modal"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:text="@string/btn_choice_mode_single_modal"/>
+
+		<RadioButton
 			android:id="@+id/choice_mode_multiple"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:text="@string/btn_choice_mode_multiple"/>
 
 		<RadioButton
-			android:id="@+id/choice_mode_modal"
+			android:id="@+id/choice_mode_multiple_modal"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:text="@string/btn_choice_mode_modal"/>
+			android:text="@string/btn_choice_mode_multiple_modal"/>
 	</RadioGroup>
 
 	<Button
