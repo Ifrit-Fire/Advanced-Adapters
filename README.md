@@ -59,7 +59,7 @@ public class MovieAdapter extends AbsArrayAdapter<MovieItem> {
 Thats it!
 
 ### Adding To Your Project
-All adapters are found within the `lib` directory.  Each adapter is a standalone class file which you can copy and paste into your code.  If using Android Studio, you can import the module directly into your app instead.
+All adapters are found within the `lib` directory. Once the repo is cloned, you can import the module directly into your app. If using Eclipse, you'll need to manually copy each class file over to your code. For additional help refer to the [Getting Started](https://github.com/JaySoyer/Advanced-Adapters/wiki/Getting-Started) wiki.
 
 Everything found within `app` is the source code for the Google Play store [demo app](https://play.google.com/store/apps/details?id=com.sawyer.advadapters.app&hl=en "Advanced-Adapters Demo App"). You can also use it for seeing how to use the adapters.
 
