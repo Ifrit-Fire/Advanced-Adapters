@@ -154,7 +154,6 @@ public class MainActivity extends ExpandableListActivity {
 			}
 			TextView tv = (TextView) convertView;
 			tv.setText(getChild(groupPosition, childPosition).getStringExtra(EXTRA_INTENT_NAME));
-
 			return convertView;
 		}
 

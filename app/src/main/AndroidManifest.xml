@@ -74,7 +74,7 @@
 			android:label="@string/activity_nfjsonarray_unittest">
 		</activity>
 
-		<!-- Rolodex Adapter Activities-->
+		<!-- Rolodex Array Adapter Activities-->
 		<activity
 			android:name=".adapters.rolodexarrayadapter.PickDemoActivity"
 			android:label="@string/activity_rolodex_arrayadapter">
@@ -82,6 +82,10 @@
 		<activity
 			android:name=".adapters.rolodexarrayadapter.fulldemo.FullDemoActivity"
 			android:label="@string/activity_rolodex_movie_demo">
+		</activity>
+		<activity
+			android:name=".adapters.rolodexarrayadapter.basicdemo.NeverCollapseHeaderActivity"
+			android:label="@string/activity_rolodex_never_collapse_header">
 		</activity>
 
 		<!-- Misc Support Activities-->

@@ -117,6 +117,11 @@ public abstract class BasePickDemoActivity extends ExpandableListActivity implem
 		}
 
 		@Override
+		public boolean areGroupsSorted() {
+			return false;
+		}
+
+		@Override
 		public String createGroupFor(Intent child) {
 			return child.getStringExtra(EXTRA_GROUP_NAME);
 		}

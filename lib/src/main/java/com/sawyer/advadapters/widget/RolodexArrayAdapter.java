@@ -31,7 +31,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-//TODO: Implement
+//TODO: Write this
 public abstract class RolodexArrayAdapter<G, C> extends RolodexBaseAdapter implements Filterable {
 	/**
 	 * Lock used to modify the content of {@link #mObjects}. Any write operation performed on the

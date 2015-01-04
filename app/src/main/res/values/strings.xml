@@ -17,18 +17,29 @@
 <resources>
 
 	<string name="app_name">Advanced-Adapters</string>
+
+	<!-- Activity Names - Android -->
 	<string name="activity_android_arrayadapter">ArrayAdapter</string>
 	<string name="activity_android_simpleexpandable">SimpleExpandableListAdapter</string>
+
+	<!-- Activity Names - ArrayList Backed -->
 	<string name="activity_absarrayadapter">AbsArrayAdapter</string>
 	<string name="activity_nfarrayadapter">NFArrayAdapter</string>
+
+	<!-- Activity Names - SparseArray Backed -->
 	<string name="activity_sparseadapter">SparseAdapter</string>
 	<string name="activity_nfsparseadapter">NFSparseAdapter</string>
+
+	<!-- Activity Names - JSONArray Backed -->
 	<string name="activity_jsonadapter">JSONAdapter</string>
 	<string name="activity_jsonarray_unittest">JSONArray - Unit Test</string>
 	<string name="activity_nfjsonadapter">NFJSONAdapter</string>
 	<string name="activity_nfjsonarray_unittest">NFJSONArray - Unit Test</string>
+
+	<!--Activity Names - Rolodex ArrayList Backed -->
 	<string name="activity_rolodex_arrayadapter">RolodexArrayAdapter</string>
 	<string name="activity_rolodex_movie_demo">Movie Demo</string>
+	<string name="activity_rolodex_never_collapse_header">Never Collapse Headers - Sorted</string>
 
 	<!-- Content Description Text -->
 	<string name="cd_rating_icon">Rating Icon</string>
@@ -47,6 +58,7 @@
 	<string name="title_dialog_sort_movies">Sort Movies Options</string>
 	<string name="title_group_android">Android Demos</string>
 	<string name="title_group_arrays">Array Based Demos</string>
+	<string name="title_group_basicdemos">Basic Demos</string>
 	<string name="title_group_fulldemos">Full Demos</string>
 	<string name="title_group_sparsearrays">SparseArray Based Demos</string>
 	<string name="title_group_jsonarrays">JSONArray Based Demos</string>
