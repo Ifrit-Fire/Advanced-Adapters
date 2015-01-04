@@ -17,7 +17,6 @@ package com.sawyer.advadapters.app.adapters.rolodexarrayadapter.fulldemo;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.view.ActionMode;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -34,15 +33,11 @@ import com.sawyer.advadapters.app.data.MovieItem;
 import com.sawyer.advadapters.widget.RolodexBaseAdapter;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 public class FullDemoFragment extends ExpandableListFragment {
-	private static final String STATE_CAB_CHECKED_ITEMS = "State Cab Checked Items";
 	private static final String STATE_LIST = "State List";
 
-	private Set<MovieItem> mCheckedItems = new HashSet<>();    //TODO: Remove entirely???
 	private EventListener mEventListener;
 
 	public static FullDemoFragment newInstance() {
@@ -107,9 +102,6 @@ public class FullDemoFragment extends ExpandableListFragment {
 							 Bundle savedInstanceState) {
 		View v = super.onCreateView(inflater, container, savedInstanceState);
 		if (savedInstanceState != null) {
-			ArrayList<MovieItem> checkItems = savedInstanceState
-					.getParcelableArrayList(STATE_CAB_CHECKED_ITEMS);
-			mCheckedItems.addAll(checkItems);
 			ArrayList<MovieItem> list = savedInstanceState.getParcelableArrayList(STATE_LIST);
 			setListAdapter(new FullDemoAdapter(getActivity(), list));
 		} else {
@@ -142,8 +134,6 @@ public class FullDemoFragment extends ExpandableListFragment {
 	public void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
 		outState.putParcelableArrayList(STATE_LIST, getListAdapter().getList());
-		outState.putParcelableArrayList(STATE_CAB_CHECKED_ITEMS,
-										new ArrayList<Parcelable>(mCheckedItems));
 	}
 
 	public interface EventListener {
@@ -201,11 +191,6 @@ public class FullDemoFragment extends ExpandableListFragment {
 		@Override
 		public void onChildCheckedStateChanged(ActionMode mode, int groupPosition, long groupId,
 											   int childPosition, long childId, boolean checked) {
-			if (checked) {
-				mCheckedItems.add(getListAdapter().getChild(groupPosition, childPosition));
-			} else {
-				mCheckedItems.remove(getListAdapter().getChild(groupPosition, childPosition));
-			}
 			mode.setTitle(getListAdapter().getCheckedChildCount() + " Selected");
 		}
 
@@ -219,7 +204,7 @@ public class FullDemoFragment extends ExpandableListFragment {
 
 		@Override
 		public void onDestroyActionMode(ActionMode mode) {
-			mCheckedItems.clear();
+
 		}
 
 		@Override
@@ -229,16 +214,7 @@ public class FullDemoFragment extends ExpandableListFragment {
 			//means it'll safely take care of updating our screen.
 			if (getExpandableListView().isGroupExpanded(groupPosition)) return;
 
-			int childCount = getListAdapter().getChildrenCount(groupPosition);
-			if (checked) {
-				for (int index = 0; index < childCount; ++index) {
-					mCheckedItems.add(getListAdapter().getChild(groupPosition, index));
-				}
-			} else {
-				for (int index = 0; index < childCount; ++index) {
-					mCheckedItems.remove(getListAdapter().getChild(groupPosition, index));
-				}
-			}
+
 			mode.setTitle(getListAdapter().getCheckedChildCount() + " Selected");
 		}
 

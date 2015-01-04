@@ -80,11 +80,10 @@ public abstract class RolodexBaseAdapter extends BaseExpandableListAdapter {
 	/** Activity Context used to construct this adapter */
 	private Context mContext;
 	/**
-	 * Indicates if there are any pending actions that need to be performed. Certain actions will
-	 * get queued up when they fail to complete due to having no reference to the attached {@link
-	 * ExpandableListView}
+	 * Indicates if there are any pending actions that need to be performed when a reference to the
+	 * {@link ExpandableListView} is established.
 	 */
-	private QueueAction mQueueAction;
+	private Set<QueueAction> mQueueAction;
 
 	/**
 	 * TODO: Write this
@@ -115,18 +114,15 @@ public abstract class RolodexBaseAdapter extends BaseExpandableListAdapter {
 
 	/**
 	 * Defines actions which could be requested but fail to happen because the adapter has no
-	 * reference to it's {@link ExpandableListView}. These actions then must be queued up to occur
-	 * once a new reference has been re-established.
-	 * <p/>
-	 * This mainly solves the edge case where an adapter is attached to a ExpandableListView and
-	 * told to expand/collapse all before any View's are drawn. Since the ExpandableListView is not
-	 * known until View generation, the request would fail to do anything.
+	 * reference to it's {@link ExpandableListView}. This may occur for various reasons since the
+	 * ExpandableListView is not known until View generation.
 	 */
 	private static enum QueueAction {
+		DO_NOTHING,
+		COLLAPSE_ALL,
 		EXPAND_ALL,
 		EXPAND_ALL_ANIMATE,
-		COLLAPSE_ALL,
-		DO_NOTHING
+		START_ACTION_MODE
 	}
 
 	/**
@@ -153,32 +149,37 @@ public abstract class RolodexBaseAdapter extends BaseExpandableListAdapter {
 
 	/** Collapse all groups in the adapter. */
 	public void collapseAll() {
+		if (hasAutoExpandingGroups()) return;
 		ExpandableListView lv = mExpandableListView.get();
 		if (lv == null) {
-			mQueueAction = QueueAction.COLLAPSE_ALL;
+			mQueueAction.add(QueueAction.COLLAPSE_ALL);
 			return;
 		}
 
-		mQueueAction = QueueAction.DO_NOTHING;
-		if (hasAutoExpandingGroups()) return;
+		mQueueAction.remove(QueueAction.COLLAPSE_ALL);
 		for (int index = 0; index < getGroupCount(); ++index) {
 			lv.collapseGroup(index);
 		}
 	}
 
 	private void doAction() {
-		switch (mQueueAction) {
-		case COLLAPSE_ALL:
-			collapseAll();
-			break;
-		case EXPAND_ALL:
-			expandAll(false);
-			break;
-		case EXPAND_ALL_ANIMATE:
-			expandAll(true);
-			break;
-		default:
-			//Do nothing
+		for (QueueAction action : mQueueAction) {
+			switch (action) {
+			case COLLAPSE_ALL:
+				collapseAll();
+				break;
+			case EXPAND_ALL:
+				expandAll(false);
+				break;
+			case EXPAND_ALL_ANIMATE:
+				expandAll(true);
+				break;
+			case START_ACTION_MODE:
+				startActionMode();
+				break;
+			default:
+				//Do nothing
+			}
 		}
 	}
 
@@ -196,14 +197,15 @@ public abstract class RolodexBaseAdapter extends BaseExpandableListAdapter {
 	 * @param animate True if the expanding groups should be animated in
 	 */
 	public void expandAll(boolean animate) {
+		if (hasAutoExpandingGroups()) return;
 		ExpandableListView lv = mExpandableListView.get();
 		if (lv == null) {
-			mQueueAction = animate ? QueueAction.EXPAND_ALL_ANIMATE : QueueAction.EXPAND_ALL;
+			mQueueAction.add((animate) ? QueueAction.EXPAND_ALL_ANIMATE : QueueAction.EXPAND_ALL);
 			return;
 		}
 
-		mQueueAction = QueueAction.DO_NOTHING;
-		if (hasAutoExpandingGroups()) return;
+		mQueueAction.remove(QueueAction.EXPAND_ALL);
+		mQueueAction.remove(QueueAction.EXPAND_ALL_ANIMATE);
 		for (int index = 0; index < getGroupCount(); ++index) {
 			lv.expandGroup(index, animate);
 		}
@@ -437,7 +439,7 @@ public abstract class RolodexBaseAdapter extends BaseExpandableListAdapter {
 		mInflater = LayoutInflater.from(mContext);
 		mExpandableListView = new WeakReference<>(null);    //We'll obtain reference in getGroupView
 		mChoiceMode = ChoiceMode.NONE;
-		mQueueAction = QueueAction.DO_NOTHING;
+		mQueueAction = new HashSet<>(QueueAction.values().length);
 	}
 
 	/**
@@ -508,7 +510,7 @@ public abstract class RolodexBaseAdapter extends BaseExpandableListAdapter {
 				mCheckStates.childPositions = ss.childPositions;
 			}
 			if (ss.inActionMode) {
-				//TODO: Start choice mode
+				startActionMode();
 			}
 		}
 	}
@@ -577,10 +579,7 @@ public abstract class RolodexBaseAdapter extends BaseExpandableListAdapter {
 			} else {
 				//We are activating for the first time, ensure ActionMode is launched
 				if (mCheckStates.getCheckedChildCount() + mCheckStates.getCheckedGroupCount() > 0) {
-					if (mChoiceActionMode == null) {
-						mChoiceActionMode = lv.startActionMode(mModalChoiceModeWrapper);
-						updateClickListeners(null);
-					}
+					if (mChoiceActionMode == null) startActionMode();
 				}
 				//Notify ActionMode if change actually occurred
 				if (updateViews)
@@ -658,10 +657,7 @@ public abstract class RolodexBaseAdapter extends BaseExpandableListAdapter {
 			} else {
 				//We are activating for the first time, ensure ActionMode is launched
 				if (mCheckStates.getCheckedChildCount() + mCheckStates.getCheckedGroupCount() > 0) {
-					if (mChoiceActionMode == null) {
-						mChoiceActionMode = lv.startActionMode(mModalChoiceModeWrapper);
-						updateClickListeners(null);
-					}
+					if (mChoiceActionMode == null) startActionMode();
 				}
 				//Notify ActionMode if a change actually occurred
 				if (updateViews)
@@ -729,6 +725,20 @@ public abstract class RolodexBaseAdapter extends BaseExpandableListAdapter {
 	public void setOnGroupClickListener(
 			ExpandableListView.OnGroupClickListener onGroupClickListener) {
 		mOnGroupClickListener = onGroupClickListener;
+		updateClickListeners(null);
+	}
+
+	/**
+	 * Start an {@link ActionMode}. Use this method instead of {@link ExpandableListView#startActionMode(ActionMode.Callback)}.
+	 */
+	public void startActionMode() {
+		ExpandableListView lv = mExpandableListView.get();
+		if (lv == null) {
+			mQueueAction.add(QueueAction.START_ACTION_MODE);
+			return;
+		}
+		mQueueAction.remove(QueueAction.START_ACTION_MODE);
+		mChoiceActionMode = lv.startActionMode(mModalChoiceModeWrapper);
 		updateClickListeners(null);
 	}
 
@@ -1158,6 +1168,7 @@ public abstract class RolodexBaseAdapter extends BaseExpandableListAdapter {
 		@Override
 		public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
 			if (!mChoiceMode.isModal()) return false;
+			mQueueAction.remove(QueueAction.START_ACTION_MODE);
 			mChoiceActionMode = parent.startActionMode(mModalChoiceModeWrapper);
 			updateClickListeners("onItemLongClick");
 
