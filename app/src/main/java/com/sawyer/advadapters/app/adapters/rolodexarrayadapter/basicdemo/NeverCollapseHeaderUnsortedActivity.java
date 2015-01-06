@@ -29,21 +29,28 @@ import com.sawyer.advadapters.app.data.MovieContent;
 import com.sawyer.advadapters.app.data.MovieItem;
 import com.sawyer.advadapters.widget.RolodexArrayAdapter;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 
 /**
- * Demonstration on how to make a our ExpandableListView show as always expanded. This would be the
- * similar look one sees with setting screens. Note, RolodexBaseAdapter's will always auto sort
- * groups.
+ * Demonstration on how to make a our ExpandableListView show as always expanded. This would be
+ * the similar look one sees with setting screens. RolodexBaseAdapter's will always auto sort
+ * groups, this demo specifically shows how to change that behavior.
  */
-public class NeverCollapseHeaderActivity extends ExpandableListActivity {
+public class NeverCollapseHeaderUnsortedActivity extends ExpandableListActivity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		//Create our adapter and set it. By default groups will be sorted
-		DemoAdapter adapter = new DemoAdapter(this, MovieContent.ITEM_LIST);
+		//Shuffle the list to help show how groups are no longer being sorted
+		List<MovieItem> movies = new ArrayList<>(MovieContent.ITEM_LIST);
+		Collections.shuffle(movies);
+
+		//Create our adapter and set it.
+		DemoAdapter adapter = new DemoAdapter(this, movies);
 		setListAdapter(adapter);
 	}
 
@@ -78,6 +85,12 @@ public class NeverCollapseHeaderActivity extends ExpandableListActivity {
 			TextView tv = (TextView) convertView;
 			tv.setText(getGroup(groupPosition));
 			return convertView;
+		}
+
+		@Override
+		public boolean areGroupsSorted() {
+			//Prevents our groups from being sorted. Will show in insertion order instead.
+			return false;
 		}
 
 		@Override

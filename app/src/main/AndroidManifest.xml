@@ -87,6 +87,10 @@
 			android:name=".adapters.rolodexarrayadapter.basicdemo.NeverCollapseHeaderActivity"
 			android:label="@string/activity_rolodex_never_collapse_header">
 		</activity>
+		<activity
+			android:name=".adapters.rolodexarrayadapter.basicdemo.NeverCollapseHeaderUnsortedActivity"
+			android:label="@string/activity_rolodex_never_collapse_header_unsorted">
+		</activity>
 
 		<!-- Misc Support Activities-->
 		<activity

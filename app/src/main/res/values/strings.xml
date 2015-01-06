@@ -40,6 +40,7 @@
 	<string name="activity_rolodex_arrayadapter">RolodexArrayAdapter</string>
 	<string name="activity_rolodex_movie_demo">Movie Demo</string>
 	<string name="activity_rolodex_never_collapse_header">Never Collapse Headers - Sorted</string>
+	<string name="activity_rolodex_never_collapse_header_unsorted">Never Collapse Headers - Unsorted</string>
 
 	<!-- Content Description Text -->
 	<string name="cd_rating_icon">Rating Icon</string>

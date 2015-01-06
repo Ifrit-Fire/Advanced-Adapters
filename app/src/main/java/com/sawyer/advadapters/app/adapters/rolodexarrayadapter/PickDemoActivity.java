@@ -21,6 +21,7 @@ import android.content.Intent;
 import com.sawyer.advadapters.app.R;
 import com.sawyer.advadapters.app.adapters.BasePickDemoActivity;
 import com.sawyer.advadapters.app.adapters.rolodexarrayadapter.basicdemo.NeverCollapseHeaderActivity;
+import com.sawyer.advadapters.app.adapters.rolodexarrayadapter.basicdemo.NeverCollapseHeaderUnsortedActivity;
 import com.sawyer.advadapters.app.adapters.rolodexarrayadapter.fulldemo.FullDemoActivity;
 import com.sawyer.advadapters.widget.RolodexBaseAdapter;
 
@@ -44,6 +45,12 @@ public class PickDemoActivity extends BasePickDemoActivity {
 		intent = new Intent(this, NeverCollapseHeaderActivity.class);
 		intent.putExtra(EXTRA_INTENT_NAME,
 						getString(R.string.activity_rolodex_never_collapse_header));
+		intent.putExtra(EXTRA_GROUP_NAME, getString(R.string.title_group_basicdemos));
+		intents.add(intent);
+
+		intent = new Intent(this, NeverCollapseHeaderUnsortedActivity.class);
+		intent.putExtra(EXTRA_INTENT_NAME,
+						getString(R.string.activity_rolodex_never_collapse_header_unsorted));
 		intent.putExtra(EXTRA_GROUP_NAME, getString(R.string.title_group_basicdemos));
 		intents.add(intent);
 
