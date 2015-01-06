@@ -39,7 +39,7 @@ import java.util.List;
  * the similar look one sees with setting screens. RolodexBaseAdapter's will always auto sort
  * groups, this demo specifically shows how to change that behavior.
  */
-public class NeverCollapseHeaderUnsortedActivity extends ExpandableListActivity {
+public class NeverCollapseGroupUnsortedActivity extends ExpandableListActivity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {

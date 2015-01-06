@@ -84,12 +84,12 @@
 			android:label="@string/activity_rolodex_movie_demo">
 		</activity>
 		<activity
-			android:name=".adapters.rolodexarrayadapter.basicdemo.NeverCollapseHeaderActivity"
-			android:label="@string/activity_rolodex_never_collapse_header">
+			android:name=".adapters.rolodexarrayadapter.basicdemo.NeverCollapseGroupActivity"
+			android:label="@string/activity_rolodex_never_collapse_groups">
 		</activity>
 		<activity
-			android:name=".adapters.rolodexarrayadapter.basicdemo.NeverCollapseHeaderUnsortedActivity"
-			android:label="@string/activity_rolodex_never_collapse_header_unsorted">
+			android:name=".adapters.rolodexarrayadapter.basicdemo.NeverCollapseGroupUnsortedActivity"
+			android:label="@string/activity_rolodex_never_collapse_groups_unsorted">
 		</activity>
 		<activity
 			android:name=".adapters.rolodexarrayadapter.basicdemo.AddItemsActivity"
