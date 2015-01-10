@@ -45,8 +45,8 @@ public class ContainsItemActivity extends ExpandableListActivity {
 	MovieItem mContainsMovie = MovieContent.ITEM_LIST.get(1);
 	MovieItem mMissingMovie = MovieContent.ITEM_LIST.get(4);
 
-	@OnClick(R.id.button_contain)
-	public void containsItem(View v) {
+	@OnClick(android.R.id.button1)
+	public void onContainsItem(View v) {
 		DemoAdapter adapter = (DemoAdapter) getExpandableListAdapter();
 		if (adapter.contains(mContainsMovie)) {    //We are expecting a true result here
 			ToastHelper.showContainsTrue(this, mContainsMovie.title);
@@ -55,34 +55,36 @@ public class ContainsItemActivity extends ExpandableListActivity {
 		}
 	}
 
-	@OnClick(R.id.button_missing)
-	public void missingItem(View v) {
-		DemoAdapter adapter = (DemoAdapter) getExpandableListAdapter();
-		if (adapter.contains(mMissingMovie)) {
-			ToastHelper.showContainsTrue(this, mMissingMovie.title);
-		} else {    //We are expecting a false result here
-			ToastHelper.showContainsFalse(this, mMissingMovie.title);
-		}
-	}
-
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_contains_item);
+		setContentView(R.layout.activity_rolodex_two_buttons);
 		ButterKnife.inject(this);
-		setListAdapter(new DemoAdapter(this, MovieContent.ITEM_LIST.subList(0, 3)));
 
 		//Set the button text
-		Button button = ButterKnife.findById(this, R.id.button_contain);
+		Button button = ButterKnife.findById(this, android.R.id.button1);
 		button.setText(getString(R.string.btn_contains_item1, mContainsMovie.title));
-		button = ButterKnife.findById(this, R.id.button_missing);
+		button = ButterKnife.findById(this, android.R.id.button2);
 		button.setText(getString(R.string.btn_contains_item1, mMissingMovie.title));
+
+		//Create our adapter and set it. By default groups will be sorted
+		setListAdapter(new DemoAdapter(this, MovieContent.ITEM_LIST.subList(0, 3)));
 	}
 
 	@Override
 	protected void onDestroy() {
 		ButterKnife.reset(this);
 		super.onDestroy();
+	}
+
+	@OnClick(android.R.id.button2)
+	public void onMissingItem(View v) {
+		DemoAdapter adapter = (DemoAdapter) getExpandableListAdapter();
+		if (adapter.contains(mMissingMovie)) {
+			ToastHelper.showContainsTrue(this, mMissingMovie.title);
+		} else {    //We are expecting a false result here
+			ToastHelper.showContainsFalse(this, mMissingMovie.title);
+		}
 	}
 
 	private class DemoAdapter extends RolodexArrayAdapter<String, MovieItem> {

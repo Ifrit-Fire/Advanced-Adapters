@@ -22,6 +22,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.sawyer.advadapters.app.R;
@@ -36,10 +37,10 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 /**
- * Demonstration on how to remove items from our adapter. There are two ways to do so; Via
- * an individual item or collection. Groups are forced to expand to help visually see the item
- * removal. The adapter's list is persisted/restored accordingly to ensure things like orientation
- * change doesn't wipe our list of items.
+ * Demonstration on how to remove items from our adapter. There are two ways to do so; Via an
+ * individual item or collection. Groups are forced to expand to help visually see the item removal.
+ * The adapter's list is persisted/restored accordingly to ensure things like orientation change
+ * doesn't wipe our list of items.
  */
 public class RemoveItemsActivity extends ExpandableListActivity {
 	private static final String STATE_LIST = "State List";
@@ -47,8 +48,16 @@ public class RemoveItemsActivity extends ExpandableListActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_remove_items);
+		setContentView(R.layout.activity_rolodex_two_buttons);
 		ButterKnife.inject(this);
+
+		//Set the button text
+		Button button = ButterKnife.findById(this, android.R.id.button1);
+		button.setText(R.string.btn_remove_first);
+		button = ButterKnife.findById(this, android.R.id.button2);
+		button.setText(R.string.btn_remove_first2);
+
+		//Create our adapter and set it. By default groups will be sorted
 		if (savedInstanceState == null) {
 			setListAdapter(new DemoAdapter(this, MovieContent.ITEM_LIST));
 		} else {
@@ -63,29 +72,29 @@ public class RemoveItemsActivity extends ExpandableListActivity {
 		super.onDestroy();
 	}
 
-	@Override
-	protected void onSaveInstanceState(Bundle outState) {
-		super.onSaveInstanceState(outState);
-		DemoAdapter adapter = (DemoAdapter) getExpandableListAdapter();
-		outState.putParcelableArrayList(STATE_LIST, adapter.getList());
-	}
-
-	@OnClick(R.id.button_remove_first)
-	public void removeFirst(View v) {
+	@OnClick(android.R.id.button1)
+	public void onRemoveFirst(View v) {
 		DemoAdapter adapter = (DemoAdapter) getExpandableListAdapter();
 		if (adapter.getGroupCount() == 0) return;    //No more items to remove
 		MovieItem movie = adapter.getChild(0, 0);
 		adapter.remove(movie);
 	}
 
-	@OnClick(R.id.button_remove_first2)
-	public void removeFirstTwo(View v) {
+	@OnClick(android.R.id.button2)
+	public void onRemoveFirstTwo(View v) {
 		//Lets pick the first two movies from the list, and remove them
 		DemoAdapter adapter = (DemoAdapter) getExpandableListAdapter();
 		List<MovieItem> movies = adapter.getList();
 		if (movies.size() < 2) return;    //No more items to remove
 		movies = movies.subList(0, 2);
 		adapter.removeAll(movies);
+	}
+
+	@Override
+	protected void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+		DemoAdapter adapter = (DemoAdapter) getExpandableListAdapter();
+		outState.putParcelableArrayList(STATE_LIST, adapter.getList());
 	}
 
 	private class DemoAdapter extends RolodexArrayAdapter<String, MovieItem> {

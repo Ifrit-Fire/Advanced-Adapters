@@ -47,22 +47,36 @@ public class RetainAndSetListActivity extends ExpandableListActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_retain_set_list);
+		setContentView(R.layout.activity_rolodex_two_buttons);
 		ButterKnife.inject(this);
+
+		//Set the button text
+		Button button = ButterKnife.findById(this, android.R.id.button1);
+		button.setText(getString(R.string.btn_retain_movies_from, 2005));
+		button = ButterKnife.findById(this, android.R.id.button2);
+		button.setText(R.string.btn_set_list);
+
+		//Create our adapter and set it. By default groups will be sorted
 		if (savedInstanceState == null) {
 			setListAdapter(new DemoAdapter(this, MovieContent.ITEM_LIST));
 		} else {
 			ArrayList<MovieItem> list = savedInstanceState.getParcelableArrayList(STATE_LIST);
 			setListAdapter(new DemoAdapter(this, list));
 		}
-		Button button = ButterKnife.findById(this, R.id.button_retain);
-		button.setText(getString(R.string.btn_retain_movies_from, 2005));
 	}
 
 	@Override
 	protected void onDestroy() {
 		ButterKnife.reset(this);
 		super.onDestroy();
+	}
+
+	@OnClick(android.R.id.button1)
+	public void onRetainItems(View v) {
+		//Remove all movies except those found in the year 2005.
+		DemoAdapter adapter = (DemoAdapter) getExpandableListAdapter();
+		List<MovieItem> movies = adapter.getGroupChildren(1);    //Group position 1 == year 2005
+		adapter.retainAll(movies);
 	}
 
 	@Override
@@ -72,16 +86,8 @@ public class RetainAndSetListActivity extends ExpandableListActivity {
 		outState.putParcelableArrayList(STATE_LIST, adapter.getList());
 	}
 
-	@OnClick(R.id.button_retain)
-	public void retainItems(View v) {
-		//Remove all movies except those found in the year 2005.
-		DemoAdapter adapter = (DemoAdapter) getExpandableListAdapter();
-		List<MovieItem> movies = adapter.getGroupChildren(1);    //Group position 1 == year 2005
-		adapter.retainAll(movies);
-	}
-
-	@OnClick(R.id.button_set_list)
-	public void setList(View v) {
+	@OnClick(android.R.id.button2)
+	public void onSetList(View v) {
 		//Will clear the adapter and addAll with just one method call.
 		DemoAdapter adapter = (DemoAdapter) getExpandableListAdapter();
 		adapter.setList(MovieContent.ITEM_LIST);
