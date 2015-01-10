@@ -24,6 +24,7 @@ import com.sawyer.advadapters.app.adapters.rolodexarrayadapter.basicdemo.AddItem
 import com.sawyer.advadapters.app.adapters.rolodexarrayadapter.basicdemo.NeverCollapseGroupActivity;
 import com.sawyer.advadapters.app.adapters.rolodexarrayadapter.basicdemo.NeverCollapseGroupUnsortedActivity;
 import com.sawyer.advadapters.app.adapters.rolodexarrayadapter.basicdemo.RemoveItemsActivity;
+import com.sawyer.advadapters.app.adapters.rolodexarrayadapter.basicdemo.RetainAndSetListActivity;
 import com.sawyer.advadapters.app.adapters.rolodexarrayadapter.fulldemo.FullDemoActivity;
 import com.sawyer.advadapters.widget.RolodexBaseAdapter;
 
@@ -63,6 +64,11 @@ public class PickDemoActivity extends BasePickDemoActivity {
 
 		intent = new Intent(this, RemoveItemsActivity.class);
 		intent.putExtra(EXTRA_INTENT_NAME, getString(R.string.activity_rolodex_remove_items));
+		intent.putExtra(EXTRA_GROUP_NAME, getString(R.string.title_group_basicdemos));
+		intents.add(intent);
+
+		intent = new Intent(this, RetainAndSetListActivity.class);
+		intent.putExtra(EXTRA_INTENT_NAME, getString(R.string.activity_rolodex_retain_set_list));
 		intent.putExtra(EXTRA_GROUP_NAME, getString(R.string.title_group_basicdemos));
 		intents.add(intent);
 

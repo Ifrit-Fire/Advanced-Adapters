@@ -317,15 +317,26 @@ public abstract class RolodexArrayAdapter<G, C> extends RolodexBaseAdapter imple
 		return mGroupObjects.get(groupPosition);
 	}
 
+	/**
+	 * Gets all the children associated with the given group.
+	 *
+	 * @param groupPosition The position of the group.
+	 *
+	 * @return the ArrayList of children found within the specified group.
+	 */
+	public ArrayList<C> getGroupChildren(int groupPosition) {
+		return new ArrayList<>(mObjects.get(mGroupObjects.get(groupPosition)));
+	}
+
 	@Override
 	public int getGroupCount() {
 		return mGroupObjects.size();
 	}
 
 	/**
-	 * Retrieves a group object for the given child. Attempts to look in cache before requesting
-	 * constructing one. By default nothing is cached. Override {@link
-	 * #getGroupFromCacheFor(Object)} if you wish to provide your own cache implementation.
+	 * Retrieves a group object for the given child. Attempts to look in cache before requesting to
+	 * construct one. By default nothing is cached. Override {@link #getGroupFromCacheFor(Object)}
+	 * if you wish to provide your own cache implementation.
 	 *
 	 * @param childItem Child item to look for
 	 *

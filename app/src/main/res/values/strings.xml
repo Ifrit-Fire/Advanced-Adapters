@@ -43,6 +43,7 @@
 	<string name="activity_rolodex_never_collapse_groups_unsorted">Never Collapse Groups - Unsorted</string>
 	<string name="activity_rolodex_add_items">Add Items</string>
 	<string name="activity_rolodex_remove_items">Remove Items</string>
+	<string name="activity_rolodex_retain_set_list">Retain and Set List</string>
 
 	<!-- Content Description Text -->
 	<string name="cd_rating_icon">Rating Icon</string>
@@ -105,6 +106,8 @@
 	<string name="btn_put_all">Put All</string>
 	<string name="btn_remove_first">Remove First</string>
 	<string name="btn_remove_first2">Remove First Two</string>
+	<string name="btn_retain_movies_from">Retain Movies From %1$d</string>
+	<string name="btn_set_list">Refresh with SetList</string>
 	<string name="btn_sort_children">Sort Children</string>
 	<string name="btn_sort_disable_auto_sort">Disable Auto Header Sort</string>
 	<string name="btn_sort_enable_auto_sort">Enable Auto Header Sort</string>

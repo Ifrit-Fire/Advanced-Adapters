@@ -99,6 +99,10 @@
 			android:name=".adapters.rolodexarrayadapter.basicdemo.RemoveItemsActivity"
 			android:label="@string/activity_rolodex_remove_items">
 		</activity>
+		<activity
+			android:name=".adapters.rolodexarrayadapter.basicdemo.RetainAndSetListActivity"
+			android:label="@string/activity_rolodex_retain_set_list">
+		</activity>
 
 		<!-- Misc Support Activities-->
 		<activity
