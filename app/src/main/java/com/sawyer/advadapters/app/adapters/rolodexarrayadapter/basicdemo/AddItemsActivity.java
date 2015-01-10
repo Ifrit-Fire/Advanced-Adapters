@@ -38,10 +38,10 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 /**
- * Demonstration on how to add items to our ExpandableListView. There are three ways to do so; Via
- * an individual item, an array, or collection. Groups are forced to expand to help visually see the
+ * Demonstration on how to add items to our adapter. There are three ways to do so; Via an
+ * individual item, an array, or collection. Groups are forced to expand to help visually see the
  * item addition. The adapter's list is persisted/restored accordingly to ensure things like
- * orientation change doesn't wipe our list of movies.
+ * orientation change doesn't wipe our list of items.
  */
 public class AddItemsActivity extends ExpandableListActivity {
 	private static final String STATE_LIST = "State List";

@@ -36,8 +36,8 @@ import java.util.List;
 
 /**
  * Demonstration on how to make a our ExpandableListView show as always expanded. This would be the
- * similar look one sees with setting screens. RolodexBaseAdapter's will always auto sort groups,
- * this demo specifically shows how to change that behavior.
+ * similar look one sees with setting screens. Rolodex adapters will always auto sort groups, this
+ * demo specifically shows how to change that behavior.
  */
 public class NeverCollapseGroupUnsortedActivity extends ExpandableListActivity {
 

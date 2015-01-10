@@ -36,10 +36,10 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 /**
- * Demonstration on how to remove items to our ExpandableListView. There are two ways to do so; Via
+ * Demonstration on how to remove items from our adapter. There are two ways to do so; Via
  * an individual item or collection. Groups are forced to expand to help visually see the item
  * removal. The adapter's list is persisted/restored accordingly to ensure things like orientation
- * change doesn't wipe our list of movies.
+ * change doesn't wipe our list of items.
  */
 public class RemoveItemsActivity extends ExpandableListActivity {
 	private static final String STATE_LIST = "State List";

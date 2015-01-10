@@ -37,10 +37,10 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 /**
- * Demonstration on how to sort all child items in our ExpandableListView. Groups are forced to
- * expand to help visually see the sorting change. Orientation changes will reset the unsorted list so
- * as to retest the sort feature. Aka, savedInstanceState is ignored. The list of movies are
- * purposely shuffled to show how groups themselves are not sorted.
+ * Demonstration on how to sort all child items in our adapter. Groups are forced to expand to help
+ * visually see the sorting change. Orientation changes will reset the unsorted list so as to retest
+ * the sort feature. Aka, savedInstanceState is ignored. The list of items are purposely shuffled to
+ * show how groups themselves are not sorted.
  */
 public class SortAllChildrenActivity extends ExpandableListActivity {
 	@Override

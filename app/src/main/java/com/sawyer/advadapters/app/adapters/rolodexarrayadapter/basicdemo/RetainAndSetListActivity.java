@@ -37,10 +37,9 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 /**
- * Demonstration on how to retain items and set a new list of items with our ExpandableListView.
- * Groups are forced to expand to help visually see visual changes. The adapter's list is
- * persisted/restored accordingly to ensure things like orientation change doesn't wipe our list of
- * movies.
+ * Demonstration on how to retain items and set a new list of items with our adapter. Groups are
+ * forced to expand to help visually see visual changes. The adapter's list is persisted/restored
+ * accordingly to ensure things like orientation change doesn't wipe our list of items.
  */
 public class RetainAndSetListActivity extends ExpandableListActivity {
 	private static final String STATE_LIST = "State List";
@@ -74,7 +73,7 @@ public class RetainAndSetListActivity extends ExpandableListActivity {
 	}
 
 	@OnClick(R.id.button_retain)
-	public void retainMovies(View v) {
+	public void retainItems(View v) {
 		//Remove all movies except those found in the year 2005.
 		DemoAdapter adapter = (DemoAdapter) getExpandableListAdapter();
 		List<MovieItem> movies = adapter.getGroupChildren(1);    //Group position 1 == year 2005
