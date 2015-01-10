@@ -39,11 +39,12 @@
 	<!--Activity Names - Rolodex ArrayList Backed -->
 	<string name="activity_rolodex_arrayadapter">RolodexArrayAdapter</string>
 	<string name="activity_rolodex_movie_demo">Movie Demo</string>
+	<string name="activity_rolodex_add_items">Add Items</string>
 	<string name="activity_rolodex_never_collapse_groups">Never Collapse Groups - Sorted</string>
 	<string name="activity_rolodex_never_collapse_groups_unsorted">Never Collapse Groups - Unsorted</string>
-	<string name="activity_rolodex_add_items">Add Items</string>
 	<string name="activity_rolodex_remove_items">Remove Items</string>
 	<string name="activity_rolodex_retain_set_list">Retain and Set List</string>
+	<string name="activity_rolodex_sort_all_children">Sort All Children</string>
 
 	<!-- Content Description Text -->
 	<string name="cd_rating_icon">Rating Icon</string>
@@ -69,6 +70,10 @@
 	<string name="title_insert">Insert</string>
 	<string name="title_put">Put</string>
 	<string name="title_screen_info">Screen Info</string>
+
+	<!-- Descriptions (or Messages) -->
+	<string name="desc_sortall_ignores_groups">The sort method will ignore groups and only sort
+		children found within each group.</string>
 
 	<!-- Menu Text -->
 	<string name="menu_about">About</string>

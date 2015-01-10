@@ -84,6 +84,10 @@
 			android:label="@string/activity_rolodex_movie_demo">
 		</activity>
 		<activity
+			android:name=".adapters.rolodexarrayadapter.basicdemo.AddItemsActivity"
+			android:label="@string/activity_rolodex_add_items">
+		</activity>
+		<activity
 			android:name=".adapters.rolodexarrayadapter.basicdemo.NeverCollapseGroupActivity"
 			android:label="@string/activity_rolodex_never_collapse_groups">
 		</activity>
@@ -92,16 +96,16 @@
 			android:label="@string/activity_rolodex_never_collapse_groups_unsorted">
 		</activity>
 		<activity
-			android:name=".adapters.rolodexarrayadapter.basicdemo.AddItemsActivity"
-			android:label="@string/activity_rolodex_add_items">
-		</activity>
-		<activity
 			android:name=".adapters.rolodexarrayadapter.basicdemo.RemoveItemsActivity"
 			android:label="@string/activity_rolodex_remove_items">
 		</activity>
 		<activity
 			android:name=".adapters.rolodexarrayadapter.basicdemo.RetainAndSetListActivity"
 			android:label="@string/activity_rolodex_retain_set_list">
+		</activity>
+		<activity
+			android:name=".adapters.rolodexarrayadapter.basicdemo.SortAllChildrenActivity"
+			android:label="@string/activity_rolodex_sort_all_children">
 		</activity>
 
 		<!-- Misc Support Activities-->
