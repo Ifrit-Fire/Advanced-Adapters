@@ -88,6 +88,10 @@
 			android:label="@string/activity_rolodex_add_items">
 		</activity>
 		<activity
+			android:name=".adapters.rolodexarrayadapter.basicdemo.ContainsItemActivity"
+			android:label="@string/activity_rolodex_contains_item">
+		</activity>
+		<activity
 			android:name=".adapters.rolodexarrayadapter.basicdemo.NeverCollapseGroupActivity"
 			android:label="@string/activity_rolodex_never_collapse_groups">
 		</activity>
