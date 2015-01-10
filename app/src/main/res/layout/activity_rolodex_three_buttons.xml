@@ -16,37 +16,48 @@
   -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+			  xmlns:tools="http://schemas.android.com/tools"
 			  android:layout_width="match_parent"
 			  android:layout_height="match_parent"
 			  android:orientation="vertical">
 
-	<TextView
-		android:id="@android:id/text1"
-		style="@android:style/TextAppearance.DeviceDefault.Medium"
+	<LinearLayout
+		android:id="@+id/button_action_container"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		android:layout_marginEnd="@dimen/spacing_normal"
-		android:layout_marginLeft="@dimen/spacing_normal"
-		android:layout_marginRight="@dimen/spacing_normal"
-		android:layout_marginStart="@dimen/spacing_normal"
-		android:layout_marginTop="@dimen/spacing_normal"
-		android:text="@string/desc_sortall_ignores_groups"/>
+		android:gravity="center"
+		android:orientation="horizontal">
 
-	<Button
-		android:id="@+id/children_sort_btn"
-		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		android:layout_marginBottom="@dimen/spacing_normal"
-		android:layout_marginEnd="@dimen/spacing_normal"
-		android:layout_marginLeft="@dimen/spacing_normal"
-		android:layout_marginRight="@dimen/spacing_normal"
-		android:layout_marginStart="@dimen/spacing_normal"
-		android:layout_marginTop="@dimen/spacing_normal"
-		android:text="@string/btn_sort_children"/>
+		<Button
+			android:id="@android:id/button1"
+			android:layout_width="0dp"
+			android:layout_height="wrap_content"
+			android:layout_weight="1"
+			android:lines="2"
+			tools:ignore="ButtonStyle"/>
+
+		<Button
+			android:id="@android:id/button2"
+			android:layout_width="0dp"
+			android:layout_height="wrap_content"
+			android:layout_weight="1"
+			android:lines="2"
+			tools:ignore="ButtonStyle"
+			/>
+
+		<Button
+			android:id="@android:id/button3"
+			android:layout_width="0dp"
+			android:layout_height="wrap_content"
+			android:layout_weight="1"
+			android:lines="2"
+			tools:ignore="ButtonStyle"/>
+	</LinearLayout>
 
 	<ExpandableListView
 		android:id="@android:id/list"
 		android:layout_width="match_parent"
 		android:layout_height="match_parent">
 	</ExpandableListView>
+
 </LinearLayout>

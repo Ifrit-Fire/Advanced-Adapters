@@ -22,6 +22,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.sawyer.advadapters.app.R;
@@ -46,7 +47,7 @@ import butterknife.OnClick;
 public class AddItemsActivity extends ExpandableListActivity {
 	private static final String STATE_LIST = "State List";
 
-	@OnClick(R.id.button_add_array)
+	@OnClick(android.R.id.button3)
 	public void onAddArray(View v) {
 		DemoAdapter adapter = (DemoAdapter) getExpandableListAdapter();
 		//Lets shuffle our list and pick three
@@ -60,7 +61,7 @@ public class AddItemsActivity extends ExpandableListActivity {
 		adapter.addAll(movies);
 	}
 
-	@OnClick(R.id.button_add_collection)
+	@OnClick(android.R.id.button2)
 	public void onAddCollection(View v) {
 		//Lets shuffle our list, pick three, and add to adapter
 		DemoAdapter adapter = (DemoAdapter) getExpandableListAdapter();
@@ -69,7 +70,7 @@ public class AddItemsActivity extends ExpandableListActivity {
 		adapter.addAll(randList.subList(0, 3));
 	}
 
-	@OnClick(R.id.button_add_one)
+	@OnClick(android.R.id.button1)
 	public void onAddOne(View v) {
 		//Pick a random movie and add to adapter
 		DemoAdapter adapter = (DemoAdapter) getExpandableListAdapter();
@@ -80,8 +81,18 @@ public class AddItemsActivity extends ExpandableListActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_add_items);
+		setContentView(R.layout.activity_rolodex_three_buttons);
 		ButterKnife.inject(this);
+
+		//Set the button text
+		Button button = ButterKnife.findById(this, android.R.id.button1);
+		button.setText(R.string.btn_add);
+		button = ButterKnife.findById(this, android.R.id.button2);
+		button.setText(R.string.btn_add_all_col);
+		button = ButterKnife.findById(this, android.R.id.button3);
+		button.setText(R.string.btn_add_all_var);
+
+		//Create our adapter. By default groups will be sorted. onRestore handles setting adapter.
 		setListAdapter(new DemoAdapter(this));
 	}
 

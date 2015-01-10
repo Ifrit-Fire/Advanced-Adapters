@@ -16,51 +16,35 @@
   -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-			  xmlns:tools="http://schemas.android.com/tools"
-			  android:orientation="vertical"
 			  android:layout_width="match_parent"
-			  android:layout_height="match_parent">
+			  android:layout_height="match_parent"
+			  android:orientation="vertical">
 
-	<LinearLayout
-		android:id="@+id/button_action_container"
+	<TextView
+		android:id="@android:id/text1"
+		style="@android:style/TextAppearance.DeviceDefault.Medium"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		android:gravity="center"
-		android:orientation="horizontal">
+		android:layout_marginEnd="@dimen/spacing_normal"
+		android:layout_marginLeft="@dimen/spacing_normal"
+		android:layout_marginRight="@dimen/spacing_normal"
+		android:layout_marginStart="@dimen/spacing_normal"
+		android:layout_marginTop="@dimen/spacing_normal"/>
 
-		<Button
-			android:id="@+id/button_add_one"
-			android:layout_width="0dp"
-			android:layout_height="wrap_content"
-			android:layout_weight="1"
-			android:lines="2"
-			android:text="@string/btn_add"
-			tools:ignore="ButtonStyle"/>
-
-		<Button
-			android:id="@+id/button_add_array"
-			android:layout_width="0dp"
-			android:layout_height="wrap_content"
-			android:lines="2"
-			android:layout_weight="1"
-			android:text="@string/btn_add_all_var"
-			tools:ignore="ButtonStyle"
-			/>
-
-		<Button
-			android:id="@+id/button_add_collection"
-			android:lines="2"
-			android:layout_width="0dp"
-			android:layout_height="wrap_content"
-			android:layout_weight="1"
-			android:text="@string/btn_add_all_col"
-			tools:ignore="ButtonStyle"/>
-	</LinearLayout>
+	<Button
+		android:id="@android:id/button1"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_marginBottom="@dimen/spacing_normal"
+		android:layout_marginEnd="@dimen/spacing_normal"
+		android:layout_marginLeft="@dimen/spacing_normal"
+		android:layout_marginRight="@dimen/spacing_normal"
+		android:layout_marginStart="@dimen/spacing_normal"
+		android:layout_marginTop="@dimen/spacing_normal"/>
 
 	<ExpandableListView
 		android:id="@android:id/list"
 		android:layout_width="match_parent"
 		android:layout_height="match_parent">
 	</ExpandableListView>
-
 </LinearLayout>

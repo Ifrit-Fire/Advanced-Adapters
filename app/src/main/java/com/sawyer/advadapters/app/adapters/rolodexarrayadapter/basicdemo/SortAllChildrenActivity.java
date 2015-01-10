@@ -46,11 +46,19 @@ public class SortAllChildrenActivity extends ExpandableListActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_sort_all_children);
+		setContentView(R.layout.activity_rolodex_text_button);
 		ButterKnife.inject(this);
 
+		//Set the widget text
+		TextView tv = ButterKnife.findById(this, android.R.id.button1);
+		tv.setText(R.string.btn_sort_children);
+		tv = ButterKnife.findById(this, android.R.id.text1);
+		tv.setText(R.string.desc_sortall_ignores_groups);
+
+		//Create our adapter and set it. By default groups will be sorted.
+		//Shuffle to help demonstrate how groups will not sort.
 		List<MovieItem> movies = new ArrayList<>(MovieContent.ITEM_LIST);
-		Collections.shuffle(movies);    //To help demonstrate how groups will not sort
+		Collections.shuffle(movies);
 		setListAdapter(new DemoAdapter(this, movies));
 	}
 
@@ -60,8 +68,8 @@ public class SortAllChildrenActivity extends ExpandableListActivity {
 		super.onDestroy();
 	}
 
-	@OnClick(R.id.children_sort_btn)
-	public void sortAllChildren(View v) {
+	@OnClick(android.R.id.button1)
+	public void onSortAllChildren(View v) {
 		DemoAdapter adapter = (DemoAdapter) getExpandableListAdapter();
 		adapter.sort();    //MovieItem implements it's own Comparable interface.
 	}
