@@ -37,9 +37,9 @@ import butterknife.OnClick;
 
 /**
  * Demonstration on how to remove items to our ExpandableListView. There are two ways to do so; Via
- * an individual item or collection. Groups are forced to expand to help visually see the
- * item removal. The adapter's list is persisted/restored accordingly to ensure things like
- * orientation change doesn't wipe our list of movies.
+ * an individual item or collection. Groups are forced to expand to help visually see the item
+ * removal. The adapter's list is persisted/restored accordingly to ensure things like orientation
+ * change doesn't wipe our list of movies.
  */
 public class RemoveItemsActivity extends ExpandableListActivity {
 	private static final String STATE_LIST = "State List";
@@ -122,7 +122,7 @@ public class RemoveItemsActivity extends ExpandableListActivity {
 
 		@Override
 		public boolean hasAutoExpandingGroups() {
-			//Auto expand so user can more easily see the newly added items
+			//Auto expand so user can more easily see what's happening
 			return true;
 		}
 

@@ -35,9 +35,9 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * Demonstration on how to make a our ExpandableListView show as always expanded. This would be
- * the similar look one sees with setting screens. RolodexBaseAdapter's will always auto sort
- * groups, this demo specifically shows how to change that behavior.
+ * Demonstration on how to make a our ExpandableListView show as always expanded. This would be the
+ * similar look one sees with setting screens. RolodexBaseAdapter's will always auto sort groups,
+ * this demo specifically shows how to change that behavior.
  */
 public class NeverCollapseGroupUnsortedActivity extends ExpandableListActivity {
 
@@ -58,6 +58,12 @@ public class NeverCollapseGroupUnsortedActivity extends ExpandableListActivity {
 
 		public DemoAdapter(Context activity, Collection<MovieItem> items) {
 			super(activity, items);
+		}
+
+		@Override
+		public boolean areGroupsSorted() {
+			//Prevents our groups from being sorted. Will show in insertion order instead.
+			return false;
 		}
 
 		@Override
@@ -85,12 +91,6 @@ public class NeverCollapseGroupUnsortedActivity extends ExpandableListActivity {
 			TextView tv = (TextView) convertView;
 			tv.setText(getGroup(groupPosition));
 			return convertView;
-		}
-
-		@Override
-		public boolean areGroupsSorted() {
-			//Prevents our groups from being sorted. Will show in insertion order instead.
-			return false;
 		}
 
 		@Override

@@ -140,7 +140,7 @@ public class AddItemsActivity extends ExpandableListActivity {
 
 		@Override
 		public boolean hasAutoExpandingGroups() {
-			//Auto expand so user can more easily see the newly added items
+			//Auto expand so user can more easily see what's happening
 			return true;
 		}
 

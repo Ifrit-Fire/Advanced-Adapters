@@ -38,7 +38,7 @@ import butterknife.OnClick;
 
 /**
  * Demonstration on how to retain items and set a new list of items with our ExpandableListView.
- * Groups are forced to expand to help visually see the item removal. The adapter's list is
+ * Groups are forced to expand to help visually see visual changes. The adapter's list is
  * persisted/restored accordingly to ensure things like orientation change doesn't wipe our list of
  * movies.
  */
@@ -122,7 +122,7 @@ public class RetainAndSetListActivity extends ExpandableListActivity {
 
 		@Override
 		public boolean hasAutoExpandingGroups() {
-			//Auto expand so user can more easily see the newly added items
+			//Auto expand so user can more easily see what's happening
 			return true;
 		}
 
