@@ -33,7 +33,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
+/**
+ * Demonstration on how to remove items to our ExpandableListView. There are two ways to do so; Via
+ * an individual item or collection. Groups are forced to expand to help visually see the
+ * item removal. The adapter's list is persisted/restored accordingly to ensure things like
+ * orientation change doesn't wipe our list of movies.
+ */
 public class RemoveItemsActivity extends ExpandableListActivity {
 	private static final String STATE_LIST = "State List";
 
@@ -61,6 +68,24 @@ public class RemoveItemsActivity extends ExpandableListActivity {
 		super.onSaveInstanceState(outState);
 		DemoAdapter adapter = (DemoAdapter) getExpandableListAdapter();
 		outState.putParcelableArrayList(STATE_LIST, adapter.getList());
+	}
+
+	@OnClick(R.id.button_remove_first)
+	public void removeFirst(View v) {
+		DemoAdapter adapter = (DemoAdapter) getExpandableListAdapter();
+		if (adapter.getGroupCount() == 0) return;    //No more items to remove
+		MovieItem movie = adapter.getChild(0, 0);
+		adapter.remove(movie);
+	}
+
+	@OnClick(R.id.button_remove_first2)
+	public void removeFirstTwo(View v) {
+		//Lets pick the first two movies from the list, and remove them
+		DemoAdapter adapter = (DemoAdapter) getExpandableListAdapter();
+		List<MovieItem> movies = adapter.getList();
+		if (movies.size() < 2) return;    //No more items to remove
+		movies = movies.subList(0, 2);
+		adapter.removeAll(movies);
 	}
 
 	private class DemoAdapter extends RolodexArrayAdapter<String, MovieItem> {

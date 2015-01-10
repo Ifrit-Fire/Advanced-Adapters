@@ -103,7 +103,8 @@
 	<string name="btn_put">Put</string>
 	<string name="btn_put_id">Put with Id</string>
 	<string name="btn_put_all">Put All</string>
-	<string name="btn_remove">Remove</string>
+	<string name="btn_remove_first">Remove First</string>
+	<string name="btn_remove_first2">Remove First Two</string>
 	<string name="btn_sort_children">Sort Children</string>
 	<string name="btn_sort_disable_auto_sort">Disable Auto Header Sort</string>
 	<string name="btn_sort_enable_auto_sort">Enable Auto Header Sort</string>
