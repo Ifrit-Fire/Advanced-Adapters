@@ -26,57 +26,47 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.sawyer.advadapters.app.R;
-import com.sawyer.advadapters.app.ToastHelper;
 import com.sawyer.advadapters.app.data.MovieContent;
 import com.sawyer.advadapters.app.data.MovieItem;
 import com.sawyer.advadapters.widget.RolodexArrayAdapter;
 
-import java.util.List;
+import java.util.Collection;
 
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 /**
- * Demonstration on how to test if a given item exists within our adapter. Groups are forced to
- * expand to help visually see our list of movies. Shows test conditions where one item is found and
- * another is not.
+ * Demonstration on how to conveniently expand and collapse all groups in the ExpandableListView.
+ * Though expanding/collapsing is normally done through the ExpandableListView, these convenience
+ * methods are in fact found in the adapter.
  */
-public class ContainsItemActivity extends ExpandableListActivity {
-	MovieItem mContainsMovie = MovieContent.ITEM_LIST.get(1);
-	MovieItem mMissingMovie = MovieContent.ITEM_LIST.get(4);
+public class ExpandCollapseAllActivity extends ExpandableListActivity {
 
-	@OnClick(R.id.button_contain)
-	public void containsItem(View v) {
+	@OnClick(android.R.id.button2)
+	public void onCollapseAll(View v) {
 		DemoAdapter adapter = (DemoAdapter) getExpandableListAdapter();
-		if (adapter.contains(mContainsMovie)) {    //We are expecting a true result here
-			ToastHelper.showContainsTrue(this, mContainsMovie.title);
-		} else {
-			ToastHelper.showContainsFalse(this, mContainsMovie.title);
-		}
-	}
-
-	@OnClick(R.id.button_missing)
-	public void missingItem(View v) {
-		DemoAdapter adapter = (DemoAdapter) getExpandableListAdapter();
-		if (adapter.contains(mMissingMovie)) {
-			ToastHelper.showContainsTrue(this, mMissingMovie.title);
-		} else {    //We are expecting a false result here
-			ToastHelper.showContainsFalse(this, mMissingMovie.title);
-		}
+		adapter.collapseAll();
 	}
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_contains_item);
+		setContentView(R.layout.activity_rolodex_two_buttons);
 		ButterKnife.inject(this);
-		setListAdapter(new DemoAdapter(this, MovieContent.ITEM_LIST.subList(0, 3)));
 
 		//Set the button text
-		Button button = ButterKnife.findById(this, R.id.button_contain);
-		button.setText(getString(R.string.btn_contains_item1, mContainsMovie.title));
-		button = ButterKnife.findById(this, R.id.button_missing);
-		button.setText(getString(R.string.btn_contains_item1, mMissingMovie.title));
+		Button button = ButterKnife.findById(this, android.R.id.button1);
+		button.setText(R.string.btn_expand);
+		button = ButterKnife.findById(this, android.R.id.button2);
+		button.setText(R.string.btn_collapse);
+
+		//Create our adapter and set it. By default groups will be sorted
+		DemoAdapter adapter = new DemoAdapter(this, MovieContent.ITEM_LIST);
+		setListAdapter(adapter);
+
+		//Only on first start up, expand all groups. Otherwise, allow ExpandableListView to
+		//appropriately reload which groups were expanded or collapsed
+		if (savedInstanceState == null) adapter.expandAll();
 	}
 
 	@Override
@@ -85,9 +75,16 @@ public class ContainsItemActivity extends ExpandableListActivity {
 		super.onDestroy();
 	}
 
+	@OnClick(android.R.id.button1)
+	public void onExpandAll(View v) {
+		DemoAdapter adapter = (DemoAdapter) getExpandableListAdapter();
+		adapter.expandAll();
+	}
+
 	private class DemoAdapter extends RolodexArrayAdapter<String, MovieItem> {
-		public DemoAdapter(Context activity, List<MovieItem> movies) {
-			super(activity, movies);
+
+		public DemoAdapter(Context activity, Collection<MovieItem> items) {
+			super(activity, items);
 		}
 
 		@Override
@@ -110,17 +107,11 @@ public class ContainsItemActivity extends ExpandableListActivity {
 		public View getGroupView(LayoutInflater inflater, int groupPosition, boolean isExpanded,
 								 View convertView, ViewGroup parent) {
 			if (convertView == null) {
-				convertView = inflater.inflate(R.layout.item_expandable_group1, parent, false);
+				convertView = inflater.inflate(R.layout.item_expandable_group2, parent, false);
 			}
 			TextView tv = (TextView) convertView;
 			tv.setText(getGroup(groupPosition));
 			return convertView;
-		}
-
-		@Override
-		public boolean hasAutoExpandingGroups() {
-			//Auto expand so user can more easily see what's happening
-			return true;
 		}
 
 		@Override
