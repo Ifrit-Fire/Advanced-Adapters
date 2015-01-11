@@ -44,6 +44,8 @@ import butterknife.OnClick;
 public class RetainAndSetListActivity extends ExpandableListActivity {
 	private static final String STATE_LIST = "State List";
 
+	private List<MovieItem> mRetainMovies = MovieContent.ITEM_LIST.subList(3, 6);
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -76,8 +78,7 @@ public class RetainAndSetListActivity extends ExpandableListActivity {
 	public void onRetainItems(View v) {
 		//Remove all movies except those found in the year 2005.
 		DemoAdapter adapter = (DemoAdapter) getExpandableListAdapter();
-		List<MovieItem> movies = adapter.getGroupChildren(1);    //Group position 1 == year 2005
-		adapter.retainAll(movies);
+		adapter.retainAll(mRetainMovies);
 	}
 
 	@Override
