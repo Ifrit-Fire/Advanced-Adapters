@@ -44,6 +44,7 @@ public class NeverCollapseGroupUnsortedActivity extends ExpandableListActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		getExpandableListView().setGroupIndicator(null); //Removes group indicator from group views
 
 		//Shuffle the list to help show how groups are no longer being sorted
 		List<MovieItem> movies = new ArrayList<>(MovieContent.ITEM_LIST);

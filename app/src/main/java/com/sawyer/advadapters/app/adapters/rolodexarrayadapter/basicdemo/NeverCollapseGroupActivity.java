@@ -40,6 +40,7 @@ public class NeverCollapseGroupActivity extends ExpandableListActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		getExpandableListView().setGroupIndicator(null); //Removes group indicator from group views
 
 		//Create our adapter and set it. By default groups will be sorted
 		DemoAdapter adapter = new DemoAdapter(this, MovieContent.ITEM_LIST);

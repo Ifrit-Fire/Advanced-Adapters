@@ -49,7 +49,7 @@ public abstract class BasePickDemoActivity extends ExpandableListActivity implem
 
 	private void initActionBar() {
 		ActionBar actionBar = getActionBar();
-		if (actionBar == null) throw new AssertionError("No actionbar?");
+		if (actionBar == null) return;
 		actionBar.setDisplayHomeAsUpEnabled(true);
 	}
 

@@ -48,6 +48,7 @@ public class SortAllChildrenActivity extends ExpandableListActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_rolodex_text_button);
 		ButterKnife.inject(this);
+		getExpandableListView().setGroupIndicator(null); //Removes group indicator from group views
 
 		//Set the widget text
 		TextView tv = ButterKnife.findById(this, android.R.id.button1);
