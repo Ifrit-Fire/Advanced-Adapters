@@ -18,6 +18,8 @@ package com.sawyer.advadapters.app;
 import android.content.Context;
 import android.widget.Toast;
 
+import com.sawyer.advadapters.app.data.MovieItem;
+
 import static android.widget.Toast.LENGTH_SHORT;
 
 public class ToastHelper {
@@ -36,8 +38,18 @@ public class ToastHelper {
 					   LENGTH_SHORT).show();
 	}
 
+	public static void showGroupClicked(Context activity, String text) {
+		Toast.makeText(activity, activity.getString(R.string.toast_group_clicked) + text,
+					   LENGTH_SHORT).show();
+	}
+
 	public static void showItemUpdatesNotSupported(Context activity) {
 		Toast.makeText(activity, R.string.toast_item_updates_not_supported, LENGTH_SHORT).show();
+	}
+
+	public static void showMovieClicked(Context activity, MovieItem movie) {
+		Toast.makeText(activity, activity.getString(R.string.toast_movie_clicked) + movie.title,
+					   LENGTH_SHORT).show();
 	}
 
 	public static void showRemoveNotSupported(Context activity) {

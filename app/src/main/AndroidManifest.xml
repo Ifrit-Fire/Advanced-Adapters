@@ -92,6 +92,10 @@
 			android:label="@string/activity_rolodex_contains_item">
 		</activity>
 		<activity
+			android:name=".adapters.rolodexarrayadapter.basicdemo.ClickListenerActivity"
+			android:label="@string/activity_rolodex_click_listener">
+		</activity>
+		<activity
 			android:name=".adapters.rolodexarrayadapter.basicdemo.ExpandCollapseAllActivity"
 			android:label="@string/activity_rolodex_expand_collapse_all">
 		</activity>

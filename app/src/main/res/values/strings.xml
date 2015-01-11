@@ -41,6 +41,7 @@
 	<string name="activity_rolodex_movie_demo">Movie Demo</string>
 	<string name="activity_rolodex_add_items">Add Items</string>
 	<string name="activity_rolodex_contains_item">Contains Item</string>
+	<string name="activity_rolodex_click_listener">Click Listeners</string>
 	<string name="activity_rolodex_expand_collapse_all">Expand/Collapse All</string>
 	<string name="activity_rolodex_never_collapse_groups">Never Collapse Groups - Sorted</string>
 	<string name="activity_rolodex_never_collapse_groups_unsorted">Never Collapse Groups - Unsorted</string>
@@ -126,7 +127,9 @@
 	<string name="toast_choice_mode_not_supported">Choice Mode not supported.</string>
 	<string name="toast_contains_movie_true">Adapter contains:\n</string>
 	<string name="toast_contains_movie_false">Could not find:\n</string>
+	<string name="toast_group_clicked">Clicked on Group:\u0020</string>
 	<string name="toast_item_updates_not_supported">Item updates not supported.</string>
+	<string name="toast_movie_clicked">Clicked on Movie:\n</string>
 	<string name="toast_remove_not_supported">Remove not supported.</string>
 	<string name="toast_retain_all_not_supported">RetainAll not supported.</string>
 	<string name="toast_sort_not_supported">Sort not supported.</string>
