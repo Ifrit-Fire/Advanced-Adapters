@@ -431,7 +431,7 @@ public abstract class RolodexBaseAdapter extends BaseExpandableListAdapter {
 
 	@Override
 	public boolean hasStableIds() {
-		return true;
+		return false;
 	}
 
 	private void init(Context activity) {

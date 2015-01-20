@@ -100,6 +100,11 @@
 			android:label="@string/activity_rolodex_expand_collapse_all">
 		</activity>
 		<activity
+			android:name=".adapters.rolodexarrayadapter.advancedemo.NavigationDrawerActivity"
+			android:label="@string/activity_rolodex_navigation_drawer"
+			android:theme="@style/AppCompatTheme">
+		</activity>
+		<activity
 			android:name=".adapters.rolodexarrayadapter.basicdemo.NeverCollapseGroupActivity"
 			android:label="@string/activity_rolodex_never_collapse_groups">
 		</activity>

@@ -88,6 +88,11 @@ class FullDemoAdapter extends RolodexArrayAdapter<Integer, MovieItem> {
 	}
 
 	@Override
+	public boolean hasStableIds() {
+		return true;
+	}
+
+	@Override
 	protected boolean isChildFilteredOut(MovieItem movie, CharSequence constraint) {
 		return !TextUtils.isDigitsOnly(constraint) && !movie.title.toLowerCase(Locale.US).contains(
 				constraint.toString().toLowerCase(Locale.US));

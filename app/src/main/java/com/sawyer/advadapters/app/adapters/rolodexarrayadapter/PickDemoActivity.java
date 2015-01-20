@@ -20,6 +20,7 @@ import android.content.Intent;
 
 import com.sawyer.advadapters.app.R;
 import com.sawyer.advadapters.app.adapters.BasePickDemoActivity;
+import com.sawyer.advadapters.app.adapters.rolodexarrayadapter.advancedemo.NavigationDrawerActivity;
 import com.sawyer.advadapters.app.adapters.rolodexarrayadapter.basicdemo.AddItemsActivity;
 import com.sawyer.advadapters.app.adapters.rolodexarrayadapter.basicdemo.ClickListenerActivity;
 import com.sawyer.advadapters.app.adapters.rolodexarrayadapter.basicdemo.ContainsItemActivity;
@@ -44,7 +45,7 @@ public class PickDemoActivity extends BasePickDemoActivity {
 		/* Full Demos */
 		intent = new Intent(this, FullDemoActivity.class);
 		intent.putExtra(EXTRA_INTENT_NAME, getString(R.string.activity_rolodex_movie_demo));
-		intent.putExtra(EXTRA_GROUP_NAME, getString(R.string.title_group_fulldemos));
+		intent.putExtra(EXTRA_GROUP_NAME, getString(R.string.title_group_full_demos));
 		intent.putExtra(EXTRA_CHOICE_MODE, RolodexBaseAdapter.ChoiceMode.NONE);
 		intents.add(intent);
 
@@ -52,50 +53,54 @@ public class PickDemoActivity extends BasePickDemoActivity {
 		intent = new Intent(this, NeverCollapseGroupActivity.class);
 		intent.putExtra(EXTRA_INTENT_NAME,
 						getString(R.string.activity_rolodex_never_collapse_groups));
-		intent.putExtra(EXTRA_GROUP_NAME, getString(R.string.title_group_basicdemos));
+		intent.putExtra(EXTRA_GROUP_NAME, getString(R.string.title_group_basic_demos));
 		intents.add(intent);
 
 		intent = new Intent(this, NeverCollapseGroupUnsortedActivity.class);
 		intent.putExtra(EXTRA_INTENT_NAME,
 						getString(R.string.activity_rolodex_never_collapse_groups_unsorted));
-		intent.putExtra(EXTRA_GROUP_NAME, getString(R.string.title_group_basicdemos));
+		intent.putExtra(EXTRA_GROUP_NAME, getString(R.string.title_group_basic_demos));
 		intents.add(intent);
 
 		intent = new Intent(this, AddItemsActivity.class);
 		intent.putExtra(EXTRA_INTENT_NAME, getString(R.string.activity_rolodex_add_items));
-		intent.putExtra(EXTRA_GROUP_NAME, getString(R.string.title_group_basicdemos));
+		intent.putExtra(EXTRA_GROUP_NAME, getString(R.string.title_group_basic_demos));
 		intents.add(intent);
 
 		intent = new Intent(this, RemoveItemsActivity.class);
 		intent.putExtra(EXTRA_INTENT_NAME, getString(R.string.activity_rolodex_remove_items));
-		intent.putExtra(EXTRA_GROUP_NAME, getString(R.string.title_group_basicdemos));
+		intent.putExtra(EXTRA_GROUP_NAME, getString(R.string.title_group_basic_demos));
 		intents.add(intent);
 
 		intent = new Intent(this, RetainAndSetListActivity.class);
 		intent.putExtra(EXTRA_INTENT_NAME, getString(R.string.activity_rolodex_retain_set_list));
-		intent.putExtra(EXTRA_GROUP_NAME, getString(R.string.title_group_basicdemos));
+		intent.putExtra(EXTRA_GROUP_NAME, getString(R.string.title_group_basic_demos));
 		intents.add(intent);
 
 		intent = new Intent(this, SortAllChildrenActivity.class);
 		intent.putExtra(EXTRA_INTENT_NAME, getString(R.string.activity_rolodex_sort_all_children));
-		intent.putExtra(EXTRA_GROUP_NAME, getString(R.string.title_group_basicdemos));
+		intent.putExtra(EXTRA_GROUP_NAME, getString(R.string.title_group_basic_demos));
 		intents.add(intent);
 
 		intent = new Intent(this, ContainsItemActivity.class);
 		intent.putExtra(EXTRA_INTENT_NAME, getString(R.string.activity_rolodex_contains_item));
-		intent.putExtra(EXTRA_GROUP_NAME, getString(R.string.title_group_basicdemos));
+		intent.putExtra(EXTRA_GROUP_NAME, getString(R.string.title_group_basic_demos));
 		intents.add(intent);
 
 		intent = new Intent(this, ExpandCollapseAllActivity.class);
 		intent.putExtra(EXTRA_INTENT_NAME,
 						getString(R.string.activity_rolodex_expand_collapse_all));
-		intent.putExtra(EXTRA_GROUP_NAME, getString(R.string.title_group_basicdemos));
+		intent.putExtra(EXTRA_GROUP_NAME, getString(R.string.title_group_basic_demos));
 		intents.add(intent);
 
 		intent = new Intent(this, ClickListenerActivity.class);
-		intent.putExtra(EXTRA_INTENT_NAME,
-						getString(R.string.activity_rolodex_click_listener));
-		intent.putExtra(EXTRA_GROUP_NAME, getString(R.string.title_group_basicdemos));
+		intent.putExtra(EXTRA_INTENT_NAME, getString(R.string.activity_rolodex_click_listener));
+		intent.putExtra(EXTRA_GROUP_NAME, getString(R.string.title_group_basic_demos));
+		intents.add(intent);
+
+		intent = new Intent(this, NavigationDrawerActivity.class);
+		intent.putExtra(EXTRA_INTENT_NAME, getString(R.string.activity_rolodex_navigation_drawer));
+		intent.putExtra(EXTRA_GROUP_NAME, getString(R.string.title_group_advanced_demos));
 		intents.add(intent);
 
 		return intents;

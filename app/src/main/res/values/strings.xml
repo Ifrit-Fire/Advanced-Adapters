@@ -43,6 +43,7 @@
 	<string name="activity_rolodex_contains_item">Contains Item</string>
 	<string name="activity_rolodex_click_listener">Click Listeners</string>
 	<string name="activity_rolodex_expand_collapse_all">Expand/Collapse All</string>
+	<string name="activity_rolodex_navigation_drawer">Navigation Drawer</string>
 	<string name="activity_rolodex_never_collapse_groups">Never Collapse Groups - Sorted</string>
 	<string name="activity_rolodex_never_collapse_groups_unsorted">Never Collapse Groups - Unsorted</string>
 	<string name="activity_rolodex_remove_items">Remove Items</string>
@@ -65,9 +66,10 @@
 	<string name="title_dialog_put_movies">Put Movie(s) in List</string>
 	<string name="title_dialog_sort_movies">Sort Movies Options</string>
 	<string name="title_group_android">Android Demos</string>
+	<string name="title_group_advanced_demos">Advanced Demos</string>
 	<string name="title_group_arrays">Array Based Demos</string>
-	<string name="title_group_basicdemos">Basic Demos</string>
-	<string name="title_group_fulldemos">Full Demos</string>
+	<string name="title_group_basic_demos">Basic Demos</string>
+	<string name="title_group_full_demos">Full Demos</string>
 	<string name="title_group_sparsearrays">SparseArray Based Demos</string>
 	<string name="title_group_jsonarrays">JSONArray Based Demos</string>
 	<string name="title_insert">Insert</string>
