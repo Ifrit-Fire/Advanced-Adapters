@@ -73,6 +73,7 @@
 	<string name="title_group_sparsearrays">SparseArray Based Demos</string>
 	<string name="title_group_jsonarrays">JSONArray Based Demos</string>
 	<string name="title_insert">Insert</string>
+	<string name="title_navigation_drawer_open">Select Movie</string>
 	<string name="title_put">Put</string>
 	<string name="title_screen_info">Screen Info</string>
 

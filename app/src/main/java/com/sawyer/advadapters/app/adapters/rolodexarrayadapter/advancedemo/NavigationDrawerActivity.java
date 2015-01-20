@@ -30,7 +30,6 @@ import android.widget.ExpandableListView;
 import android.widget.TextView;
 
 import com.sawyer.advadapters.app.R;
-import com.sawyer.advadapters.app.ToastHelper;
 import com.sawyer.advadapters.app.data.MovieContent;
 import com.sawyer.advadapters.app.data.MovieItem;
 import com.sawyer.advadapters.widget.RolodexArrayAdapter;
@@ -104,20 +103,23 @@ public class NavigationDrawerActivity extends ActionBarActivity implements
 
 	@Override
 	public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
-		//Lets show a toast of the group clicked.
+		mDrawerLayout.closeDrawers();
 		String group = mDrawerAdapter.getGroup(groupPosition);
-		ToastHelper.showGroupClicked(this, group);
-		return false;    //Returning true prevents group expansion.  Returning false still allows groups to expand.
+		mTextView.setText(group);
+		return true;
 	}
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
+		mDrawerToggle.syncState();
 		return mDrawerToggle.onOptionsItemSelected(item) || super.onOptionsItemSelected(item);
 	}
 
 	@Override
 	protected void onPostCreate(Bundle savedInstanceState) {
 		super.onPostCreate(savedInstanceState);
+
+		//DON"T FORGET TO PUT THIS GUY HERE!!! Or things will not work correctly.
 		mDrawerToggle.syncState();
 	}
 
@@ -175,8 +177,23 @@ public class NavigationDrawerActivity extends ActionBarActivity implements
 	private class DrawerToggle extends ActionBarDrawerToggle {
 
 		public DrawerToggle() {
-			super(NavigationDrawerActivity.this, mDrawerLayout, R.string.title_group_advanced_demos,
+			//String resId here are for accessibility devices. It is not used for changing ActionBar title.
+			//That must be manually done in the onDrawerClosed/Opened methods.
+			super(NavigationDrawerActivity.this, mDrawerLayout,
+				  R.string.title_navigation_drawer_open,
 				  R.string.activity_rolodex_navigation_drawer);
+		}
+
+		@Override
+		public void onDrawerClosed(View drawerView) {
+			super.onDrawerClosed(drawerView);
+			getSupportActionBar().setTitle(R.string.activity_rolodex_navigation_drawer);
+		}
+
+		@Override
+		public void onDrawerOpened(View drawerView) {
+			super.onDrawerOpened(drawerView);
+			getSupportActionBar().setTitle(R.string.title_navigation_drawer_open);
 		}
 	}
 }

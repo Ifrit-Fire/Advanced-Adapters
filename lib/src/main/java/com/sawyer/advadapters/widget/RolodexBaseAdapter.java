@@ -1156,12 +1156,16 @@ public abstract class RolodexBaseAdapter extends BaseExpandableListAdapter {
 									int childPosition, long id) {
 			boolean isChecked = mCheckStates.getChild(groupPosition, childPosition);
 			setChildChecked(groupPosition, childPosition, !isChecked);
+			if (!mChoiceMode.isModal() && mOnChildClickListener != null)
+				mOnChildClickListener.onChildClick(parent, v, groupPosition, childPosition, id);
 			return true;
 		}
 
 		@Override
 		public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
 			setGroupChecked(groupPosition, !mCheckStates.getGroup(groupPosition));
+			if (!mChoiceMode.isModal() && mOnGroupClickListener != null)
+				mOnGroupClickListener.onGroupClick(parent, v, groupPosition, id);
 			return true;
 		}
 
