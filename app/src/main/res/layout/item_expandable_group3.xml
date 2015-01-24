@@ -13,15 +13,19 @@
  See the License for the specific language governing permissions and
  limitations under the License.
 -->
-<TextView
+<CheckedTextView
 	android:id="@android:id/text1"
 	xmlns:android="http://schemas.android.com/apk/res/android"
 	xmlns:tools="http://schemas.android.com/tools"
 	android:layout_width="match_parent"
 	android:layout_height="?android:attr/listPreferredItemHeightSmall"
-	android:background="?android:activatedBackgroundIndicator"
+	android:background="?android:listChoiceBackgroundIndicator"
+	android:checkMark="?android:listChoiceIndicatorMultiple"
 	android:gravity="center_vertical"
-	android:paddingLeft="?android:attr/expandableListPreferredChildPaddingLeft"
-	android:paddingStart="?android:attr/expandableListPreferredChildPaddingLeft"
+	android:paddingEnd="?android:expandableListPreferredItemIndicatorRight"
+	android:paddingLeft="?android:attr/expandableListPreferredItemPaddingLeft"
+	android:paddingRight="?android:expandableListPreferredItemIndicatorRight"
+	android:paddingStart="?android:attr/expandableListPreferredItemPaddingLeft"
 	android:textAppearance="?android:attr/textAppearanceListItemSmall"
+	android:textStyle="bold"
 	tools:ignore="NewApi"/>

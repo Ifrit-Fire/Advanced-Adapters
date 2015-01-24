@@ -20,6 +20,7 @@ import android.content.Intent;
 
 import com.sawyer.advadapters.app.R;
 import com.sawyer.advadapters.app.adapters.BasePickDemoActivity;
+import com.sawyer.advadapters.app.adapters.rolodexarrayadapter.advancedemo.MultiSelectActivity;
 import com.sawyer.advadapters.app.adapters.rolodexarrayadapter.advancedemo.NavigationDrawerActivity;
 import com.sawyer.advadapters.app.adapters.rolodexarrayadapter.basicdemo.AddItemsActivity;
 import com.sawyer.advadapters.app.adapters.rolodexarrayadapter.basicdemo.ClickListenerActivity;
@@ -100,6 +101,11 @@ public class PickDemoActivity extends BasePickDemoActivity {
 
 		intent = new Intent(this, NavigationDrawerActivity.class);
 		intent.putExtra(EXTRA_INTENT_NAME, getString(R.string.activity_rolodex_navigation_drawer));
+		intent.putExtra(EXTRA_GROUP_NAME, getString(R.string.title_group_advanced_demos));
+		intents.add(intent);
+
+		intent = new Intent(this, MultiSelectActivity.class);
+		intent.putExtra(EXTRA_INTENT_NAME, getString(R.string.activity_rolodex_multiselect));
 		intent.putExtra(EXTRA_GROUP_NAME, getString(R.string.title_group_advanced_demos));
 		intents.add(intent);
 
