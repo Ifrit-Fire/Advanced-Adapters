@@ -13,12 +13,13 @@
  See the License for the specific language governing permissions and
  limitations under the License.
 -->
-<TextView xmlns:android="http://schemas.android.com/apk/res/android"
-		  android:id="@android:id/text1"
-		  android:layout_width="match_parent"
-		  android:layout_height="wrap_content"
-		  android:textAppearance="?android:attr/textAppearanceListItemSmall"
-		  android:textStyle="bold"
-		  android:padding="@dimen/spacing_half"
-		  android:background="@drawable/btn_borderless_holo_light"
-		  android:gravity="center_vertical"/>
+<TextView
+	android:id="@android:id/text1"
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="match_parent"
+	android:layout_height="wrap_content"
+	android:background="@drawable/btn_borderless_holo_light"
+	android:gravity="center_vertical"
+	android:padding="@dimen/spacing_half"
+	android:textAppearance="?android:attr/textAppearanceListItemSmall"
+	android:textStyle="bold"/>

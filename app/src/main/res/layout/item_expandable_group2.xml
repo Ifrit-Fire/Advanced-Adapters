@@ -13,15 +13,16 @@
  See the License for the specific language governing permissions and
  limitations under the License.
 -->
-<TextView xmlns:android="http://schemas.android.com/apk/res/android"
-		  xmlns:tools="http://schemas.android.com/tools"
-		  android:id="@android:id/text1"
-		  android:layout_width="match_parent"
-		  android:background="?android:activatedBackgroundIndicator"
-		  android:layout_height="?android:attr/listPreferredItemHeightSmall"
-		  android:paddingLeft="?android:attr/expandableListPreferredItemPaddingLeft"
-		  android:paddingStart="?android:attr/expandableListPreferredItemPaddingLeft"
-		  android:textAppearance="?android:attr/textAppearanceListItemSmall"
-		  android:textStyle="bold"
-		  android:gravity="center_vertical"
-		  tools:ignore="NewApi"/>
+<TextView
+	android:id="@android:id/text1"
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:tools="http://schemas.android.com/tools"
+	android:layout_width="match_parent"
+	android:layout_height="?android:attr/listPreferredItemHeightSmall"
+	android:background="?android:activatedBackgroundIndicator"
+	android:gravity="center_vertical"
+	android:paddingLeft="?android:attr/expandableListPreferredItemPaddingLeft"
+	android:paddingStart="?android:attr/expandableListPreferredItemPaddingLeft"
+	android:textAppearance="?android:attr/textAppearanceListItemSmall"
+	android:textStyle="bold"
+	tools:ignore="NewApi"/>

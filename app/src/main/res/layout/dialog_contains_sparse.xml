@@ -23,8 +23,8 @@
 	android:showDividers="middle">
 
 	<include
-		layout="@layout/include_movie_single_list"
-		android:id="@+id/movie_single_txt1"/>
+		android:id="@+id/movie_single_txt1"
+		layout="@layout/include_movie_single_list"/>
 
 	<Button
 		android:id="@+id/movie_contains_id_btn"
@@ -34,8 +34,8 @@
 		android:text="@string/btn_contains_id"/>
 
 	<include
-		layout="@layout/include_movie_single_list"
-		android:id="@+id/movie_single_txt2"/>
+		android:id="@+id/movie_single_txt2"
+		layout="@layout/include_movie_single_list"/>
 
 	<Button
 		android:id="@+id/movie_contains_item_btn"
