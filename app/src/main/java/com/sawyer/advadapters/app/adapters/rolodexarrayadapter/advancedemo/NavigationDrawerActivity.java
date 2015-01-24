@@ -131,6 +131,12 @@ public class NavigationDrawerActivity extends ActionBarActivity implements
 	}
 
 	@Override
+	protected void onDestroy() {
+		ButterKnife.reset(this);
+		super.onDestroy();
+	}
+
+	@Override
 	public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
 		mDrawerLayout.closeDrawers();
 		String group = mDrawerAdapter.getGroup(groupPosition);
