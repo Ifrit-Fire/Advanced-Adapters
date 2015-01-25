@@ -39,6 +39,7 @@
 	<!--Activity Names - Rolodex ArrayList Backed -->
 	<string name="activity_rolodex_arrayadapter">RolodexArrayAdapter</string>
 	<string name="activity_rolodex_movie_demo">Movie Demo</string>
+	<string name="activity_rolodex_action_mode">Action Mode</string>
 	<string name="activity_rolodex_add_items">Add Items</string>
 	<string name="activity_rolodex_contains_item">Contains Item</string>
 	<string name="activity_rolodex_click_listener">Click Listeners</string>

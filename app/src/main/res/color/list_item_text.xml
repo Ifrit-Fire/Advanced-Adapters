@@ -16,6 +16,7 @@
   -->
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
 	<item android:state_enabled="false" android:color="@android:color/primary_text_light_nodisable"/>
+	<item android:state_window_focused="false" android:state_activated="true" android:color="@android:color/primary_text_dark"/>
 	<item android:state_window_focused="false" android:color="@android:color/primary_text_light"/>
 	<item android:state_pressed="true" android:color="@android:color/primary_text_light"/>
 	<item android:state_selected="true" android:color="@android:color/primary_text_light"/>

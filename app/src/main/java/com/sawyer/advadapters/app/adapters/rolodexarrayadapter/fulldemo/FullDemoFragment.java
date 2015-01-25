@@ -204,7 +204,6 @@ public class FullDemoFragment extends ExpandableListFragment {
 
 		@Override
 		public void onDestroyActionMode(ActionMode mode) {
-
 		}
 
 		@Override
@@ -213,8 +212,6 @@ public class FullDemoFragment extends ExpandableListFragment {
 			//If group is expanded, then the onChildCheckedStateChanged method will be invoked. Which
 			//means it'll safely take care of updating our screen.
 			if (getExpandableListView().isGroupExpanded(groupPosition)) return;
-
-
 			mode.setTitle(getListAdapter().getCheckedChildCount() + " Selected");
 		}
 

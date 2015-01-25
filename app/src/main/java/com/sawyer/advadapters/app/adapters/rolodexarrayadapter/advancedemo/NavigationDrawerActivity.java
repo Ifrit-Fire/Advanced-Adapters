@@ -204,7 +204,7 @@ public class NavigationDrawerActivity extends ActionBarActivity implements
 			which remains constant (stable) despite positional changes.
 
 			Since each MovieItem has it's own unique barcode, utilizing that satisfies the stable
-			and unique requirement. No two children will ever have the same barcode. Also (eg) no
+			and unique requirement. No two children will ever have the same barcode. Eg: no
 			matter where the movie "I, Robot" is displayed...be it the 2nd child Position or 10th or
 			in groupPosition == 1 or groupPosition == 10...it'll always return the same barcode.
 			*/
@@ -230,7 +230,7 @@ public class NavigationDrawerActivity extends ActionBarActivity implements
 			which remains constant (stable) despite positional changes.
 
 			Since our groups are storing years, returning the year is stable and unique.  No two
-			groups will ever have the same year displayed. Also (Eg) no matter where the year "2004"
+			groups will ever have the same year displayed. Eg: no matter where the year "2004"
 			is displayed...be it groupPosition == 1 or groupPosition == 10...it'll always return
 			2004.
 			*/
@@ -259,7 +259,7 @@ public class NavigationDrawerActivity extends ActionBarActivity implements
 			/*
 			Any time choice mode is enabled, stable IDs should also be enabled. Otherwise, restoring
 			the activity from saved state may activate the incorrect item in the adapter. Additionally,
-			don't forget to have getGroupId() and getChildId() actually return a unique and stable ids.
+			don't forget to have getGroupId() and getChildId() actually return unique and stable ids.
 			Else it defeats the purpose of enabling this feature.
 			*/
 			return true;

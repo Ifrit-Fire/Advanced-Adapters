@@ -84,6 +84,10 @@
 			android:label="@string/activity_rolodex_movie_demo">
 		</activity>
 		<activity
+			android:name=".adapters.rolodexarrayadapter.advancedemo.ActionModeActivity"
+			android:label="@string/activity_rolodex_action_mode">
+		</activity>
+		<activity
 			android:name=".adapters.rolodexarrayadapter.basicdemo.AddItemsActivity"
 			android:label="@string/activity_rolodex_add_items">
 		</activity>

@@ -20,6 +20,7 @@ import android.content.Intent;
 
 import com.sawyer.advadapters.app.R;
 import com.sawyer.advadapters.app.adapters.BasePickDemoActivity;
+import com.sawyer.advadapters.app.adapters.rolodexarrayadapter.advancedemo.ActionModeActivity;
 import com.sawyer.advadapters.app.adapters.rolodexarrayadapter.advancedemo.MultiSelectActivity;
 import com.sawyer.advadapters.app.adapters.rolodexarrayadapter.advancedemo.NavigationDrawerActivity;
 import com.sawyer.advadapters.app.adapters.rolodexarrayadapter.basicdemo.AddItemsActivity;
@@ -50,7 +51,7 @@ public class PickDemoActivity extends BasePickDemoActivity {
 		intent.putExtra(EXTRA_CHOICE_MODE, RolodexBaseAdapter.ChoiceMode.NONE);
 		intents.add(intent);
 
-		/* Partial Examples */
+		/* Basic Examples */
 		intent = new Intent(this, NeverCollapseGroupActivity.class);
 		intent.putExtra(EXTRA_INTENT_NAME,
 						getString(R.string.activity_rolodex_never_collapse_groups));
@@ -99,6 +100,7 @@ public class PickDemoActivity extends BasePickDemoActivity {
 		intent.putExtra(EXTRA_GROUP_NAME, getString(R.string.title_group_basic_demos));
 		intents.add(intent);
 
+		/* Advanced Examples */
 		intent = new Intent(this, NavigationDrawerActivity.class);
 		intent.putExtra(EXTRA_INTENT_NAME, getString(R.string.activity_rolodex_navigation_drawer));
 		intent.putExtra(EXTRA_GROUP_NAME, getString(R.string.title_group_advanced_demos));
@@ -106,6 +108,11 @@ public class PickDemoActivity extends BasePickDemoActivity {
 
 		intent = new Intent(this, MultiSelectActivity.class);
 		intent.putExtra(EXTRA_INTENT_NAME, getString(R.string.activity_rolodex_multiselect));
+		intent.putExtra(EXTRA_GROUP_NAME, getString(R.string.title_group_advanced_demos));
+		intents.add(intent);
+
+		intent = new Intent(this, ActionModeActivity.class);
+		intent.putExtra(EXTRA_INTENT_NAME, getString(R.string.activity_rolodex_action_mode));
 		intent.putExtra(EXTRA_GROUP_NAME, getString(R.string.title_group_advanced_demos));
 		intents.add(intent);
 

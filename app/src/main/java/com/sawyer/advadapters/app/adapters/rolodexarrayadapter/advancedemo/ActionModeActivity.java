@@ -19,32 +19,43 @@ package com.sawyer.advadapters.app.adapters.rolodexarrayadapter.advancedemo;
 import android.app.ExpandableListActivity;
 import android.content.Context;
 import android.os.Bundle;
+import android.view.ActionMode;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CheckedTextView;
+import android.widget.AbsListView;
+import android.widget.TextView;
 
 import com.sawyer.advadapters.app.R;
+import com.sawyer.advadapters.app.ToastHelper;
 import com.sawyer.advadapters.app.data.MovieContent;
 import com.sawyer.advadapters.app.data.MovieItem;
 import com.sawyer.advadapters.widget.RolodexArrayAdapter;
+import com.sawyer.advadapters.widget.RolodexBaseAdapter;
 
 import java.util.List;
 
 /**
- * Demonstration on how to use a {@link android.widget.Checkable} view with the rolodex adapter for
- * a multi-select choice mode.  In order to check the views, choice mode must be set. When using the
- * rolodex adapter, the adapter itself takes ownership of setting choice mode. Setting it on the
- * ExpandableListView itself will cause the app to crash.
+ * Demonstration on how to use modal {@link RolodexBaseAdapter.ChoiceMode} with the rolodex adapter.
+ * When using the rolodex adapter, the adapter itself takes ownership of setting choice mode.
+ * Setting it on the ExpandableListView itself will cause the app to crash.
+ * <p/>
+ * The RolodexBaseAdapter implemented it's own solution which behaves exactly as the {@link
+ * AbsListView#setChoiceMode(int)} would. Ensure you not only set the ChoiceMode with the adapter
+ * but also set the custom {@link RolodexBaseAdapter.ModalChoiceModeListener}.
  */
-public class MultiSelectActivity extends ExpandableListActivity {
+public class ActionModeActivity extends ExpandableListActivity {
 	private static String STATE_ADAPTER_SAVED_STATE = "State Adapter Saved State";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		DemoAdapter adapter = new DemoAdapter(this, MovieContent.ITEM_LIST);
-		adapter.setChoiceMode(DemoAdapter.ChoiceMode.MULTIPLE);
+		adapter.setChoiceMode(DemoAdapter.ChoiceMode.MULTIPLE_MODAL);
+		adapter.setMultiChoiceModeListener(new DemoModalChoiceModeListener());
 		setListAdapter(adapter);
 
 		if (savedInstanceState != null) {
@@ -107,9 +118,9 @@ public class MultiSelectActivity extends ExpandableListActivity {
 		public View getChildView(LayoutInflater inflater, int groupPosition, int childPosition,
 								 boolean isLastChild, View convertView, ViewGroup parent) {
 			if (convertView == null) {
-				convertView = inflater.inflate(R.layout.item_expandable_child2, parent, false);
+				convertView = inflater.inflate(R.layout.item_expandable_child1, parent, false);
 			}
-			CheckedTextView tv = (CheckedTextView) convertView;
+			TextView tv = (TextView) convertView;
 			tv.setText(getChild(groupPosition, childPosition).title);
 			return convertView;
 		}
@@ -133,17 +144,11 @@ public class MultiSelectActivity extends ExpandableListActivity {
 		public View getGroupView(LayoutInflater inflater, int groupPosition, boolean isExpanded,
 								 View convertView, ViewGroup parent) {
 			if (convertView == null) {
-				convertView = inflater.inflate(R.layout.item_expandable_group3, parent, false);
+				convertView = inflater.inflate(R.layout.item_expandable_group2, parent, false);
 			}
-			CheckedTextView tv = (CheckedTextView) convertView;
+			TextView tv = (TextView) convertView;
 			tv.setText(getGroup(groupPosition));
 			return convertView;
-		}
-
-		@Override
-		public boolean hasAutoExpandingGroups() {
-			//Can be false as well.  Depends on the behavior you want.
-			return true;
 		}
 
 		@Override
@@ -166,6 +171,70 @@ public class MultiSelectActivity extends ExpandableListActivity {
 		@Override
 		protected boolean isGroupFilteredOut(String groupItem, CharSequence constraint) {
 			//Not worried about filtering for this demo
+			return false;
+		}
+	}
+
+	/**
+	 * When enabling a modal choiceMode, a custom {@link RolodexBaseAdapter.ModalChoiceModeListener}
+	 * is required to be set on the adapter. This usage is identical to that of {@link
+	 * AbsListView.MultiChoiceModeListener} with the difference of having child and group checked
+	 * state callbacks.
+	 * <p/>
+	 * This is a simple example of tracking the number of checked children items. While groups can
+	 * be checked, we are ignoring their count. Some MenuItems are inflated into the CAB for visual
+	 * reference only.
+	 */
+	private class DemoModalChoiceModeListener implements DemoAdapter.ModalChoiceModeListener {
+		@Override
+		public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+			switch (item.getItemId()) {
+			case R.id.menu_context_remove:
+				ToastHelper.showRemoveNotSupported(ActionModeActivity.this);
+				return true;
+			case R.id.menu_context_retain:
+				ToastHelper.showRetainAllNotSupported(ActionModeActivity.this);
+				return true;
+			default:
+				return false;
+			}
+		}
+
+		@Override
+		public void onChildCheckedStateChanged(ActionMode mode, int groupPosition, long groupId,
+											   int childPosition, long childId, boolean checked) {
+			DemoAdapter adapter = (DemoAdapter) getExpandableListAdapter();
+			mode.setTitle(adapter.getCheckedChildCount() + " Selected");
+		}
+
+		@Override
+		public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+			MenuInflater inflater = mode.getMenuInflater();
+			inflater.inflate(R.menu.cab_array, menu);
+			DemoAdapter adapter = (DemoAdapter) getExpandableListAdapter();
+			mode.setTitle(adapter.getCheckedChildCount() + " Selected");
+			return true;
+		}
+
+		@Override
+		public void onDestroyActionMode(ActionMode mode) {
+		}
+
+		@Override
+		public void onGroupCheckedStateChanged(ActionMode mode, int groupPosition, long groupId,
+											   boolean checked) {
+			//If group is expanded, then the onChildCheckedStateChanged method will be invoked. Which
+			//means it'll safely take care of updating our screen.
+			if (getExpandableListView().isGroupExpanded(groupPosition)) return;
+
+			//If group is NOT expanded, then the onChildCheckedStateChanged method will NOT be invoked.
+			//which means we need to take care of updating our screen here.
+			DemoAdapter adapter = (DemoAdapter) getExpandableListAdapter();
+			mode.setTitle(adapter.getCheckedChildCount() + " Selected");
+		}
+
+		@Override
+		public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
 			return false;
 		}
 	}

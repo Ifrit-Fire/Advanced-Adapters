@@ -42,8 +42,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-//TODO: Test checking item before ref for ExpandableListView is established
-
 /**
  * TODO: Write this
  */
@@ -711,9 +709,9 @@ public abstract class RolodexBaseAdapter extends BaseExpandableListAdapter {
 	}
 
 	/**
-	 * Set a {@link com.sawyer.advadapters.widget.RolodexBaseAdapter.ModalChoiceModeListener} that
-	 * will manage the lifecycle of the selection {@link ActionMode}. Only used when the choice mode
-	 * is set to {@link android.widget.ExpandableListView#CHOICE_MODE_MULTIPLE_MODAL}.
+	 * Set a {@link ModalChoiceModeListener} that will manage the lifecycle of the selection {@link
+	 * ActionMode}. Only used when the choice mode is set to modal variant of {@link ChoiceMode}. Eg
+	 * {@link ChoiceMode#MULTIPLE_MODAL} or {@link ChoiceMode#SINGLE_MODAL}.
 	 *
 	 * @param listener Listener that will manage the selection mode
 	 */
@@ -846,10 +844,9 @@ public abstract class RolodexBaseAdapter extends BaseExpandableListAdapter {
 	}
 
 	/**
-	 * An interface definition for callbacks that receive events for {@link
-	 * AbsListView#CHOICE_MODE_MULTIPLE_MODAL}. It acts as the {@link ActionMode.Callback} for the
-	 * selection mode and also receives checked state change events when the user selects and
-	 * deselects groups or children views.
+	 * An interface definition for callbacks that receive events for {@link ChoiceMode} modal
+	 * variants. It acts as the {@link ActionMode.Callback} for the selection mode and also receives
+	 * checked state change events when the user selects and deselects groups or children views.
 	 */
 	public static interface ModalChoiceModeListener extends ActionMode.Callback {
 
@@ -944,7 +941,7 @@ public abstract class RolodexBaseAdapter extends BaseExpandableListAdapter {
 			choiceMode = ChoiceMode.values()[source.readInt()];
 		}
 
-		//Becareful on what K and V are. Must be valid Object types for use with Parcel#writeValue()
+		//Be careful on what K and V are. Must be valid Object types for use with Parcel#writeValue()
 		private static <K, V> void writeMap(Parcel dest, Map<K, V> map) {
 			if (map == null) {
 				dest.writeInt(-1);
@@ -1187,6 +1184,11 @@ public abstract class RolodexBaseAdapter extends BaseExpandableListAdapter {
 		@Override
 		public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
 			if (!mChoiceMode.isModal()) return false;
+			if (mModalChoiceModeWrapper == null || !mModalChoiceModeWrapper.hasWrappedCallback())
+				throw new IllegalStateException(
+						"Attempted to start selection mode for " + mChoiceMode.toString() +
+						" but no choice mode callback was supplied. Invoke #setMultiChoiceModeListener" +
+						" to set a callback.");
 			mQueueAction.remove(QueueAction.START_ACTION_MODE);
 			mChoiceActionMode = parent.startActionMode(mModalChoiceModeWrapper);
 			updateClickListeners("onItemLongClick");
