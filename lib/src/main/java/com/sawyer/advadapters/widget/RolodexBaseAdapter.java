@@ -86,13 +86,21 @@ public abstract class RolodexBaseAdapter extends BaseExpandableListAdapter {
 	private Set<QueueAction> mQueueAction;
 
 	/**
-	 * TODO: Write this
+	 * Defines the various behaviors supported for use with {@link ExpandableListView}. While
+	 * similar to those found within {@link AbsListView} they are not equivocal.
+	 *
+	 * @see #setChoiceMode(ChoiceMode)
 	 */
 	public static enum ChoiceMode {
+		/** Normal ExpandableListView that does not indicate choices. */
 		NONE,
+		/** The ExpandableListView allows up to one choice. */
 		SINGLE,
+		/** The ExpandableListView allows up to one choice in a modal selection mode. */
 		SINGLE_MODAL,
+		/** The ExpandableListView allows multiple choices. */
 		MULTIPLE,
+		/** The ExpandableListView allows multiple choices in a modal selection mode. */
 		MULTIPLE_MODAL;
 
 		public boolean isDisabled() {
@@ -162,6 +170,7 @@ public abstract class RolodexBaseAdapter extends BaseExpandableListAdapter {
 		}
 	}
 
+	/** Perform any and all queued up actions. */
 	private void doAction() {
 		for (QueueAction action : mQueueAction) {
 			switch (action) {
@@ -333,7 +342,7 @@ public abstract class RolodexBaseAdapter extends BaseExpandableListAdapter {
 	 * adapter does not have any choice behavior ({@link ChoiceMode#NONE}) set. By setting the
 	 * choiceMode to {@link ChoiceMode#SINGLE}, the ExpandableListView allows up to one item to be
 	 * in an activation state. By setting the choiceMode to {@link ChoiceMode#MULTIPLE}, the
-	 * ExpandableListView allows any number of items to be chosen. Any of the MODEL variants will
+	 * ExpandableListView allows any number of items to be chosen. Any of the MODAL variants will
 	 * show a custom CAB when an item is long pressed.
 	 * <p/>
 	 * Use this method instead of {@link ExpandableListView#setChoiceMode(int)}. This adapter will
