@@ -16,7 +16,6 @@
 
 package com.sawyer.advadapters.app.adapters.rolodexarrayadapter;
 
-import android.content.Context;
 import android.content.Intent;
 
 import com.sawyer.advadapters.app.R;
@@ -53,60 +52,55 @@ public class PickDemoActivity extends BasePickDemoActivity {
 		intents.add(intent);
 
 		/* Basic Examples - This group will be sorted. */
-		intent = new IntentComparable(this, NeverCollapseGroupActivity.class);
+		intent = new Intent(this, NeverCollapseGroupActivity.class);
 		intent.putExtra(EXTRA_INTENT_NAME,
 						getString(R.string.activity_rolodex_never_collapse_groups));
 		intent.putExtra(EXTRA_GROUP_NAME, getString(R.string.title_group_basic_demos));
 		intents.add(intent);
 
-		intent = new IntentComparable(this, NeverCollapseGroupUnsortedActivity.class);
+		intent = new Intent(this, NeverCollapseGroupUnsortedActivity.class);
 		intent.putExtra(EXTRA_INTENT_NAME,
 						getString(R.string.activity_rolodex_never_collapse_groups_unsorted));
 		intent.putExtra(EXTRA_GROUP_NAME, getString(R.string.title_group_basic_demos));
 		intents.add(intent);
 
-		intent = new IntentComparable(this, AddItemsActivity.class);
+		intent = new Intent(this, AddItemsActivity.class);
 		intent.putExtra(EXTRA_INTENT_NAME, getString(R.string.activity_rolodex_add_items));
 		intent.putExtra(EXTRA_GROUP_NAME, getString(R.string.title_group_basic_demos));
 		intents.add(intent);
 
-		intent = new IntentComparable(this, RemoveItemsActivity.class);
+		intent = new Intent(this, RemoveItemsActivity.class);
 		intent.putExtra(EXTRA_INTENT_NAME, getString(R.string.activity_rolodex_remove_items));
 		intent.putExtra(EXTRA_GROUP_NAME, getString(R.string.title_group_basic_demos));
 		intents.add(intent);
 
-		intent = new IntentComparable(this, RetainAndSetListActivity.class);
+		intent = new Intent(this, RetainAndSetListActivity.class);
 		intent.putExtra(EXTRA_INTENT_NAME, getString(R.string.activity_rolodex_retain_set_list));
 		intent.putExtra(EXTRA_GROUP_NAME, getString(R.string.title_group_basic_demos));
 		intents.add(intent);
 
-		intent = new IntentComparable(this, SortAllChildrenActivity.class);
+		intent = new Intent(this, SortAllChildrenActivity.class);
 		intent.putExtra(EXTRA_INTENT_NAME, getString(R.string.activity_rolodex_sort_all_children));
 		intent.putExtra(EXTRA_GROUP_NAME, getString(R.string.title_group_basic_demos));
 		intents.add(intent);
 
-		intent = new IntentComparable(this, ContainsItemActivity.class);
+		intent = new Intent(this, ContainsItemActivity.class);
 		intent.putExtra(EXTRA_INTENT_NAME, getString(R.string.activity_rolodex_contains_item));
 		intent.putExtra(EXTRA_GROUP_NAME, getString(R.string.title_group_basic_demos));
 		intents.add(intent);
 
-		intent = new IntentComparable(this, ExpandCollapseAllActivity.class);
+		intent = new Intent(this, ExpandCollapseAllActivity.class);
 		intent.putExtra(EXTRA_INTENT_NAME,
 						getString(R.string.activity_rolodex_expand_collapse_all));
 		intent.putExtra(EXTRA_GROUP_NAME, getString(R.string.title_group_basic_demos));
 		intents.add(intent);
 
-		intent = new IntentComparable(this, ClickListenerActivity.class);
+		intent = new Intent(this, ClickListenerActivity.class);
 		intent.putExtra(EXTRA_INTENT_NAME, getString(R.string.activity_rolodex_click_listener));
 		intent.putExtra(EXTRA_GROUP_NAME, getString(R.string.title_group_basic_demos));
 		intents.add(intent);
 
 		/* Advanced Examples */
-		intent = new Intent(this, NavigationDrawerActivity.class);
-		intent.putExtra(EXTRA_INTENT_NAME, getString(R.string.activity_rolodex_navigation_drawer));
-		intent.putExtra(EXTRA_GROUP_NAME, getString(R.string.title_group_advanced_demos));
-		intents.add(intent);
-
 		intent = new Intent(this, MultiSelectActivity.class);
 		intent.putExtra(EXTRA_INTENT_NAME, getString(R.string.activity_rolodex_multiselect));
 		intent.putExtra(EXTRA_GROUP_NAME, getString(R.string.title_group_advanced_demos));
@@ -117,22 +111,11 @@ public class PickDemoActivity extends BasePickDemoActivity {
 		intent.putExtra(EXTRA_GROUP_NAME, getString(R.string.title_group_advanced_demos));
 		intents.add(intent);
 
+		intent = new Intent(this, NavigationDrawerActivity.class);
+		intent.putExtra(EXTRA_INTENT_NAME, getString(R.string.activity_rolodex_navigation_drawer));
+		intent.putExtra(EXTRA_GROUP_NAME, getString(R.string.title_group_advanced_demos));
+		intents.add(intent);
+
 		return intents;
-	}
-
-	/**
-	 * Custom intent implementation which adds the comparable interface. This allows us to sort the
-	 * basic demo's group.
-	 */
-	private class IntentComparable extends Intent implements Comparable<Intent> {
-		public IntentComparable(Context packageContext, Class<?> cls) {
-			super(packageContext, cls);
-		}
-
-		@Override
-		public int compareTo(Intent another) {
-			return getStringExtra(EXTRA_INTENT_NAME).compareTo(
-					another.getStringExtra(EXTRA_INTENT_NAME));
-		}
 	}
 }

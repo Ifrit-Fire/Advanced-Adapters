@@ -36,6 +36,7 @@ import com.sawyer.advadapters.app.dialogs.ChoiceModeDialogFragment;
 import com.sawyer.advadapters.widget.RolodexArrayAdapter;
 import com.sawyer.advadapters.widget.RolodexBaseAdapter;
 
+import java.util.Comparator;
 import java.util.List;
 
 public abstract class BasePickDemoActivity extends ExpandableListActivity implements
@@ -79,7 +80,7 @@ public abstract class BasePickDemoActivity extends ExpandableListActivity implem
 		super.onCreate(savedInstanceState);
 		getExpandableListView().setGroupIndicator(null);
 		DemoAdapter adapter = new DemoAdapter(this, createIntentList());
-		if (adapter.getGroupCount() > 2) adapter.sortGroup(1);
+		if (adapter.getGroupCount() > 2) adapter.sortGroup(1, new IntentComparator());
 		adapter.setOnChildClickListener(this);
 		setListAdapter(adapter);
 		initActionBar();
@@ -168,6 +169,14 @@ public abstract class BasePickDemoActivity extends ExpandableListActivity implem
 		@Override
 		public boolean isGroupSelectable(int groupPosition) {
 			return false;
+		}
+	}
+
+	private class IntentComparator implements Comparator<Intent> {
+		@Override
+		public int compare(Intent lhs, Intent rhs) {
+			return lhs.getStringExtra(EXTRA_INTENT_NAME).compareTo(
+					rhs.getStringExtra(EXTRA_INTENT_NAME));
 		}
 	}
 }
