@@ -56,8 +56,8 @@ public class SortAllChildrenActivity extends ExpandableListActivity {
 		tv = ButterKnife.findById(this, android.R.id.text1);
 		tv.setText(R.string.desc_sortall_ignores_groups);
 
-		//Create our adapter and set it. By default groups will be sorted.
-		//Shuffle to help demonstrate how groups will not sort.
+		//Create our adapter and set it. MovieContent.ITEM_LIST is already sorted, so we shuffle to
+		//show how group sorting was disabled for this demo.
 		List<MovieItem> movies = new ArrayList<>(MovieContent.ITEM_LIST);
 		Collections.shuffle(movies);
 		setListAdapter(new DemoAdapter(this, movies));
@@ -72,7 +72,7 @@ public class SortAllChildrenActivity extends ExpandableListActivity {
 	@OnClick(android.R.id.button1)
 	public void onSortAllChildren(View v) {
 		DemoAdapter adapter = (DemoAdapter) getExpandableListAdapter();
-		adapter.sort();    //MovieItem implements it's own Comparable interface.
+		adapter.sortAllChildren();    //MovieItem implements it's own Comparable interface.
 	}
 
 	private class DemoAdapter extends RolodexArrayAdapter<String, MovieItem> {

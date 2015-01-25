@@ -210,7 +210,7 @@ public class FullDemoActivity extends AdapterBaseActivity implements
 
 	@Override
 	protected void sort() {
-		mListFragment.getListAdapter().sort();
+		mListFragment.getListAdapter().sortAllChildren();
 	}
 
 	@Override

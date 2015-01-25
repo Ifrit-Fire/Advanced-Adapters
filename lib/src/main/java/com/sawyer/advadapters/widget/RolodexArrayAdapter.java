@@ -271,10 +271,14 @@ public abstract class RolodexArrayAdapter<G, C> extends RolodexBaseAdapter imple
 	 * Creates a new group object which represents the parent of the given child item. This is used
 	 * to determine what group the child item will fall under. Do not attempt to return a cached
 	 * group object here. See {@link #getGroupFromCacheFor(Object)} for that behavior.
+	 * <p/>
+	 * It's highly recommended that the group object returned is immutable, or whose hashcode is
+	 * based on an immutable field(s). A mutable object is fine so long as it's not modified during
+	 * the lifespan of this adapter.
 	 *
 	 * @param childItem The child item for which a group instance will be created for.
 	 *
-	 * @return The group class object which represents the give child. Do not return null.
+	 * @return An immutable group class object which represents the give child. Do not return null.
 	 */
 	public abstract G createGroupFor(C childItem);
 
@@ -584,19 +588,20 @@ public abstract class RolodexArrayAdapter<G, C> extends RolodexBaseAdapter imple
 	/**
 	 * Sorts the children of each grouping using the natural order of the items themselves. This
 	 * requires the items to have implemented {@link java.lang.Comparable} and is equivalent of
-	 * passing null to {@link #sort(java.util.Comparator)}. This will not sort groups.
+	 * passing null to {@link #sortAllChildren(java.util.Comparator)}. This will not sort groups
+	 * themselves.
 	 *
 	 * @throws java.lang.ClassCastException If the comparator is null and the stored items do not
 	 *                                      implement {@code Comparable} or if {@code compareTo}
 	 *                                      throws for any pair of items.
 	 */
-	public void sort() {
-		sort(null);
+	public void sortAllChildren() {
+		sortAllChildren(null);
 	}
 
 	/**
-	 * Sorts the children of each grouping using the specified comparator. Tis will not sort
-	 * groups.
+	 * Sorts the children of each grouping using the specified comparator. This will not sort groups
+	 * themselves.
 	 *
 	 * @param comparator Used to sort the child items contained in this adapter. Null to use an
 	 *                   item's {@code Comparable} interface.
@@ -605,7 +610,7 @@ public abstract class RolodexArrayAdapter<G, C> extends RolodexBaseAdapter imple
 	 *                                      implement {@code Comparable} or if {@code compareTo}
 	 *                                      throws for any pair of items.
 	 */
-	public void sort(Comparator<? super C> comparator) {
+	public void sortAllChildren(Comparator<? super C> comparator) {
 		synchronized (mLock) {
 			if (mOriginalValues != null) {
 				for (Map.Entry<G, ArrayList<C>> entry : mOriginalValues.entrySet()) {
@@ -615,6 +620,42 @@ public abstract class RolodexArrayAdapter<G, C> extends RolodexBaseAdapter imple
 			for (Map.Entry<G, ArrayList<C>> entry : mObjects.entrySet()) {
 				Collections.sort(entry.getValue(), comparator);
 			}
+		}
+		if (mNotifyOnChange) notifyDataSetChanged();
+	}
+
+	/**
+	 * Sorts the children of the specified group using the natural order of the children themselves.
+	 * This requires the child items to have implemented {@link java.lang.Comparable} and is
+	 * equivalent of passing null to {@link #sortGroup(int, Comparator)}. This will not sort groups
+	 * themselves.
+	 *
+	 * @throws java.lang.ClassCastException If the comparator is null and the stored children do not
+	 *                                      implement {@code Comparable} or if {@code compareTo}
+	 *                                      throws for any pair of items.
+	 */
+	public void sortGroup(int groupPosition) {
+		sortGroup(groupPosition, null);
+	}
+
+	/**
+	 * Sorts the children of the specified group using the specified comparator. This will not sort
+	 * groups themselves.
+	 *
+	 * @param comparator Used to sort the child items contained within a group. Null to use an
+	 *                   item's {@code Comparable} interface.
+	 *
+	 * @throws java.lang.ClassCastException If the comparator is null and the stored children do not
+	 *                                      implement {@code Comparable} or if {@code compareTo}
+	 *                                      throws for any pair of items.
+	 */
+	public void sortGroup(int groupPosition, Comparator<? super C> comparator) {
+		synchronized (mLock) {
+			G group = mGroupObjects.get(groupPosition);
+			if (mOriginalValues != null) {
+				Collections.sort(mOriginalValues.get(group), comparator);
+			}
+			Collections.sort(mObjects.get(group), comparator);
 		}
 		if (mNotifyOnChange) notifyDataSetChanged();
 	}

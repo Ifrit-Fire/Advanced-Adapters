@@ -79,6 +79,7 @@ public abstract class BasePickDemoActivity extends ExpandableListActivity implem
 		super.onCreate(savedInstanceState);
 		getExpandableListView().setGroupIndicator(null);
 		DemoAdapter adapter = new DemoAdapter(this, createIntentList());
+		if (adapter.getGroupCount() > 2) adapter.sortGroup(1);
 		adapter.setOnChildClickListener(this);
 		setListAdapter(adapter);
 		initActionBar();
