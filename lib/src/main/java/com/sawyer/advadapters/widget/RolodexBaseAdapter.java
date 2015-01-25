@@ -197,7 +197,6 @@ public abstract class RolodexBaseAdapter extends BaseExpandableListAdapter {
 	 * @param animate True if the expanding groups should be animated in
 	 */
 	public void expandAll(boolean animate) {
-		if (hasAutoExpandingGroups()) return;
 		ExpandableListView lv = mExpandableListView.get();
 		if (lv == null) {
 			mQueueAction.add((animate) ? QueueAction.EXPAND_ALL_ANIMATE : QueueAction.EXPAND_ALL);
@@ -382,14 +381,21 @@ public abstract class RolodexBaseAdapter extends BaseExpandableListAdapter {
 				mExpandableListView = new WeakReference<>(lv);
 				updateClickListeners("getGroupView");
 				doAction();
+				//Check now and expandAll for auto expanding. Really helps reduce clunky/jumping scrolling
+				//experience seen when otherwise individually expanding a group as we come across it.
+				if (hasAutoExpandingGroups()) expandAll(false);
 			} else {
 				throw new IllegalStateException(
 						"Expecting ExpandableListView when refreshing referenced state. Instead found unsupported " +
 						parent.getClass().getSimpleName());
 			}
 		}
+
 		if (!isExpanded && hasAutoExpandingGroups()) {
-			lv.expandGroup(groupPosition);
+			//Usually only occurs if an adapter is modified post rendering to the screen. ExpandAll
+			//prevents a clunky/jumpy scrolling experience seen when otherwise individually expanding a
+			//group.
+			expandAll(false);
 		}
 
 		View v = getGroupView(mInflater, groupPosition, isExpanded, convertView, parent);

@@ -90,6 +90,11 @@ public class NavigationDrawerActivity extends ActionBarActivity implements
 		mDrawerLayout.closeDrawers();
 		MovieItem movie = mDrawerAdapter.getChild(groupPosition, childPosition);
 		mTextView.setText(movie.title);
+
+		//In case user reselected the same child...let's re-activate it.
+		if (mDrawerAdapter.getCheckedChildCount() == 0)
+			mDrawerAdapter.setChildChecked(groupPosition, childPosition, true);
+
 		return true;
 	}
 
@@ -141,6 +146,11 @@ public class NavigationDrawerActivity extends ActionBarActivity implements
 		mDrawerLayout.closeDrawers();
 		String group = mDrawerAdapter.getGroup(groupPosition);
 		mTextView.setText(group);
+
+		//In case user reselected the same group...let's re-activate it.
+		if (mDrawerAdapter.getCheckedGroupCount() == 0)
+			mDrawerAdapter.setGroupChecked(groupPosition, true);
+
 		return true;
 	}
 
