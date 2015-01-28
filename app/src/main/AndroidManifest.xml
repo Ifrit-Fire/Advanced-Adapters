@@ -104,6 +104,11 @@
 			android:label="@string/activity_rolodex_expand_collapse_all">
 		</activity>
 		<activity
+			android:name=".adapters.rolodexarrayadapter.basicdemo.FilterGroupsOnlyActivity"
+			android:label="@string/activity_rolodex_filter_groups_only">
+		</activity>
+
+		<activity
 			android:name=".adapters.rolodexarrayadapter.advancedemo.MultiSelectActivity"
 			android:label="@string/activity_rolodex_multiselect">
 		</activity>
