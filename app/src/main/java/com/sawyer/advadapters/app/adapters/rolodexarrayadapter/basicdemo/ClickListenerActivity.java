@@ -69,19 +69,19 @@ public class ClickListenerActivity extends ExpandableListActivity implements
 	@Override
 	public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
 		//Lets show a toast of the group clicked.
-		String group = (String) getExpandableListAdapter().getGroup(groupPosition);
+		String group = getExpandableListAdapter().getGroup(groupPosition).toString();
 		ToastHelper.showGroupClicked(this, group);
 		return false;    //Returning true prevents group expansion.  Returning false still allows groups to expand.
 	}
 
-	private class DemoAdapter extends RolodexArrayAdapter<String, MovieItem> {
+	private class DemoAdapter extends RolodexArrayAdapter<Integer, MovieItem> {
 		public DemoAdapter(Context activity, List<MovieItem> movies) {
 			super(activity, movies);
 		}
 
 		@Override
-		public String createGroupFor(MovieItem childItem) {
-			return String.valueOf(childItem.year);
+		public Integer createGroupFor(MovieItem childItem) {
+			return childItem.year;
 		}
 
 		@Override
@@ -102,7 +102,7 @@ public class ClickListenerActivity extends ExpandableListActivity implements
 				convertView = inflater.inflate(R.layout.item_expandable_group2, parent, false);
 			}
 			TextView tv = (TextView) convertView;
-			tv.setText(getGroup(groupPosition));
+			tv.setText(getGroup(groupPosition).toString());
 			return convertView;
 		}
 
@@ -113,7 +113,7 @@ public class ClickListenerActivity extends ExpandableListActivity implements
 		}
 
 		@Override
-		protected boolean isGroupFilteredOut(String groupItem, CharSequence constraint) {
+		protected boolean isGroupFilteredOut(Integer groupItem, CharSequence constraint) {
 			//Not worried about filtering for this demo
 			return false;
 		}

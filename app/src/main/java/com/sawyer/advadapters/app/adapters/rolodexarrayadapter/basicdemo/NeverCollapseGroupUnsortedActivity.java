@@ -55,7 +55,7 @@ public class NeverCollapseGroupUnsortedActivity extends ExpandableListActivity {
 		setListAdapter(adapter);
 	}
 
-	private class DemoAdapter extends RolodexArrayAdapter<String, MovieItem> {
+	private class DemoAdapter extends RolodexArrayAdapter<Integer, MovieItem> {
 
 		public DemoAdapter(Context activity, Collection<MovieItem> items) {
 			super(activity, items);
@@ -68,8 +68,8 @@ public class NeverCollapseGroupUnsortedActivity extends ExpandableListActivity {
 		}
 
 		@Override
-		public String createGroupFor(MovieItem childItem) {
-			return String.valueOf(childItem.year);
+		public Integer createGroupFor(MovieItem childItem) {
+			return childItem.year;
 		}
 
 		@Override
@@ -90,7 +90,7 @@ public class NeverCollapseGroupUnsortedActivity extends ExpandableListActivity {
 				convertView = inflater.inflate(R.layout.item_expandable_group1, parent, false);
 			}
 			TextView tv = (TextView) convertView;
-			tv.setText(getGroup(groupPosition));
+			tv.setText(getGroup(groupPosition).toString());
 			return convertView;
 		}
 
@@ -108,7 +108,7 @@ public class NeverCollapseGroupUnsortedActivity extends ExpandableListActivity {
 		}
 
 		@Override
-		protected boolean isGroupFilteredOut(String groupItem, CharSequence constraint) {
+		protected boolean isGroupFilteredOut(Integer groupItem, CharSequence constraint) {
 			//Not worried about filtering for this demo
 			return false;
 		}

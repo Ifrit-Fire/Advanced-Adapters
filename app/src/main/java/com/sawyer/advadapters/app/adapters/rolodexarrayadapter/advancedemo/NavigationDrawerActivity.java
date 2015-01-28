@@ -123,14 +123,14 @@ public class NavigationDrawerActivity extends ActionBarActivity implements
 				//Is a group item activated?
 				Integer[] checkedGroups = mDrawerAdapter.getCheckedGroupPositions();
 				if (checkedGroups.length == 1) {
-					String groupTitle = mDrawerAdapter.getGroup(checkedGroups[0]);
+					String groupTitle = mDrawerAdapter.getGroup(checkedGroups[0]).toString();
 					mTextView.setText(groupTitle);
 				}
 			}
 		} else {
 			//Lets pre-select a navigation drawer item.
 			mDrawerAdapter.setGroupChecked(0, true);
-			String groupTitle = mDrawerAdapter.getGroup(0);
+			String groupTitle = mDrawerAdapter.getGroup(0).toString();
 			mTextView.setText(groupTitle);
 		}
 	}
@@ -144,8 +144,8 @@ public class NavigationDrawerActivity extends ActionBarActivity implements
 	@Override
 	public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
 		mDrawerLayout.closeDrawers();
-		String group = mDrawerAdapter.getGroup(groupPosition);
-		mTextView.setText(group);
+		Integer group = mDrawerAdapter.getGroup(groupPosition);
+		mTextView.setText(group.toString());
 
 		//In case user reselected the same group...let's re-activate it.
 		if (mDrawerAdapter.getCheckedGroupCount() == 0)
@@ -186,14 +186,14 @@ public class NavigationDrawerActivity extends ActionBarActivity implements
 		//needed.
 	}
 
-	private class DemoAdapter extends RolodexArrayAdapter<String, MovieItem> {
+	private class DemoAdapter extends RolodexArrayAdapter<Integer, MovieItem> {
 		public DemoAdapter(Context activity, List<MovieItem> movies) {
 			super(activity, movies);
 		}
 
 		@Override
-		public String createGroupFor(MovieItem childItem) {
-			return String.valueOf(childItem.year);
+		public Integer createGroupFor(MovieItem childItem) {
+			return childItem.year;
 		}
 
 		@Override
@@ -244,7 +244,7 @@ public class NavigationDrawerActivity extends ActionBarActivity implements
 				convertView = inflater.inflate(R.layout.item_expandable_group2, parent, false);
 			}
 			TextView tv = (TextView) convertView;
-			tv.setText(getGroup(groupPosition));
+			tv.setText(getGroup(groupPosition).toString());
 			return convertView;
 		}
 
@@ -272,7 +272,7 @@ public class NavigationDrawerActivity extends ActionBarActivity implements
 		}
 
 		@Override
-		protected boolean isGroupFilteredOut(String groupItem, CharSequence constraint) {
+		protected boolean isGroupFilteredOut(Integer groupItem, CharSequence constraint) {
 			//Not worried about filtering for this demo
 			return false;
 		}

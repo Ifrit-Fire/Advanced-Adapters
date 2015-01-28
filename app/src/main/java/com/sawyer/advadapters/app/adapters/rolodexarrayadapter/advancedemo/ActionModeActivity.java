@@ -89,14 +89,14 @@ public class ActionModeActivity extends ExpandableListActivity {
 		//needed.
 	}
 
-	private class DemoAdapter extends RolodexArrayAdapter<String, MovieItem> {
+	private class DemoAdapter extends RolodexArrayAdapter<Integer, MovieItem> {
 		public DemoAdapter(Context activity, List<MovieItem> movies) {
 			super(activity, movies);
 		}
 
 		@Override
-		public String createGroupFor(MovieItem childItem) {
-			return String.valueOf(childItem.year);
+		public Integer createGroupFor(MovieItem childItem) {
+			return childItem.year;
 		}
 
 		@Override
@@ -137,7 +137,7 @@ public class ActionModeActivity extends ExpandableListActivity {
 			is displayed...be it groupPosition == 1 or groupPosition == 10...it'll always return
 			2004.
 			*/
-			return Long.valueOf(getGroup(groupPosition));
+			return getGroup(groupPosition);
 		}
 
 		@Override
@@ -147,7 +147,7 @@ public class ActionModeActivity extends ExpandableListActivity {
 				convertView = inflater.inflate(R.layout.item_expandable_group2, parent, false);
 			}
 			TextView tv = (TextView) convertView;
-			tv.setText(getGroup(groupPosition));
+			tv.setText(getGroup(groupPosition).toString());
 			return convertView;
 		}
 
@@ -169,7 +169,7 @@ public class ActionModeActivity extends ExpandableListActivity {
 		}
 
 		@Override
-		protected boolean isGroupFilteredOut(String groupItem, CharSequence constraint) {
+		protected boolean isGroupFilteredOut(Integer groupItem, CharSequence constraint) {
 			//Not worried about filtering for this demo
 			return false;
 		}
