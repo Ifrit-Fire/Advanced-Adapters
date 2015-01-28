@@ -27,6 +27,7 @@ import com.sawyer.advadapters.app.adapters.rolodexarrayadapter.basicdemo.AddItem
 import com.sawyer.advadapters.app.adapters.rolodexarrayadapter.basicdemo.ClickListenerActivity;
 import com.sawyer.advadapters.app.adapters.rolodexarrayadapter.basicdemo.ContainsItemActivity;
 import com.sawyer.advadapters.app.adapters.rolodexarrayadapter.basicdemo.ExpandCollapseAllActivity;
+import com.sawyer.advadapters.app.adapters.rolodexarrayadapter.basicdemo.FilterChildrenOnlyActivity;
 import com.sawyer.advadapters.app.adapters.rolodexarrayadapter.basicdemo.FilterGroupsOnlyActivity;
 import com.sawyer.advadapters.app.adapters.rolodexarrayadapter.basicdemo.NeverCollapseGroupActivity;
 import com.sawyer.advadapters.app.adapters.rolodexarrayadapter.basicdemo.NeverCollapseGroupUnsortedActivity;
@@ -103,6 +104,12 @@ public class PickDemoActivity extends BasePickDemoActivity {
 
 		intent = new Intent(this, FilterGroupsOnlyActivity.class);
 		intent.putExtra(EXTRA_INTENT_NAME, getString(R.string.activity_rolodex_filter_groups_only));
+		intent.putExtra(EXTRA_GROUP_NAME, getString(R.string.title_group_basic_demos));
+		intents.add(intent);
+
+		intent = new Intent(this, FilterChildrenOnlyActivity.class);
+		intent.putExtra(EXTRA_INTENT_NAME,
+						getString(R.string.activity_rolodex_filter_children_only));
 		intent.putExtra(EXTRA_GROUP_NAME, getString(R.string.title_group_basic_demos));
 		intents.add(intent);
 

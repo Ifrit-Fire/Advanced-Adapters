@@ -19,7 +19,6 @@ package com.sawyer.advadapters.app.adapters.rolodexarrayadapter.basicdemo;
 import android.app.ExpandableListActivity;
 import android.content.Context;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -34,9 +33,10 @@ import com.sawyer.advadapters.app.data.MovieItem;
 import com.sawyer.advadapters.widget.RolodexArrayAdapter;
 
 import java.util.List;
+import java.util.Locale;
 
 /**
- * Demonstration on how to filter only groups with a rolodex adapter. Children items will be
+ * Demonstration on how to filter only children with a rolodex adapter. Children items will be
  * ignored. The SearchView is inflated in the ActionBar. A query listener is implemented by the
  * Activity in order to send filter requests to the adapter when the user enters any. An action
  * expand listener is also required to clear out any filter constraints before closing the
@@ -45,7 +45,7 @@ import java.util.List;
  * Note, When a group is filtered out, all it's children will automatically be filtered out. Only
  * when a group is not filtered out, can we decide on whether to filter out it's children.
  */
-public class FilterGroupsOnlyActivity extends ExpandableListActivity implements
+public class FilterChildrenOnlyActivity extends ExpandableListActivity implements
 		SearchView.OnQueryTextListener, MenuItem.OnActionExpandListener {
 
 	@Override
@@ -69,7 +69,7 @@ public class FilterGroupsOnlyActivity extends ExpandableListActivity implements
 
 	@Override
 	public boolean onMenuItemActionCollapse(MenuItem item) {
-		//When the searchview closes, we must clear out any previous filter operations so that
+		//When the SearchView closes, we must clear out any previous filter operations so that
 		//our adapter can reload all data to display into the ExpandableListView
 		DemoAdapter adapter = (DemoAdapter) getExpandableListAdapter();
 		adapter.getFilter().filter("");
@@ -134,15 +134,16 @@ public class FilterGroupsOnlyActivity extends ExpandableListActivity implements
 		}
 
 		@Override
-		protected boolean isChildFilteredOut(MovieItem childItem, CharSequence constraint) {
-			//We are purposely ignoring children for filtering in this demo.
-			return false;
+		protected boolean isChildFilteredOut(MovieItem movie, CharSequence constraint) {
+			//Lets filter by movie title
+			return !movie.title.toLowerCase(Locale.US).contains(
+					constraint.toString().toLowerCase(Locale.US));
 		}
 
 		@Override
 		protected boolean isGroupFilteredOut(Integer year, CharSequence constraint) {
-			//Lets filter out everything whose year does not the numeric values in constraint.
-			return !TextUtils.isDigitsOnly(constraint) || !year.toString().contains(constraint);
+			//We are purposely ignoring groups for filtering in this demo.
+			return false;
 		}
 	}
 }
