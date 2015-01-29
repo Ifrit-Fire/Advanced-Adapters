@@ -58,6 +58,7 @@ public class FullDemoActivity extends AdapterBaseActivity implements
 
 	@Override
 	public RolodexBaseAdapter.ChoiceMode getChoiceMode() {
+		//Retrieve the passed in ChoiceMode from the Intent Extra. If not found, return default NONE
 		RolodexBaseAdapter.ChoiceMode choiceMode = (RolodexBaseAdapter.ChoiceMode) getIntent()
 				.getSerializableExtra(PickDemoActivity.EXTRA_CHOICE_MODE);
 		return (choiceMode == null) ? RolodexBaseAdapter.ChoiceMode.NONE : choiceMode;

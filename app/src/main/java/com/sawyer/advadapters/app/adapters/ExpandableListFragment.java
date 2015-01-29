@@ -92,6 +92,12 @@ public class ExpandableListFragment extends Fragment implements
 	@Override
 	public void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
+		/*
+		 In order to properly restore the activated items in the list, we must call into the adapter
+		 to save it's state. The adapter will return a parcelable for us to place in the bundle.
+		 It's important to note that the adapter will NOT place it's internal item data into this
+		 parcelable. You must still manually call and save the ArrayList returned with getList().
+		 */
 		if (getListAdapter() instanceof RolodexBaseAdapter) {
 			RolodexBaseAdapter adapter = (RolodexBaseAdapter) getListAdapter();
 			Parcelable parcel = adapter.onSaveInstanceState();
@@ -109,6 +115,7 @@ public class ExpandableListFragment extends Fragment implements
 			adapter.setOnGroupClickListener(this);
 			adapter.setOnChildClickListener(this);
 			if (savedInstanceState != null) {
+				//Restore choice mode state and the activated items
 				Parcelable parcel = savedInstanceState.getParcelable(STATE_EXPANDABLE_LISTVIEW);
 				adapter.onRestoreInstanceState(parcel);
 			}

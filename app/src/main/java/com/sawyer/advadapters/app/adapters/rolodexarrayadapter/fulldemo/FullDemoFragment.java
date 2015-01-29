@@ -24,6 +24,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
 
@@ -107,18 +108,15 @@ public class FullDemoFragment extends ExpandableListFragment {
 		} else {
 			setListAdapter(new FullDemoAdapter(getActivity()));
 		}
-		switch (mEventListener.getChoiceMode()) {
-		case SINGLE_MODAL:
-		case MULTIPLE_MODAL:
+		RolodexBaseAdapter.ChoiceMode choiceMode = mEventListener.getChoiceMode();
+		if (choiceMode.isModal())
 			getListAdapter().setMultiChoiceModeListener(new OnCabModalChoiceModeListener());
-		default:
-			//Do nothing else
-		}
-		getListAdapter().setChoiceMode(mEventListener.getChoiceMode());
+		getListAdapter().setChoiceMode(choiceMode);
 		return v;
 	}
 
 	private void onRemoveItemsClicked(List<MovieItem> items) {
+		//Easy way to test both remove methods
 		if (items.size() == 1) {
 			getListAdapter().remove(items.iterator().next());
 		} else {
@@ -142,8 +140,18 @@ public class FullDemoFragment extends ExpandableListFragment {
 		public void onAdapterCountUpdated();
 	}
 
+	/**
+	 * Demonstration on how to use modal {@link RolodexBaseAdapter.ChoiceMode} with the rolodex
+	 * adapter. When using the rolodex adapter, the adapter itself takes ownership of setting choice
+	 * mode. Setting it on the ExpandableListView itself will cause the app to crash.
+	 * <p/>
+	 * The RolodexBaseAdapter implemented it's own solution which behaves exactly as the {@link
+	 * AbsListView#setChoiceMode(int)} would. Ensure you not only set the ChoiceMode with the
+	 * adapter but also set the custom {@link RolodexBaseAdapter.ModalChoiceModeListener}.
+	 */
 	private class OnCabModalChoiceModeListener implements
 			RolodexBaseAdapter.ModalChoiceModeListener {
+
 		@Override
 		public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
 			boolean result;

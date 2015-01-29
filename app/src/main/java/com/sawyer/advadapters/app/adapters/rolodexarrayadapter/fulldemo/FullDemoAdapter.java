@@ -47,6 +47,16 @@ class FullDemoAdapter extends RolodexArrayAdapter<Integer, MovieItem> {
 
 	@Override
 	public long getChildId(int groupPosition, int childPosition) {
+		/*
+		 Returning the childPosition "could" be a stable & unique value to return here in certain
+		 situations.  However the safest and recommended approach is to always return a value
+		 which remains constant (stable) despite positional changes.
+
+		 Since each MovieItem has it's own unique barcode, utilizing that satisfies the stable
+		 and unique requirement. No two children will ever have the same barcode. Eg: no
+		 matter where the movie "I, Robot" is displayed...be it the 2nd child Position or 10th or
+		 in groupPosition == 1 or groupPosition == 10...it'll always return the same barcode.
+		 */
 		return getChild(groupPosition, childPosition).barcodeLong();
 	}
 
@@ -72,6 +82,16 @@ class FullDemoAdapter extends RolodexArrayAdapter<Integer, MovieItem> {
 
 	@Override
 	public long getGroupId(int groupPosition) {
+		/*
+		 Returning groupPosition "could" be a stable & unique value to return here in certain
+		 situations. However the safest and recommended approach is to always return a value
+		 which remains constant (stable) despite positional changes.
+
+		 Since our groups are storing years, returning the year is stable and unique.  No two
+		 groups will ever have the same year displayed. Eg: no matter where the year "2004"
+		 is displayed...be it groupPosition == 1 or groupPosition == 10...it'll always return
+		 2004.
+		 */
 		return getGroup(groupPosition);
 	}
 
@@ -89,17 +109,25 @@ class FullDemoAdapter extends RolodexArrayAdapter<Integer, MovieItem> {
 
 	@Override
 	public boolean hasStableIds() {
+		/*
+		 Any time choice mode is enabled, stable IDs should also be enabled. Otherwise, restoring
+		 the activity from saved state may activate the incorrect item in the adapter. Additionally,
+		 don't forget to have getGroupId() and getChildId() actually return unique and stable ids.
+		 Else it defeats the purpose of enabling this feature.
+		 */
 		return true;
 	}
 
 	@Override
 	protected boolean isChildFilteredOut(MovieItem movie, CharSequence constraint) {
+		//Make sure we aren't checking against a constraint containing a movie year, then filter by movie title
 		return !TextUtils.isDigitsOnly(constraint) && !movie.title.toLowerCase(Locale.US).contains(
 				constraint.toString().toLowerCase(Locale.US));
 	}
 
 	@Override
 	protected boolean isGroupFilteredOut(Integer year, CharSequence constraint) {
+		//Lets filter out everything whose year does not the numeric values in constraint.
 		return TextUtils.isDigitsOnly(constraint) && !year.toString().contains(constraint);
 	}
 }
