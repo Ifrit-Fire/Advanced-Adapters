@@ -44,6 +44,7 @@
 	<string name="activity_rolodex_contains_item">Contains Item</string>
 	<string name="activity_rolodex_click_listener">Click Listeners</string>
 	<string name="activity_rolodex_expand_collapse_all">Expand/Collapse All</string>
+	<string name="activity_rolodex_filter_children_groups">Filter Children and Groups</string>
 	<string name="activity_rolodex_filter_children_only">Filter Children Only</string>
 	<string name="activity_rolodex_filter_groups_only">Filter Groups Only</string>
 	<string name="activity_rolodex_multiselect">Multi-Select</string>

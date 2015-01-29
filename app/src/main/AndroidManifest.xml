@@ -104,6 +104,10 @@
 			android:label="@string/activity_rolodex_expand_collapse_all">
 		</activity>
 		<activity
+			android:name=".adapters.rolodexarrayadapter.basicdemo.FilterChildrenGroupsActivity"
+			android:label="@string/activity_rolodex_filter_children_groups">
+		</activity>
+		<activity
 			android:name=".adapters.rolodexarrayadapter.basicdemo.FilterChildrenOnlyActivity"
 			android:label="@string/activity_rolodex_filter_children_only">
 		</activity>
