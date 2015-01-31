@@ -43,7 +43,26 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * TODO: Write this
+ * Meant to replace the {@link BaseExpandableListAdapter} as the starting point for building a
+ * specialized adapter for the {@link ExpandableListView}. It provides convenient capabilities
+ * lacking in the ExpandableListView; as well as patching it's broken choice mode functionality.
+ * <p/>
+ * <b>New Capabilities:</b><ul><li>Expand/Collapse All Groups</li> <li>Auto Expanding
+ * Groups</li><li>Define individual group selectability</li><li>Four Available Choice
+ * Modes</li></ul>
+ * <p/>
+ * <b>Choice Mode:</b> This adapter provides a variety of {@link ChoiceMode}s which may be enabled
+ * through {@link #setChoiceMode(ChoiceMode)}. When enabled, you must also provide a callback via
+ * {@link #setMultiChoiceModeListener(ChoiceModeListener)}. Additionally, you'll need to store the
+ * adapter's saved state which can be retrieved using {@link #onSaveInstanceState()}.  Then
+ * subsequently restore it during Activity recreation with {@link #onRestoreInstanceState(Parcelable)}.
+ * <p/>
+ * <b>Ownership:</b> This adapter will take ownership of an ExpandableListView's {@link
+ * ExpandableListView.OnGroupClickListener}, {@link ExpandableListView.OnChildClickListener}, and
+ * {@link ExpandableListView.MultiChoiceModeListener}. Attempting to set those listeners directly
+ * through the ExpandableListView is an error and will fail to function correctly. Additionally all
+ * choice mode interactions must be conducted through this adapter.
+ * <p/>
  */
 public abstract class RolodexBaseAdapter extends BaseExpandableListAdapter {
 	private static final String TAG = "RolodexBaseAdapter";
@@ -59,7 +78,7 @@ public abstract class RolodexBaseAdapter extends BaseExpandableListAdapter {
 	 * Wrapper for the multiple choice mode callback; RolodexBaseAdapter needs to perform a few
 	 * extra actions around what application code does.
 	 */
-	ModalChoiceModeWrapper mModalChoiceModeWrapper;
+	ChoiceModeWrapper mModalChoiceModeWrapper;
 	/**
 	 * Running state of which group/child are currently checked. If {@link #hasStableIds()} is
 	 * enabled, this will track each item via it's ID. Otherwise, it'll track the packed position.
@@ -462,7 +481,7 @@ public abstract class RolodexBaseAdapter extends BaseExpandableListAdapter {
 	 * @param groupPosition The position of the group that contains the child.
 	 * @param childPosition The position of the child.
 	 *
-	 * @return The child item's checked state or <code>false</code> if choice mode is disabled.
+	 * @return The child item's checked state or false if choice mode is disabled.
 	 *
 	 * @see #setChoiceMode(ChoiceMode)
 	 */
@@ -709,22 +728,32 @@ public abstract class RolodexBaseAdapter extends BaseExpandableListAdapter {
 	}
 
 	/**
-	 * Set a {@link ModalChoiceModeListener} that will manage the lifecycle of the selection {@link
-	 * ActionMode}. Only used when the choice mode is set to modal variant of {@link ChoiceMode}. Eg
-	 * {@link ChoiceMode#MULTIPLE_MODAL} or {@link ChoiceMode#SINGLE_MODAL}.
+	 * Set a {@link com.sawyer.advadapters.widget.RolodexBaseAdapter.ChoiceModeListener} that will
+	 * manage the lifecycle of the selection {@link ActionMode}. Only used when the choice mode is
+	 * set to modal variant of {@link ChoiceMode}. Eg {@link ChoiceMode#MULTIPLE_MODAL} or {@link
+	 * ChoiceMode#SINGLE_MODAL}.
 	 *
-	 * @param listener Listener that will manage the selection mode
+	 * @param listener Callback that will manage the selection mode
 	 */
 
-	public void setMultiChoiceModeListener(ModalChoiceModeListener listener) {
+	public void setMultiChoiceModeListener(ChoiceModeListener listener) {
 		if (mModalChoiceModeWrapper == null) {
-			mModalChoiceModeWrapper = new ModalChoiceModeWrapper();
+			mModalChoiceModeWrapper = new ChoiceModeWrapper();
 		}
 		mModalChoiceModeWrapper.setWrapped(listener);
 	}
 
 	/**
-	 * TODO: Write doc once all choice modes have been tested
+	 * Register a callback to be invoked when a child item has been clicked. Whether a listener is
+	 * registered or not, this adapter takes ownership of the {@link ExpandableListView}'s
+	 * equivalent listeners. Attempting to set the callback directly through the ExpandableListView
+	 * will not work.
+	 * <p/>
+	 * When a modal {@link ChoiceMode} CAB is activated, all children click events will be ignored
+	 * by this callback. Instead use the {@link #setMultiChoiceModeListener(com.sawyer.advadapters.widget.RolodexBaseAdapter.ChoiceModeListener)}
+	 * to handle that case.
+	 *
+	 * @param onChildClickListener The callback that will be invoked.
 	 */
 	public void setOnChildClickListener(
 			ExpandableListView.OnChildClickListener onChildClickListener) {
@@ -733,7 +762,16 @@ public abstract class RolodexBaseAdapter extends BaseExpandableListAdapter {
 	}
 
 	/**
-	 * TODO: Write doc once all choice modes have been tested
+	 * Register a callback to be invoked when a group item has been clicked. Whether a listener is
+	 * registered or not, this adapter takes ownership of the {@link ExpandableListView}'s
+	 * equivalent listeners. Attempting to set the callback directly through the ExpandableListView
+	 * will not work.
+	 * <p/>
+	 * When a modal {@link ChoiceMode} CAB is activated, all group click events will be ignored by
+	 * this callback. Instead use the {@link #setMultiChoiceModeListener(com.sawyer.advadapters.widget.RolodexBaseAdapter.ChoiceModeListener)}
+	 * to handle that case.
+	 *
+	 * @param onGroupClickListener The callback that will be invoked.
 	 */
 	public void setOnGroupClickListener(
 			ExpandableListView.OnGroupClickListener onGroupClickListener) {
@@ -848,7 +886,7 @@ public abstract class RolodexBaseAdapter extends BaseExpandableListAdapter {
 	 * variants. It acts as the {@link ActionMode.Callback} for the selection mode and also receives
 	 * checked state change events when the user selects and deselects groups or children views.
 	 */
-	public static interface ModalChoiceModeListener extends ActionMode.Callback {
+	public static interface ChoiceModeListener extends ActionMode.Callback {
 
 		/**
 		 * Called when a child item is checked or unchecked during selection mode.
@@ -972,7 +1010,10 @@ public abstract class RolodexBaseAdapter extends BaseExpandableListAdapter {
 	}
 
 	/**
-	 * TODO: Write this
+	 * Tracks the checked state of all child and group items via either their IDs or positions. If
+	 * stable IDs are enabled, then all items will be tracked via their IDs. If stable IDs are
+	 * disabled, then all items will be tracked via their positions instead. Basically this class
+	 * conveniently abstracts away those details for the utilizing parent class.
 	 */
 	private class CheckedState {
 		//Inclusion in collections means checked. Exclusion from collections means false.
@@ -1101,8 +1142,8 @@ public abstract class RolodexBaseAdapter extends BaseExpandableListAdapter {
 	 * change callbacks to group or child checked changed events. In addition, the user defined
 	 * group and child click listeners will be bypassed when the CAB appears.
 	 */
-	private class ModalChoiceModeWrapper implements ModalChoiceModeListener {
-		private ModalChoiceModeListener mWrapped;
+	private class ChoiceModeWrapper implements ChoiceModeListener {
+		private ChoiceModeListener mWrapped;
 
 		public boolean hasWrappedCallback() {
 			return mWrapped != null;
@@ -1151,7 +1192,7 @@ public abstract class RolodexBaseAdapter extends BaseExpandableListAdapter {
 			return mWrapped.onPrepareActionMode(mode, menu);
 		}
 
-		public void setWrapped(ModalChoiceModeListener wrapped) {
+		public void setWrapped(ChoiceModeListener wrapped) {
 			mWrapped = wrapped;
 		}
 	}

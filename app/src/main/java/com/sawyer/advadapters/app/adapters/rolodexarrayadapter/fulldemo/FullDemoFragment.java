@@ -110,7 +110,7 @@ public class FullDemoFragment extends ExpandableListFragment {
 		}
 		RolodexBaseAdapter.ChoiceMode choiceMode = mEventListener.getChoiceMode();
 		if (choiceMode.isModal())
-			getListAdapter().setMultiChoiceModeListener(new OnCabModalChoiceModeListener());
+			getListAdapter().setMultiChoiceModeListener(new DemoChoiceModeListener());
 		getListAdapter().setChoiceMode(choiceMode);
 		return v;
 	}
@@ -147,10 +147,10 @@ public class FullDemoFragment extends ExpandableListFragment {
 	 * <p/>
 	 * The RolodexBaseAdapter implemented it's own solution which behaves exactly as the {@link
 	 * AbsListView#setChoiceMode(int)} would. Ensure you not only set the ChoiceMode with the
-	 * adapter but also set the custom {@link RolodexBaseAdapter.ModalChoiceModeListener}.
+	 * adapter but also set the custom {@link com.sawyer.advadapters.widget.RolodexBaseAdapter.ChoiceModeListener}.
 	 */
-	private class OnCabModalChoiceModeListener implements
-			RolodexBaseAdapter.ModalChoiceModeListener {
+	private class DemoChoiceModeListener implements
+			RolodexBaseAdapter.ChoiceModeListener {
 
 		@Override
 		public boolean onActionItemClicked(ActionMode mode, MenuItem item) {

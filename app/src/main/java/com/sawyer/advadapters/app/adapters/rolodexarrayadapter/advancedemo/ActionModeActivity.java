@@ -45,7 +45,7 @@ import java.util.List;
  * <p/>
  * The RolodexBaseAdapter implemented it's own solution which behaves exactly as the {@link
  * AbsListView#setChoiceMode(int)} would. Ensure you not only set the ChoiceMode with the adapter
- * but also set the custom {@link RolodexBaseAdapter.ModalChoiceModeListener}.
+ * but also set the custom {@link com.sawyer.advadapters.widget.RolodexBaseAdapter.ChoiceModeListener}.
  */
 public class ActionModeActivity extends ExpandableListActivity {
 	private static String STATE_ADAPTER_SAVED_STATE = "State Adapter Saved State";
@@ -55,7 +55,7 @@ public class ActionModeActivity extends ExpandableListActivity {
 		super.onCreate(savedInstanceState);
 		DemoAdapter adapter = new DemoAdapter(this, MovieContent.ITEM_LIST);
 		adapter.setChoiceMode(DemoAdapter.ChoiceMode.MULTIPLE_MODAL);
-		adapter.setMultiChoiceModeListener(new DemoModalChoiceModeListener());
+		adapter.setMultiChoiceModeListener(new DemoChoiceModeListener());
 		setListAdapter(adapter);
 
 		if (savedInstanceState != null) {
@@ -176,7 +176,7 @@ public class ActionModeActivity extends ExpandableListActivity {
 	}
 
 	/**
-	 * When enabling a modal choiceMode, a custom {@link RolodexBaseAdapter.ModalChoiceModeListener}
+	 * When enabling a modal choiceMode, a custom {@link com.sawyer.advadapters.widget.RolodexBaseAdapter.ChoiceModeListener}
 	 * is required to be set on the adapter. This usage is identical to that of {@link
 	 * AbsListView.MultiChoiceModeListener} with the difference of having child and group checked
 	 * state callbacks.
@@ -185,7 +185,7 @@ public class ActionModeActivity extends ExpandableListActivity {
 	 * be checked, we are ignoring their count. Some MenuItems are inflated into the CAB for visual
 	 * reference only.
 	 */
-	private class DemoModalChoiceModeListener implements DemoAdapter.ModalChoiceModeListener {
+	private class DemoChoiceModeListener implements RolodexBaseAdapter.ChoiceModeListener {
 		@Override
 		public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
 			switch (item.getItemId()) {
