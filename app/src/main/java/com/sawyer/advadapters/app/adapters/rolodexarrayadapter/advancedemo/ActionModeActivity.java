@@ -33,19 +33,19 @@ import com.sawyer.advadapters.app.R;
 import com.sawyer.advadapters.app.ToastHelper;
 import com.sawyer.advadapters.app.data.MovieContent;
 import com.sawyer.advadapters.app.data.MovieItem;
+import com.sawyer.advadapters.widget.PatchedExpandableListAdapter;
 import com.sawyer.advadapters.widget.RolodexArrayAdapter;
-import com.sawyer.advadapters.widget.RolodexBaseAdapter;
 
 import java.util.List;
 
 /**
- * Demonstration on how to use modal {@link RolodexBaseAdapter.ChoiceMode} with the rolodex adapter.
- * When using the rolodex adapter, the adapter itself takes ownership of setting choice mode.
- * Setting it on the ExpandableListView itself will cause the app to crash.
+ * Demonstration on how to use modal {@link PatchedExpandableListAdapter.ChoiceMode} with the
+ * rolodex adapter. When using the rolodex adapter, the adapter itself takes ownership of setting
+ * choice mode. Setting it on the ExpandableListView itself will cause the app to crash.
  * <p/>
- * The RolodexBaseAdapter implemented it's own solution which behaves exactly as the {@link
- * AbsListView#setChoiceMode(int)} would. Ensure you not only set the ChoiceMode with the adapter
- * but also set the custom {@link com.sawyer.advadapters.widget.RolodexBaseAdapter.ChoiceModeListener}.
+ * The PatchedExpandableListAdapter implemented it's own solution which behaves exactly as the
+ * {@link AbsListView#setChoiceMode(int)} would. Ensure you not only set the ChoiceMode with the
+ * adapter but also set the custom {@link PatchedExpandableListAdapter.ChoiceModeListener}.
  */
 public class ActionModeActivity extends ExpandableListActivity {
 	private static String STATE_ADAPTER_SAVED_STATE = "State Adapter Saved State";
@@ -176,7 +176,7 @@ public class ActionModeActivity extends ExpandableListActivity {
 	}
 
 	/**
-	 * When enabling a modal choiceMode, a custom {@link com.sawyer.advadapters.widget.RolodexBaseAdapter.ChoiceModeListener}
+	 * When enabling a modal choiceMode, a custom {@link PatchedExpandableListAdapter.ChoiceModeListener}
 	 * is required to be set on the adapter. This usage is identical to that of {@link
 	 * AbsListView.MultiChoiceModeListener} with the difference of having child and group checked
 	 * state callbacks.
@@ -185,7 +185,8 @@ public class ActionModeActivity extends ExpandableListActivity {
 	 * be checked, we are ignoring their count. Some MenuItems are inflated into the CAB for visual
 	 * reference only.
 	 */
-	private class DemoChoiceModeListener implements RolodexBaseAdapter.ChoiceModeListener {
+	private class DemoChoiceModeListener implements
+			PatchedExpandableListAdapter.ChoiceModeListener {
 		@Override
 		public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
 			switch (item.getItemId()) {

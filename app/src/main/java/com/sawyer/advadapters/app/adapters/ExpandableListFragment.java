@@ -25,7 +25,7 @@ import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
 
 import com.sawyer.advadapters.app.R;
-import com.sawyer.advadapters.widget.RolodexBaseAdapter;
+import com.sawyer.advadapters.widget.PatchedExpandableListAdapter;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -98,8 +98,8 @@ public class ExpandableListFragment extends Fragment implements
 		 It's important to note that the adapter will NOT place it's internal item data into this
 		 parcelable. You must still manually call and save the ArrayList returned with getList().
 		 */
-		if (getListAdapter() instanceof RolodexBaseAdapter) {
-			RolodexBaseAdapter adapter = (RolodexBaseAdapter) getListAdapter();
+		if (getListAdapter() instanceof PatchedExpandableListAdapter) {
+			PatchedExpandableListAdapter adapter = (PatchedExpandableListAdapter) getListAdapter();
 			Parcelable parcel = adapter.onSaveInstanceState();
 			outState.putParcelable(STATE_EXPANDABLE_LISTVIEW, parcel);
 		}
@@ -110,8 +110,8 @@ public class ExpandableListFragment extends Fragment implements
 		super.onViewCreated(view, savedInstanceState);
 		//In case adapter set before ListView inflated
 		if (mAdapter != null) mExpandableListView.setAdapter(mAdapter);
-		if (mAdapter instanceof RolodexBaseAdapter) {
-			RolodexBaseAdapter adapter = (RolodexBaseAdapter) mAdapter;
+		if (mAdapter instanceof PatchedExpandableListAdapter) {
+			PatchedExpandableListAdapter adapter = (PatchedExpandableListAdapter) mAdapter;
 			adapter.setOnGroupClickListener(this);
 			adapter.setOnChildClickListener(this);
 			if (savedInstanceState != null) {

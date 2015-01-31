@@ -28,7 +28,7 @@ import com.sawyer.advadapters.app.data.MovieContent;
 import com.sawyer.advadapters.app.data.MovieItem;
 import com.sawyer.advadapters.app.dialogs.AddArrayDialogFragment;
 import com.sawyer.advadapters.app.dialogs.ContainsArrayDialogFragment;
-import com.sawyer.advadapters.widget.RolodexBaseAdapter;
+import com.sawyer.advadapters.widget.PatchedExpandableListAdapter;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -57,11 +57,11 @@ public class FullDemoActivity extends AdapterBaseActivity implements
 	}
 
 	@Override
-	public RolodexBaseAdapter.ChoiceMode getChoiceMode() {
+	public PatchedExpandableListAdapter.ChoiceMode getChoiceMode() {
 		//Retrieve the passed in ChoiceMode from the Intent Extra. If not found, return default NONE
-		RolodexBaseAdapter.ChoiceMode choiceMode = (RolodexBaseAdapter.ChoiceMode) getIntent()
+		PatchedExpandableListAdapter.ChoiceMode choiceMode = (PatchedExpandableListAdapter.ChoiceMode) getIntent()
 				.getSerializableExtra(PickDemoActivity.EXTRA_CHOICE_MODE);
-		return (choiceMode == null) ? RolodexBaseAdapter.ChoiceMode.NONE : choiceMode;
+		return (choiceMode == null) ? PatchedExpandableListAdapter.ChoiceMode.NONE : choiceMode;
 	}
 
 	@Override

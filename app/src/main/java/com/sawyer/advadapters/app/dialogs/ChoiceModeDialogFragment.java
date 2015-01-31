@@ -24,7 +24,7 @@ import android.view.View;
 import android.widget.RadioGroup;
 
 import com.sawyer.advadapters.app.R;
-import com.sawyer.advadapters.widget.RolodexBaseAdapter;
+import com.sawyer.advadapters.widget.PatchedExpandableListAdapter;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -75,22 +75,22 @@ public class ChoiceModeDialogFragment extends CustomDialogFragment {
 	@OnClick(R.id.ok)
 	public void onOk(View v) {
 		if (mEventListener == null) return;
-		RolodexBaseAdapter.ChoiceMode choiceMode;
+		PatchedExpandableListAdapter.ChoiceMode choiceMode;
 		switch (mRadioGroup.getCheckedRadioButtonId()) {
 		case R.id.choice_mode_single:
-			choiceMode = RolodexBaseAdapter.ChoiceMode.SINGLE;
+			choiceMode = PatchedExpandableListAdapter.ChoiceMode.SINGLE;
 			break;
 		case R.id.choice_mode_single_modal:
-			choiceMode = RolodexBaseAdapter.ChoiceMode.SINGLE_MODAL;
+			choiceMode = PatchedExpandableListAdapter.ChoiceMode.SINGLE_MODAL;
 			break;
 		case R.id.choice_mode_multiple:
-			choiceMode = RolodexBaseAdapter.ChoiceMode.MULTIPLE;
+			choiceMode = PatchedExpandableListAdapter.ChoiceMode.MULTIPLE;
 			break;
 		case R.id.choice_mode_multiple_modal:
-			choiceMode = RolodexBaseAdapter.ChoiceMode.MULTIPLE_MODAL;
+			choiceMode = PatchedExpandableListAdapter.ChoiceMode.MULTIPLE_MODAL;
 			break;
 		default:
-			choiceMode = RolodexBaseAdapter.ChoiceMode.NONE;
+			choiceMode = PatchedExpandableListAdapter.ChoiceMode.NONE;
 			break;
 		}
 		dismiss();
@@ -103,6 +103,7 @@ public class ChoiceModeDialogFragment extends CustomDialogFragment {
 	}
 
 	public interface EventListener {
-		public void onSelectedChoiceMode(RolodexBaseAdapter.ChoiceMode choiceMode, Intent intent);
+		public void onSelectedChoiceMode(PatchedExpandableListAdapter.ChoiceMode choiceMode,
+										 Intent intent);
 	}
 }

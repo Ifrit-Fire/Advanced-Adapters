@@ -64,8 +64,8 @@ import java.util.Set;
  * choice mode interactions must be conducted through this adapter.
  * <p/>
  */
-public abstract class RolodexBaseAdapter extends BaseExpandableListAdapter {
-	private static final String TAG = "RolodexBaseAdapter";
+public abstract class PatchedExpandableListAdapter extends BaseExpandableListAdapter {
+	private static final String TAG = "PatchedExpandableListAdapter";
 
 	private final OnDisableTouchListener mDisableTouchListener = new OnDisableTouchListener();
 	private final OnChoiceModeClickListener mChoiceModeClickListener = new OnChoiceModeClickListener();
@@ -75,8 +75,8 @@ public abstract class RolodexBaseAdapter extends BaseExpandableListAdapter {
 	/** The ActionMode CAB used during any choice mode MODALs. Null when inactive. */
 	ActionMode mChoiceActionMode;
 	/**
-	 * Wrapper for the multiple choice mode callback; RolodexBaseAdapter needs to perform a few
-	 * extra actions around what application code does.
+	 * Wrapper for the multiple choice mode callback; PatchedExpandableListAdapter needs to perform
+	 * a few extra actions around what application code does.
 	 */
 	ChoiceModeWrapper mModalChoiceModeWrapper;
 	/**
@@ -155,7 +155,7 @@ public abstract class RolodexBaseAdapter extends BaseExpandableListAdapter {
 	 *
 	 * @param activity Context used for inflating views
 	 */
-	RolodexBaseAdapter(Context activity) {
+	PatchedExpandableListAdapter(Context activity) {
 		init(activity);
 	}
 
@@ -728,9 +728,9 @@ public abstract class RolodexBaseAdapter extends BaseExpandableListAdapter {
 	}
 
 	/**
-	 * Set a {@link com.sawyer.advadapters.widget.RolodexBaseAdapter.ChoiceModeListener} that will
-	 * manage the lifecycle of the selection {@link ActionMode}. Only used when the choice mode is
-	 * set to modal variant of {@link ChoiceMode}. Eg {@link ChoiceMode#MULTIPLE_MODAL} or {@link
+	 * Set a {@link PatchedExpandableListAdapter.ChoiceModeListener} that will manage the lifecycle
+	 * of the selection {@link ActionMode}. Only used when the choice mode is set to modal variant
+	 * of {@link ChoiceMode}. Eg {@link ChoiceMode#MULTIPLE_MODAL} or {@link
 	 * ChoiceMode#SINGLE_MODAL}.
 	 *
 	 * @param listener Callback that will manage the selection mode
@@ -750,7 +750,7 @@ public abstract class RolodexBaseAdapter extends BaseExpandableListAdapter {
 	 * will not work.
 	 * <p/>
 	 * When a modal {@link ChoiceMode} CAB is activated, all children click events will be ignored
-	 * by this callback. Instead use the {@link #setMultiChoiceModeListener(com.sawyer.advadapters.widget.RolodexBaseAdapter.ChoiceModeListener)}
+	 * by this callback. Instead use the {@link #setMultiChoiceModeListener(PatchedExpandableListAdapter.ChoiceModeListener)}
 	 * to handle that case.
 	 *
 	 * @param onChildClickListener The callback that will be invoked.
@@ -768,7 +768,7 @@ public abstract class RolodexBaseAdapter extends BaseExpandableListAdapter {
 	 * will not work.
 	 * <p/>
 	 * When a modal {@link ChoiceMode} CAB is activated, all group click events will be ignored by
-	 * this callback. Instead use the {@link #setMultiChoiceModeListener(com.sawyer.advadapters.widget.RolodexBaseAdapter.ChoiceModeListener)}
+	 * this callback. Instead use the {@link #setMultiChoiceModeListener(PatchedExpandableListAdapter.ChoiceModeListener)}
 	 * to handle that case.
 	 *
 	 * @param onGroupClickListener The callback that will be invoked.

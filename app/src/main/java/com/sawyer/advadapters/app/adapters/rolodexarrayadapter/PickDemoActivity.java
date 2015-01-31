@@ -36,7 +36,7 @@ import com.sawyer.advadapters.app.adapters.rolodexarrayadapter.basicdemo.RemoveI
 import com.sawyer.advadapters.app.adapters.rolodexarrayadapter.basicdemo.RetainAndSetListActivity;
 import com.sawyer.advadapters.app.adapters.rolodexarrayadapter.basicdemo.SortAllChildrenActivity;
 import com.sawyer.advadapters.app.adapters.rolodexarrayadapter.fulldemo.FullDemoActivity;
-import com.sawyer.advadapters.widget.RolodexBaseAdapter;
+import com.sawyer.advadapters.widget.PatchedExpandableListAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,7 +51,7 @@ public class PickDemoActivity extends BasePickDemoActivity {
 		intent = new Intent(this, FullDemoActivity.class);
 		intent.putExtra(EXTRA_INTENT_NAME, getString(R.string.activity_rolodex_movie_demo));
 		intent.putExtra(EXTRA_GROUP_NAME, getString(R.string.title_group_full_demos));
-		intent.putExtra(EXTRA_CHOICE_MODE, RolodexBaseAdapter.ChoiceMode.NONE);
+		intent.putExtra(EXTRA_CHOICE_MODE, PatchedExpandableListAdapter.ChoiceMode.NONE);
 		intents.add(intent);
 
 		/* Basic Examples - This group will be sorted. */

@@ -31,7 +31,7 @@ import android.widget.ExpandableListView;
 import com.sawyer.advadapters.app.R;
 import com.sawyer.advadapters.app.adapters.ExpandableListFragment;
 import com.sawyer.advadapters.app.data.MovieItem;
-import com.sawyer.advadapters.widget.RolodexBaseAdapter;
+import com.sawyer.advadapters.widget.PatchedExpandableListAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -108,7 +108,7 @@ public class FullDemoFragment extends ExpandableListFragment {
 		} else {
 			setListAdapter(new FullDemoAdapter(getActivity()));
 		}
-		RolodexBaseAdapter.ChoiceMode choiceMode = mEventListener.getChoiceMode();
+		PatchedExpandableListAdapter.ChoiceMode choiceMode = mEventListener.getChoiceMode();
 		if (choiceMode.isModal())
 			getListAdapter().setMultiChoiceModeListener(new DemoChoiceModeListener());
 		getListAdapter().setChoiceMode(choiceMode);
@@ -135,22 +135,23 @@ public class FullDemoFragment extends ExpandableListFragment {
 	}
 
 	public interface EventListener {
-		public RolodexBaseAdapter.ChoiceMode getChoiceMode();
+		public PatchedExpandableListAdapter.ChoiceMode getChoiceMode();
 
 		public void onAdapterCountUpdated();
 	}
 
 	/**
-	 * Demonstration on how to use modal {@link RolodexBaseAdapter.ChoiceMode} with the rolodex
-	 * adapter. When using the rolodex adapter, the adapter itself takes ownership of setting choice
-	 * mode. Setting it on the ExpandableListView itself will cause the app to crash.
+	 * Demonstration on how to use modal {@link PatchedExpandableListAdapter.ChoiceMode} with the
+	 * rolodex adapter. When using the rolodex adapter, the adapter itself takes ownership of
+	 * setting choice mode. Setting it on the ExpandableListView itself will cause the app to
+	 * crash.
 	 * <p/>
-	 * The RolodexBaseAdapter implemented it's own solution which behaves exactly as the {@link
-	 * AbsListView#setChoiceMode(int)} would. Ensure you not only set the ChoiceMode with the
-	 * adapter but also set the custom {@link com.sawyer.advadapters.widget.RolodexBaseAdapter.ChoiceModeListener}.
+	 * The PatchedExpandableListAdapter implemented it's own solution which behaves exactly as the
+	 * {@link AbsListView#setChoiceMode(int)} would. Ensure you not only set the ChoiceMode with the
+	 * adapter but also set the custom {@link PatchedExpandableListAdapter.ChoiceModeListener}.
 	 */
 	private class DemoChoiceModeListener implements
-			RolodexBaseAdapter.ChoiceModeListener {
+			PatchedExpandableListAdapter.ChoiceModeListener {
 
 		@Override
 		public boolean onActionItemClicked(ActionMode mode, MenuItem item) {

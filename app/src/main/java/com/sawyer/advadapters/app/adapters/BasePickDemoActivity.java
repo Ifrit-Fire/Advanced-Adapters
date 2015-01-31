@@ -33,8 +33,8 @@ import android.widget.TextView;
 import com.sawyer.advadapters.app.AboutActivity;
 import com.sawyer.advadapters.app.R;
 import com.sawyer.advadapters.app.dialogs.ChoiceModeDialogFragment;
+import com.sawyer.advadapters.widget.PatchedExpandableListAdapter;
 import com.sawyer.advadapters.widget.RolodexArrayAdapter;
-import com.sawyer.advadapters.widget.RolodexBaseAdapter;
 
 import java.util.Comparator;
 import java.util.List;
@@ -108,7 +108,8 @@ public abstract class BasePickDemoActivity extends ExpandableListActivity implem
 	}
 
 	@Override
-	public void onSelectedChoiceMode(RolodexBaseAdapter.ChoiceMode choiceMode, Intent intent) {
+	public void onSelectedChoiceMode(PatchedExpandableListAdapter.ChoiceMode choiceMode,
+									 Intent intent) {
 		intent.putExtra(EXTRA_CHOICE_MODE, choiceMode);
 		startActivity(intent);
 	}
