@@ -128,6 +128,18 @@
 		If filtering is required, it\'s strongly recommended to use the JSONAdapter instead.
 	</string>
 
+	<!--Info Dialog - NFRolodexArrayAdapter-->
+	<string name="info_rolodex_nfarrayadapter_title">Adapter Demo Info</string>
+	<string name="info_rolodex_nfarrayadapter_message">
+		This is a demonstration of the NFRolodexArrayAdapter which uses a Map and an ArrayList to
+		store it\'s data. The rolodex adapters are specifically designed to tackle the problem of
+		organizing data on the fly without the need to pre-compute the groupings.\n
+		\n
+		This adapter does not support filtering and as a result contains no synchronized blocks
+		which may help those worried about performance.  If filtering is required, it\'s strongly
+		recommended to use the RolodexArrayAdapter instead.
+	</string>
+
 	<!--Info Dialog - NFSparseAdapter-->
 	<string name="info_nfsparseadapter_title">Adapter Demo Info</string>
 	<string name="info_nfsparseadapter_message">

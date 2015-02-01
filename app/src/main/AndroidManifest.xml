@@ -145,6 +145,65 @@
 			android:label="@string/activity_rolodex_sort_all_children">
 		</activity>
 
+		<!-- Non-Filterable Rolodex Array Adapter Activities-->
+		<activity
+			android:name=".adapters.nfrolodexarrayadapter.PickDemoActivity"
+			android:label="@string/activity_rolodex_nfarrayadapter">
+		</activity>
+		<activity
+			android:name=".adapters.nfrolodexarrayadapter.fulldemo.FullDemoActivity"
+			android:label="@string/activity_rolodex_movie_demo">
+		</activity>
+		<activity
+			android:name=".adapters.nfrolodexarrayadapter.advancedemo.ActionModeActivity"
+			android:label="@string/activity_rolodex_action_mode">
+		</activity>
+		<activity
+			android:name=".adapters.nfrolodexarrayadapter.basicdemo.AddItemsActivity"
+			android:label="@string/activity_rolodex_add_items">
+		</activity>
+		<activity
+			android:name=".adapters.nfrolodexarrayadapter.basicdemo.ContainsItemActivity"
+			android:label="@string/activity_rolodex_contains_item">
+		</activity>
+		<activity
+			android:name=".adapters.nfrolodexarrayadapter.basicdemo.ClickListenerActivity"
+			android:label="@string/activity_rolodex_click_listener">
+		</activity>
+		<activity
+			android:name=".adapters.nfrolodexarrayadapter.basicdemo.ExpandCollapseAllActivity"
+			android:label="@string/activity_rolodex_expand_collapse_all">
+		</activity>
+		<activity
+			android:name=".adapters.nfrolodexarrayadapter.advancedemo.MultiSelectActivity"
+			android:label="@string/activity_rolodex_multiselect">
+		</activity>
+		<activity
+			android:name=".adapters.nfrolodexarrayadapter.advancedemo.NavigationDrawerActivity"
+			android:label="@string/activity_rolodex_navigation_drawer"
+			android:theme="@style/AppCompatTheme">
+		</activity>
+		<activity
+			android:name=".adapters.nfrolodexarrayadapter.basicdemo.NeverCollapseGroupActivity"
+			android:label="@string/activity_rolodex_never_collapse_groups">
+		</activity>
+		<activity
+			android:name=".adapters.nfrolodexarrayadapter.basicdemo.NeverCollapseGroupUnsortedActivity"
+			android:label="@string/activity_rolodex_never_collapse_groups_unsorted">
+		</activity>
+		<activity
+			android:name=".adapters.nfrolodexarrayadapter.basicdemo.RemoveItemsActivity"
+			android:label="@string/activity_rolodex_remove_items">
+		</activity>
+		<activity
+			android:name=".adapters.nfrolodexarrayadapter.basicdemo.RetainAndSetListActivity"
+			android:label="@string/activity_rolodex_retain_set_list">
+		</activity>
+		<activity
+			android:name=".adapters.nfrolodexarrayadapter.basicdemo.SortAllChildrenActivity"
+			android:label="@string/activity_rolodex_sort_all_children">
+		</activity>
+
 		<!-- Misc Support Activities-->
 		<activity
 			android:name=".MainActivity"

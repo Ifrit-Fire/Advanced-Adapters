@@ -34,9 +34,8 @@ import com.sawyer.advadapters.app.adapters.jsonadapter.JSONAdapterActivity;
 import com.sawyer.advadapters.app.adapters.nfarrayadapter.NFArrayAdapterActivity;
 import com.sawyer.advadapters.app.adapters.nfjsonadapter.NFJSONAdapterActivity;
 import com.sawyer.advadapters.app.adapters.nfsparseadapter.NFSparseAdapterActivity;
-import com.sawyer.advadapters.app.adapters.rolodexarrayadapter.PickDemoActivity;
 import com.sawyer.advadapters.app.adapters.sparseadapter.SparseAdapterActivity;
-import com.sawyer.advadapters.widget.RolodexArrayAdapter;
+import com.sawyer.advadapters.widget.NFRolodexArrayAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -71,8 +70,15 @@ public class MainActivity extends ExpandableListActivity {
 		intent.putExtra(EXTRA_GROUP_NAME, getString(R.string.title_group_arrays));
 		intents.add(intent);
 
-		intent = new Intent(this, PickDemoActivity.class);
+		intent = new Intent(this,
+							com.sawyer.advadapters.app.adapters.rolodexarrayadapter.PickDemoActivity.class);
 		intent.putExtra(EXTRA_INTENT_NAME, getString(R.string.activity_rolodex_arrayadapter));
+		intent.putExtra(EXTRA_GROUP_NAME, getString(R.string.title_group_arrays));
+		intents.add(intent);
+
+		intent = new Intent(this,
+							com.sawyer.advadapters.app.adapters.nfrolodexarrayadapter.PickDemoActivity.class);
+		intent.putExtra(EXTRA_INTENT_NAME, getString(R.string.activity_rolodex_nfarrayadapter));
 		intent.putExtra(EXTRA_GROUP_NAME, getString(R.string.title_group_arrays));
 		intents.add(intent);
 
@@ -136,7 +142,7 @@ public class MainActivity extends ExpandableListActivity {
 		}
 	}
 
-	private class DemoAdapter extends RolodexArrayAdapter<String, Intent> {
+	private class DemoAdapter extends NFRolodexArrayAdapter<String, Intent> {
 		public DemoAdapter(Context activity, List<Intent> objects) {
 			super(activity, objects);
 		}
@@ -171,16 +177,6 @@ public class MainActivity extends ExpandableListActivity {
 		@Override
 		public boolean hasAutoExpandingGroups() {
 			return true;
-		}
-
-		@Override
-		protected boolean isChildFilteredOut(Intent childItem, CharSequence constraint) {
-			return false;
-		}
-
-		@Override
-		protected boolean isGroupFilteredOut(String groupItem, CharSequence constraint) {
-			return false;
 		}
 
 		@Override

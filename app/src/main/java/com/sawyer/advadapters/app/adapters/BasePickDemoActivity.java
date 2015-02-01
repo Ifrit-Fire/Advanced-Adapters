@@ -33,8 +33,8 @@ import android.widget.TextView;
 import com.sawyer.advadapters.app.AboutActivity;
 import com.sawyer.advadapters.app.R;
 import com.sawyer.advadapters.app.dialogs.ChoiceModeDialogFragment;
+import com.sawyer.advadapters.widget.NFRolodexArrayAdapter;
 import com.sawyer.advadapters.widget.PatchedExpandableListAdapter;
-import com.sawyer.advadapters.widget.RolodexArrayAdapter;
 
 import java.util.Comparator;
 import java.util.List;
@@ -114,7 +114,7 @@ public abstract class BasePickDemoActivity extends ExpandableListActivity implem
 		startActivity(intent);
 	}
 
-	private class DemoAdapter extends RolodexArrayAdapter<String, Intent> {
+	private class DemoAdapter extends NFRolodexArrayAdapter<String, Intent> {
 		public DemoAdapter(Context activity, List<Intent> objects) {
 			super(activity, objects);
 		}
@@ -155,16 +155,6 @@ public abstract class BasePickDemoActivity extends ExpandableListActivity implem
 		@Override
 		public boolean hasAutoExpandingGroups() {
 			return true;
-		}
-
-		@Override
-		protected boolean isChildFilteredOut(Intent childItem, CharSequence constraint) {
-			return false;
-		}
-
-		@Override
-		protected boolean isGroupFilteredOut(String groupItem, CharSequence constraint) {
-			return false;
 		}
 
 		@Override
