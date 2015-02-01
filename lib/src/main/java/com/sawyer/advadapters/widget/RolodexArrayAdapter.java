@@ -17,6 +17,7 @@ package com.sawyer.advadapters.widget;
 
 import android.content.Context;
 import android.text.TextUtils;
+import android.widget.ExpandableListView;
 import android.widget.Filter;
 import android.widget.Filterable;
 
@@ -31,7 +32,26 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-//TODO: Write this
+/**
+ * For use with an {@link ExpandableListView}, The rolodex adapters are specifically designed to
+ * tackle the problem of organizing existing data on the fly without the need to pre-compute the
+ * groupings nor actually store the grouping data itself. Instead of having to organize your data
+ * ahead of time, you can simply pass in a list of arbitrary data and provide one simple method
+ * which determines the groupings it belongs to. Though not required, ideally this relationship
+ * would be derived from the data itself. For example, populating the adapter with a list of Person
+ * objects could derive it's groupings based on the last name. Just like an old-school rolodex.
+ * <p/>
+ * The RolodexArrayAdapter uses a Map to organize the data under each group. The children within
+ * each grouping are backed by an {@link ArrayList}. The data can be easily modified and filtered in
+ * various ways and allows numerous display and sorting options.  Additionally full support for
+ * ChoiceMode is available. By default this class delegates view generation and
+ * defining the filtering logic to subclasses.
+ * <p/>
+ * Because of the background filtering process, all methods which mutates the underlying data are
+ * internally synchronized. This ensures a thread safe environment for internal write operations. If
+ * filtering is not required, it's strongly recommended to use the {@link NFRolodexArrayAdapter}
+ * instead.
+ */
 public abstract class RolodexArrayAdapter<G, C> extends PatchedExpandableListAdapter implements
 		Filterable {
 	/**

@@ -144,7 +144,12 @@
 	<!--Info Dialog - RolodexArrayAdapter-->
 	<string name="info_rolodex_arrayadapter_title">Adapter Demo Info</string>
 	<string name="info_rolodex_arrayadapter_message">
-		<!--TODO: Implement-->
+		This is a demonstration of the RolodexArrayAdapter which uses a Map and an ArrayList to
+		store it\'s data. The rolodex adapters are specifically designed to tackle the problem of
+		organizing data on the fly without the need to pre-compute the groupings.\n
+		\n
+		This adapter supports filtering.  If filtering is not required, it\'s strongly recommended
+		to use the NFRolodexArrayAdapter instead.
 	</string>
 
 	<!--Info Dialog - SparseAdapter-->
