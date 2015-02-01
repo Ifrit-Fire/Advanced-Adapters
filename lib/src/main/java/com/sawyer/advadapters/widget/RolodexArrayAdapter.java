@@ -44,8 +44,8 @@ import java.util.TreeMap;
  * The RolodexArrayAdapter uses a Map to organize the data under each group. The children within
  * each grouping are backed by an {@link ArrayList}. The data can be easily modified and filtered in
  * various ways and allows numerous display and sorting options.  Additionally full support for
- * ChoiceMode is available. By default this class delegates view generation and
- * defining the filtering logic to subclasses.
+ * {@link ChoiceMode} is available. By default this class delegates view generation and defining the
+ * filtering logic to subclasses.
  * <p/>
  * Because of the background filtering process, all methods which mutates the underlying data are
  * internally synchronized. This ensures a thread safe environment for internal write operations. If
@@ -284,8 +284,7 @@ public abstract class RolodexArrayAdapter<G, C> extends PatchedExpandableListAda
 	 */
 	public boolean contains(C childItem) {
 		G group = getGroupFor(childItem);
-		return group != null && mObjects.get(group) != null &&
-			   mObjects.get(group).contains(childItem);
+		return mObjects.get(group) != null && mObjects.get(group).contains(childItem);
 	}
 
 	/**
@@ -367,7 +366,7 @@ public abstract class RolodexArrayAdapter<G, C> extends PatchedExpandableListAda
 	 *
 	 * @return Group associated with child. Will never return null.
 	 */
-	public G getGroupFor(C childItem) {
+	public final G getGroupFor(C childItem) {
 		G group = getGroupFromCacheFor(childItem);
 		if (group == null) {
 			group = createGroupFor(childItem);
@@ -424,8 +423,8 @@ public abstract class RolodexArrayAdapter<G, C> extends PatchedExpandableListAda
 
 	/**
 	 * Resets the adapter to store a new list of children items. Convenient way of calling {@link
-	 * #clear()}, then {@link #addAll(java.util.Collection)} without having to worry about an extra
-	 * {@link #notifyDataSetChanged()} invoked in between. Will repeat the last filtering request if
+	 * #clear()}, then {@link #addAll(Collection)} without having to worry about an extra {@link
+	 * #notifyDataSetChanged()} invoked in between. Will repeat the last filtering request if
 	 * invoked while filtered results are being displayed.
 	 *
 	 * @param childItems New list of children items to store within the adapter.
@@ -608,9 +607,8 @@ public abstract class RolodexArrayAdapter<G, C> extends PatchedExpandableListAda
 
 	/**
 	 * Sorts the children of each grouping using the natural order of the items themselves. This
-	 * requires the items to have implemented {@link java.lang.Comparable} and is equivalent of
-	 * passing null to {@link #sortAllChildren(java.util.Comparator)}. This will not sort groups
-	 * themselves.
+	 * requires the items to have implemented {@link Comparable} and is equivalent of passing null
+	 * to {@link #sortAllChildren(Comparator)}. This will not sort groups themselves.
 	 *
 	 * @throws java.lang.ClassCastException If the comparator is null and the stored items do not
 	 *                                      implement {@code Comparable} or if {@code compareTo}
@@ -647,9 +645,8 @@ public abstract class RolodexArrayAdapter<G, C> extends PatchedExpandableListAda
 
 	/**
 	 * Sorts the children of the specified group using the natural order of the children themselves.
-	 * This requires the child items to have implemented {@link java.lang.Comparable} and is
-	 * equivalent of passing null to {@link #sortGroup(int, Comparator)}. This will not sort groups
-	 * themselves.
+	 * This requires the child items to have implemented {@link Comparable} and is equivalent of
+	 * passing null to {@link #sortGroup(int, Comparator)}. This will not sort groups themselves.
 	 *
 	 * @throws java.lang.ClassCastException If the comparator is null and the stored children do not
 	 *                                      implement {@code Comparable} or if {@code compareTo}
