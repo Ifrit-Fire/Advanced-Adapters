@@ -51,11 +51,12 @@ import java.util.Set;
  * Groups</li><li>Define individual group selectability</li><li>Four Available Choice
  * Modes</li></ul>
  * <p/>
- * <b>Choice Mode:</b> This adapter provides a variety of {@link ChoiceMode}s which may be enabled
- * through {@link #setChoiceMode(ChoiceMode)}. When enabled, you must also provide a callback via
- * {@link #setMultiChoiceModeListener(ChoiceModeListener)}. Additionally, you'll need to store the
- * adapter's saved state which can be retrieved using {@link #onSaveInstanceState()}.  Then
- * subsequently restore it during Activity recreation with {@link #onRestoreInstanceState(Parcelable)}.
+ * <b>Choice Mode:</b> This adapter provides a variety of {@link ChoiceMode ChoiceModes} which may
+ * be enabled through {@link #setChoiceMode(ChoiceMode) setChoiceMode()}. When enabled, you must
+ * also provide a callback via {@link #setMultiChoiceModeListener(ChoiceModeListener)
+ * setMultiChoiceModeListener()}. Additionally, you'll need to store the adapter's saved state which
+ * can be retrieved using {@link #onSaveInstanceState()}.  Then subsequently restore it during
+ * Activity recreation with {@link #onRestoreInstanceState(Parcelable)}.
  * <p/>
  * <b>Ownership:</b> This adapter will take ownership of an ExpandableListView's {@link
  * ExpandableListView.OnGroupClickListener}, {@link ExpandableListView.OnChildClickListener}, and
@@ -104,9 +105,9 @@ public abstract class PatchedExpandableListAdapter extends BaseExpandableListAda
 
 	/**
 	 * Defines the various behaviors supported for use with {@link ExpandableListView}. While
-	 * similar to those found within {@link AbsListView} they are not equivocal.
+	 * similar to those found within {@link AbsListView} they are not equivalent.
 	 *
-	 * @see #setChoiceMode(ChoiceMode)
+	 * @see #setChoiceMode(ChoiceMode) setChoiceMode()
 	 */
 	public static enum ChoiceMode {
 		/** Normal ExpandableListView that does not indicate choices. */
@@ -166,7 +167,7 @@ public abstract class PatchedExpandableListAdapter extends BaseExpandableListAda
 
 	/**
 	 * Clear any choices previously set. This will only be valid if the choice mode is not {@link
-	 * ChoiceMode#NONE} (default).
+	 * ChoiceMode#NONE NONE} (default).
 	 */
 	public void clearChoices() {
 		if (mCheckStates != null) mCheckStates.clear();
@@ -238,7 +239,7 @@ public abstract class PatchedExpandableListAdapter extends BaseExpandableListAda
 
 	/**
 	 * Returns the number of child items currently checked. This will only be valid if the choice
-	 * mode is not {@link ChoiceMode#NONE} (default).
+	 * mode is not {@link ChoiceMode#NONE NONE} (default).
 	 * <p/>
 	 * To determine the specific items that are currently checked, use one of the
 	 * <code>getChecked*</code> methods.
@@ -256,8 +257,8 @@ public abstract class PatchedExpandableListAdapter extends BaseExpandableListAda
 
 	/**
 	 * Returns the set of checked children item ids. The result is only valid if the choice mode has
-	 * not been set to {@link ChoiceMode#NONE} and the adapter has stable IDs. ({@link
-	 * #hasStableIds()} == {@code true})
+	 * not been set to {@link ChoiceMode#NONE NONE} and the adapter enabled {@link
+	 * #hasStableIds()}.
 	 *
 	 * @return A new array which contains the id of each checked item in the list. Will never
 	 * contain a null value.
@@ -268,7 +269,7 @@ public abstract class PatchedExpandableListAdapter extends BaseExpandableListAda
 
 	/**
 	 * Returns the set of child items in the list which are checked. The result is only valid if the
-	 * choice mode has not been set to {@link ChoiceMode#NONE}.
+	 * choice mode has not been set to {@link ChoiceMode#NONE NONE}.
 	 *
 	 * @return A Long array which contains only those children positions which are checked. Note
 	 * these are packed positions.
@@ -279,7 +280,7 @@ public abstract class PatchedExpandableListAdapter extends BaseExpandableListAda
 
 	/**
 	 * Returns the number of group items currently checked. This will only be valid if the choice
-	 * mode is not {@link ChoiceMode#NONE} (default).
+	 * mode is not {@link ChoiceMode#NONE NONE} (default).
 	 * <p/>
 	 * <p>To determine the specific items that are currently checked, use one of the
 	 * <code>getChecked*</code> methods.
@@ -297,8 +298,7 @@ public abstract class PatchedExpandableListAdapter extends BaseExpandableListAda
 
 	/**
 	 * Returns the set of checked group item ids. The result is only valid if the choice mode has
-	 * not been set to {@link ChoiceMode#NONE} and the adapter has stable IDs. ({@link
-	 * #hasStableIds()} == {@code true})
+	 * not been set to {@link ChoiceMode#NONE NONE} and the adapter enabled {@link #hasStableIds()}
 	 *
 	 * @return A new array which contains the id of each checked item in the list. Will never
 	 * contain a null value.
@@ -309,7 +309,7 @@ public abstract class PatchedExpandableListAdapter extends BaseExpandableListAda
 
 	/**
 	 * Returns the set of group items in the list which are checked. The result is only valid if the
-	 * choice mode has not been set to {@link ChoiceMode#NONE}.
+	 * choice mode has not been set to {@link ChoiceMode#NONE NONE}.
 	 *
 	 * @return An Integer array which contains only those group positions which are checked.
 	 */
@@ -356,19 +356,16 @@ public abstract class PatchedExpandableListAdapter extends BaseExpandableListAda
 
 	/**
 	 * Defines the choice behavior for the attached {@link ExpandableListView}. By default, this
-	 * adapter does not have any choice behavior ({@link ChoiceMode#NONE}) set. By setting the
-	 * choiceMode to {@link ChoiceMode#SINGLE}, the ExpandableListView allows up to one item to be
-	 * in an activation state. By setting the choiceMode to {@link ChoiceMode#MULTIPLE}, the
-	 * ExpandableListView allows any number of items to be chosen. Any of the MODAL variants will
-	 * show a custom CAB when an item is long pressed.
+	 * adapter does not have any choice behavior ({@link ChoiceMode#NONE NONE}) set. By setting the
+	 * choiceMode to {@link ChoiceMode#SINGLE SINGLE}, the ExpandableListView allows up to one item
+	 * to be in an activation state. By setting the choiceMode to {@link ChoiceMode#MULTIPLE
+	 * MULTIPLE}, the ExpandableListView allows any number of items to be chosen. Any of the MODAL
+	 * variants will show a custom CAB when an item is long pressed.
 	 * <p/>
 	 * Use this method instead of {@link ExpandableListView#setChoiceMode(int)}. This adapter will
-	 * take over and emulate the behavior instead.  By setting the behavior to anything but {@link
-	 * ChoiceMode#NONE} will have this adapter take ownership of the {@link
-	 * ExpandableListView.OnChildClickListener} and {@link ExpandableListView.OnGroupClickListener}
-	 * listeners.
+	 * take over and emulate the behavior instead.
 	 *
-	 * @param choiceMode One of the {@link ChoiceMode} options
+	 * @param choiceMode One of the {@link ChoiceMode NONE} options
 	 */
 	public void setChoiceMode(ChoiceMode choiceMode) {
 		if (mChoiceMode == choiceMode) return;
@@ -436,7 +433,7 @@ public abstract class PatchedExpandableListAdapter extends BaseExpandableListAda
 	/**
 	 * Gets a View that displays the given group. This View is only for the group--the Views for the
 	 * group's children will be fetched using {@link #getChildView(LayoutInflater, int, int,
-	 * boolean, View, ViewGroup)}.
+	 * boolean, View, ViewGroup) getChildView()}.
 	 *
 	 * @param inflater      The LayoutInflater object that can be used to inflate each view.
 	 * @param groupPosition The position of the group for which the View is returned
@@ -476,14 +473,14 @@ public abstract class PatchedExpandableListAdapter extends BaseExpandableListAda
 
 	/**
 	 * Returns the checked state of the specified child item position. Will always return false if
-	 * choice mode is {@link ChoiceMode#NONE}
+	 * choice mode is {@link ChoiceMode#NONE NONE}
 	 *
 	 * @param groupPosition The position of the group that contains the child.
 	 * @param childPosition The position of the child.
 	 *
 	 * @return The child item's checked state or false if choice mode is disabled.
 	 *
-	 * @see #setChoiceMode(ChoiceMode)
+	 * @see #setChoiceMode(ChoiceMode) setChoiceMode()
 	 */
 	public boolean isChildChecked(int groupPosition, int childPosition) {
 		return mCheckStates != null && mCheckStates.getChild(groupPosition, childPosition);
@@ -496,13 +493,13 @@ public abstract class PatchedExpandableListAdapter extends BaseExpandableListAda
 
 	/**
 	 * Returns the checked state of the specified group item position. Will always return false if
-	 * choice mode is {@link ChoiceMode#NONE}
+	 * choice mode is {@link ChoiceMode#NONE NONE}
 	 *
 	 * @param groupPosition The position of the group item
 	 *
 	 * @return The group item's checked state or <code>false</code> if choice mode is disabled.
 	 *
-	 * @see #setChoiceMode(ChoiceMode)
+	 * @see #setChoiceMode(ChoiceMode) setChoiceMode
 	 */
 	public boolean isGroupChecked(int groupPosition) {
 		return mCheckStates != null && mCheckStates.getGroup(groupPosition);
@@ -522,7 +519,7 @@ public abstract class PatchedExpandableListAdapter extends BaseExpandableListAda
 	/**
 	 * Re-apply a representation of its internal state that had previously been generated by {@link
 	 * #onSaveInstanceState()}.  Specifically this restores the ChoiceMode, ActionMode and checked
-	 * children and group items of the adapter. This method will not restore the internal data
+	 * children/group items of the adapter. This method will not restore the internal data
 	 * originally stored with the adapter. That must still be done manually as you would with any
 	 * other adapter. If not using choice mode, there is no need to invoke this.
 	 *
@@ -549,13 +546,13 @@ public abstract class PatchedExpandableListAdapter extends BaseExpandableListAda
 
 	/**
 	 * Saves the internal state of the adapter for use when re-instantiating a new adapter.
-	 * Primarily use this for restoring the ChoiceMode, ActionMode and checked children and group
-	 * items of the adapter. This method will NOT persist the internal data stored with the adapter.
-	 * That must still be done manually as you would with any other adapter. If not using choice
-	 * mode, there is no need to invoke this.
+	 * Primarily use this for restoring the ChoiceMode, ActionMode and checked children/group items
+	 * of the adapter. This method will NOT persist the internal data stored with the adapter. That
+	 * must still be done manually as you would with any other adapter. If not using choice mode,
+	 * there is no need to invoke this.
 	 *
 	 * @return Returns a Parcelable object containing the ChoiceMode, ActionMode and selected
-	 * children and group items. Will never return null.
+	 * children/group items. Will never return null.
 	 *
 	 * @see #onRestoreInstanceState(android.os.Parcelable)
 	 */
@@ -651,9 +648,9 @@ public abstract class PatchedExpandableListAdapter extends BaseExpandableListAda
 
 	/**
 	 * Sets the checked state of the specified group. Will not work if the choice mode is set to
-	 * (@link ChoiceMode#NONE}. If choice mode is set to a multiple selector, Eg {@link
-	 * ChoiceMode#MULTIPLE} or {@link ChoiceMode#MULTIPLE_MODAL} then all child items will
-	 * additionally have their check state updated.
+	 * {@link ChoiceMode#NONE NONE}. If choice mode is set to a multiple selector, Eg {@link
+	 * ChoiceMode#MULTIPLE MULTIPLE} or {@link ChoiceMode#MULTIPLE_MODAL MULTIPLE_MODAL} then all
+	 * child items will additionally have their check state updated.
 	 *
 	 * @param groupPosition The position of the group.
 	 * @param isChecked     The new checked state for the child item.
@@ -728,10 +725,10 @@ public abstract class PatchedExpandableListAdapter extends BaseExpandableListAda
 	}
 
 	/**
-	 * Set a {@link PatchedExpandableListAdapter.ChoiceModeListener} that will manage the lifecycle
-	 * of the selection {@link ActionMode}. Only used when the choice mode is set to modal variant
-	 * of {@link ChoiceMode}. Eg {@link ChoiceMode#MULTIPLE_MODAL} or {@link
-	 * ChoiceMode#SINGLE_MODAL}.
+	 * Set a {@link PatchedExpandableListAdapter.ChoiceModeListener ChoiceModeListener} that will
+	 * manage the lifecycle of the selection {@link ActionMode}. Only used when the choice mode is
+	 * set to modal variant of {@link ChoiceMode ChoiceMode}. Eg {@link ChoiceMode#MULTIPLE_MODAL
+	 * MULITPLE_MODAL} or {@link ChoiceMode#SINGLE_MODAL SINGLE_MODAL}.
 	 *
 	 * @param listener Callback that will manage the selection mode
 	 */
@@ -749,9 +746,9 @@ public abstract class PatchedExpandableListAdapter extends BaseExpandableListAda
 	 * equivalent listeners. Attempting to set the callback directly through the ExpandableListView
 	 * will not work.
 	 * <p/>
-	 * When a modal {@link ChoiceMode} CAB is activated, all children click events will be ignored
-	 * by this callback. Instead use the {@link #setMultiChoiceModeListener(PatchedExpandableListAdapter.ChoiceModeListener)}
-	 * to handle that case.
+	 * When a modal {@link ChoiceMode ChoiceMode} CAB is activated, all children click events will
+	 * be ignored by this callback. Instead use the {@link #setMultiChoiceModeListener(PatchedExpandableListAdapter.ChoiceModeListener)
+	 * setMultiChoiceModeListener()} to handle that case.
 	 *
 	 * @param onChildClickListener The callback that will be invoked.
 	 */
@@ -767,9 +764,9 @@ public abstract class PatchedExpandableListAdapter extends BaseExpandableListAda
 	 * equivalent listeners. Attempting to set the callback directly through the ExpandableListView
 	 * will not work.
 	 * <p/>
-	 * When a modal {@link ChoiceMode} CAB is activated, all group click events will be ignored by
-	 * this callback. Instead use the {@link #setMultiChoiceModeListener(PatchedExpandableListAdapter.ChoiceModeListener)}
-	 * to handle that case.
+	 * When a modal {@link ChoiceMode ChoiceMode} CAB is activated, all group click events will be
+	 * ignored by this callback. Instead use the {@link #setMultiChoiceModeListener(PatchedExpandableListAdapter.ChoiceModeListener)
+	 * setMultiChoiceModeListener()} to handle that case.
 	 *
 	 * @param onGroupClickListener The callback that will be invoked.
 	 */
@@ -780,7 +777,8 @@ public abstract class PatchedExpandableListAdapter extends BaseExpandableListAda
 	}
 
 	/**
-	 * Start an {@link ActionMode}. Use this method instead of {@link ExpandableListView#startActionMode(ActionMode.Callback)}.
+	 * Start an {@link ActionMode}. Use this method instead of {@link ExpandableListView#startActionMode(ActionMode.Callback)
+	 * ExpandableListView.startActionMode()}.
 	 */
 	public void startActionMode() {
 		ExpandableListView lv = mExpandableListView.get();
@@ -882,9 +880,10 @@ public abstract class PatchedExpandableListAdapter extends BaseExpandableListAda
 	}
 
 	/**
-	 * An interface definition for callbacks that receive events for {@link ChoiceMode} modal
-	 * variants. It acts as the {@link ActionMode.Callback} for the selection mode and also receives
-	 * checked state change events when the user selects and deselects groups or children views.
+	 * An interface definition for callbacks that receive events for {@link ChoiceMode ChoiceMode}
+	 * modal variants. It acts as the {@link ActionMode.Callback} for the selection mode and also
+	 * receives checked state change events when the user selects and deselects groups or children
+	 * views.
 	 */
 	public static interface ChoiceModeListener extends ActionMode.Callback {
 
@@ -905,8 +904,8 @@ public abstract class PatchedExpandableListAdapter extends BaseExpandableListAda
 		/**
 		 * Called when a group item is checked or unchecked during selection mode. If the group is
 		 * expanded, then all of it's children will have their checked state changed to match and
-		 * {@link #onChildCheckedStateChanged(ActionMode, int, long, int, long, boolean)} will be
-		 * appropriately invoked for each.
+		 * {@link #onChildCheckedStateChanged(ActionMode, int, long, int, long, boolean)
+		 * onChildCheckedStateChanged()} will be appropriately invoked for each.
 		 *
 		 * @param mode          The {@link ActionMode} providing the selection mode
 		 * @param groupPosition Adapter position of the group item that was checked or unchecked
@@ -927,7 +926,7 @@ public abstract class PatchedExpandableListAdapter extends BaseExpandableListAda
 
 	/**
 	 * Handles reading from and writing to a {@link Parcel}.  The parcel is used for maintaining the
-	 * adapter's state, specifically for the ChoiceMode, ActionMode, and checked group and children
+	 * adapter's state, specifically for the ChoiceMode, ActionMode, and checked group/children
 	 * items.
 	 */
 	static class SavedState implements Parcelable {
@@ -946,7 +945,7 @@ public abstract class PatchedExpandableListAdapter extends BaseExpandableListAda
 		Map<Long, Integer> groupIds;    //Id, group position.
 		Map<Long, Long> childIds;    //Id, packed position
 		Set<Integer> groupPositions;
-		Set<Long> childPositions;
+		Set<Long> childPositions;    //packed position
 		boolean inActionMode;
 		ChoiceMode choiceMode;
 
@@ -1020,7 +1019,7 @@ public abstract class PatchedExpandableListAdapter extends BaseExpandableListAda
 		public Map<Long, Integer> groupIds;    //Id, group position.
 		public Map<Long, Long> childIds;    //Id, packed position
 		public Set<Integer> groupPositions;
-		public Set<Long> childPositions;
+		public Set<Long> childPositions;    //packed position
 
 		public CheckedState() {
 			if (hasStableIds()) {
@@ -1139,8 +1138,8 @@ public abstract class PatchedExpandableListAdapter extends BaseExpandableListAda
 
 	/**
 	 * Wraps around the {@link AbsListView.MultiChoiceModeListener} and converts it's item checked
-	 * change callbacks to group or child checked changed events. In addition, the user defined
-	 * group and child click listeners will be bypassed when the CAB appears.
+	 * change callbacks to group or child checked changed events. Note, the user defined group and
+	 * child click listeners will be bypassed when the CAB appears.
 	 */
 	private class ChoiceModeWrapper implements ChoiceModeListener {
 		private ChoiceModeListener mWrapped;
