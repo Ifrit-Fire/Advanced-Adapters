@@ -41,7 +41,7 @@ import java.util.TreeMap;
  * <p/>
  * The NFRolodexArrayAdapter uses a Map to organize the data under each group. The children within
  * each grouping are backed by an {@link ArrayList}. The data can be easily modified in various ways
- * and allows numerous display and sorting options.  Additionally full support for {@link
+ * and allows numerous display and sorting options.  Additionally full support for {@link ChoiceMode
  * ChoiceMode} is available. By default this class delegates view generation logic to subclasses.
  * <p/>
  * If filtering is required, it's strongly recommended to use the {@link RolodexArrayAdapter}
@@ -201,8 +201,7 @@ public abstract class NFRolodexArrayAdapter<G, C> extends PatchedExpandableListA
 	}
 
 	/**
-	 * Tests whether this adapter contains the specified child item. Be aware that this is a linear
-	 * search.
+	 * Tests whether this adapter contains the specified child item
 	 *
 	 * @param childItem The child item to search for
 	 *
@@ -218,13 +217,14 @@ public abstract class NFRolodexArrayAdapter<G, C> extends PatchedExpandableListA
 	 * to determine what group the child item will fall under. Do not attempt to return a cached
 	 * group object here. See {@link #getGroupFromCacheFor(Object)} for that behavior.
 	 * <p/>
-	 * It's highly recommended that the group object returned is immutable, or whose hashcode is
-	 * based on an immutable field(s). A mutable object is fine so long as it's not modified during
-	 * the lifespan of this adapter.
+	 * It's recommended that the group object returned is immutable, or whose hashcode is based on
+	 * an immutable field(s). A mutable object is fine so long as it's not modified during the
+	 * lifespan of this adapter.
 	 *
 	 * @param childItem The child item for which a group instance will be created for.
 	 *
-	 * @return An immutable group class object which represents the give child. Do not return null.
+	 * @return An immutable group class object which represents the given child item. Do not return
+	 * null.
 	 */
 	public abstract G createGroupFor(C childItem);
 
@@ -297,6 +297,10 @@ public abstract class NFRolodexArrayAdapter<G, C> extends PatchedExpandableListA
 	 * <p/>
 	 * Pulling from cache is primarily used when mutating the adapter. It is never used nor needed
 	 * by any of the getters.
+	 * <p/>
+	 * Additionally, the group object returned should be immutable, or whose hashcode is based on an
+	 * immutable field(s). A mutable object is fine so long as it's not modified during the lifespan
+	 * of this adapter.
 	 *
 	 * @param childItem The child item for which a group object will be returned for.
 	 *
@@ -347,7 +351,7 @@ public abstract class NFRolodexArrayAdapter<G, C> extends PatchedExpandableListA
 	}
 
 	/**
-	 * Removes all occurrences in the adapter of each child item in the specified collection.
+	 * Removes the first occurrence of the specified child item from the adapter.
 	 *
 	 * @param childItem The child item to remove.
 	 */
@@ -405,7 +409,7 @@ public abstract class NFRolodexArrayAdapter<G, C> extends PatchedExpandableListA
 	}
 
 	/**
-	 * Control whether methods that change the list ({@link #add}, {@link #remove}, {@link #clear})
+	 * Controls whether methods that change the list ({@link #add}, {@link #remove}, {@link #clear})
 	 * automatically call {@link #notifyDataSetChanged}.  If set to false, caller must manually call
 	 * notifyDataSetChanged() to have the changes reflected in the attached view.
 	 * <p/>
@@ -424,7 +428,7 @@ public abstract class NFRolodexArrayAdapter<G, C> extends PatchedExpandableListA
 	 * to {@link #sortAllChildren(Comparator)}. This will not sort groups themselves.
 	 *
 	 * @throws ClassCastException If the comparator is null and the stored items do not implement
-	 *                            {@code Comparable} or if {@code compareTo} throws for any pair of
+	 *                            {@code Comparable}, or if {@code compareTo} throws for any pair of
 	 *                            items.
 	 */
 	public void sortAllChildren() {
@@ -439,7 +443,7 @@ public abstract class NFRolodexArrayAdapter<G, C> extends PatchedExpandableListA
 	 *                   item's {@code Comparable} interface.
 	 *
 	 * @throws ClassCastException If the comparator is null and the stored items do not implement
-	 *                            {@code Comparable} or if {@code compareTo} throws for any pair of
+	 *                            {@code Comparable}, or if {@code compareTo} throws for any pair of
 	 *                            items.
 	 */
 	public void sortAllChildren(Comparator<? super C> comparator) {
@@ -455,7 +459,7 @@ public abstract class NFRolodexArrayAdapter<G, C> extends PatchedExpandableListA
 	 * passing null to {@link #sortGroup(int, Comparator)}. This will not sort groups themselves.
 	 *
 	 * @throws ClassCastException If the comparator is null and the stored children do not implement
-	 *                            {@code Comparable} or if {@code compareTo} throws for any pair of
+	 *                            {@code Comparable}, or if {@code compareTo} throws for any pair of
 	 *                            items.
 	 */
 	public void sortGroup(int groupPosition) {
@@ -470,7 +474,7 @@ public abstract class NFRolodexArrayAdapter<G, C> extends PatchedExpandableListA
 	 *                   item's {@code Comparable} interface.
 	 *
 	 * @throws ClassCastException If the comparator is null and the stored children do not implement
-	 *                            {@code Comparable} or if {@code compareTo} throws for any pair of
+	 *                            {@code Comparable}, or if {@code compareTo} throws for any pair of
 	 *                            items.
 	 */
 	public void sortGroup(int groupPosition, Comparator<? super C> comparator) {

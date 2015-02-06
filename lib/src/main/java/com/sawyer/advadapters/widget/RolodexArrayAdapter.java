@@ -44,8 +44,8 @@ import java.util.TreeMap;
  * The RolodexArrayAdapter uses a Map to organize the data under each group. The children within
  * each grouping are backed by an {@link ArrayList}. The data can be easily modified and filtered in
  * various ways and allows numerous display and sorting options.  Additionally full support for
- * {@link ChoiceMode} is available. By default this class delegates view generation and defining the
- * filtering logic to subclasses.
+ * {@link ChoiceMode ChoiceMode} is available. By default this class delegates view generation and
+ * defining the filtering logic to subclasses.
  * <p/>
  * Because of the background filtering process, all methods which mutates the underlying data are
  * internally synchronized. This ensures a thread safe environment for internal write operations. If
@@ -73,9 +73,9 @@ public abstract class RolodexArrayAdapter<G, C> extends PatchedExpandableListAda
 	 */
 	private boolean mNotifyOnChange = true;
 	/**
-	 * A copy of the original mObjects map, is not initialized until a filtering processing occurs.
-	 * Once initialized, it'll track the entire unfiltered data. Once the filter process completes,
-	 * it's contents are copied back over to mObjects and is set to null.
+	 * A copy of the original {@link #mObjects} map, is not initialized until a filtering processing
+	 * occurs. Once initialized, it'll track the entire unfiltered data. Once the filter process
+	 * completes, it's contents are copied back over to mObjects and is set to null.
 	 */
 	private Map<G, ArrayList<C>> mOriginalValues;
 	private RolodexFilter mFilter;
@@ -275,8 +275,7 @@ public abstract class RolodexArrayAdapter<G, C> extends PatchedExpandableListAda
 	}
 
 	/**
-	 * Tests whether this adapter contains the specified child item. Be aware that this is a linear
-	 * search.
+	 * Tests whether this adapter contains the specified child item.
 	 *
 	 * @param childItem The child item to search for
 	 *
@@ -292,13 +291,14 @@ public abstract class RolodexArrayAdapter<G, C> extends PatchedExpandableListAda
 	 * to determine what group the child item will fall under. Do not attempt to return a cached
 	 * group object here. See {@link #getGroupFromCacheFor(Object)} for that behavior.
 	 * <p/>
-	 * It's highly recommended that the group object returned is immutable, or whose hashcode is
-	 * based on an immutable field(s). A mutable object is fine so long as it's not modified during
-	 * the lifespan of this adapter.
+	 * It's recommended that the group object returned is immutable, or whose hashcode is based on
+	 * an immutable field(s). A mutable object is fine so long as it's not modified during the
+	 * lifespan of this adapter.
 	 *
 	 * @param childItem The child item for which a group instance will be created for.
 	 *
-	 * @return An immutable group class object which represents the give child. Do not return null.
+	 * @return An immutable group class object which represents the given child item. Do not return
+	 * null.
 	 */
 	public abstract G createGroupFor(C childItem);
 
@@ -390,6 +390,10 @@ public abstract class RolodexArrayAdapter<G, C> extends PatchedExpandableListAda
 	 * <p/>
 	 * Pulling from cache is primarily used when mutating the adapter. It is never used nor needed
 	 * by any of the getters.
+	 * <p/>
+	 * Additionally, the group object returned should be immutable, or whose hashcode is based on an
+	 * immutable field(s). A mutable object is fine so long as it's not modified during the lifespan
+	 * of this adapter.
 	 *
 	 * @param childItem The child item for which a group object will be returned for.
 	 *
@@ -466,10 +470,11 @@ public abstract class RolodexArrayAdapter<G, C> extends PatchedExpandableListAda
 
 	/**
 	 * Determines whether the provided constraint filters out the given group item. If filtered out,
-	 * all it's children will automatically be filtered out as well. This method allows easy,
-	 * customized filtering for subclasses. It's incorrect to modify the adapter or the contents of
-	 * the item itself. Any alterations will lead to undefined behavior or crashes. Internally, this
-	 * method is only ever invoked from a background thread.
+	 * all it's children will automatically be filtered out as well and their associating {@link
+	 * #isChildFilteredOut(Object, CharSequence) isChildFilteredOut()} method calls will not occur.
+	 * This method allows easy, customized filtering for subclasses. It's incorrect to modify the
+	 * adapter or the contents of the item itself. Any alterations will lead to undefined behavior
+	 * or crashes. Internally, this method is only ever invoked from a background thread.
 	 *
 	 * @param groupItem  The group item to compare against the constraint
 	 * @param constraint The constraint used to filter the item
@@ -486,7 +491,7 @@ public abstract class RolodexArrayAdapter<G, C> extends PatchedExpandableListAda
 	}
 
 	/**
-	 * Removes all occurrences in the adapter of each child item in the specified collection.
+	 * Removes the first occurrence of the specified child item from the adapter.
 	 *
 	 * @param childItem The child item to remove.
 	 */
@@ -592,7 +597,7 @@ public abstract class RolodexArrayAdapter<G, C> extends PatchedExpandableListAda
 	}
 
 	/**
-	 * Control whether methods that change the list ({@link #add}, {@link #remove}, {@link #clear})
+	 * Controls whether methods that change the list ({@link #add}, {@link #remove}, {@link #clear})
 	 * automatically call {@link #notifyDataSetChanged}.  If set to false, caller must manually call
 	 * notifyDataSetChanged() to have the changes reflected in the attached view.
 	 * <p/>
@@ -611,7 +616,7 @@ public abstract class RolodexArrayAdapter<G, C> extends PatchedExpandableListAda
 	 * to {@link #sortAllChildren(Comparator)}. This will not sort groups themselves.
 	 *
 	 * @throws java.lang.ClassCastException If the comparator is null and the stored items do not
-	 *                                      implement {@code Comparable} or if {@code compareTo}
+	 *                                      implement {@code Comparable}, or if {@code compareTo}
 	 *                                      throws for any pair of items.
 	 */
 	public void sortAllChildren() {
@@ -626,7 +631,7 @@ public abstract class RolodexArrayAdapter<G, C> extends PatchedExpandableListAda
 	 *                   item's {@code Comparable} interface.
 	 *
 	 * @throws java.lang.ClassCastException If the comparator is null and the stored items do not
-	 *                                      implement {@code Comparable} or if {@code compareTo}
+	 *                                      implement {@code Comparable}, or if {@code compareTo}
 	 *                                      throws for any pair of items.
 	 */
 	public void sortAllChildren(Comparator<? super C> comparator) {
@@ -649,7 +654,7 @@ public abstract class RolodexArrayAdapter<G, C> extends PatchedExpandableListAda
 	 * passing null to {@link #sortGroup(int, Comparator)}. This will not sort groups themselves.
 	 *
 	 * @throws java.lang.ClassCastException If the comparator is null and the stored children do not
-	 *                                      implement {@code Comparable} or if {@code compareTo}
+	 *                                      implement {@code Comparable}, or if {@code compareTo}
 	 *                                      throws for any pair of items.
 	 */
 	public void sortGroup(int groupPosition) {
@@ -664,7 +669,7 @@ public abstract class RolodexArrayAdapter<G, C> extends PatchedExpandableListAda
 	 *                   item's {@code Comparable} interface.
 	 *
 	 * @throws java.lang.ClassCastException If the comparator is null and the stored children do not
-	 *                                      implement {@code Comparable} or if {@code compareTo}
+	 *                                      implement {@code Comparable}, or if {@code compareTo}
 	 *                                      throws for any pair of items.
 	 */
 	public void sortGroup(int groupPosition, Comparator<? super C> comparator) {
