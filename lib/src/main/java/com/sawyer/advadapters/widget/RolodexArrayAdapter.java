@@ -41,11 +41,11 @@ import java.util.TreeMap;
  * would be derived from the data itself. For example, populating the adapter with a list of Person
  * objects could derive it's groupings based on the last name. Just like an old-school rolodex.
  * <p/>
- * The RolodexArrayAdapter uses a Map to organize the data under each group. The children within
- * each grouping are backed by an {@link ArrayList}. The data can be easily modified and filtered in
- * various ways and allows numerous display and sorting options.  Additionally full support for
- * {@link ChoiceMode ChoiceMode} is available. By default this class delegates view generation and
- * defining the filtering logic to subclasses.
+ * The RolodexArrayAdapter uses a {@link Map} to organize the data under each group. The children
+ * within each grouping are backed by an {@link ArrayList}. The data can be easily modified and
+ * filtered in various ways and allows numerous display and sorting options.  Additionally full
+ * support for {@link ChoiceMode ChoiceMode} is available. By default this class delegates view
+ * generation and defining the filtering logic to subclasses.
  * <p/>
  * Because of the background filtering process, all methods which mutates the underlying data are
  * internally synchronized. This ensures a thread safe environment for internal write operations. If

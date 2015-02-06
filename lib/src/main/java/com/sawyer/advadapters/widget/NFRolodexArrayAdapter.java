@@ -30,19 +30,20 @@ import java.util.Map;
 import java.util.TreeMap;
 
 /**
- * For use with an {@link android.widget.ExpandableListView}, The rolodex adapters are specifically
- * designed to tackle the problem of organizing existing data on the fly without the need to
- * pre-compute the groupings nor actually store the grouping data itself. Instead of having to
- * organize your data ahead of time, you can simply pass in a list of arbitrary data and provide one
- * simple method which determines the groupings it belongs to. Though not required, ideally this
- * relationship would be derived from the data itself. For example, populating the adapter with a
- * list of Person objects could derive it's groupings based on the last name. Just like an
- * old-school rolodex.
+ * For use with an {@link android.widget.ExpandableListView ExpandableListView}, The rolodex
+ * adapters are specifically designed to tackle the problem of organizing existing data on the fly
+ * without the need to pre-compute the groupings nor actually store the grouping data itself.
+ * Instead of having to organize your data ahead of time, you can simply pass in a list of arbitrary
+ * data and provide one simple method which determines the groupings it belongs to. Though not
+ * required, ideally this relationship would be derived from the data itself. For example,
+ * populating the adapter with a list of Person objects could derive it's groupings based on the
+ * last name. Just like an old-school rolodex.
  * <p/>
- * The NFRolodexArrayAdapter uses a Map to organize the data under each group. The children within
- * each grouping are backed by an {@link ArrayList}. The data can be easily modified in various ways
- * and allows numerous display and sorting options.  Additionally full support for {@link ChoiceMode
- * ChoiceMode} is available. By default this class delegates view generation logic to subclasses.
+ * The NFRolodexArrayAdapter uses a {@link Map} to organize the data under each group. The children
+ * within each grouping are backed by an {@link ArrayList}. The data can be easily modified in
+ * various ways and allows numerous display and sorting options.  Additionally full support for
+ * {@link ChoiceMode ChoiceMode} is available. By default this class delegates view generation logic
+ * to subclasses.
  * <p/>
  * If filtering is required, it's strongly recommended to use the {@link RolodexArrayAdapter}
  * instead.
@@ -201,7 +202,7 @@ public abstract class NFRolodexArrayAdapter<G, C> extends PatchedExpandableListA
 	}
 
 	/**
-	 * Tests whether this adapter contains the specified child item
+	 * Tests whether this adapter contains the specified child item.
 	 *
 	 * @param childItem The child item to search for
 	 *
