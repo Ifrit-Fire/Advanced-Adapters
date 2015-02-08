@@ -13,8 +13,8 @@ Currently, this suite supports three different data structures with a filterable
 **ArrayList Backed**
 - [AbsArrayAdapter](http://www.jaysoyer.com/2014/07/arrayadapter-replacements/)
 - [NFArrayAdapter](http://www.jaysoyer.com/2014/07/arrayadapter-replacements/)
-- [RolodexArrayAdapter]()
-- [NFRolodexArrayAdapter]()
+- [RolodexArrayAdapter](http://www.jaysoyer.com/2015/02/rolodexarrayadapter-android-section-adapter/)
+- [NFRolodexArrayAdapter](http://www.jaysoyer.com/2015/02/rolodexarrayadapter-android-section-adapter/)
 
 **SparseArray Backed**
 - [SparseAdapter](http://www.jaysoyer.com/2014/08/sparseadapter-android/)

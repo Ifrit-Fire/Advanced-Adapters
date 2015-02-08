@@ -141,7 +141,7 @@ public class FilterGroupsOnlyActivity extends ExpandableListActivity implements
 
 		@Override
 		protected boolean isGroupFilteredOut(Integer year, CharSequence constraint) {
-			//Lets filter out everything whose year does not the numeric values in constraint.
+			//Lets filter out everything whose year does not match the numeric values in constraint.
 			return !TextUtils.isDigitsOnly(constraint) || !year.toString().contains(constraint);
 		}
 	}
