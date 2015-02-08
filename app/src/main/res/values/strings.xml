@@ -1,33 +1,60 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-/**
-* Copyright 2014 Jay Soyer
-*
-* Licensed under the Apache License, Version 2.0 (the "License");
-* you may not use this file except in compliance with the License.
-* You may obtain a copy of the License at
-*
-*      http://www.apache.org/licenses/LICENSE-2.0
-*
-* Unless required by applicable law or agreed to in writing, software
-* distributed under the License is distributed on an "AS IS" BASIS,
-* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-* See the License for the specific language governing permissions and
-* limitations under the License.
-*/
--->
+  ~ Copyright 2014 Jay Soyer
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~       http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
 <resources>
 
-	<string name="app_name">Advanced-Adapters Demo</string>
-	<string name="activity_android_arrayadapter">Android\'s ArrayAdapter</string>
+	<string name="app_name">Advanced-Adapters</string>
+
+	<!-- Activity Names - Android -->
+	<string name="activity_android_arrayadapter">ArrayAdapter</string>
+	<string name="activity_android_simpleexpandable">SimpleExpandableListAdapter</string>
+
+	<!-- Activity Names - ArrayList Backed -->
 	<string name="activity_absarrayadapter">AbsArrayAdapter</string>
 	<string name="activity_nfarrayadapter">NFArrayAdapter</string>
+
+	<!-- Activity Names - SparseArray Backed -->
 	<string name="activity_sparseadapter">SparseAdapter</string>
 	<string name="activity_nfsparseadapter">NFSparseAdapter</string>
+
+	<!-- Activity Names - JSONArray Backed -->
 	<string name="activity_jsonadapter">JSONAdapter</string>
 	<string name="activity_jsonarray_unittest">JSONArray - Unit Test</string>
 	<string name="activity_nfjsonadapter">NFJSONAdapter</string>
 	<string name="activity_nfjsonarray_unittest">NFJSONArray - Unit Test</string>
+
+	<!--Activity Names - Rolodex ArrayList Backed -->
+	<string name="activity_rolodex_arrayadapter">RolodexArrayAdapter</string>
+	<string name="activity_rolodex_nfarrayadapter">NFRolodexArrayAdapter</string>
+	<string name="activity_rolodex_movie_demo">Movie Demo</string>
+	<string name="activity_rolodex_action_mode">Action Mode</string>
+	<string name="activity_rolodex_add_items">Add Items</string>
+	<string name="activity_rolodex_contains_item">Contains Item</string>
+	<string name="activity_rolodex_click_listener">Click Listeners</string>
+	<string name="activity_rolodex_expand_collapse_all">Expand/Collapse All</string>
+	<string name="activity_rolodex_filter_children_groups">Filter Children and Groups</string>
+	<string name="activity_rolodex_filter_children_only">Filter Children Only</string>
+	<string name="activity_rolodex_filter_groups_only">Filter Groups Only</string>
+	<string name="activity_rolodex_multiselect">Multi-Select</string>
+	<string name="activity_rolodex_navigation_drawer">Navigation Drawer</string>
+	<string name="activity_rolodex_never_collapse_groups">Never Collapse Groups - Sorted</string>
+	<string name="activity_rolodex_never_collapse_groups_unsorted">Never Collapse Groups - Unsorted</string>
+	<string name="activity_rolodex_remove_items">Remove Items</string>
+	<string name="activity_rolodex_retain_set_list">Retain and Set List</string>
+	<string name="activity_rolodex_sort_all_children">Sort All Children</string>
 
 	<!-- Content Description Text -->
 	<string name="cd_rating_icon">Rating Icon</string>
@@ -39,16 +66,32 @@
 	<string name="title_contains">Contains</string>
 	<string name="title_dialog_add_movies">Add Movie(s) To List</string>
 	<string name="title_dialog_append_movies">Append Movie(s) To List</string>
+	<string name="title_dialog_choice_mode">Select Choice Mode</string>
 	<string name="title_dialog_contains_movies">Does List Contain?</string>
 	<string name="title_dialog_insert_movies">Insert Movie(s) At Location</string>
 	<string name="title_dialog_put_movies">Put Movie(s) in List</string>
+	<string name="title_dialog_sort_movies">Sort Movies Options</string>
+	<string name="title_group_android">Android Demos</string>
+	<string name="title_group_advanced_demos">Advanced Demos</string>
+	<string name="title_group_arrays">Array Based Demos</string>
+	<string name="title_group_basic_demos">Basic Demos</string>
+	<string name="title_group_full_demos">Full Demos</string>
+	<string name="title_group_sparsearrays">SparseArray Based Demos</string>
+	<string name="title_group_jsonarrays">JSONArray Based Demos</string>
 	<string name="title_insert">Insert</string>
+	<string name="title_navigation_drawer_open">Select Movie</string>
 	<string name="title_put">Put</string>
 	<string name="title_screen_info">Screen Info</string>
+
+	<!-- Descriptions (or Messages) -->
+	<string name="desc_sortall_ignores_groups">The sort method will ignore groups and only sort
+		children found within each group.</string>
 
 	<!-- Menu Text -->
 	<string name="menu_about">About</string>
 	<string name="menu_clear">Clear</string>
+	<string name="menu_collapse">Collapse All</string>
+	<string name="menu_expand">Expand All</string>
 	<string name="menu_info">Info</string>
 	<string name="menu_remove">Remove Selected</string>
 	<string name="menu_reset">Reset</string>
@@ -64,22 +107,40 @@
 	<string name="btn_add_all_var">Add as Vararg</string>
 	<string name="btn_append_id">Append with Id</string>
 	<string name="btn_append_all">Append All</string>
+	<string name="btn_choice_mode_single">Single</string>
+	<string name="btn_choice_mode_single_modal">Single Modal</string>
+	<string name="btn_choice_mode_multiple">Multiple</string>
+	<string name="btn_choice_mode_multiple_modal">Multiple Modal</string>
 	<string name="btn_contains">Contains One</string>
 	<string name="btn_contains_all">Contains All</string>
 	<string name="btn_contains_id">Contains Id</string>
 	<string name="btn_contains_item">Contains Item</string>
+	<string name="btn_contains_item1">Contains: %1$s</string>
+	<string name="btn_collapse">Collapse All</string>
+	<string name="btn_expand">Expand All</string>
 	<string name="btn_insert_end">At End</string>
 	<string name="btn_insert_random">At Random</string>
 	<string name="btn_insert_start">At Start</string>
 	<string name="btn_put">Put</string>
 	<string name="btn_put_id">Put with Id</string>
 	<string name="btn_put_all">Put All</string>
+	<string name="btn_remove_first">Remove First</string>
+	<string name="btn_remove_first2">Remove First Two</string>
+	<string name="btn_retain_movies_from">Retain Movies From %1$d</string>
+	<string name="btn_set_list">Refresh with SetList</string>
+	<string name="btn_sort_children">Sort Children</string>
+	<string name="btn_sort_disable_auto_sort">Disable Auto Header Sort</string>
+	<string name="btn_sort_enable_auto_sort">Enable Auto Header Sort</string>
 
 	<!-- Toast Messages -->
+	<string name="toast_choice_mode_not_supported">Choice Mode not supported.</string>
 	<string name="toast_contains_movie_true">Adapter contains:\n</string>
 	<string name="toast_contains_movie_false">Could not find:\n</string>
-	<string name="toast_item_updates_not_supported">Item updates not supported</string>
+	<string name="toast_group_clicked">Clicked on Group:\u0020</string>
+	<string name="toast_item_updates_not_supported">Item updates not supported.</string>
+	<string name="toast_movie_clicked">Clicked on Movie:\n</string>
 	<string name="toast_remove_not_supported">Remove not supported.</string>
 	<string name="toast_retain_all_not_supported">RetainAll not supported.</string>
 	<string name="toast_sort_not_supported">Sort not supported.</string>
+
 </resources>

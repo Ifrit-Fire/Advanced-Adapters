@@ -1,21 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-/**
-* Copyright 2014 Jay Soyer
-*
-* Licensed under the Apache License, Version 2.0 (the "License");
-* you may not use this file except in compliance with the License.
-* You may obtain a copy of the License at
-*
-*      http://www.apache.org/licenses/LICENSE-2.0
-*
-* Unless required by applicable law or agreed to in writing, software
-* distributed under the License is distributed on an "AS IS" BASIS,
-* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-* See the License for the specific language governing permissions and
-* limitations under the License.
-*/
--->
+  ~ Copyright 2014 Jay Soyer
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~       http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
 <manifest
 	package="com.sawyer.advadapters.app"
 	xmlns:android="http://schemas.android.com/apk/res/android">
@@ -30,8 +28,12 @@
 
 		<!-- Android Adapter Activities -->
 		<activity
-			android:name=".adapters.androidarrayadapter.AndroidAdapterActivity"
+			android:name=".adapters.android.arrayadapter.AndroidAdapterActivity"
 			android:label="@string/activity_android_arrayadapter">
+		</activity>
+		<activity
+			android:name=".adapters.android.simpleexpandablelistadapter.AndroidExpandableActivity"
+			android:label="@string/activity_android_simpleexpandable">
 		</activity>
 
 		<!-- Array Adapter Activities -->
@@ -70,6 +72,136 @@
 		<activity
 			android:name=".adapters.nfjsonadapter.UnitTestJSONArrayActivity"
 			android:label="@string/activity_nfjsonarray_unittest">
+		</activity>
+
+		<!-- Rolodex Array Adapter Activities-->
+		<activity
+			android:name=".adapters.rolodexarrayadapter.PickDemoActivity"
+			android:label="@string/activity_rolodex_arrayadapter">
+		</activity>
+		<activity
+			android:name=".adapters.rolodexarrayadapter.fulldemo.FullDemoActivity"
+			android:label="@string/activity_rolodex_movie_demo">
+		</activity>
+		<activity
+			android:name=".adapters.rolodexarrayadapter.advancedemo.ActionModeActivity"
+			android:label="@string/activity_rolodex_action_mode">
+		</activity>
+		<activity
+			android:name=".adapters.rolodexarrayadapter.basicdemo.AddItemsActivity"
+			android:label="@string/activity_rolodex_add_items">
+		</activity>
+		<activity
+			android:name=".adapters.rolodexarrayadapter.basicdemo.ContainsItemActivity"
+			android:label="@string/activity_rolodex_contains_item">
+		</activity>
+		<activity
+			android:name=".adapters.rolodexarrayadapter.basicdemo.ClickListenerActivity"
+			android:label="@string/activity_rolodex_click_listener">
+		</activity>
+		<activity
+			android:name=".adapters.rolodexarrayadapter.basicdemo.ExpandCollapseAllActivity"
+			android:label="@string/activity_rolodex_expand_collapse_all">
+		</activity>
+		<activity
+			android:name=".adapters.rolodexarrayadapter.basicdemo.FilterChildrenGroupsActivity"
+			android:label="@string/activity_rolodex_filter_children_groups">
+		</activity>
+		<activity
+			android:name=".adapters.rolodexarrayadapter.basicdemo.FilterChildrenOnlyActivity"
+			android:label="@string/activity_rolodex_filter_children_only">
+		</activity>
+		<activity
+			android:name=".adapters.rolodexarrayadapter.basicdemo.FilterGroupsOnlyActivity"
+			android:label="@string/activity_rolodex_filter_groups_only">
+		</activity>
+		<activity
+			android:name=".adapters.rolodexarrayadapter.advancedemo.MultiSelectActivity"
+			android:label="@string/activity_rolodex_multiselect">
+		</activity>
+		<activity
+			android:name=".adapters.rolodexarrayadapter.advancedemo.NavigationDrawerActivity"
+			android:label="@string/activity_rolodex_navigation_drawer"
+			android:theme="@style/AppCompatTheme">
+		</activity>
+		<activity
+			android:name=".adapters.rolodexarrayadapter.basicdemo.NeverCollapseGroupActivity"
+			android:label="@string/activity_rolodex_never_collapse_groups">
+		</activity>
+		<activity
+			android:name=".adapters.rolodexarrayadapter.basicdemo.NeverCollapseGroupUnsortedActivity"
+			android:label="@string/activity_rolodex_never_collapse_groups_unsorted">
+		</activity>
+		<activity
+			android:name=".adapters.rolodexarrayadapter.basicdemo.RemoveItemsActivity"
+			android:label="@string/activity_rolodex_remove_items">
+		</activity>
+		<activity
+			android:name=".adapters.rolodexarrayadapter.basicdemo.RetainAndSetListActivity"
+			android:label="@string/activity_rolodex_retain_set_list">
+		</activity>
+		<activity
+			android:name=".adapters.rolodexarrayadapter.basicdemo.SortAllChildrenActivity"
+			android:label="@string/activity_rolodex_sort_all_children">
+		</activity>
+
+		<!-- Non-Filterable Rolodex Array Adapter Activities-->
+		<activity
+			android:name=".adapters.nfrolodexarrayadapter.PickDemoActivity"
+			android:label="@string/activity_rolodex_nfarrayadapter">
+		</activity>
+		<activity
+			android:name=".adapters.nfrolodexarrayadapter.fulldemo.FullDemoActivity"
+			android:label="@string/activity_rolodex_movie_demo">
+		</activity>
+		<activity
+			android:name=".adapters.nfrolodexarrayadapter.advancedemo.ActionModeActivity"
+			android:label="@string/activity_rolodex_action_mode">
+		</activity>
+		<activity
+			android:name=".adapters.nfrolodexarrayadapter.basicdemo.AddItemsActivity"
+			android:label="@string/activity_rolodex_add_items">
+		</activity>
+		<activity
+			android:name=".adapters.nfrolodexarrayadapter.basicdemo.ContainsItemActivity"
+			android:label="@string/activity_rolodex_contains_item">
+		</activity>
+		<activity
+			android:name=".adapters.nfrolodexarrayadapter.basicdemo.ClickListenerActivity"
+			android:label="@string/activity_rolodex_click_listener">
+		</activity>
+		<activity
+			android:name=".adapters.nfrolodexarrayadapter.basicdemo.ExpandCollapseAllActivity"
+			android:label="@string/activity_rolodex_expand_collapse_all">
+		</activity>
+		<activity
+			android:name=".adapters.nfrolodexarrayadapter.advancedemo.MultiSelectActivity"
+			android:label="@string/activity_rolodex_multiselect">
+		</activity>
+		<activity
+			android:name=".adapters.nfrolodexarrayadapter.advancedemo.NavigationDrawerActivity"
+			android:label="@string/activity_rolodex_navigation_drawer"
+			android:theme="@style/AppCompatTheme">
+		</activity>
+		<activity
+			android:name=".adapters.nfrolodexarrayadapter.basicdemo.NeverCollapseGroupActivity"
+			android:label="@string/activity_rolodex_never_collapse_groups">
+		</activity>
+		<activity
+			android:name=".adapters.nfrolodexarrayadapter.basicdemo.NeverCollapseGroupUnsortedActivity"
+			android:label="@string/activity_rolodex_never_collapse_groups_unsorted">
+		</activity>
+		<activity
+			android:name=".adapters.nfrolodexarrayadapter.basicdemo.RemoveItemsActivity"
+			android:label="@string/activity_rolodex_remove_items">
+		</activity>
+		<activity
+			android:name=".adapters.nfrolodexarrayadapter.basicdemo.RetainAndSetListActivity"
+			android:label="@string/activity_rolodex_retain_set_list">
+		</activity>
+		<activity
+			android:name=".adapters.nfrolodexarrayadapter.basicdemo.SortAllChildrenActivity"
+			android:label="@string/activity_rolodex_sort_all_children">
 		</activity>
 
 		<!-- Misc Support Activities-->

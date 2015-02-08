@@ -1,11 +1,11 @@
-/**
+/*
  * Copyright 2014 Jay Soyer
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *       http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.sawyer.advadapters.app.adapters.androidarrayadapter;
+package com.sawyer.advadapters.app.adapters.android.arrayadapter;
 
 import android.app.Activity;
 import android.app.ListFragment;
@@ -50,17 +50,17 @@ public class AndroidAdapterFragment extends ListFragment {
 	}
 
 	@Override
-	public MovieAdapter getListAdapter() {
-		return (MovieAdapter) super.getListAdapter();
+	public AndroidArrayAdapter getListAdapter() {
+		return (AndroidArrayAdapter) super.getListAdapter();
 	}
 
 	@Override
 	public void setListAdapter(ListAdapter adapter) {
-		if (adapter instanceof MovieAdapter) {
+		if (adapter instanceof AndroidArrayAdapter) {
 			super.setListAdapter(adapter);
 		} else {
 			throw new ClassCastException(
-					"Adapter must be of type " + MovieAdapter.class.getSimpleName()
+					"Adapter must be of type " + AndroidArrayAdapter.class.getSimpleName()
 			);
 		}
 	}
@@ -92,9 +92,9 @@ public class AndroidAdapterFragment extends ListFragment {
 					STATE_CAB_CHECKED_ITEMS);
 			mCheckedItems.addAll(checkItems);
 			ArrayList<MovieItem> list = savedInstanceState.getParcelableArrayList(STATE_LIST);
-			setListAdapter(new MovieAdapter(getActivity(), list));
+			setListAdapter(new AndroidArrayAdapter(getActivity(), list));
 		} else {
-			setListAdapter(new MovieAdapter(getActivity()));
+			setListAdapter(new AndroidArrayAdapter(getActivity()));
 		}
 	}
 

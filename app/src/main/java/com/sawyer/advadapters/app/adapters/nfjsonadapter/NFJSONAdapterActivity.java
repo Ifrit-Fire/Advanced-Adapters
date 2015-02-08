@@ -1,11 +1,11 @@
-/**
+/*
  * Copyright 2014 Jay Soyer
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *       http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -128,7 +128,7 @@ public class NFJSONAdapterActivity extends AdapterBaseActivity implements
 	public boolean onOptionsItemSelected(MenuItem item) {
 		int id = item.getItemId();
 		switch (id) {
-		case R.id.menu_unit_test:
+		case R.id.menu_action_unit_test:
 			Intent intent = new Intent(this, UnitTestJSONArrayActivity.class);
 			startActivity(intent);
 			return true;

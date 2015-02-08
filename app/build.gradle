@@ -8,8 +8,8 @@ android {
 		applicationId "com.sawyer.advadapters.app"
 		minSdkVersion 15
 		targetSdkVersion 21
-		versionCode 3
-		versionName "14.11.9"
+		versionCode 4
+		versionName "15.02.7"
 	}
 	compileOptions {
 		sourceCompatibility JavaVersion.VERSION_1_7
@@ -28,5 +28,7 @@ android {
 dependencies {
 	compile fileTree(include: ['*.jar'], dir: 'libs')
 	compile project(':lib')
-	compile 'com.jakewharton:butterknife:5.1.2'
+	compile 'com.jakewharton:butterknife:6.0.0'
+	compile 'com.android.support:support-v4:21.0.3'
+	compile 'com.android.support:appcompat-v7:21.0.3'
 }

@@ -1,11 +1,11 @@
-/**
+/*
  * Copyright 2014 Jay Soyer
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *       http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -56,7 +56,7 @@ public abstract class AdapterBaseActivity extends Activity implements
 
 	private void initActionBar() {
 		ActionBar actionBar = getActionBar();
-		if (actionBar == null) throw new AssertionError("No actionbar?");
+		if (actionBar == null) return;
 		actionBar.setDisplayHomeAsUpEnabled(true);
 	}
 
@@ -229,10 +229,9 @@ public abstract class AdapterBaseActivity extends Activity implements
 	protected void startPutDialog() {
 	}
 
-	@SuppressWarnings("ConstantConditions")
 	protected void updateActionBar() {
 		String subtitle = (getListCount()) + " movies listed";
-		getActionBar().setSubtitle(subtitle);
+		if (getActionBar() != null) getActionBar().setSubtitle(subtitle);
 	}
 
 	private class OnSearchActionExpandListener implements MenuItem.OnActionExpandListener {

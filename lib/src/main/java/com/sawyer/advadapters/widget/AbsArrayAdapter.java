@@ -1,11 +1,11 @@
-/**
+/*
  * Copyright 2014 Jay Soyer
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *       http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -332,7 +332,7 @@ public abstract class AbsArrayAdapter<T> extends BaseAdapter implements Filterab
 	 * {@link android.view.LayoutInflater#inflate(int, android.view.ViewGroup, boolean)} to specify
 	 * a root view and to prevent attachment to the root.
 	 *
-	 * @param inflater    the LayoutInflater object that can be used to inflate each view.
+	 * @param inflater    The LayoutInflater object that can be used to inflate each view.
 	 * @param position    The position of the item within the adapter's data set of the item whose
 	 *                    view we want.
 	 * @param convertView The old view to reuse, if possible. Note: You should check that this view
@@ -380,8 +380,7 @@ public abstract class AbsArrayAdapter<T> extends BaseAdapter implements Filterab
 	}
 
 	/**
-	 * Removes the first occurrence of the specified item from the adapter. Will repeat the last
-	 * filtering request if invoked while filtered results are being displayed.
+	 * Removes the first occurrence of the specified item from the adapter.
 	 *
 	 * @param item The item to remove.
 	 */
@@ -396,8 +395,7 @@ public abstract class AbsArrayAdapter<T> extends BaseAdapter implements Filterab
 	}
 
 	/**
-	 * Removes all occurrences in the adapter of each item in the specified collection. Will repeat
-	 * the last filter operation if one occurred.
+	 * Removes all occurrences in the adapter of each item in the specified collection.
 	 *
 	 * @param items The collection of items to remove
 	 */
@@ -411,8 +409,7 @@ public abstract class AbsArrayAdapter<T> extends BaseAdapter implements Filterab
 	}
 
 	/**
-	 * Removes all items from this adapter that are not contained in the specified collection. Will
-	 * repeat the last filtering request if invoked while filtered results are being displayed.
+	 * Removes all items from this adapter that are not contained in the specified collection.
 	 *
 	 * @param items The collection of items to retain
 	 */

@@ -1,21 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-/**
-* Copyright 2014 Jay Soyer
-*
-* Licensed under the Apache License, Version 2.0 (the "License");
-* you may not use this file except in compliance with the License.
-* You may obtain a copy of the License at
-*
-*      http://www.apache.org/licenses/LICENSE-2.0
-*
-* Unless required by applicable law or agreed to in writing, software
-* distributed under the License is distributed on an "AS IS" BASIS,
-* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-* See the License for the specific language governing permissions and
-* limitations under the License.
-*/
--->
+  ~ Copyright 2014 Jay Soyer
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~       http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
 <resources>
 	<!--About Screen - About Heading-->
 	<string name="info_about_title">About</string>
@@ -50,6 +48,18 @@
 		to find out more issues.\n\n
 	</string>
 	<string name="info_android_arrayAdapter_url">https://github.com/JaySoyer/Advanced-Adapters/wiki/</string>
+
+	<!--Info Dialog - Android's SimpleExpandableListAdapter-->
+	<string name="info_android_simpleexpandable_title">Adapter Demo Info</string>
+	<string name="info_android_simpleexpandable_message">
+		The following is a demonstration of Android\'s SimpleExpanadableListAdapter in action. While
+		there are no bugs with the adapter, it is severely lacking in functionality, usability, and
+		easability. Yes despite the name, it\'s a pain to convert your data for it. Just check out
+		the source code.\n
+		\n
+		After playing around here, check out the Rolodex Adapter demos. Far more capable and easier
+		solutions to use.
+	</string>
 
 	<!--Info Dialog - AbsArrayAdapter-->
 	<string name="info_absarrayadapter_title">Adapter Demo Info</string>
@@ -118,6 +128,18 @@
 		If filtering is required, it\'s strongly recommended to use the JSONAdapter instead.
 	</string>
 
+	<!--Info Dialog - NFRolodexArrayAdapter-->
+	<string name="info_rolodex_nfarrayadapter_title">Adapter Demo Info</string>
+	<string name="info_rolodex_nfarrayadapter_message">
+		This is a demonstration of the NFRolodexArrayAdapter which uses a Map and an ArrayList to
+		store it\'s data. The rolodex adapters are specifically designed to tackle the problem of
+		organizing data on the fly without the need to pre-compute the groupings.\n
+		\n
+		This adapter does not support filtering and as a result contains no synchronized blocks
+		which may help those worried about performance.  If filtering is required, it\'s strongly
+		recommended to use the RolodexArrayAdapter instead.
+	</string>
+
 	<!--Info Dialog - NFSparseAdapter-->
 	<string name="info_nfsparseadapter_title">Adapter Demo Info</string>
 	<string name="info_nfsparseadapter_message">
@@ -129,6 +151,17 @@
 		This adapter does not support filtering and as a result contains no synchronized blocks
 		which may help those worried about performance.  If filtering is required, it\'s strongly
 		recommended to use the SparseAdapter instead.
+	</string>
+
+	<!--Info Dialog - RolodexArrayAdapter-->
+	<string name="info_rolodex_arrayadapter_title">Adapter Demo Info</string>
+	<string name="info_rolodex_arrayadapter_message">
+		This is a demonstration of the RolodexArrayAdapter which uses a Map and an ArrayList to
+		store it\'s data. The rolodex adapters are specifically designed to tackle the problem of
+		organizing data on the fly without the need to pre-compute the groupings.\n
+		\n
+		This adapter supports filtering.  If filtering is not required, it\'s strongly recommended
+		to use the NFRolodexArrayAdapter instead.
 	</string>
 
 	<!--Info Dialog - SparseAdapter-->
