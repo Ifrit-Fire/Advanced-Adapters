@@ -157,6 +157,7 @@ public class FullDemoFragment extends ExpandableListFragment {
 		public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
 			boolean result;
 			Long[] packedPositions;
+			Integer[] groupPositions;
 			List<MovieItem> movies;
 
 			switch (item.getItemId()) {
@@ -167,6 +168,12 @@ public class FullDemoFragment extends ExpandableListFragment {
 					int groupPosition = ExpandableListView.getPackedPositionGroup(packedPos);
 					int childPosition = ExpandableListView.getPackedPositionChild(packedPos);
 					movies.add(getListAdapter().getChild(groupPosition, childPosition));
+				}
+				if (movies.size() == 0) {    //Will only occur for single_modal mode
+					groupPositions = getListAdapter().getCheckedGroupPositions();
+					for (Integer groupPos : groupPositions) {
+						movies.addAll(getListAdapter().getGroupChildren(groupPos));
+					}
 				}
 				onRemoveItemsClicked(movies);
 				mode.finish();
@@ -180,6 +187,12 @@ public class FullDemoFragment extends ExpandableListFragment {
 					int groupPosition = ExpandableListView.getPackedPositionGroup(packedPos);
 					int childPosition = ExpandableListView.getPackedPositionChild(packedPos);
 					movies.add(getListAdapter().getChild(groupPosition, childPosition));
+				}
+				if (movies.size() == 0) {    //Will only occur for single_modal mode
+					groupPositions = getListAdapter().getCheckedGroupPositions();
+					for (Integer groupPos : groupPositions) {
+						movies.addAll(getListAdapter().getGroupChildren(groupPos));
+					}
 				}
 				onRetainItemsClicked(movies);
 				mode.finish();
