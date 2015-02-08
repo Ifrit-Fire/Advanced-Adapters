@@ -8,7 +8,7 @@ Some of the advantages to using this suite:
 - Easily obtain internal data for use with `onSavedInstanceState()`
 - `LayoutInflater` passed to all view creation methods.
 
-Currently, this suite supports three different data structures with a filterable and non-filterable (NF) version.  More will be coming in time.
+Currently, this suite supports three different data structures with a filterable and non-filterable (NF) version.  Additionally it provides one supporting adapter.
 
 **ArrayList Backed**
 - [AbsArrayAdapter](http://www.jaysoyer.com/2014/07/arrayadapter-replacements/)
@@ -23,6 +23,10 @@ Currently, this suite supports three different data structures with a filterable
 **JSONArray Backed**
 - [JSONAdapter](http://www.jaysoyer.com/2014/11/jsonadapter-jsonarray-backed-adapters/)
 - [NFJSONAdapter](http://www.jaysoyer.com/2014/11/jsonadapter-jsonarray-backed-adapters/)
+
+**Support Adapters**
+- [PatchedExpandableListAdapter](http://www.jaysoyer.com/2015/02/patching-expandablelistview-adapter/)
+
 
 ### Supports
 - Ice Cream Sandwich
