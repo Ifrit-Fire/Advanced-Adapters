@@ -1009,7 +1009,9 @@ public abstract class JSONAdapter extends BaseAdapter implements Filterable {
 		@Override
 		protected void publishResults(CharSequence constraint, FilterResults results) {
 			mLastConstraint = constraint;
-			mObjects = (JSONArray) results.values;
+			synchronized (mLock) {
+				mObjects = (JSONArray) results.values;
+			}
 			if (results.count > 0) {
 				notifyDataSetChanged();
 			} else {

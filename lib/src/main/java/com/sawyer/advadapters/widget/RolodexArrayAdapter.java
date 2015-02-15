@@ -805,7 +805,6 @@ public abstract class RolodexArrayAdapter<G, C> extends PatchedExpandableListAda
 				mObjects = (Map<G, ArrayList<C>>) results.values;
 				mGroupObjects = new ArrayList<>(mObjects.keySet());
 			}
-
 			if (results.count > 0) {
 				notifyDataSetChanged();
 			} else {

@@ -539,7 +539,9 @@ public abstract class AbsArrayAdapter<T> extends BaseAdapter implements Filterab
 		@Override
 		protected void publishResults(CharSequence constraint, FilterResults results) {
 			mLastConstraint = constraint;
-			mObjects = (ArrayList<T>) results.values;
+			synchronized (mLock) {
+				mObjects = (ArrayList<T>) results.values;
+			}
 			if (results.count > 0) {
 				notifyDataSetChanged();
 			} else {

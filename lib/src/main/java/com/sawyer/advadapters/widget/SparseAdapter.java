@@ -542,7 +542,9 @@ public abstract class SparseAdapter<T> extends BaseAdapter implements Filterable
 		@Override
 		protected void publishResults(CharSequence constraint, FilterResults results) {
 			mLastConstraint = constraint;
-			mObjects = (SparseArray<T>) results.values;
+			synchronized (mLock) {
+				mObjects = (SparseArray<T>) results.values;
+			}
 			if (results.count > 0) {
 				notifyDataSetChanged();
 			} else {
