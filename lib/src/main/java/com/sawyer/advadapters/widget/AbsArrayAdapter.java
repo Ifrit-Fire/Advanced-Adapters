@@ -25,11 +25,9 @@ import android.widget.Filter;
 import android.widget.Filterable;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.List;
 
 /**
  * A custom abstract {@link BaseAdapter} that is backed by an {@link ArrayList} of arbitrary
@@ -98,12 +96,9 @@ public abstract class AbsArrayAdapter<T> extends BaseAdapter implements Filterab
 	 * @param items    The items to represent within the adapter.
 	 */
 	public AbsArrayAdapter(Context activity, T[] items) {
-		List<T> list = Arrays.asList(items);
-		if (list instanceof ArrayList) {    //Should always be true...but just in case implementation changes
-			init(activity, (ArrayList<T>) list);
-		} else {
-			init(activity, new ArrayList<>(list));
-		}
+		ArrayList<T> list = new ArrayList<>();
+		Collections.addAll(list, items);
+		init(activity, list);
 	}
 
 	/**
