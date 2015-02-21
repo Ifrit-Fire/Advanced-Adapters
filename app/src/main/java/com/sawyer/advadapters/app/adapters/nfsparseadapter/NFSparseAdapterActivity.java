@@ -137,7 +137,8 @@ public class NFSparseAdapterActivity extends AdapterBaseActivity implements
 	@Override
 	public void onContainsIdClick(int barcode) {
 		if (mListFragment.getListAdapter().containsId(barcode)) {
-			String text = mListFragment.getListAdapter().getItemWithId(barcode).title;
+			@SuppressWarnings("ConstantConditions")    //IF contains covers our NULL case
+					String text = mListFragment.getListAdapter().getItemWithId(barcode).title;
 			ToastHelper.showContainsTrue(this, text);
 		} else {
 			String text = MovieContent.ITEM_SPARSE.get(barcode).title;

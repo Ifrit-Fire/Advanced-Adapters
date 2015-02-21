@@ -123,6 +123,7 @@ public class UnitTestJSONArrayFragment extends ListFragment {
 	@Override
 	public void onListItemClick(ListView l, View v, int position, long id) {
 		Object item = getListAdapter().optItem(position);
+		if (item == null) return;
 		try {
 			if (item instanceof Integer) {
 				getListAdapter().update(position, new Random().nextInt());

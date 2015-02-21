@@ -55,10 +55,12 @@ class MovieJSONAdapter extends JSONAdapter {
 
 		try {
 			JSONObject movie = optItemJSONObject(position);
-			vh.title.setText(movie.getString(MovieItem.JSON_TITLE));
-			vh.subtitle.setText(movie.getString(MovieItem.JSON_YEAR));
-			vh.icon.setImageResource((movie.getBoolean(MovieItem.JSON_IS_RECOMMENDED))
-											 ? R.drawable.ic_rating_good : R.drawable.ic_rating_bad);
+			if (movie != null) {
+				vh.title.setText(movie.getString(MovieItem.JSON_TITLE));
+				vh.subtitle.setText(movie.getString(MovieItem.JSON_YEAR));
+				vh.icon.setImageResource((movie.getBoolean(MovieItem.JSON_IS_RECOMMENDED))
+												 ? R.drawable.ic_rating_good : R.drawable.ic_rating_bad);
+			}
 		} catch (JSONException e) {
 			Log.e(MovieJSONAdapter.class.getSimpleName(), "GetView error", e);
 		}

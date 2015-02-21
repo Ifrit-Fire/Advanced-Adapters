@@ -116,6 +116,7 @@ public class NFJSONAdapterFragment extends ListFragment {
 		//Granted, making a whole new instance is not even necessary here.
 		//However I wanted to demonstrate updating with an entirely different instance.
 		JSONObject oldMovie = getListAdapter().optItemJSONObject(position);
+		if (oldMovie == null) return;
 		MovieItem newMovie = new MovieItem(oldMovie.optInt(MovieItem.JSON_BARCODE));
 		newMovie.title = new StringBuilder(oldMovie.optString(MovieItem.JSON_TITLE, "")).reverse()
 				.toString();
@@ -124,7 +125,7 @@ public class NFJSONAdapterFragment extends ListFragment {
 		try {
 			getListAdapter().update(position, newMovie.toJSONObject());
 		} catch (JSONException e) {
-			Log.e("Error updating JSONArray", e.getMessage());
+			Log.e("Err updating JSONArray", e.getMessage());
 		}
 	}
 
