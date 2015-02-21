@@ -84,6 +84,7 @@
 	<!-- Descriptions (or Messages) -->
 	<string name="desc_sortall_ignores_groups">The sort method will ignore groups and only sort
 		children found within each group.</string>
+	<string name="desc_selected">" Selected"</string>
 
 	<!-- Menu Text -->
 	<string name="menu_about">About</string>

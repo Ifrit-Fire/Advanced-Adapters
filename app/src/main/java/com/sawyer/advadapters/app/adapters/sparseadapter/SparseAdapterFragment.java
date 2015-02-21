@@ -160,7 +160,7 @@ public class SparseAdapterFragment extends ListFragment {
 		public boolean onCreateActionMode(ActionMode mode, Menu menu) {
 			MenuInflater inflater = mode.getMenuInflater();
 			inflater.inflate(R.menu.cab_sparsearray, menu);
-			mode.setTitle(mCheckedItems.size() + " Selected");
+			mode.setTitle(mCheckedItems.size() + getString(R.string.desc_selected));
 			return true;
 		}
 
@@ -177,7 +177,7 @@ public class SparseAdapterFragment extends ListFragment {
 			} else {
 				mCheckedItems.remove((int) id);
 			}
-			mode.setTitle(mCheckedItems.size() + " Selected");
+			mode.setTitle(mCheckedItems.size() + getString(R.string.desc_selected));
 		}
 
 		@Override

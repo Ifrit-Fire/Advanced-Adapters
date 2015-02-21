@@ -172,7 +172,7 @@ public class ArrayAdapterFragment extends ListFragment {
 		public boolean onCreateActionMode(ActionMode mode, Menu menu) {
 			MenuInflater inflater = mode.getMenuInflater();
 			inflater.inflate(R.menu.cab_array, menu);
-			mode.setTitle(mCheckedItems.size() + " Selected");
+			mode.setTitle(mCheckedItems.size() + getString(R.string.desc_selected));
 			return true;
 		}
 
@@ -189,7 +189,7 @@ public class ArrayAdapterFragment extends ListFragment {
 			} else {
 				mCheckedItems.remove(getListAdapter().getItem(position));
 			}
-			mode.setTitle(mCheckedItems.size() + " Selected");
+			mode.setTitle(mCheckedItems.size() + getString(R.string.desc_selected));
 		}
 
 		@Override

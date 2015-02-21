@@ -213,14 +213,14 @@ public class FullDemoFragment extends ExpandableListFragment {
 		@Override
 		public void onChildCheckedStateChanged(ActionMode mode, int groupPosition, long groupId,
 											   int childPosition, long childId, boolean checked) {
-			mode.setTitle(getListAdapter().getCheckedChildCount() + " Selected");
+			mode.setTitle(getListAdapter().getCheckedChildCount() + getString(R.string.desc_selected));
 		}
 
 		@Override
 		public boolean onCreateActionMode(ActionMode mode, Menu menu) {
 			MenuInflater inflater = mode.getMenuInflater();
 			inflater.inflate(R.menu.cab_array, menu);
-			mode.setTitle(getListAdapter().getCheckedChildCount() + " Selected");
+			mode.setTitle(getListAdapter().getCheckedChildCount() + getString(R.string.desc_selected));
 			return true;
 		}
 
@@ -234,7 +234,7 @@ public class FullDemoFragment extends ExpandableListFragment {
 			//If group is expanded, then the onChildCheckedStateChanged method will be invoked. Which
 			//means it'll safely take care of updating our screen.
 			if (getExpandableListView().isGroupExpanded(groupPosition)) return;
-			mode.setTitle(getListAdapter().getCheckedChildCount() + " Selected");
+			mode.setTitle(getListAdapter().getCheckedChildCount() + getString(R.string.desc_selected));
 		}
 
 		@Override

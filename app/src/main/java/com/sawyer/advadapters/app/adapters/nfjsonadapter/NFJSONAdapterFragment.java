@@ -170,7 +170,7 @@ public class NFJSONAdapterFragment extends ListFragment {
 		public boolean onCreateActionMode(ActionMode mode, Menu menu) {
 			MenuInflater inflater = mode.getMenuInflater();
 			inflater.inflate(R.menu.cab_jsonarray, menu);
-			mode.setTitle(mCheckedCount + " Selected");
+			mode.setTitle(mCheckedCount + getString(R.string.desc_selected));
 			return true;
 		}
 
@@ -187,7 +187,7 @@ public class NFJSONAdapterFragment extends ListFragment {
 			} else {
 				--mCheckedCount;
 			}
-			mode.setTitle(mCheckedCount + " Selected");
+			mode.setTitle(mCheckedCount + getString(R.string.desc_selected));
 		}
 
 		@Override

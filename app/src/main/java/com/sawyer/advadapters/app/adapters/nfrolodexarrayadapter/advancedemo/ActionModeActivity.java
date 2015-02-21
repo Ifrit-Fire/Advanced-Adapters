@@ -192,7 +192,7 @@ public class ActionModeActivity extends ExpandableListActivity {
 		public void onChildCheckedStateChanged(ActionMode mode, int groupPosition, long groupId,
 											   int childPosition, long childId, boolean checked) {
 			DemoAdapter adapter = (DemoAdapter) getExpandableListAdapter();
-			mode.setTitle(adapter.getCheckedChildCount() + " Selected");
+			mode.setTitle(adapter.getCheckedChildCount() + getString(R.string.desc_selected));
 		}
 
 		@Override
@@ -200,7 +200,7 @@ public class ActionModeActivity extends ExpandableListActivity {
 			MenuInflater inflater = mode.getMenuInflater();
 			inflater.inflate(R.menu.cab_array, menu);
 			DemoAdapter adapter = (DemoAdapter) getExpandableListAdapter();
-			mode.setTitle(adapter.getCheckedChildCount() + " Selected");
+			mode.setTitle(adapter.getCheckedChildCount() + getString(R.string.desc_selected));
 			return true;
 		}
 
@@ -218,7 +218,7 @@ public class ActionModeActivity extends ExpandableListActivity {
 			//If group is NOT expanded, then the onChildCheckedStateChanged method will NOT be invoked.
 			//which means we need to take care of updating our screen here.
 			DemoAdapter adapter = (DemoAdapter) getExpandableListAdapter();
-			mode.setTitle(adapter.getCheckedChildCount() + " Selected");
+			mode.setTitle(adapter.getCheckedChildCount() + getString(R.string.desc_selected));
 		}
 
 		@Override
