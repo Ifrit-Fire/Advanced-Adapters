@@ -145,7 +145,7 @@ public class UnitTestJSONArrayFragment extends ListFragment {
 				getListAdapter().update(position, MovieContent.ITEM_JSON.opt(new Random().nextInt(
 						MovieContent.ITEM_JSON.length())));
 			} else {
-				Log.e("Unrecognized Object In Click", item.getClass().getSimpleName());
+				Log.e("Unknown Object In Click", item.getClass().getSimpleName());
 			}
 		} catch (JSONException e) {
 			Log.e("Error updating " + item.getClass().getSimpleName(), e.getMessage());

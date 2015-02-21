@@ -24,4 +24,4 @@
 	android:paddingLeft="?android:attr/expandableListPreferredChildPaddingLeft"
 	android:paddingStart="?android:attr/expandableListPreferredChildPaddingLeft"
 	android:textAppearance="?android:attr/textAppearanceListItemSmall"
-	tools:ignore="NewApi"/>
+	tools:ignore="NewApi,Overdraw"/>
