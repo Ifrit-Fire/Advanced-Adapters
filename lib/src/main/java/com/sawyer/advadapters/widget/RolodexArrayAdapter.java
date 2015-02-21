@@ -16,6 +16,8 @@
 package com.sawyer.advadapters.widget;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.widget.ExpandableListView;
 import android.widget.Filter;
@@ -90,7 +92,7 @@ public abstract class RolodexArrayAdapter<G, C> extends PatchedExpandableListAda
 	 *
 	 * @param activity Context used for inflating views
 	 */
-	public RolodexArrayAdapter(Context activity) {
+	public RolodexArrayAdapter(@NonNull Context activity) {
 		super(activity);
 		init(new ArrayList<C>());
 	}
@@ -101,7 +103,7 @@ public abstract class RolodexArrayAdapter<G, C> extends PatchedExpandableListAda
 	 * @param activity Context used for inflating views
 	 * @param items    The items to represent within the adapter.
 	 */
-	public RolodexArrayAdapter(Context activity, C[] items) {
+	public RolodexArrayAdapter(@NonNull Context activity, @NonNull C[] items) {
 		super(activity);
 		List<C> list = Arrays.asList(items);
 		init(list);
@@ -113,13 +115,14 @@ public abstract class RolodexArrayAdapter<G, C> extends PatchedExpandableListAda
 	 * @param activity Context used for inflating views
 	 * @param items    The items to represent within the adapter.
 	 */
-	public RolodexArrayAdapter(Context activity, Collection<C> items) {
+	public RolodexArrayAdapter(@NonNull Context activity, @NonNull Collection<C> items) {
 		super(activity);
 		init(items);
 	}
 
+	@NonNull
 	private static <G, C> Map<G, ArrayList<C>> createNewMap(boolean areGroupsSorted,
-															Map<G, ArrayList<C>> dataToCopy) {
+															@Nullable Map<G, ArrayList<C>> dataToCopy) {
 		if (dataToCopy == null)
 			return areGroupsSorted ? new TreeMap<G, ArrayList<C>>() : new LinkedHashMap<G, ArrayList<C>>();
 		else
@@ -136,7 +139,8 @@ public abstract class RolodexArrayAdapter<G, C> extends PatchedExpandableListAda
 	 *
 	 * @return All values of the given Map joined together. Will never return null.
 	 */
-	static <G, C> ArrayList<C> toArrayList(Map<G, ArrayList<C>> map) {
+	@NonNull
+	static <G, C> ArrayList<C> toArrayList(@NonNull Map<G, ArrayList<C>> map) {
 		ArrayList<C> joinedList = new ArrayList<>();
 		for (Map.Entry<G, ArrayList<C>> entry : map.entrySet()) {
 			joinedList.addAll(entry.getValue());
@@ -150,7 +154,7 @@ public abstract class RolodexArrayAdapter<G, C> extends PatchedExpandableListAda
 	 *
 	 * @param childItem The child item to add at the end of the adapter.
 	 */
-	public void add(C childItem) {
+	public void add(@Nullable C childItem) {
 		synchronized (mLock) {
 			G group = getGroupFor(childItem);
 			if (mOriginalValues != null) {
@@ -184,7 +188,7 @@ public abstract class RolodexArrayAdapter<G, C> extends PatchedExpandableListAda
 	 *
 	 * @param childItems The Collection of children items to add at the end of the adapter.
 	 */
-	public void addAll(Collection<? extends C> childItems) {
+	public void addAll(@NonNull Collection<? extends C> childItems) {
 		synchronized (mLock) {
 			if (mOriginalValues != null) {
 				addAllToOriginalValues(childItems);
@@ -203,7 +207,7 @@ public abstract class RolodexArrayAdapter<G, C> extends PatchedExpandableListAda
 	 * @param childItems The child items to add at the end of the adapter.
 	 */
 	@SafeVarargs
-	public final void addAll(C... childItems) {
+	public final void addAll(@NonNull C... childItems) {
 		synchronized (mLock) {
 			if (mOriginalValues != null) {
 				addAllToOriginalValues(Arrays.asList(childItems));
@@ -215,7 +219,7 @@ public abstract class RolodexArrayAdapter<G, C> extends PatchedExpandableListAda
 		if (mNotifyOnChange) notifyDataSetChanged();
 	}
 
-	private void addAllToObjects(Collection<? extends C> childItems) {
+	private void addAllToObjects(@NonNull Collection<? extends C> childItems) {
 		if (areGroupsSorted()) {
 			for (C item : childItems) {
 				G group = getGroupFor(item);
@@ -241,7 +245,7 @@ public abstract class RolodexArrayAdapter<G, C> extends PatchedExpandableListAda
 		}
 	}
 
-	private void addAllToOriginalValues(Collection<? extends C> childItems) {
+	private void addAllToOriginalValues(@NonNull Collection<? extends C> childItems) {
 		for (C item : childItems) {
 			G group = getGroupFor(item);
 			ArrayList<C> children = mOriginalValues.get(group);
@@ -281,7 +285,7 @@ public abstract class RolodexArrayAdapter<G, C> extends PatchedExpandableListAda
 	 *
 	 * @return {@code true} if the child item is an element of this adapter. {@code false} otherwise
 	 */
-	public boolean contains(C childItem) {
+	public boolean contains(@Nullable C childItem) {
 		G group = getGroupFor(childItem);
 		return mObjects.get(group) != null && mObjects.get(group).contains(childItem);
 	}
@@ -300,6 +304,7 @@ public abstract class RolodexArrayAdapter<G, C> extends PatchedExpandableListAda
 	 * @return An immutable group class object which represents the given child item. Do not return
 	 * null.
 	 */
+	@NonNull
 	public abstract G createGroupFor(C childItem);
 
 	@Override
@@ -317,6 +322,7 @@ public abstract class RolodexArrayAdapter<G, C> extends PatchedExpandableListAda
 		return mObjects.get(mGroupObjects.get(groupPosition)).size();
 	}
 
+	@NonNull
 	@Override
 	public Filter getFilter() {
 		if (mFilter == null) {
@@ -328,6 +334,7 @@ public abstract class RolodexArrayAdapter<G, C> extends PatchedExpandableListAda
 	/**
 	 * @return The shown filtered list. If no filter is applied, then the original list is returned.
 	 */
+	@NonNull
 	public ArrayList<C> getFilteredList() {
 		ArrayList<C> objects;
 		synchronized (mLock) {
@@ -348,6 +355,7 @@ public abstract class RolodexArrayAdapter<G, C> extends PatchedExpandableListAda
 	 *
 	 * @return the ArrayList of children found within the specified group.
 	 */
+	@NonNull
 	public ArrayList<C> getGroupChildren(int groupPosition) {
 		return new ArrayList<>(mObjects.get(mGroupObjects.get(groupPosition)));
 	}
@@ -366,10 +374,13 @@ public abstract class RolodexArrayAdapter<G, C> extends PatchedExpandableListAda
 	 *
 	 * @return Group associated with child. Will never return null.
 	 */
-	public final G getGroupFor(C childItem) {
+	@NonNull
+	public final G getGroupFor(@Nullable C childItem) {
 		G group = getGroupFromCacheFor(childItem);
 		if (group == null) {
 			group = createGroupFor(childItem);
+			//Subclasses may choose to ignore @NonNull, so we suppress inspection and verify for null
+			//noinspection ConstantConditions
 			if (group == null) {
 				throw new NullPointerException(
 						"createGroupFor(child) must return a non-null value");
@@ -401,6 +412,7 @@ public abstract class RolodexArrayAdapter<G, C> extends PatchedExpandableListAda
 	 * is not found in cache.
 	 */
 	@SuppressWarnings("UnusedParameters")
+	@Nullable
 	public G getGroupFromCacheFor(C childItem) {
 		return null;
 	}
@@ -413,6 +425,7 @@ public abstract class RolodexArrayAdapter<G, C> extends PatchedExpandableListAda
 	/**
 	 * @return The original (unfiltered) list of items stored within the Adapter
 	 */
+	@NonNull
 	public ArrayList<C> getList() {
 		ArrayList<C> objects;
 		synchronized (mLock) {
@@ -433,7 +446,7 @@ public abstract class RolodexArrayAdapter<G, C> extends PatchedExpandableListAda
 	 *
 	 * @param childItems New list of children items to store within the adapter.
 	 */
-	public void setList(Collection<? extends C> childItems) {
+	public void setList(@NonNull Collection<? extends C> childItems) {
 		synchronized (mLock) {
 			if (mOriginalValues != null) {
 				mOriginalValues.clear();
@@ -448,7 +461,7 @@ public abstract class RolodexArrayAdapter<G, C> extends PatchedExpandableListAda
 		if (mNotifyOnChange) notifyDataSetChanged();
 	}
 
-	private void init(Collection<C> objects) {
+	private void init(@NonNull Collection<C> objects) {
 		mObjects = createNewMap(areGroupsSorted(), null);
 		mGroupObjects = new ArrayList<>();
 		addAllToObjects(objects);
@@ -466,7 +479,7 @@ public abstract class RolodexArrayAdapter<G, C> extends PatchedExpandableListAda
 	 * @return True if the child item is filtered out by the given constraint. False if the item
 	 * will continue to display in the adapter.
 	 */
-	protected abstract boolean isChildFilteredOut(C childItem, CharSequence constraint);
+	protected abstract boolean isChildFilteredOut(C childItem, @NonNull CharSequence constraint);
 
 	/**
 	 * Determines whether the provided constraint filters out the given group item. If filtered out,
@@ -482,7 +495,7 @@ public abstract class RolodexArrayAdapter<G, C> extends PatchedExpandableListAda
 	 * @return True if the group item (and subsequently all it's children) is filtered out by the
 	 * given constraint. False if the item will continue to display in the adapter.
 	 */
-	protected abstract boolean isGroupFilteredOut(G groupItem, CharSequence constraint);
+	protected abstract boolean isGroupFilteredOut(G groupItem, @NonNull CharSequence constraint);
 
 	@Override
 	public void notifyDataSetChanged() {
@@ -495,7 +508,7 @@ public abstract class RolodexArrayAdapter<G, C> extends PatchedExpandableListAda
 	 *
 	 * @param childItem The child item to remove.
 	 */
-	public void remove(C childItem) {
+	public void remove(@Nullable C childItem) {
 		boolean isModified = false;
 
 		SYNC_BLOCK:
@@ -531,7 +544,7 @@ public abstract class RolodexArrayAdapter<G, C> extends PatchedExpandableListAda
 	 *
 	 * @param childItems The collection of child items to remove
 	 */
-	public void removeAll(Collection<? extends C> childItems) {
+	public void removeAll(@NonNull Collection<? extends C> childItems) {
 		boolean isModified = false;
 
 		synchronized (mLock) {
@@ -566,7 +579,7 @@ public abstract class RolodexArrayAdapter<G, C> extends PatchedExpandableListAda
 	 *
 	 * @param childItems The collection of children items to retain
 	 */
-	public void retainAll(Collection<?> childItems) {
+	public void retainAll(@NonNull Collection<?> childItems) {
 		boolean isModified = false;
 
 		synchronized (mLock) {
@@ -634,7 +647,7 @@ public abstract class RolodexArrayAdapter<G, C> extends PatchedExpandableListAda
 	 *                                      implement {@code Comparable}, or if {@code compareTo}
 	 *                                      throws for any pair of items.
 	 */
-	public void sortAllChildren(Comparator<? super C> comparator) {
+	public void sortAllChildren(@Nullable Comparator<? super C> comparator) {
 		synchronized (mLock) {
 			if (mOriginalValues != null) {
 				for (Map.Entry<G, ArrayList<C>> entry : mOriginalValues.entrySet()) {
@@ -672,7 +685,7 @@ public abstract class RolodexArrayAdapter<G, C> extends PatchedExpandableListAda
 	 *                                      implement {@code Comparable}, or if {@code compareTo}
 	 *                                      throws for any pair of items.
 	 */
-	public void sortGroup(int groupPosition, Comparator<? super C> comparator) {
+	public void sortGroup(int groupPosition, @Nullable Comparator<? super C> comparator) {
 		synchronized (mLock) {
 			G group = mGroupObjects.get(groupPosition);
 			if (mOriginalValues != null) {
@@ -693,7 +706,7 @@ public abstract class RolodexArrayAdapter<G, C> extends PatchedExpandableListAda
 	 * @param childPosition The child location at which to put the specified item
 	 * @param childItem     The new item to replace with the old
 	 */
-	public void update(int groupPosition, int childPosition, C childItem) {
+	public void update(int groupPosition, int childPosition, @Nullable C childItem) {
 		synchronized (mLock) {
 			G oldGroup = mGroupObjects.get(groupPosition);
 			G newGroup = createGroupFor(childItem);    //Can't rely on cache.

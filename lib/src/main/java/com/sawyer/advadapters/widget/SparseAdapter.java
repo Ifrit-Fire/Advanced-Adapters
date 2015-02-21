@@ -16,6 +16,8 @@
 package com.sawyer.advadapters.widget;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
@@ -81,7 +83,7 @@ public abstract class SparseAdapter<T> extends BaseAdapter implements Filterable
 	 *
 	 * @param activity Context used for inflating views
 	 */
-	public SparseAdapter(Context activity) {
+	public SparseAdapter(@NonNull Context activity) {
 		init(activity, null);
 	}
 
@@ -91,7 +93,7 @@ public abstract class SparseAdapter<T> extends BaseAdapter implements Filterable
 	 * @param activity Context used for inflating views
 	 * @param items    The items to represent within the adapter.
 	 */
-	public SparseAdapter(Context activity, SparseArray<T> items) {
+	public SparseAdapter(@NonNull Context activity, @NonNull SparseArray<T> items) {
 		init(activity, items);
 	}
 
@@ -103,7 +105,7 @@ public abstract class SparseAdapter<T> extends BaseAdapter implements Filterable
 	 *
 	 * @param items The SparseArray items to add at the end of the adapter.
 	 */
-	public void appendAll(SparseArray<T> items) {
+	public void appendAll(@NonNull SparseArray<T> items) {
 		synchronized (mLock) {
 			if (mOriginalValues != null) {
 				for (int index = 0; index < items.size(); ++index) {
@@ -127,7 +129,7 @@ public abstract class SparseAdapter<T> extends BaseAdapter implements Filterable
 	 * @param keyId The keyId to append with
 	 * @param item  The item to append with
 	 */
-	public void appendWithId(int keyId, T item) {
+	public void appendWithId(int keyId, @Nullable T item) {
 		synchronized (mLock) {
 			if (mOriginalValues != null) {
 				mOriginalValues.append(keyId, item);
@@ -173,13 +175,14 @@ public abstract class SparseAdapter<T> extends BaseAdapter implements Filterable
 	 *
 	 * @return {@code true} if the item is an element of this adapter. {@code false} otherwise
 	 */
-	public boolean containsItem(T item) {
+	public boolean containsItem(@Nullable T item) {
 		return mObjects.indexOfValue(item) >= 0;
 	}
 
 	/**
 	 * @return The Context associated with this adapter.
 	 */
+	@NonNull
 	public Context getContext() {
 		return mContext;
 	}
@@ -203,8 +206,9 @@ public abstract class SparseAdapter<T> extends BaseAdapter implements Filterable
 	 *
 	 * @return a {@link android.view.View} corresponding to the data at the specified position.
 	 */
-	public View getDropDownView(LayoutInflater inflater, int position, View convertView,
-								ViewGroup parent) {
+	@NonNull
+	public View getDropDownView(@NonNull LayoutInflater inflater, int position,
+								@Nullable View convertView, @NonNull ViewGroup parent) {
 		return getView(inflater, position, convertView, parent);
 	}
 
@@ -214,6 +218,7 @@ public abstract class SparseAdapter<T> extends BaseAdapter implements Filterable
 	}
 
 	@Override
+	@NonNull
 	public Filter getFilter() {
 		if (mFilter == null) {
 			mFilter = new SparseArrayFilter();
@@ -225,6 +230,7 @@ public abstract class SparseAdapter<T> extends BaseAdapter implements Filterable
 	 * @return The shown filtered data as a SparseArray. If no filter is applied, then the original
 	 * (unfiltered) data is returned instead.
 	 */
+	@NonNull
 	public SparseArray<T> getFilteredSparseArray() {
 		SparseArray<T> objects;
 		synchronized (mLock) {
@@ -246,6 +252,7 @@ public abstract class SparseAdapter<T> extends BaseAdapter implements Filterable
 	/**
 	 * @return The Item mapped by the keyId or null if no such mapping has been made
 	 */
+	@Nullable
 	public T getItemWithId(int keyId) {
 		return mObjects.get(keyId);
 	}
@@ -262,7 +269,7 @@ public abstract class SparseAdapter<T> extends BaseAdapter implements Filterable
 	 *
 	 * @return The position of the specified item, or a negative number if not found.
 	 */
-	public int getPosition(T item) {
+	public int getPosition(@Nullable T item) {
 		return mObjects.indexOfValue(item);
 	}
 
@@ -279,6 +286,7 @@ public abstract class SparseAdapter<T> extends BaseAdapter implements Filterable
 	/**
 	 * @return The original (unfiltered) SparseArray of items stored within the adapter.
 	 */
+	@NonNull
 	public SparseArray<T> getSparseArray() {
 		SparseArray<T> objects;
 		synchronized (mLock) {
@@ -300,7 +308,7 @@ public abstract class SparseAdapter<T> extends BaseAdapter implements Filterable
 	 *
 	 * @param items New SparseArray of items to store within the adapter.
 	 */
-	public void setSparseArray(SparseArray<T> items) {
+	public void setSparseArray(@NonNull SparseArray<T> items) {
 		synchronized (mLock) {
 			if (mOriginalValues != null) {
 				mOriginalValues.clear();
@@ -332,15 +340,16 @@ public abstract class SparseAdapter<T> extends BaseAdapter implements Filterable
 	 *
 	 * @return A View corresponding to the data at the specified position
 	 */
-	public abstract View getView(LayoutInflater inflater, int position, View convertView,
-								 ViewGroup parent);
+	@NonNull
+	public abstract View getView(@NonNull LayoutInflater inflater, int position,
+								 @Nullable View convertView, @NonNull ViewGroup parent);
 
 	@Override
 	public final View getView(int position, View convertView, ViewGroup parent) {
 		return this.getView(mInflater, position, convertView, parent);
 	}
 
-	private void init(Context context, SparseArray<T> objects) {
+	private void init(@NonNull Context context, @Nullable SparseArray<T> objects) {
 		mInflater = LayoutInflater.from(context);
 		mContext = context;
 		if (objects == null) {
@@ -362,7 +371,7 @@ public abstract class SparseAdapter<T> extends BaseAdapter implements Filterable
 	 * @return True if the item is filtered out by the given constraint. False if the item will
 	 * continue to display in the adapter.
 	 */
-	protected abstract boolean isFilteredOut(int keyId, T item, CharSequence constraint);
+	protected abstract boolean isFilteredOut(int keyId, T item, @NonNull CharSequence constraint);
 
 	@Override
 	public void notifyDataSetChanged() {
@@ -379,7 +388,7 @@ public abstract class SparseAdapter<T> extends BaseAdapter implements Filterable
 	 * @param position The position of the item to update
 	 * @param item     The item to update with
 	 */
-	public void put(int position, T item) {
+	public void put(int position, @Nullable T item) {
 		synchronized (mLock) {
 			if (mOriginalValues != null) {
 				int newPosition = mOriginalValues.indexOfKey(mObjects.keyAt(position));
@@ -399,7 +408,7 @@ public abstract class SparseAdapter<T> extends BaseAdapter implements Filterable
 	 *
 	 * @param items The SparseArray items to add to the adapter.
 	 */
-	public void putAll(SparseArray<T> items) {
+	public void putAll(@NonNull SparseArray<T> items) {
 		synchronized (mLock) {
 			if (mOriginalValues != null) {
 				for (int index = 0; index < items.size(); ++index) {
@@ -420,7 +429,7 @@ public abstract class SparseAdapter<T> extends BaseAdapter implements Filterable
 	 * specified key if there was one. Will repeat the last filtering request if invoked while
 	 * filtered results are being displayed.
 	 */
-	public void putWithId(int keyId, T item) {
+	public void putWithId(int keyId, @Nullable T item) {
 		synchronized (mLock) {
 			if (mOriginalValues != null) {
 				mOriginalValues.put(keyId, item);
@@ -456,7 +465,7 @@ public abstract class SparseAdapter<T> extends BaseAdapter implements Filterable
 	 *
 	 * @param items The SparseArray items to remove from the adapter.
 	 */
-	public void removeAll(SparseArray<T> items) {
+	public void removeAll(@NonNull SparseArray<T> items) {
 		synchronized (mLock) {
 			if (mOriginalValues != null) {
 				for (int index = 0; index < items.size(); ++index) {

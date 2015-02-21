@@ -16,6 +16,8 @@
 package com.sawyer.advadapters.widget;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -62,7 +64,7 @@ public abstract class NFJSONArrayAdapter extends BaseAdapter {
 	 *
 	 * @param activity Context used for inflating views
 	 */
-	public NFJSONArrayAdapter(Context activity) {
+	public NFJSONArrayAdapter(@NonNull Context activity) {
 		init(activity, new JSONArray());
 	}
 
@@ -75,7 +77,8 @@ public abstract class NFJSONArrayAdapter extends BaseAdapter {
 	 *
 	 * @throws org.json.JSONException if the parse fails or doesn't yield a {@code JSONArray}.
 	 */
-	public NFJSONArrayAdapter(Context activity, JSONTokener readFrom) throws JSONException {
+	public NFJSONArrayAdapter(@NonNull Context activity,
+							  @NonNull JSONTokener readFrom) throws JSONException {
 		init(activity, new JSONArray(readFrom));
 	}
 
@@ -87,11 +90,12 @@ public abstract class NFJSONArrayAdapter extends BaseAdapter {
 	 *
 	 * @throws org.json.JSONException if the parse fails or doesn't yield a {@code JSONArray}.
 	 */
-	public NFJSONArrayAdapter(Context activity, String json) throws JSONException {
+	public NFJSONArrayAdapter(@NonNull Context activity,
+							  @NonNull String json) throws JSONException {
 		init(activity, new JSONArray(json));
 	}
 
-	public NFJSONArrayAdapter(Context activity, JSONArray array) {
+	public NFJSONArrayAdapter(@NonNull Context activity, @NonNull JSONArray array) {
 		init(activity, generateCopy(array));
 	}
 
@@ -101,15 +105,15 @@ public abstract class NFJSONArrayAdapter extends BaseAdapter {
 	 * @param activity Context used for inflating views
 	 * @param items    The items to represent within the adapter.
 	 */
-	public NFJSONArrayAdapter(Context activity, Collection items) {
+	public NFJSONArrayAdapter(@NonNull Context activity, @NonNull Collection items) {
 		init(activity, new JSONArray(items));
 	}
 
 	/**
-	 * Creates a new {@code JSONArray} with values from another. Adds backward support as this only
-	 * exists in API19.
+	 * Creates a new {@code JSONArray} with values from another.
 	 */
-	private static JSONArray generateCopy(JSONArray array) {
+	@NonNull
+	private static JSONArray generateCopy(@NonNull JSONArray array) {
 		JSONArray copy = new JSONArray();
 		for (int i = 0; i < array.length(); ++i) {
 			Object object = array.opt(i);
@@ -126,7 +130,7 @@ public abstract class NFJSONArrayAdapter extends BaseAdapter {
 	 *
 	 * @param item The item to add at the end of the adapter.
 	 */
-	public void add(Object item) {
+	public void add(@Nullable Object item) {
 		mObjects.put(item);
 		if (mNotifyOnChange) notifyDataSetChanged();
 	}
@@ -179,7 +183,7 @@ public abstract class NFJSONArrayAdapter extends BaseAdapter {
 	 *
 	 * @param items The JSONArray to add at the end of the adapter.
 	 */
-	public void addAll(JSONArray items) {
+	public void addAll(@NonNull JSONArray items) {
 		for (int index = 0; index < items.length(); ++index) {
 			mObjects.put(items.opt(index));
 		}
@@ -197,6 +201,7 @@ public abstract class NFJSONArrayAdapter extends BaseAdapter {
 	/**
 	 * @return The Context associated with this adapter.
 	 */
+	@NonNull
 	public Context getContext() {
 		return mContext;
 	}
@@ -220,8 +225,9 @@ public abstract class NFJSONArrayAdapter extends BaseAdapter {
 	 *
 	 * @return a {@link android.view.View} corresponding to the data at the specified position.
 	 */
-	public View getDropDownView(LayoutInflater inflater, int position, View convertView,
-								ViewGroup parent) {
+	@NonNull
+	public View getDropDownView(@NonNull LayoutInflater inflater, int position,
+								@Nullable View convertView, @NonNull ViewGroup parent) {
 		return getView(inflater, position, convertView, parent);
 	}
 
@@ -231,10 +237,11 @@ public abstract class NFJSONArrayAdapter extends BaseAdapter {
 	}
 
 	@Override
+	@NonNull
 	public Object getItem(int position) {
 		Object object = mObjects.opt(position);
 		if (object == null) {
-			//A pain but can't add throws to this overrided method
+			//A pain but can't add throws to this overridden method
 			if (position < 0 || position >= mObjects.length()) {
 				throw new IndexOutOfBoundsException();
 			} else {
@@ -300,6 +307,7 @@ public abstract class NFJSONArrayAdapter extends BaseAdapter {
 	 *
 	 * @throws org.json.JSONException If the value at position doesn't exit or is not a JSONArray.
 	 */
+	@NonNull
 	public JSONArray getItemJSONArray(int position) throws JSONException {
 		return mObjects.getJSONArray(position);
 	}
@@ -313,6 +321,7 @@ public abstract class NFJSONArrayAdapter extends BaseAdapter {
 	 *
 	 * @throws org.json.JSONException If the value at position doesn't exit or is not a JSONObject.
 	 */
+	@NonNull
 	public JSONObject getItemJSONObject(int position) throws JSONException {
 		return mObjects.getJSONObject(position);
 	}
@@ -340,6 +349,7 @@ public abstract class NFJSONArrayAdapter extends BaseAdapter {
 	 *
 	 * @throws org.json.JSONException If no such value exists.
 	 */
+	@NonNull
 	public String getItemString(int position) throws JSONException {
 		return mObjects.getString(position);
 	}
@@ -347,6 +357,7 @@ public abstract class NFJSONArrayAdapter extends BaseAdapter {
 	/**
 	 * @return The original list of items stored within the Adapter
 	 */
+	@NonNull
 	public JSONArray getJSONArray() {
 		return generateCopy(mObjects);
 	}
@@ -359,7 +370,7 @@ public abstract class NFJSONArrayAdapter extends BaseAdapter {
 	 *
 	 * @param items New JSONArray of items to store within the adapter.
 	 */
-	public void setJSONArray(JSONArray items) {
+	public void setJSONArray(@NonNull JSONArray items) {
 		mObjects = generateCopy(items);
 		if (mNotifyOnChange) notifyDataSetChanged();
 	}
@@ -384,15 +395,16 @@ public abstract class NFJSONArrayAdapter extends BaseAdapter {
 	 *
 	 * @return A View corresponding to the data at the specified position.
 	 */
-	public abstract View getView(LayoutInflater inflater, int position, View convertView,
-								 ViewGroup parent);
+	@NonNull
+	public abstract View getView(@NonNull LayoutInflater inflater, int position,
+								 @Nullable View convertView, @Nullable ViewGroup parent);
 
 	@Override
 	public final View getView(int position, View convertView, ViewGroup parent) {
 		return this.getView(mInflater, position, convertView, parent);
 	}
 
-	private void init(Context context, JSONArray objects) {
+	private void init(@NonNull Context context, @NonNull JSONArray objects) {
 		mInflater = LayoutInflater.from(context);
 		mContext = context;
 		mObjects = objects;
@@ -420,6 +432,7 @@ public abstract class NFJSONArrayAdapter extends BaseAdapter {
 	 *
 	 * @return The data at the specified position or null.
 	 */
+	@Nullable
 	public Object optItem(int position) {
 		return mObjects.opt(position);
 	}
@@ -507,6 +520,7 @@ public abstract class NFJSONArrayAdapter extends BaseAdapter {
 	 *
 	 * @return The JSONArray data at the specified position or null.
 	 */
+	@Nullable
 	public JSONArray optItemJSONArray(int position) {
 		return mObjects.optJSONArray(position);
 	}
@@ -519,6 +533,7 @@ public abstract class NFJSONArrayAdapter extends BaseAdapter {
 	 *
 	 * @return The JSONObject data at the specified position or null.
 	 */
+	@Nullable
 	public JSONObject optItemJSONObject(int position) {
 		return mObjects.optJSONObject(position);
 	}
@@ -556,6 +571,7 @@ public abstract class NFJSONArrayAdapter extends BaseAdapter {
 	 *
 	 * @return The String data at the specified position or null.
 	 */
+	@Nullable
 	public String optItemString(int position) {
 		return mObjects.optString(position);
 	}
@@ -569,7 +585,8 @@ public abstract class NFJSONArrayAdapter extends BaseAdapter {
 	 *
 	 * @return The String data at the specified position or otherwise the fallback.
 	 */
-	public String optItemString(int position, String fallback) {
+	@Nullable
+	public String optItemString(int position, @Nullable String fallback) {
 		return mObjects.optString(position, fallback);
 	}
 
@@ -596,7 +613,7 @@ public abstract class NFJSONArrayAdapter extends BaseAdapter {
 	 *
 	 * @throws org.json.JSONException If item is NaN or infinity
 	 */
-	public void update(int position, Object item) throws JSONException {
+	public void update(int position, @Nullable Object item) throws JSONException {
 		mObjects.put(position, item);
 		if (mNotifyOnChange) notifyDataSetChanged();
 	}

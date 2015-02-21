@@ -16,6 +16,8 @@
 package com.sawyer.advadapters.widget;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -58,7 +60,7 @@ public abstract class NFSparseAdapter<T> extends BaseAdapter {
 	 *
 	 * @param activity Context used for inflating views
 	 */
-	public NFSparseAdapter(Context activity) {
+	public NFSparseAdapter(@NonNull Context activity) {
 		init(activity, null);
 	}
 
@@ -68,7 +70,7 @@ public abstract class NFSparseAdapter<T> extends BaseAdapter {
 	 * @param activity Context used for inflating views
 	 * @param items    The items to represent within the adapter.
 	 */
-	public NFSparseAdapter(Context activity, SparseArray<T> items) {
+	public NFSparseAdapter(@NonNull Context activity, @NonNull SparseArray<T> items) {
 		init(activity, items);
 	}
 
@@ -79,7 +81,7 @@ public abstract class NFSparseAdapter<T> extends BaseAdapter {
 	 *
 	 * @param items The SparseArray items to add at the end of the adapter.
 	 */
-	public void appendAll(SparseArray<T> items) {
+	public void appendAll(@NonNull SparseArray<T> items) {
 		for (int index = 0; index < items.size(); ++index) {
 			mObjects.append(items.keyAt(index), items.valueAt(index));
 		}
@@ -93,7 +95,7 @@ public abstract class NFSparseAdapter<T> extends BaseAdapter {
 	 * @param keyId The keyId to append with
 	 * @param item  The item to append with
 	 */
-	public void appendWithId(int keyId, T item) {
+	public void appendWithId(int keyId, @Nullable T item) {
 		mObjects.append(keyId, item);
 		if (mNotifyOnChange) notifyDataSetChanged();
 	}
@@ -129,13 +131,14 @@ public abstract class NFSparseAdapter<T> extends BaseAdapter {
 	 *
 	 * @return {@code true} if the item is an element of this adapter. {@code false} otherwise
 	 */
-	public boolean containsItem(T item) {
+	public boolean containsItem(@Nullable T item) {
 		return mObjects.indexOfValue(item) >= 0;
 	}
 
 	/**
 	 * @return The Context associated with this adapter.
 	 */
+	@NonNull
 	public Context getContext() {
 		return mContext;
 	}
@@ -159,8 +162,9 @@ public abstract class NFSparseAdapter<T> extends BaseAdapter {
 	 *
 	 * @return a {@link android.view.View} corresponding to the data at the specified position.
 	 */
-	public View getDropDownView(LayoutInflater inflater, int position, View convertView,
-								ViewGroup parent) {
+	@NonNull
+	public View getDropDownView(@NonNull LayoutInflater inflater, int position,
+								@Nullable View convertView, @NonNull ViewGroup parent) {
 		return getView(inflater, position, convertView, parent);
 	}
 
@@ -182,6 +186,7 @@ public abstract class NFSparseAdapter<T> extends BaseAdapter {
 	/**
 	 * @return The Item mapped by the keyId or null if no such mapping has been made
 	 */
+	@Nullable
 	public T getItemWithId(int keyId) {
 		return mObjects.get(keyId);
 	}
@@ -198,7 +203,7 @@ public abstract class NFSparseAdapter<T> extends BaseAdapter {
 	 *
 	 * @return The position of the specified item, or a negative number if not found.
 	 */
-	public int getPosition(T item) {
+	public int getPosition(@Nullable T item) {
 		return mObjects.indexOfValue(item);
 	}
 
@@ -214,6 +219,7 @@ public abstract class NFSparseAdapter<T> extends BaseAdapter {
 	/**
 	 * @return The SparseArray of items stored within the adapter.
 	 */
+	@NonNull
 	public SparseArray<T> getSparseArray() {
 		return mObjects.clone();
 	}
@@ -226,7 +232,7 @@ public abstract class NFSparseAdapter<T> extends BaseAdapter {
 	 *
 	 * @param items New SparseArray of items to store within the adapter.
 	 */
-	public void setSparseArray(SparseArray<T> items) {
+	public void setSparseArray(@NonNull SparseArray<T> items) {
 		mObjects.clear();
 		mObjects = items.clone();
 		if (mNotifyOnChange) notifyDataSetChanged();
@@ -250,15 +256,16 @@ public abstract class NFSparseAdapter<T> extends BaseAdapter {
 	 *
 	 * @return A View corresponding to the data at the specified position
 	 */
-	public abstract View getView(LayoutInflater inflater, int position, View convertView,
-								 ViewGroup parent);
+	@NonNull
+	public abstract View getView(@NonNull LayoutInflater inflater, int position,
+								 @Nullable View convertView, @NonNull ViewGroup parent);
 
 	@Override
 	public final View getView(int position, View convertView, ViewGroup parent) {
 		return this.getView(mInflater, position, convertView, parent);
 	}
 
-	private void init(Context context, SparseArray<T> objects) {
+	private void init(@NonNull Context context, @Nullable SparseArray<T> objects) {
 		mInflater = LayoutInflater.from(context);
 		mContext = context;
 		if (objects == null) {
@@ -281,7 +288,7 @@ public abstract class NFSparseAdapter<T> extends BaseAdapter {
 	 * @param position The position of the item to update
 	 * @param item     The item to update with
 	 */
-	public void put(int position, T item) {
+	public void put(int position, @Nullable T item) {
 		mObjects.setValueAt(position, item);
 		if (mNotifyOnChange) notifyDataSetChanged();
 	}
@@ -292,7 +299,7 @@ public abstract class NFSparseAdapter<T> extends BaseAdapter {
 	 *
 	 * @param items The SparseArray items to add to the adapter.
 	 */
-	public void putAll(SparseArray<T> items) {
+	public void putAll(@NonNull SparseArray<T> items) {
 		for (int index = 0; index < items.size(); ++index) {
 			mObjects.put(items.keyAt(index), items.valueAt(index));
 		}
@@ -303,7 +310,7 @@ public abstract class NFSparseAdapter<T> extends BaseAdapter {
 	 * Adds the specified key and item to the adapter, replacing the previous mapping from the
 	 * specified key if there was one.
 	 */
-	public void putWithId(int keyId, T item) {
+	public void putWithId(int keyId, @Nullable T item) {
 		mObjects.put(keyId, item);
 		if (mNotifyOnChange) notifyDataSetChanged();
 	}
@@ -323,7 +330,7 @@ public abstract class NFSparseAdapter<T> extends BaseAdapter {
 	 *
 	 * @param items The SparseArray items to remove from the adapter.
 	 */
-	public void removeAll(SparseArray<T> items) {
+	public void removeAll(@NonNull SparseArray<T> items) {
 		for (int index = 0; index < items.size(); ++index) {
 			mObjects.delete(items.keyAt(index));
 		}

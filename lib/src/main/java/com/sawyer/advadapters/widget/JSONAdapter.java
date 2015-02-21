@@ -16,6 +16,8 @@
 package com.sawyer.advadapters.widget;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -112,7 +114,7 @@ public abstract class JSONAdapter extends BaseAdapter implements Filterable {
 	 *
 	 * @param activity Context used for inflating views
 	 */
-	public JSONAdapter(Context activity) {
+	public JSONAdapter(@NonNull Context activity) {
 		init(activity, new JSONArray());
 	}
 
@@ -125,7 +127,8 @@ public abstract class JSONAdapter extends BaseAdapter implements Filterable {
 	 *
 	 * @throws JSONException if the parse fails or doesn't yield a {@code JSONArray}.
 	 */
-	public JSONAdapter(Context activity, JSONTokener readFrom) throws JSONException {
+	public JSONAdapter(@NonNull Context activity,
+					   @NonNull JSONTokener readFrom) throws JSONException {
 		init(activity, new JSONArray(readFrom));
 	}
 
@@ -137,11 +140,11 @@ public abstract class JSONAdapter extends BaseAdapter implements Filterable {
 	 *
 	 * @throws JSONException if the parse fails or doesn't yield a {@code JSONArray}.
 	 */
-	public JSONAdapter(Context activity, String json) throws JSONException {
+	public JSONAdapter(@NonNull Context activity, @NonNull String json) throws JSONException {
 		init(activity, new JSONArray(json));
 	}
 
-	public JSONAdapter(Context activity, JSONArray array) {
+	public JSONAdapter(@NonNull Context activity, @NonNull JSONArray array) {
 		init(activity, generateCopy(array));
 	}
 
@@ -151,15 +154,15 @@ public abstract class JSONAdapter extends BaseAdapter implements Filterable {
 	 * @param activity Context used for inflating views
 	 * @param items    The items to represent within the adapter.
 	 */
-	public JSONAdapter(Context activity, Collection items) {
+	public JSONAdapter(@NonNull Context activity, @NonNull Collection items) {
 		init(activity, new JSONArray(items));
 	}
 
 	/**
-	 * Creates a new {@code JSONArray} with values from another. Adds backward support as this only
-	 * exists in API19.
+	 * Creates a new {@code JSONArray} with values from another.
 	 */
-	private static JSONArray generateCopy(JSONArray array) {
+	@NonNull
+	private static JSONArray generateCopy(@NonNull JSONArray array) {
 		JSONArray copy = new JSONArray();
 		for (int i = 0; i < array.length(); ++i) {
 			Object object = array.opt(i);
@@ -171,7 +174,7 @@ public abstract class JSONAdapter extends BaseAdapter implements Filterable {
 	}
 
 	/**
-	 * Determines whether the given method has he proper signature of a isFiltered method.
+	 * Determines whether the given method has the proper signature of an isFiltered method.
 	 * Specifically looking for the following: <ul><li>Name equals <i>"isFilteredOut"</i></li>
 	 * <li>Returns a primitive boolean</li> <li>Has exactly 2 parameters</li> <li>The 2nd param is a
 	 * CharSequence</li> </ul> If the method matches the criteria, the first parameter is extracted
@@ -182,7 +185,8 @@ public abstract class JSONAdapter extends BaseAdapter implements Filterable {
 	 * @return String value of a filtered methods 1st parameter. Null if the method does not have
 	 * the proper signature.
 	 */
-	private static String getFilterMethodKey(Method m) {
+	@Nullable
+	private static String getFilterMethodKey(@NonNull Method m) {
 		if ("isFilteredOut".equals(m.getName()) && m.getGenericReturnType().equals(boolean.class)) {
 			Type[] params = m.getGenericParameterTypes();
 			if (params.length == 2 && params[1].equals(CharSequence.class)) {
@@ -200,7 +204,7 @@ public abstract class JSONAdapter extends BaseAdapter implements Filterable {
 	 *
 	 * @param item The item to add at the end of the adapter.
 	 */
-	public void add(Object item) {
+	public void add(@Nullable Object item) {
 		synchronized (mLock) {
 			if (mOriginalValues != null) {
 				mOriginalValues.put(item);
@@ -293,7 +297,7 @@ public abstract class JSONAdapter extends BaseAdapter implements Filterable {
 	 *
 	 * @param items The JSONArray to add at the end of the adapter.
 	 */
-	public void addAll(JSONArray items) {
+	public void addAll(@NonNull JSONArray items) {
 		synchronized (mLock) {
 			if (mOriginalValues != null) {
 				for (int index = 0; index < items.length(); ++index) {
@@ -316,7 +320,7 @@ public abstract class JSONAdapter extends BaseAdapter implements Filterable {
 	 *
 	 * @param items The items to add at the end of the adapter.
 	 */
-	public void addAll(Object... items) {
+	public void addAll(@NonNull Object... items) {
 		synchronized (mLock) {
 			if (mOriginalValues != null) {
 				for (Object object : items) {
@@ -403,6 +407,7 @@ public abstract class JSONAdapter extends BaseAdapter implements Filterable {
 	/**
 	 * @return The Context associated with this adapter.
 	 */
+	@NonNull
 	public Context getContext() {
 		return mContext;
 	}
@@ -426,8 +431,9 @@ public abstract class JSONAdapter extends BaseAdapter implements Filterable {
 	 *
 	 * @return a {@link android.view.View} corresponding to the data at the specified position.
 	 */
-	public View getDropDownView(LayoutInflater inflater, int position, View convertView,
-								ViewGroup parent) {
+	@NonNull
+	public View getDropDownView(@NonNull LayoutInflater inflater, int position,
+								@Nullable View convertView, @NonNull ViewGroup parent) {
 		return getView(inflater, position, convertView, parent);
 	}
 
@@ -437,6 +443,7 @@ public abstract class JSONAdapter extends BaseAdapter implements Filterable {
 	}
 
 	@Override
+	@NonNull
 	public Filter getFilter() {
 		if (mFilter == null) {
 			mFilter = new JSONArrayFilter();
@@ -448,6 +455,7 @@ public abstract class JSONAdapter extends BaseAdapter implements Filterable {
 	 * @return The shown filtered JSONArray. If no filter is applied, then the original JSONArray is
 	 * returned.
 	 */
+	@NonNull
 	public JSONArray getFilteredJSONArray() {
 		JSONArray objects;
 		synchronized (mLock) {
@@ -457,6 +465,7 @@ public abstract class JSONAdapter extends BaseAdapter implements Filterable {
 	}
 
 	@Override
+	@NonNull
 	public Object getItem(int position) {
 		Object object = mObjects.opt(position);
 		if (object == null) {
@@ -525,6 +534,7 @@ public abstract class JSONAdapter extends BaseAdapter implements Filterable {
 	 *
 	 * @throws JSONException If the value at position doesn't exit or is not a JSONArray.
 	 */
+	@NonNull
 	public JSONArray getItemJSONArray(int position) throws JSONException {
 		return mObjects.getJSONArray(position);
 	}
@@ -538,6 +548,7 @@ public abstract class JSONAdapter extends BaseAdapter implements Filterable {
 	 *
 	 * @throws JSONException If the value at position doesn't exit or is not a JSONObject.
 	 */
+	@NonNull
 	public JSONObject getItemJSONObject(int position) throws JSONException {
 		return mObjects.getJSONObject(position);
 	}
@@ -564,6 +575,7 @@ public abstract class JSONAdapter extends BaseAdapter implements Filterable {
 	 *
 	 * @throws JSONException If no such value exists.
 	 */
+	@NonNull
 	public String getItemString(int position) throws JSONException {
 		return mObjects.getString(position);
 	}
@@ -571,6 +583,7 @@ public abstract class JSONAdapter extends BaseAdapter implements Filterable {
 	/**
 	 * @return The original (unfiltered) list of items stored within the Adapter
 	 */
+	@NonNull
 	public JSONArray getJSONArray() {
 		JSONArray objects;
 		synchronized (mLock) {
@@ -591,7 +604,7 @@ public abstract class JSONAdapter extends BaseAdapter implements Filterable {
 	 *
 	 * @param items New JSONArray of items to store within the adapter.
 	 */
-	public void setJSONArray(JSONArray items) {
+	public void setJSONArray(@NonNull JSONArray items) {
 		synchronized (mLock) {
 			if (mOriginalValues != null) {
 				mOriginalValues = generateCopy(items);
@@ -623,15 +636,16 @@ public abstract class JSONAdapter extends BaseAdapter implements Filterable {
 	 *
 	 * @return A View corresponding to the data at the specified position.
 	 */
-	public abstract View getView(LayoutInflater inflater, int position, View convertView,
-								 ViewGroup parent);
+	@NonNull
+	public abstract View getView(@NonNull LayoutInflater inflater, int position,
+								 @Nullable View convertView, @NonNull ViewGroup parent);
 
 	@Override
 	public final View getView(int position, View convertView, ViewGroup parent) {
 		return this.getView(mInflater, position, convertView, parent);
 	}
 
-	private void init(Context context, JSONArray objects) {
+	private void init(@NonNull Context context, @NonNull JSONArray objects) {
 		mInflater = LayoutInflater.from(context);
 		mContext = context;
 		mObjects = objects;
@@ -652,7 +666,7 @@ public abstract class JSONAdapter extends BaseAdapter implements Filterable {
 	 * @return True if the item is filtered out by the given constraint. False if the item will
 	 * continue to display in the adapter.
 	 */
-	protected boolean isFilteredOut(Boolean item, CharSequence constraint) {
+	protected boolean isFilteredOut(Boolean item, @NonNull CharSequence constraint) {
 		return !item.toString().equalsIgnoreCase(constraint.toString());
 	}
 
@@ -668,7 +682,7 @@ public abstract class JSONAdapter extends BaseAdapter implements Filterable {
 	 * @return True if the item is filtered out by the given constraint. False if the item will
 	 * continue to display in the adapter.
 	 */
-	protected boolean isFilteredOut(Double item, CharSequence constraint) {
+	protected boolean isFilteredOut(Double item, @NonNull CharSequence constraint) {
 		try {
 			return !item.equals(Double.valueOf(constraint.toString()));
 		} catch (NumberFormatException e) {
@@ -688,7 +702,7 @@ public abstract class JSONAdapter extends BaseAdapter implements Filterable {
 	 * @return True if the item is filtered out by the given constraint. False if the item will
 	 * continue to display in the adapter.
 	 */
-	protected boolean isFilteredOut(Integer item, CharSequence constraint) {
+	protected boolean isFilteredOut(Integer item, @NonNull CharSequence constraint) {
 		try {
 			return !item.equals(Integer.valueOf(constraint.toString()));
 		} catch (NumberFormatException e) {
@@ -708,7 +722,7 @@ public abstract class JSONAdapter extends BaseAdapter implements Filterable {
 	 * @return True if the item is filtered out by the given constraint. False if the item will
 	 * continue to display in the adapter.
 	 */
-	protected boolean isFilteredOut(Long item, CharSequence constraint) {
+	protected boolean isFilteredOut(Long item, @NonNull CharSequence constraint) {
 		try {
 			return !item.equals(Long.valueOf(constraint.toString()));
 		} catch (NumberFormatException e) {
@@ -728,7 +742,7 @@ public abstract class JSONAdapter extends BaseAdapter implements Filterable {
 	 * @return True if the item is filtered out by the given constraint. False if the item will
 	 * continue to display in the adapter.
 	 */
-	protected abstract boolean isFilteredOut(Object item, CharSequence constraint);
+	protected abstract boolean isFilteredOut(Object item, @NonNull CharSequence constraint);
 
 	/**
 	 * Determines whether the provided constraint filters out the given item. Subclass to provide
@@ -742,7 +756,7 @@ public abstract class JSONAdapter extends BaseAdapter implements Filterable {
 	 * @return True if the item is filtered out by the given constraint. False if the item will
 	 * continue to display in the adapter.
 	 */
-	protected boolean isFilteredOut(String item, CharSequence constraint) {
+	protected boolean isFilteredOut(String item, @NonNull CharSequence constraint) {
 		return !item.toLowerCase().contains(constraint.toString().toLowerCase());
 	}
 
@@ -768,6 +782,7 @@ public abstract class JSONAdapter extends BaseAdapter implements Filterable {
 	 *
 	 * @return The data at the specified position or null.
 	 */
+	@Nullable
 	public Object optItem(int position) {
 		return mObjects.opt(position);
 	}
@@ -855,6 +870,7 @@ public abstract class JSONAdapter extends BaseAdapter implements Filterable {
 	 *
 	 * @return The JSONArray data at the specified position or null.
 	 */
+	@Nullable
 	public JSONArray optItemJSONArray(int position) {
 		return mObjects.optJSONArray(position);
 	}
@@ -867,6 +883,7 @@ public abstract class JSONAdapter extends BaseAdapter implements Filterable {
 	 *
 	 * @return The JSONObject data at the specified position or null.
 	 */
+	@Nullable
 	public JSONObject optItemJSONObject(int position) {
 		return mObjects.optJSONObject(position);
 	}
@@ -904,6 +921,7 @@ public abstract class JSONAdapter extends BaseAdapter implements Filterable {
 	 *
 	 * @return The String data at the specified position or null.
 	 */
+	@Nullable
 	public String optItemString(int position) {
 		return mObjects.optString(position);
 	}
@@ -917,7 +935,8 @@ public abstract class JSONAdapter extends BaseAdapter implements Filterable {
 	 *
 	 * @return The String data at the specified position or otherwise the fallback.
 	 */
-	public String optItemString(int position, String fallback) {
+	@Nullable
+	public String optItemString(int position, @Nullable String fallback) {
 		return mObjects.optString(position, fallback);
 	}
 
@@ -972,30 +991,28 @@ public abstract class JSONAdapter extends BaseAdapter implements Filterable {
 			}
 
 			final JSONArray newValues = new JSONArray();
-			if (values != null) {
-				Object[] varargs = new Object[2];
-				varargs[1] = constraint;
-				for (int index = 0; index < values.length(); ++index) {
-					Object value = values.opt(index);
-					Method m = mFilterMethods.get(value.getClass().getName());
-					if (m != null) {
-						varargs[0] = value;
-						try {
-							boolean result = (boolean) m
-									.invoke(JSONAdapter.this, varargs);
-							if (!result) newValues.put(value);
-						} catch (IllegalAccessException e) {
-							Log.w(m.getName(),
-								  "Method not accessible. Using `isFilteredOut(Object)` instead");
-							if (!isFilteredOut(value, constraint)) newValues.put(value);
-						} catch (InvocationTargetException e) {
-							Log.w(m.getName(), "Exception thrown by method. Gracefully skipping " +
-											   mObjects.toString());
-						}
-					} else {
-						Log.v("No method defined for", value.getClass().getName());
+			Object[] varargs = new Object[2];
+			varargs[1] = constraint;
+			for (int index = 0; index < values.length(); ++index) {
+				Object value = values.opt(index);
+				Method m = mFilterMethods.get(value.getClass().getName());
+				if (m != null) {
+					varargs[0] = value;
+					try {
+						boolean result = (boolean) m
+								.invoke(JSONAdapter.this, varargs);
+						if (!result) newValues.put(value);
+					} catch (IllegalAccessException e) {
+						Log.w(m.getName(),
+							  "Method not accessible. Using `isFilteredOut(Object)` instead");
 						if (!isFilteredOut(value, constraint)) newValues.put(value);
+					} catch (InvocationTargetException e) {
+						Log.w(m.getName(), "Exception thrown by method. Gracefully skipping " +
+										   mObjects.toString());
 					}
+				} else {
+					Log.v("No method defined for", value.getClass().getName());
+					if (!isFilteredOut(value, constraint)) newValues.put(value);
 				}
 			}
 

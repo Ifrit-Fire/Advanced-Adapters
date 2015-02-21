@@ -17,6 +17,8 @@
 package com.sawyer.advadapters.widget;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -63,7 +65,7 @@ public abstract class NFRolodexArrayAdapter<G, C> extends PatchedExpandableListA
 	 *
 	 * @param activity Context used for inflating views
 	 */
-	public NFRolodexArrayAdapter(Context activity) {
+	public NFRolodexArrayAdapter(@NonNull Context activity) {
 		super(activity);
 		init(new ArrayList<C>());
 	}
@@ -74,7 +76,7 @@ public abstract class NFRolodexArrayAdapter<G, C> extends PatchedExpandableListA
 	 * @param activity Context used for inflating views
 	 * @param items    The items to represent within the adapter.
 	 */
-	public NFRolodexArrayAdapter(Context activity, C[] items) {
+	public NFRolodexArrayAdapter(@NonNull Context activity, @NonNull C[] items) {
 		super(activity);
 		List<C> list = Arrays.asList(items);
 		init(list);
@@ -86,13 +88,14 @@ public abstract class NFRolodexArrayAdapter<G, C> extends PatchedExpandableListA
 	 * @param activity Context used for inflating views
 	 * @param items    The items to represent within the adapter.
 	 */
-	public NFRolodexArrayAdapter(Context activity, Collection<C> items) {
+	public NFRolodexArrayAdapter(@NonNull Context activity, @NonNull Collection<C> items) {
 		super(activity);
 		init(items);
 	}
 
+	@NonNull
 	private static <G, C> Map<G, ArrayList<C>> createNewMap(boolean areGroupsSorted,
-															Map<G, ArrayList<C>> dataToCopy) {
+															@Nullable Map<G, ArrayList<C>> dataToCopy) {
 		if (dataToCopy == null)
 			return areGroupsSorted ? new TreeMap<G, ArrayList<C>>() : new LinkedHashMap<G, ArrayList<C>>();
 		else
@@ -109,7 +112,8 @@ public abstract class NFRolodexArrayAdapter<G, C> extends PatchedExpandableListA
 	 *
 	 * @return All values of the given Map joined together. Will never return null.
 	 */
-	static <G, C> ArrayList<C> toArrayList(Map<G, ArrayList<C>> map) {
+	@NonNull
+	static <G, C> ArrayList<C> toArrayList(@NonNull Map<G, ArrayList<C>> map) {
 		ArrayList<C> joinedList = new ArrayList<>();
 		for (Map.Entry<G, ArrayList<C>> entry : map.entrySet()) {
 			joinedList.addAll(entry.getValue());
@@ -122,7 +126,7 @@ public abstract class NFRolodexArrayAdapter<G, C> extends PatchedExpandableListA
 	 *
 	 * @param childItem The child item to add at the end of the adapter.
 	 */
-	public void add(C childItem) {
+	public void add(@Nullable C childItem) {
 		G group = getGroupFor(childItem);
 		ArrayList<C> children = mObjects.get(group);
 		if (children == null) {
@@ -143,7 +147,7 @@ public abstract class NFRolodexArrayAdapter<G, C> extends PatchedExpandableListA
 	 *
 	 * @param childItems The Collection of children items to add at the end of the adapter.
 	 */
-	public void addAll(Collection<? extends C> childItems) {
+	public void addAll(@NonNull Collection<? extends C> childItems) {
 		addAllToObjects(childItems);
 		if (mNotifyOnChange) notifyDataSetChanged();
 	}
@@ -154,12 +158,12 @@ public abstract class NFRolodexArrayAdapter<G, C> extends PatchedExpandableListA
 	 * @param childItems The child items to add at the end of the adapter.
 	 */
 	@SafeVarargs
-	public final void addAll(C... childItems) {
+	public final void addAll(@NonNull C... childItems) {
 		addAllToObjects(Arrays.asList(childItems));
 		if (mNotifyOnChange) notifyDataSetChanged();
 	}
 
-	private void addAllToObjects(Collection<? extends C> childItems) {
+	private void addAllToObjects(@NonNull Collection<? extends C> childItems) {
 		if (areGroupsSorted()) {
 			for (C item : childItems) {
 				G group = getGroupFor(item);
@@ -208,7 +212,7 @@ public abstract class NFRolodexArrayAdapter<G, C> extends PatchedExpandableListA
 	 *
 	 * @return {@code true} if the child item is an element of this adapter. {@code false} otherwise
 	 */
-	public boolean contains(C childItem) {
+	public boolean contains(@Nullable C childItem) {
 		G group = getGroupFor(childItem);
 		return mObjects.get(group) != null && mObjects.get(group).contains(childItem);
 	}
@@ -227,6 +231,7 @@ public abstract class NFRolodexArrayAdapter<G, C> extends PatchedExpandableListA
 	 * @return An immutable group class object which represents the given child item. Do not return
 	 * null.
 	 */
+	@NonNull
 	public abstract G createGroupFor(C childItem);
 
 	@Override
@@ -256,6 +261,7 @@ public abstract class NFRolodexArrayAdapter<G, C> extends PatchedExpandableListA
 	 *
 	 * @return the ArrayList of children found within the specified group.
 	 */
+	@NonNull
 	public ArrayList<C> getGroupChildren(int groupPosition) {
 		return new ArrayList<>(mObjects.get(mGroupObjects.get(groupPosition)));
 	}
@@ -274,10 +280,13 @@ public abstract class NFRolodexArrayAdapter<G, C> extends PatchedExpandableListA
 	 *
 	 * @return Group associated with child. Will never return null.
 	 */
+	@NonNull
 	public final G getGroupFor(C childItem) {
 		G group = getGroupFromCacheFor(childItem);
 		if (group == null) {
 			group = createGroupFor(childItem);
+			//Subclasses may choose to ignore @NonNull, so we suppress inspection and verify for null
+			//noinspection ConstantConditions
 			if (group == null) {
 				throw new NullPointerException(
 						"createGroupFor(child) must return a non-null value");
@@ -309,6 +318,7 @@ public abstract class NFRolodexArrayAdapter<G, C> extends PatchedExpandableListA
 	 * is not found in cache.
 	 */
 	@SuppressWarnings("UnusedParameters")
+	@Nullable
 	public G getGroupFromCacheFor(C childItem) {
 		return null;
 	}
@@ -321,6 +331,7 @@ public abstract class NFRolodexArrayAdapter<G, C> extends PatchedExpandableListA
 	/**
 	 * @return The original list of items stored within the Adapter
 	 */
+	@NonNull
 	public ArrayList<C> getList() {
 		return toArrayList(mObjects);
 	}
@@ -332,14 +343,14 @@ public abstract class NFRolodexArrayAdapter<G, C> extends PatchedExpandableListA
 	 *
 	 * @param childItems New list of children items to store within the adapter.
 	 */
-	public void setList(Collection<? extends C> childItems) {
+	public void setList(@NonNull Collection<? extends C> childItems) {
 		mObjects.clear();
 		mGroupObjects.clear();
 		addAllToObjects(childItems);
 		if (mNotifyOnChange) notifyDataSetChanged();
 	}
 
-	private void init(Collection<C> objects) {
+	private void init(@NonNull Collection<C> objects) {
 		mObjects = createNewMap(areGroupsSorted(), null);
 		mGroupObjects = new ArrayList<>();
 		addAllToObjects(objects);
@@ -356,7 +367,7 @@ public abstract class NFRolodexArrayAdapter<G, C> extends PatchedExpandableListA
 	 *
 	 * @param childItem The child item to remove.
 	 */
-	public void remove(C childItem) {
+	public void remove(@Nullable C childItem) {
 		G group = getGroupFor(childItem);
 		ArrayList<C> children = mObjects.get(group);
 		if (children == null) return; //Can't find group, item already removed or doesn't exist
@@ -374,7 +385,7 @@ public abstract class NFRolodexArrayAdapter<G, C> extends PatchedExpandableListA
 	 *
 	 * @param childItems The collection of child items to remove
 	 */
-	public void removeAll(Collection<? extends C> childItems) {
+	public void removeAll(@NonNull Collection<? extends C> childItems) {
 		boolean isModified = false;
 		for (C item : childItems) {
 			G group = getGroupFor(item);
@@ -393,7 +404,7 @@ public abstract class NFRolodexArrayAdapter<G, C> extends PatchedExpandableListA
 	 *
 	 * @param childItems The collection of children items to retain
 	 */
-	public void retainAll(Collection<?> childItems) {
+	public void retainAll(@NonNull Collection<?> childItems) {
 		boolean isModified = false;
 		Iterator<Map.Entry<G, ArrayList<C>>> it = mObjects.entrySet().iterator();
 		while (it.hasNext()) {
@@ -447,7 +458,7 @@ public abstract class NFRolodexArrayAdapter<G, C> extends PatchedExpandableListA
 	 *                            {@code Comparable}, or if {@code compareTo} throws for any pair of
 	 *                            items.
 	 */
-	public void sortAllChildren(Comparator<? super C> comparator) {
+	public void sortAllChildren(@Nullable Comparator<? super C> comparator) {
 		for (Map.Entry<G, ArrayList<C>> entry : mObjects.entrySet()) {
 			Collections.sort(entry.getValue(), comparator);
 		}
@@ -478,7 +489,7 @@ public abstract class NFRolodexArrayAdapter<G, C> extends PatchedExpandableListA
 	 *                            {@code Comparable}, or if {@code compareTo} throws for any pair of
 	 *                            items.
 	 */
-	public void sortGroup(int groupPosition, Comparator<? super C> comparator) {
+	public void sortGroup(int groupPosition, @Nullable Comparator<? super C> comparator) {
 		G group = mGroupObjects.get(groupPosition);
 		Collections.sort(mObjects.get(group), comparator);
 		if (mNotifyOnChange) notifyDataSetChanged();
@@ -493,7 +504,7 @@ public abstract class NFRolodexArrayAdapter<G, C> extends PatchedExpandableListA
 	 * @param childPosition The child location at which to put the specified item
 	 * @param childItem     The new item to replace with the old
 	 */
-	public void update(int groupPosition, int childPosition, C childItem) {
+	public void update(int groupPosition, int childPosition, @Nullable C childItem) {
 		G oldGroup = mGroupObjects.get(groupPosition);
 		G newGroup = createGroupFor(childItem);    //Can't rely on cache.
 

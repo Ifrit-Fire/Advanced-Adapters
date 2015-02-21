@@ -19,6 +19,8 @@ package com.sawyer.advadapters.widget;
 import android.content.Context;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.ActionMode;
@@ -66,7 +68,7 @@ import java.util.Set;
  * <p/>
  */
 public abstract class PatchedExpandableListAdapter extends BaseExpandableListAdapter {
-	private static final String TAG = "PatchedExpandableListAdapter";
+	private static final String TAG = "PatchedExpand...Adapter";
 
 	private final OnDisableTouchListener mDisableTouchListener = new OnDisableTouchListener();
 	private final OnChoiceModeClickListener mChoiceModeClickListener = new OnChoiceModeClickListener();
@@ -156,12 +158,12 @@ public abstract class PatchedExpandableListAdapter extends BaseExpandableListAda
 	 *
 	 * @param activity Context used for inflating views
 	 */
-	PatchedExpandableListAdapter(Context activity) {
+	public PatchedExpandableListAdapter(Context activity) {
 		init(activity);
 	}
 
 	/** Convenience method to log when we unexpectedly lost our ExpandableListView reference. */
-	private static void logLostReference(String method) {
+	private static void logLostReference(@NonNull String method) {
 		Log.w(TAG, "Lost reference to ExpandableListView in " + method);
 	}
 
@@ -263,6 +265,7 @@ public abstract class PatchedExpandableListAdapter extends BaseExpandableListAda
 	 * @return A new array which contains the id of each checked item in the list. Will never
 	 * contain a null value.
 	 */
+	@NonNull
 	public Long[] getCheckedChildIds() {
 		return (mCheckStates == null) ? new Long[]{0L} : mCheckStates.getCheckedChildIds();
 	}
@@ -274,6 +277,7 @@ public abstract class PatchedExpandableListAdapter extends BaseExpandableListAda
 	 * @return A Long array which contains only those children positions which are checked. Note
 	 * these are packed positions.
 	 */
+	@NonNull
 	public Long[] getCheckedChildPositions() {
 		return (mCheckStates == null) ? new Long[]{-1L} : mCheckStates.getCheckedChildPositions();
 	}
@@ -303,6 +307,7 @@ public abstract class PatchedExpandableListAdapter extends BaseExpandableListAda
 	 * @return A new array which contains the id of each checked item in the list. Will never
 	 * contain a null value.
 	 */
+	@NonNull
 	public Long[] getCheckedGroupIds() {
 		return (mCheckStates == null) ? new Long[]{0L} : mCheckStates.getCheckedGroupIds();
 	}
@@ -313,6 +318,7 @@ public abstract class PatchedExpandableListAdapter extends BaseExpandableListAda
 	 *
 	 * @return An Integer array which contains only those group positions which are checked.
 	 */
+	@NonNull
 	public Integer[] getCheckedGroupPositions() {
 		return (mCheckStates == null) ? new Integer[]{-1} : mCheckStates.getCheckedGroupPositions();
 	}
@@ -334,9 +340,10 @@ public abstract class PatchedExpandableListAdapter extends BaseExpandableListAda
 	 *
 	 * @return the View corresponding to the child at the specified position
 	 */
-	public abstract View getChildView(LayoutInflater inflater, int groupPosition, int childPosition,
-									  boolean isLastChild,
-									  View convertView, ViewGroup parent);
+	@NonNull
+	public abstract View getChildView(@NonNull LayoutInflater inflater, int groupPosition,
+									  int childPosition, boolean isLastChild,
+									  @Nullable View convertView, @NonNull ViewGroup parent);
 
 	@Override
 	public final View getChildView(int groupPosition, int childPosition, boolean isLastChild,
@@ -350,6 +357,7 @@ public abstract class PatchedExpandableListAdapter extends BaseExpandableListAda
 	/**
 	 * @return The current choice mode to be applied to the attached {@link ExpandableListView}
 	 */
+	@NonNull
 	public ChoiceMode getChoiceMode() {
 		return mChoiceMode;
 	}
@@ -367,7 +375,7 @@ public abstract class PatchedExpandableListAdapter extends BaseExpandableListAda
 	 *
 	 * @param choiceMode One of the {@link ChoiceMode NONE} options
 	 */
-	public void setChoiceMode(ChoiceMode choiceMode) {
+	public void setChoiceMode(@NonNull ChoiceMode choiceMode) {
 		if (mChoiceMode == choiceMode) return;
 		mChoiceMode = choiceMode;
 		if (mChoiceActionMode != null) {
@@ -386,6 +394,7 @@ public abstract class PatchedExpandableListAdapter extends BaseExpandableListAda
 	/**
 	 * @return The Context associated with this adapter.
 	 */
+	@NonNull
 	public Context getContext() {
 		return mContext;
 	}
@@ -447,9 +456,10 @@ public abstract class PatchedExpandableListAdapter extends BaseExpandableListAda
 	 *
 	 * @return The View corresponding to the group at the specified position
 	 */
-	public abstract View getGroupView(LayoutInflater inflater, int groupPosition,
-									  boolean isExpanded, View convertView,
-									  ViewGroup parent);
+	@NonNull
+	public abstract View getGroupView(@NonNull LayoutInflater inflater, int groupPosition,
+									  boolean isExpanded, @Nullable View convertView,
+									  @NonNull ViewGroup parent);
 
 	/**
 	 * @return Whether groups are always forced to render expanded. Default is false.
@@ -463,7 +473,7 @@ public abstract class PatchedExpandableListAdapter extends BaseExpandableListAda
 		return false;
 	}
 
-	private void init(Context activity) {
+	private void init(@NonNull Context activity) {
 		mContext = activity;
 		mInflater = LayoutInflater.from(mContext);
 		mExpandableListView = new WeakReference<>(null);    //We'll obtain reference in getGroupView
@@ -528,7 +538,7 @@ public abstract class PatchedExpandableListAdapter extends BaseExpandableListAda
 	 *
 	 * @see #onSaveInstanceState()
 	 */
-	public void onRestoreInstanceState(Parcelable state) {
+	public void onRestoreInstanceState(@Nullable Parcelable state) {
 		if (state instanceof SavedState) {
 			SavedState ss = (SavedState) state;
 			setChoiceMode(ss.choiceMode);
@@ -556,6 +566,7 @@ public abstract class PatchedExpandableListAdapter extends BaseExpandableListAda
 	 *
 	 * @see #onRestoreInstanceState(android.os.Parcelable)
 	 */
+	@NonNull
 	public Parcelable onSaveInstanceState() {
 		SavedState ss = new SavedState();
 		if (mCheckStates != null) {
@@ -655,7 +666,6 @@ public abstract class PatchedExpandableListAdapter extends BaseExpandableListAda
 	 * @param groupPosition The position of the group.
 	 * @param isChecked     The new checked state for the child item.
 	 */
-	@SuppressWarnings("UnnecessaryReturnStatement")
 	public void setGroupChecked(int groupPosition, boolean isChecked) {
 		if (mChoiceMode.isDisabled()) return;
 		boolean updateViews;
@@ -732,8 +742,7 @@ public abstract class PatchedExpandableListAdapter extends BaseExpandableListAda
 	 *
 	 * @param listener Callback that will manage the selection mode
 	 */
-
-	public void setMultiChoiceModeListener(ChoiceModeListener listener) {
+	public void setMultiChoiceModeListener(@Nullable ChoiceModeListener listener) {
 		if (mModalChoiceModeWrapper == null) {
 			mModalChoiceModeWrapper = new ChoiceModeWrapper();
 		}
@@ -753,7 +762,7 @@ public abstract class PatchedExpandableListAdapter extends BaseExpandableListAda
 	 * @param onChildClickListener The callback that will be invoked.
 	 */
 	public void setOnChildClickListener(
-			ExpandableListView.OnChildClickListener onChildClickListener) {
+			@Nullable ExpandableListView.OnChildClickListener onChildClickListener) {
 		mOnChildClickListener = onChildClickListener;
 		updateClickListeners(null);
 	}
@@ -771,7 +780,7 @@ public abstract class PatchedExpandableListAdapter extends BaseExpandableListAda
 	 * @param onGroupClickListener The callback that will be invoked.
 	 */
 	public void setOnGroupClickListener(
-			ExpandableListView.OnGroupClickListener onGroupClickListener) {
+			@Nullable ExpandableListView.OnGroupClickListener onGroupClickListener) {
 		mOnGroupClickListener = onGroupClickListener;
 		updateClickListeners(null);
 	}
@@ -791,7 +800,7 @@ public abstract class PatchedExpandableListAdapter extends BaseExpandableListAda
 		updateClickListeners(null);
 	}
 
-	private void updateChildCheckedView(int groupPosition, int childPosition, View v) {
+	private void updateChildCheckedView(int groupPosition, int childPosition, @NonNull View v) {
 		if (mCheckStates == null) return;
 		if (v instanceof Checkable)
 			((Checkable) v).setChecked(mCheckStates.getChild(groupPosition, childPosition));
@@ -805,7 +814,7 @@ public abstract class PatchedExpandableListAdapter extends BaseExpandableListAda
 	 * @param debugTag Text to output if we unexpectedly loose ExpandableListView referencing. Null
 	 *                 if we don't care and nothing will be logged.
 	 */
-	private void updateClickListeners(String debugTag) {
+	private void updateClickListeners(@Nullable String debugTag) {
 		ExpandableListView lv = mExpandableListView.get();
 		if (lv == null) {
 			if (!TextUtils.isEmpty(debugTag)) logLostReference(debugTag);
@@ -837,7 +846,7 @@ public abstract class PatchedExpandableListAdapter extends BaseExpandableListAda
 		}
 	}
 
-	private void updateGroupCheckedView(int groupPosition, View v) {
+	private void updateGroupCheckedView(int groupPosition, @NonNull View v) {
 		if (mCheckStates == null) return;
 		if (v instanceof Checkable)
 			((Checkable) v).setChecked(mCheckStates.getGroup(groupPosition));
@@ -898,8 +907,9 @@ public abstract class PatchedExpandableListAdapter extends BaseExpandableListAda
 		 * @param checked       <code>true</code> if the item is now checked, <code>false</code> if
 		 *                      the item is now unchecked.
 		 */
-		public void onChildCheckedStateChanged(ActionMode mode, int groupPosition, long groupId,
-											   int childPosition, long childId, boolean checked);
+		public void onChildCheckedStateChanged(@NonNull ActionMode mode, int groupPosition,
+											   long groupId, int childPosition, long childId,
+											   boolean checked);
 
 		/**
 		 * Called when a group item is checked or unchecked during selection mode. If the group is
@@ -913,8 +923,8 @@ public abstract class PatchedExpandableListAdapter extends BaseExpandableListAda
 		 * @param checked       <code>true</code> if the item is now checked, <code>false</code> if
 		 *                      the item is now unchecked.
 		 */
-		public void onGroupCheckedStateChanged(ActionMode mode, int groupPosition, long groupId,
-											   boolean checked);
+		public void onGroupCheckedStateChanged(@NonNull ActionMode mode, int groupPosition,
+											   long groupId, boolean checked);
 	}
 
 	private static class OnDisableTouchListener implements View.OnTouchListener {
@@ -953,7 +963,7 @@ public abstract class PatchedExpandableListAdapter extends BaseExpandableListAda
 		}
 
 		@SuppressWarnings("unchecked")
-		public SavedState(Parcel source) {
+		public SavedState(@NonNull Parcel source) {
 			int size = source.readInt();
 			if (size >= 0) {
 				groupIds = new HashMap<>(size);
@@ -979,7 +989,7 @@ public abstract class PatchedExpandableListAdapter extends BaseExpandableListAda
 		}
 
 		//Be careful on what K and V are. Must be valid Object types for use with Parcel#writeValue()
-		private static <K, V> void writeMap(Parcel dest, Map<K, V> map) {
+		private static <K, V> void writeMap(@NonNull Parcel dest, @Nullable Map<K, V> map) {
 			if (map == null) {
 				dest.writeInt(-1);
 			} else {
@@ -1045,6 +1055,7 @@ public abstract class PatchedExpandableListAdapter extends BaseExpandableListAda
 			return hasStableIds() ? childIds.size() : childPositions.size();
 		}
 
+		@NonNull
 		public Long[] getCheckedChildIds() {
 			if (hasStableIds())
 				return childIds.keySet().toArray(new Long[childIds.size()]);
@@ -1052,6 +1063,7 @@ public abstract class PatchedExpandableListAdapter extends BaseExpandableListAda
 				return new Long[]{0L};
 		}
 
+		@NonNull
 		public Long[] getCheckedChildPositions() {
 			if (hasStableIds())
 				return childIds.values().toArray(new Long[childIds.size()]);
@@ -1063,6 +1075,7 @@ public abstract class PatchedExpandableListAdapter extends BaseExpandableListAda
 			return hasStableIds() ? groupIds.size() : groupPositions.size();
 		}
 
+		@NonNull
 		public Long[] getCheckedGroupIds() {
 			if (hasStableIds())
 				return groupIds.keySet().toArray(new Long[groupIds.size()]);
@@ -1070,6 +1083,7 @@ public abstract class PatchedExpandableListAdapter extends BaseExpandableListAda
 				return new Long[]{0L};
 		}
 
+		@NonNull
 		public Integer[] getCheckedGroupPositions() {
 			if (hasStableIds())
 				return groupIds.values().toArray(new Integer[groupIds.size()]);
@@ -1191,7 +1205,7 @@ public abstract class PatchedExpandableListAdapter extends BaseExpandableListAda
 			return mWrapped.onPrepareActionMode(mode, menu);
 		}
 
-		public void setWrapped(ChoiceModeListener wrapped) {
+		public void setWrapped(@Nullable ChoiceModeListener wrapped) {
 			mWrapped = wrapped;
 		}
 	}

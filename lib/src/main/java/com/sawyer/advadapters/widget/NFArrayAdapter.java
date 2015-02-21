@@ -16,6 +16,8 @@
 package com.sawyer.advadapters.widget;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -58,7 +60,7 @@ public abstract class NFArrayAdapter<T> extends BaseAdapter {
 	 *
 	 * @param activity Context used for inflating views
 	 */
-	public NFArrayAdapter(Context activity) {
+	public NFArrayAdapter(@NonNull Context activity) {
 		init(activity, new ArrayList<T>());
 	}
 
@@ -68,7 +70,7 @@ public abstract class NFArrayAdapter<T> extends BaseAdapter {
 	 * @param activity Context used for inflating views
 	 * @param items    The items to represent within the adapter.
 	 */
-	public NFArrayAdapter(Context activity, Collection<T> items) {
+	public NFArrayAdapter(@NonNull Context activity, @NonNull Collection<T> items) {
 		init(activity, new ArrayList<>(items));
 	}
 
@@ -78,7 +80,7 @@ public abstract class NFArrayAdapter<T> extends BaseAdapter {
 	 * @param activity Context used for inflating views
 	 * @param items    The items to represent within the adapter.
 	 */
-	public NFArrayAdapter(Context activity, T[] items) {
+	public NFArrayAdapter(@NonNull Context activity, @NonNull T[] items) {
 		ArrayList<T> list = new ArrayList<>();
 		Collections.addAll(list, items);
 		init(activity, list);
@@ -89,7 +91,7 @@ public abstract class NFArrayAdapter<T> extends BaseAdapter {
 	 *
 	 * @param item The item to add at the end of the adapter.
 	 */
-	public void add(T item) {
+	public void add(@Nullable T item) {
 		mObjects.add(item);
 		if (mNotifyOnChange) notifyDataSetChanged();
 	}
@@ -99,7 +101,7 @@ public abstract class NFArrayAdapter<T> extends BaseAdapter {
 	 *
 	 * @param items The Collection to add at the end of the adapter.
 	 */
-	public void addAll(Collection<? extends T> items) {
+	public void addAll(@NonNull Collection<? extends T> items) {
 		boolean isModified = mObjects.addAll(items);
 		if (isModified && mNotifyOnChange) notifyDataSetChanged();
 	}
@@ -110,7 +112,7 @@ public abstract class NFArrayAdapter<T> extends BaseAdapter {
 	 * @param items The items to add at the end of the adapter.
 	 */
 	@SafeVarargs
-	public final void addAll(T... items) {
+	public final void addAll(@NonNull T... items) {
 		boolean isModified = Collections.addAll(mObjects, items);
 		if (isModified && mNotifyOnChange) notifyDataSetChanged();
 	}
@@ -131,7 +133,7 @@ public abstract class NFArrayAdapter<T> extends BaseAdapter {
 	 *
 	 * @return {@code true} if the item is an element of this adapter. {@code false} otherwise
 	 */
-	public boolean contains(T item) {
+	public boolean contains(@Nullable T item) {
 		return mObjects.contains(item);
 	}
 
@@ -144,13 +146,14 @@ public abstract class NFArrayAdapter<T> extends BaseAdapter {
 	 * @return {@code true} if all items in the specified collection are elements of this adapter,
 	 * {@code false} otherwise
 	 */
-	public boolean containsAll(Collection<?> items) {
+	public boolean containsAll(@NonNull Collection<?> items) {
 		return mObjects.containsAll(items);
 	}
 
 	/**
 	 * @return The Context associated with this adapter.
 	 */
+	@NonNull
 	public Context getContext() {
 		return mContext;
 	}
@@ -174,8 +177,9 @@ public abstract class NFArrayAdapter<T> extends BaseAdapter {
 	 *
 	 * @return a {@link android.view.View} corresponding to the data at the specified position.
 	 */
-	public View getDropDownView(LayoutInflater inflater, int position, View convertView,
-								ViewGroup parent) {
+	@NonNull
+	public View getDropDownView(@NonNull LayoutInflater inflater, int position,
+								@Nullable View convertView, @NonNull ViewGroup parent) {
 		return getView(inflater, position, convertView, parent);
 	}
 
@@ -197,6 +201,7 @@ public abstract class NFArrayAdapter<T> extends BaseAdapter {
 	/**
 	 * @return The  list of items stored within the Adapter
 	 */
+	@NonNull
 	public ArrayList<T> getList() {
 		return new ArrayList<>(mObjects);
 	}
@@ -208,7 +213,7 @@ public abstract class NFArrayAdapter<T> extends BaseAdapter {
 	 *
 	 * @param items New list of items to store within the adapter.
 	 */
-	public void setList(Collection<? extends T> items) {
+	public void setList(@NonNull Collection<? extends T> items) {
 		mObjects.clear();
 		mObjects.addAll(items);
 		if (mNotifyOnChange) notifyDataSetChanged();
@@ -222,7 +227,7 @@ public abstract class NFArrayAdapter<T> extends BaseAdapter {
 	 *
 	 * @return The position of the specified item.
 	 */
-	public int getPosition(T item) {
+	public int getPosition(@Nullable T item) {
 		return mObjects.indexOf(item);
 	}
 
@@ -246,15 +251,15 @@ public abstract class NFArrayAdapter<T> extends BaseAdapter {
 	 *
 	 * @return A View corresponding to the data at the specified position.
 	 */
-	public abstract View getView(LayoutInflater inflater, int position, View convertView,
-								 ViewGroup parent);
+	public abstract View getView(@NonNull LayoutInflater inflater, int position,
+								 @Nullable View convertView, @NonNull ViewGroup parent);
 
 	@Override
 	public final View getView(int position, View convertView, ViewGroup parent) {
 		return this.getView(mInflater, position, convertView, parent);
 	}
 
-	private void init(Context context, ArrayList<T> items) {
+	private void init(@NonNull Context context, @NonNull ArrayList<T> items) {
 		mInflater = LayoutInflater.from(context);
 		mContext = context;
 		mObjects = items;
@@ -266,7 +271,7 @@ public abstract class NFArrayAdapter<T> extends BaseAdapter {
 	 * @param index The index at which the item must be inserted.
 	 * @param item  The item to insert into the adapter.
 	 */
-	public void insert(int index, T item) {
+	public void insert(int index, @Nullable T item) {
 		mObjects.add(index, item);
 		if (mNotifyOnChange) notifyDataSetChanged();
 	}
@@ -278,7 +283,7 @@ public abstract class NFArrayAdapter<T> extends BaseAdapter {
 	 * @param index The index at which the items must be inserted.
 	 * @param items The collection of items to be inserted.
 	 */
-	public void insertAll(int index, Collection<? extends T> items) {
+	public void insertAll(int index, @NonNull Collection<? extends T> items) {
 		boolean isModified = mObjects.addAll(index, items);
 		if (isModified && mNotifyOnChange) notifyDataSetChanged();
 	}
@@ -294,7 +299,7 @@ public abstract class NFArrayAdapter<T> extends BaseAdapter {
 	 *
 	 * @param item The item to remove.
 	 */
-	public void remove(T item) {
+	public void remove(@Nullable T item) {
 		boolean isModified = mObjects.remove(item);
 		if (isModified && mNotifyOnChange) notifyDataSetChanged();
 	}
@@ -304,7 +309,7 @@ public abstract class NFArrayAdapter<T> extends BaseAdapter {
 	 *
 	 * @param items The collection of items to remove
 	 */
-	public void removeAll(Collection<?> items) {
+	public void removeAll(@NonNull Collection<?> items) {
 		boolean isModified = mObjects.removeAll(items);
 		if (isModified && mNotifyOnChange) notifyDataSetChanged();
 	}
@@ -314,7 +319,7 @@ public abstract class NFArrayAdapter<T> extends BaseAdapter {
 	 *
 	 * @param items The collection of items to retain
 	 */
-	public void retainAll(Collection<?> items) {
+	public void retainAll(@NonNull Collection<?> items) {
 		boolean isModified = mObjects.retainAll(items);
 		if (isModified && mNotifyOnChange) notifyDataSetChanged();
 	}
@@ -357,7 +362,7 @@ public abstract class NFArrayAdapter<T> extends BaseAdapter {
 	 *                            {@code Comparable} or if {@code compareTo} throws for any pair of
 	 *                            items.
 	 */
-	public void sort(Comparator<? super T> comparator) {
+	public void sort(@Nullable Comparator<? super T> comparator) {
 		Collections.sort(mObjects, comparator);
 		if (mNotifyOnChange) notifyDataSetChanged();
 	}
@@ -369,7 +374,7 @@ public abstract class NFArrayAdapter<T> extends BaseAdapter {
 	 * @param position The location at which to put the specified item
 	 * @param item     The new item to replace with the old
 	 */
-	public void update(int position, T item) {
+	public void update(int position, @Nullable T item) {
 		mObjects.set(position, item);
 		if (mNotifyOnChange) notifyDataSetChanged();
 	}

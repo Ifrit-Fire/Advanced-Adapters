@@ -16,6 +16,8 @@
 package com.sawyer.advadapters.widget;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -85,7 +87,7 @@ public abstract class AbsArrayAdapter<T> extends BaseAdapter implements Filterab
 	 *
 	 * @param activity Context used for inflating views
 	 */
-	public AbsArrayAdapter(Context activity) {
+	public AbsArrayAdapter(@NonNull Context activity) {
 		init(activity, new ArrayList<T>());
 	}
 
@@ -95,7 +97,7 @@ public abstract class AbsArrayAdapter<T> extends BaseAdapter implements Filterab
 	 * @param activity Context used for inflating views
 	 * @param items    The items to represent within the adapter.
 	 */
-	public AbsArrayAdapter(Context activity, T[] items) {
+	public AbsArrayAdapter(@NonNull Context activity, @NonNull T[] items) {
 		ArrayList<T> list = new ArrayList<>();
 		Collections.addAll(list, items);
 		init(activity, list);
@@ -107,7 +109,7 @@ public abstract class AbsArrayAdapter<T> extends BaseAdapter implements Filterab
 	 * @param activity Context used for inflating views
 	 * @param items    The items to represent within the adapter.
 	 */
-	public AbsArrayAdapter(Context activity, Collection<T> items) {
+	public AbsArrayAdapter(@NonNull Context activity, @NonNull Collection<T> items) {
 		init(activity, new ArrayList<>(items));
 	}
 
@@ -117,7 +119,7 @@ public abstract class AbsArrayAdapter<T> extends BaseAdapter implements Filterab
 	 *
 	 * @param items The items to add at the end of the adapter.
 	 */
-	public void add(T items) {
+	public void add(@Nullable T items) {
 		synchronized (mLock) {
 			if (mOriginalValues != null) {
 				mOriginalValues.add(items);
@@ -135,7 +137,7 @@ public abstract class AbsArrayAdapter<T> extends BaseAdapter implements Filterab
 	 *
 	 * @param items The Collection to add at the end of the adapter.
 	 */
-	public void addAll(Collection<? extends T> items) {
+	public void addAll(@NonNull Collection<? extends T> items) {
 		boolean isModified;
 
 		synchronized (mLock) {
@@ -156,7 +158,7 @@ public abstract class AbsArrayAdapter<T> extends BaseAdapter implements Filterab
 	 * @param items The items to add at the end of the adapter.
 	 */
 	@SafeVarargs
-	public final void addAll(T... items) {
+	public final void addAll(@NonNull T... items) {
 		boolean isModified;
 
 		synchronized (mLock) {
@@ -189,7 +191,7 @@ public abstract class AbsArrayAdapter<T> extends BaseAdapter implements Filterab
 	 *
 	 * @return {@code true} if the item is an element of this adapter. {@code false} otherwise
 	 */
-	public boolean contains(T item) {
+	public boolean contains(@Nullable T item) {
 		return mObjects.contains(item);
 	}
 
@@ -202,13 +204,14 @@ public abstract class AbsArrayAdapter<T> extends BaseAdapter implements Filterab
 	 * @return {@code true} if all items in the specified collection are elements of this adapter,
 	 * {@code false} otherwise
 	 */
-	public boolean containsAll(Collection<?> items) {
+	public boolean containsAll(@NonNull Collection<?> items) {
 		return mObjects.containsAll(items);
 	}
 
 	/**
 	 * @return The Context associated with this adapter.
 	 */
+	@NonNull
 	public Context getContext() {
 		return mContext;
 	}
@@ -232,8 +235,9 @@ public abstract class AbsArrayAdapter<T> extends BaseAdapter implements Filterab
 	 *
 	 * @return a {@link android.view.View} corresponding to the data at the specified position.
 	 */
-	public View getDropDownView(LayoutInflater inflater, int position, View convertView,
-								ViewGroup parent) {
+	@NonNull
+	public View getDropDownView(@NonNull LayoutInflater inflater, int position,
+								@Nullable View convertView, @NonNull ViewGroup parent) {
 		return getView(inflater, position, convertView, parent);
 	}
 
@@ -242,6 +246,7 @@ public abstract class AbsArrayAdapter<T> extends BaseAdapter implements Filterab
 		return getDropDownView(mInflater, position, convertView, parent);
 	}
 
+	@NonNull
 	@Override
 	public Filter getFilter() {
 		if (mFilter == null) {
@@ -253,6 +258,7 @@ public abstract class AbsArrayAdapter<T> extends BaseAdapter implements Filterab
 	/**
 	 * @return The shown filtered list. If no filter is applied, then the original list is returned.
 	 */
+	@NonNull
 	public ArrayList<T> getFilteredList() {
 		ArrayList<T> objects;
 		synchronized (mLock) {
@@ -274,6 +280,7 @@ public abstract class AbsArrayAdapter<T> extends BaseAdapter implements Filterab
 	/**
 	 * @return The original (unfiltered) list of items stored within the Adapter
 	 */
+	@NonNull
 	public ArrayList<T> getList() {
 		ArrayList<T> objects;
 		synchronized (mLock) {
@@ -294,7 +301,7 @@ public abstract class AbsArrayAdapter<T> extends BaseAdapter implements Filterab
 	 *
 	 * @param items New list of items to store within the adapter.
 	 */
-	public void setList(Collection<? extends T> items) {
+	public void setList(@NonNull Collection<? extends T> items) {
 		synchronized (mLock) {
 			if (mOriginalValues != null) {
 				mOriginalValues.clear();
@@ -316,7 +323,7 @@ public abstract class AbsArrayAdapter<T> extends BaseAdapter implements Filterab
 	 *
 	 * @return The position of the specified item.
 	 */
-	public int getPosition(T item) {
+	public int getPosition(@Nullable T item) {
 		return mObjects.indexOf(item);
 	}
 
@@ -340,15 +347,15 @@ public abstract class AbsArrayAdapter<T> extends BaseAdapter implements Filterab
 	 *
 	 * @return A View corresponding to the data at the specified position.
 	 */
-	public abstract View getView(LayoutInflater inflater, int position, View convertView,
-								 ViewGroup parent);
+	public abstract View getView(@NonNull LayoutInflater inflater, int position,
+								 @Nullable View convertView, @NonNull ViewGroup parent);
 
 	@Override
 	public final View getView(int position, View convertView, ViewGroup parent) {
 		return this.getView(mInflater, position, convertView, parent);
 	}
 
-	private void init(Context context, ArrayList<T> objects) {
+	private void init(@NonNull Context context, @NonNull ArrayList<T> objects) {
 		mInflater = LayoutInflater.from(context);
 		mContext = context;
 		mObjects = objects;
@@ -366,7 +373,7 @@ public abstract class AbsArrayAdapter<T> extends BaseAdapter implements Filterab
 	 * @return True if the item is filtered out by the given constraint. False if the item will
 	 * continue to display in the adapter.
 	 */
-	protected abstract boolean isFilteredOut(T item, CharSequence constraint);
+	protected abstract boolean isFilteredOut(T item, @NonNull CharSequence constraint);
 
 	@Override
 	public void notifyDataSetChanged() {
@@ -379,7 +386,7 @@ public abstract class AbsArrayAdapter<T> extends BaseAdapter implements Filterab
 	 *
 	 * @param item The item to remove.
 	 */
-	public void remove(T item) {
+	public void remove(@Nullable T item) {
 		boolean isModified = false;
 
 		synchronized (mLock) {
@@ -394,7 +401,7 @@ public abstract class AbsArrayAdapter<T> extends BaseAdapter implements Filterab
 	 *
 	 * @param items The collection of items to remove
 	 */
-	public void removeAll(Collection<?> items) {
+	public void removeAll(@NonNull Collection<?> items) {
 		boolean isModified = false;
 		synchronized (mLock) {
 			if (mOriginalValues != null) isModified = mOriginalValues.removeAll(items);
@@ -408,7 +415,7 @@ public abstract class AbsArrayAdapter<T> extends BaseAdapter implements Filterab
 	 *
 	 * @param items The collection of items to retain
 	 */
-	public void retainAll(Collection<?> items) {
+	public void retainAll(@NonNull Collection<?> items) {
 		boolean isModified = false;
 
 		synchronized (mLock) {
@@ -456,7 +463,7 @@ public abstract class AbsArrayAdapter<T> extends BaseAdapter implements Filterab
 	 *                                      implement {@code Comparable} or if {@code compareTo}
 	 *                                      throws for any pair of items.
 	 */
-	public void sort(Comparator<? super T> comparator) {
+	public void sort(@Nullable Comparator<? super T> comparator) {
 		synchronized (mLock) {
 			if (mOriginalValues != null) {
 				Collections.sort(mOriginalValues, comparator);
@@ -476,7 +483,7 @@ public abstract class AbsArrayAdapter<T> extends BaseAdapter implements Filterab
 	 * @param position The location at which to put the specified item
 	 * @param item     The new item to replace with the old
 	 */
-	public void update(int position, T item) {
+	public void update(int position, @Nullable T item) {
 		synchronized (mLock) {
 			if (mOriginalValues != null) {
 				int newPosition = mOriginalValues.indexOf(mObjects.get(position));
