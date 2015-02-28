@@ -19,7 +19,6 @@ import android.app.Dialog;
 import android.os.Bundle;
 import android.util.SparseArray;
 import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
 
 import com.sawyer.advadapters.app.R;
@@ -27,6 +26,9 @@ import com.sawyer.advadapters.app.data.MovieContent;
 import com.sawyer.advadapters.app.data.MovieItem;
 
 import java.util.Random;
+
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * Renders a dialog with all the options possible for appending items into a SparseArray. Implement
@@ -55,6 +57,22 @@ public class AppendSparseDialogFragment extends CustomDialogFragment {
 		return frag;
 	}
 
+	@OnClick(R.id.movies_append_all_btn)
+	public void onAppendAllMoviesClick(View v) {
+		if (mEventListener != null) {
+			mMovieItems.removeAt(0);
+			mEventListener.onAppendAllMoviesClick(mMovieItems);
+		}
+	}
+
+	@OnClick(R.id.movie_append_id_btn)
+	public void onAppendMovieWithIdClick(View v) {
+		if (mEventListener != null) {
+			mEventListener.onAppendMovieWithIdClick(mMovieItems.keyAt(0),
+													mMovieItems.valueAt(0));
+		}
+	}
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -66,20 +84,22 @@ public class AppendSparseDialogFragment extends CustomDialogFragment {
 		Dialog dialog = super.onCreateDialog(savedInstanceState);
 		dialog.setContentView(R.layout.dialog_append_sparse);
 		dialog.setTitle(R.string.title_dialog_append_movies);
+		ButterKnife.inject(this, dialog);
 
-		Button btn = (Button) dialog.findViewById(R.id.movie_append_id_btn);
-		btn.setOnClickListener(new OnAppendMovieWithIdClickListener());
-		TextView tv = (TextView) dialog.findViewById(R.id.movie_single_txt);
+		TextView tv = ButterKnife.findById(dialog, R.id.movie_single_txt);
 		tv.setText("- " + mMovieItems.valueAt(0).title);
-
-		btn = (Button) dialog.findViewById(R.id.movies_append_all_btn);
-		btn.setOnClickListener(new OnAppendAllMoviesClickListener());
-		tv = (TextView) dialog.findViewById(R.id.movie_multi_txt1);
+		tv = ButterKnife.findById(dialog, R.id.movie_multi_txt1);
 		tv.setText("- " + mMovieItems.valueAt(1).title);
-		tv = (TextView) dialog.findViewById(R.id.movie_multi_txt2);
+		tv = ButterKnife.findById(dialog, R.id.movie_multi_txt2);
 		tv.setText("- " + mMovieItems.valueAt(2).title);
 
 		return dialog;
+	}
+
+	@Override
+	public void onDestroyView() {
+		super.onDestroyView();
+		ButterKnife.reset(this);
 	}
 
 	public void setEventListener(EventListener listener) {
@@ -90,25 +110,5 @@ public class AppendSparseDialogFragment extends CustomDialogFragment {
 		public void onAppendAllMoviesClick(SparseArray<MovieItem> movies);
 
 		public void onAppendMovieWithIdClick(int barcode, MovieItem movieItem);
-	}
-
-	private class OnAppendAllMoviesClickListener implements View.OnClickListener {
-		@Override
-		public void onClick(View v) {
-			if (mEventListener != null) {
-				mMovieItems.removeAt(0);
-				mEventListener.onAppendAllMoviesClick(mMovieItems);
-			}
-		}
-	}
-
-	private class OnAppendMovieWithIdClickListener implements View.OnClickListener {
-		@Override
-		public void onClick(View v) {
-			if (mEventListener != null) {
-				mEventListener.onAppendMovieWithIdClick(mMovieItems.keyAt(0),
-														mMovieItems.valueAt(0));
-			}
-		}
 	}
 }

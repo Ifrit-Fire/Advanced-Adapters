@@ -19,7 +19,6 @@ import android.app.Dialog;
 import android.os.Bundle;
 import android.util.SparseArray;
 import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
 
 import com.sawyer.advadapters.app.R;
@@ -27,6 +26,9 @@ import com.sawyer.advadapters.app.data.MovieContent;
 import com.sawyer.advadapters.app.data.MovieItem;
 
 import java.util.Random;
+
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * Renders a dialog with all the options possible for putting items into a SparseArray. Implement
@@ -66,22 +68,44 @@ public class PutSparseDialogFragment extends CustomDialogFragment {
 		Dialog dialog = super.onCreateDialog(savedInstanceState);
 		dialog.setContentView(R.layout.dialog_put_sparse);
 		dialog.setTitle(R.string.title_dialog_put_movies);
+		ButterKnife.inject(this, dialog);
 
-		Button btn = (Button) dialog.findViewById(R.id.movie_put_btn);
-		btn.setOnClickListener(new OnPutMovieClickListener());
-		btn = (Button) dialog.findViewById(R.id.movie_put_id_btn);
-		btn.setOnClickListener(new OnPutMovieWithIdClickListener());
-		TextView tv = (TextView) dialog.findViewById(R.id.movie_single_txt);
+		TextView tv = ButterKnife.findById(dialog, R.id.movie_single_txt);
 		tv.setText("- " + mMovieItems.valueAt(0).title);
-
-		btn = (Button) dialog.findViewById(R.id.movies_put_all_btn);
-		btn.setOnClickListener(new OnPutAllMoviesClickListener());
-		tv = (TextView) dialog.findViewById(R.id.movie_multi_txt1);
+		tv = ButterKnife.findById(dialog, R.id.movie_multi_txt1);
 		tv.setText("- " + mMovieItems.valueAt(1).title);
-		tv = (TextView) dialog.findViewById(R.id.movie_multi_txt2);
+		tv = ButterKnife.findById(dialog, R.id.movie_multi_txt2);
 		tv.setText("- " + mMovieItems.valueAt(2).title);
 
 		return dialog;
+	}
+
+	@Override
+	public void onDestroyView() {
+		super.onDestroyView();
+		ButterKnife.reset(this);
+	}
+
+	@OnClick(R.id.movies_put_all_btn)
+	public void onPutAllMoviesClick(View v) {
+		if (mEventListener != null) {
+			mMovieItems.removeAt(0);
+			mEventListener.onPutAllMoviesClick(mMovieItems);
+		}
+	}
+
+	@OnClick(R.id.movie_put_btn)
+	public void onPutMovieClick(View v) {
+		if (mEventListener != null) {
+			mEventListener.onPutMovieClick(mMovieItems.valueAt(0));
+		}
+	}
+
+	@OnClick(R.id.movie_put_id_btn)
+	public void onPutMovieWithIdClick(View v) {
+		if (mEventListener != null) {
+			mEventListener.onPutMovieWithIdClick(mMovieItems.keyAt(0), mMovieItems.valueAt(0));
+		}
 	}
 
 	public void setEventListener(EventListener listener) {
@@ -94,33 +118,5 @@ public class PutSparseDialogFragment extends CustomDialogFragment {
 		public void onPutMovieClick(MovieItem movie);
 
 		public void onPutMovieWithIdClick(int barcode, MovieItem movieItem);
-	}
-
-	private class OnPutAllMoviesClickListener implements View.OnClickListener {
-		@Override
-		public void onClick(View v) {
-			if (mEventListener != null) {
-				mMovieItems.removeAt(0);
-				mEventListener.onPutAllMoviesClick(mMovieItems);
-			}
-		}
-	}
-
-	private class OnPutMovieClickListener implements View.OnClickListener {
-		@Override
-		public void onClick(View v) {
-			if (mEventListener != null) {
-				mEventListener.onPutMovieClick(mMovieItems.valueAt(0));
-			}
-		}
-	}
-
-	private class OnPutMovieWithIdClickListener implements View.OnClickListener {
-		@Override
-		public void onClick(View v) {
-			if (mEventListener != null) {
-				mEventListener.onPutMovieWithIdClick(mMovieItems.keyAt(0), mMovieItems.valueAt(0));
-			}
-		}
 	}
 }

@@ -33,10 +33,13 @@ import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
 
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+
 /**
- * Renders a dialog with all the options possible for adding movie items to a list. Implement the
- * {@link EventListener} in order to receive back dialog results. Toggling the Varargs option on and
- * off is possible through the listener.
+ * Renders a dialog with all the options possible for adding movie items. Implement the {@link
+ * EventListener} in order to receive back dialog results. Toggling the Varargs option on and off is
+ * possible through the listener. For use specifically for JSONArray based adapters.
  */
 public class AddJSONArrayDialogFragment extends CustomDialogFragment {
 	private static final String STATE_MOVIES = "State Movies";
@@ -70,6 +73,31 @@ public class AddJSONArrayDialogFragment extends CustomDialogFragment {
 		return frag;
 	}
 
+	@OnClick(R.id.movies_jsonarray_btn)
+	public void onAddJSONArrayClick(View v) {
+		if (mEventListener != null) {
+			JSONArray newArray = new JSONArray();
+			newArray.put(mMovieItems.optJSONObject(1));
+			newArray.put(mMovieItems.optJSONObject(2));
+			mEventListener.onAddMultipleMoviesClick(newArray);
+		}
+	}
+
+	@OnClick(R.id.movie_single_btn)
+	public void onAddSingleClick(View v) {
+		if (mEventListener != null) {
+			mEventListener.onAddSingleMovieClick(mMovieItems.optJSONObject(0));
+		}
+	}
+
+	@OnClick(R.id.movies_vararg_btn)
+	public void onAddVarargsClick(View v) {
+		if (mEventListener != null) {
+			mEventListener.onAddVarargsMovieClick(mMovieItems.optJSONObject(1),
+												  mMovieItems.optJSONObject(2));
+		}
+	}
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -87,23 +115,24 @@ public class AddJSONArrayDialogFragment extends CustomDialogFragment {
 		Dialog dialog = super.onCreateDialog(savedInstanceState);
 		dialog.setContentView(R.layout.dialog_add_jsonarray);
 		dialog.setTitle(R.string.title_dialog_add_movies);
+		ButterKnife.inject(this, dialog);
 
-		Button btn = (Button) dialog.findViewById(R.id.movie_single_btn);
-		btn.setOnClickListener(new OnAddSingleClickListener());
-		TextView tv = (TextView) dialog.findViewById(R.id.movie_single_txt);
+		TextView tv = ButterKnife.findById(dialog, R.id.movie_single_txt);
 		tv.setText("- " + mMovieItems.optJSONObject(0).optString(MovieItem.JSON_TITLE));
-
-		btn = (Button) dialog.findViewById(R.id.movies_jsonarray_btn);
-		btn.setOnClickListener(new OnAddJSONArrayClickListener());
-		tv = (TextView) dialog.findViewById(R.id.movie_multi_txt1);
+		tv = ButterKnife.findById(dialog, R.id.movie_multi_txt1);
 		tv.setText("- " + mMovieItems.optJSONObject(1).optString(MovieItem.JSON_TITLE));
-		tv = (TextView) dialog.findViewById(R.id.movie_multi_txt2);
+		tv = ButterKnife.findById(dialog, R.id.movie_multi_txt2);
 		tv.setText("- " + mMovieItems.optJSONObject(2).optString(MovieItem.JSON_TITLE));
 
-		btn = (Button) dialog.findViewById(R.id.movies_vararg_btn);
-		btn.setOnClickListener(new OnAddVarargsClickListener());
+		Button btn = ButterKnife.findById(dialog, R.id.movies_vararg_btn);
 		btn.setVisibility(mIsArgvargsEnabled ? View.VISIBLE : View.GONE);
 		return dialog;
+	}
+
+	@Override
+	public void onDestroyView() {
+		super.onDestroyView();
+		ButterKnife.reset(this);
 	}
 
 	public void setEnableArgvargs(boolean enable) {
@@ -121,36 +150,5 @@ public class AddJSONArrayDialogFragment extends CustomDialogFragment {
 		public void onAddSingleMovieClick(JSONObject movie);
 
 		public void onAddVarargsMovieClick(JSONObject... movies);
-	}
-
-	private class OnAddJSONArrayClickListener implements View.OnClickListener {
-		@Override
-		public void onClick(View v) {
-			if (mEventListener != null) {
-				JSONArray newArray = new JSONArray();
-				newArray.put(mMovieItems.optJSONObject(1));
-				newArray.put(mMovieItems.optJSONObject(2));
-				mEventListener.onAddMultipleMoviesClick(newArray);
-			}
-		}
-	}
-
-	private class OnAddSingleClickListener implements View.OnClickListener {
-		@Override
-		public void onClick(View v) {
-			if (mEventListener != null) {
-				mEventListener.onAddSingleMovieClick(mMovieItems.optJSONObject(0));
-			}
-		}
-	}
-
-	private class OnAddVarargsClickListener implements View.OnClickListener {
-		@Override
-		public void onClick(View v) {
-			if (mEventListener != null) {
-				mEventListener.onAddVarargsMovieClick(mMovieItems.optJSONObject(1),
-													  mMovieItems.optJSONObject(2));
-			}
-		}
 	}
 }

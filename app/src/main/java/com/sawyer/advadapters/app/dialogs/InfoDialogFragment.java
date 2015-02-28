@@ -18,13 +18,15 @@ package com.sawyer.advadapters.app.dialogs;
 import android.app.Dialog;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
 
 import com.sawyer.advadapters.app.R;
 
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+
 /**
- * Renders a dialog for displaying information to the user. Pretty much an AlertDialog
+ * Renders a dialog for displaying information to the user. Pretty much an AlertDialog.
  */
 public class InfoDialogFragment extends CustomDialogFragment {
 	private static final String STATE_TITLE = "State title";
@@ -35,12 +37,10 @@ public class InfoDialogFragment extends CustomDialogFragment {
 
 	public static InfoDialogFragment newInstance(String title, String message) {
 		InfoDialogFragment frag = new InfoDialogFragment();
-
 		Bundle bundle = new Bundle();
 		bundle.putString(STATE_TITLE, title);
 		bundle.putString(STATE_MESSAGE, message);
 		frag.setArguments(bundle);
-
 		return frag;
 	}
 
@@ -56,18 +56,21 @@ public class InfoDialogFragment extends CustomDialogFragment {
 		Dialog dialog = super.onCreateDialog(savedInstanceState);
 		dialog.setContentView(R.layout.dialog_info);
 		dialog.setTitle(mTitle);
+		ButterKnife.inject(this, dialog);
 
-		TextView tv = (TextView) dialog.findViewById(android.R.id.message);
+		TextView tv = ButterKnife.findById(dialog, android.R.id.message);
 		tv.setText(mMessage);
-		Button btn = (Button) dialog.findViewById(android.R.id.button1);
-		btn.setOnClickListener(new OnOkClickListener());
 		return dialog;
 	}
 
-	private class OnOkClickListener implements View.OnClickListener {
-		@Override
-		public void onClick(View v) {
-			dismiss();
-		}
+	@Override
+	public void onDestroyView() {
+		super.onDestroyView();
+		ButterKnife.reset(this);
+	}
+
+	@OnClick(android.R.id.button1)
+	public void onOkClick(View v) {
+		dismiss();
 	}
 }

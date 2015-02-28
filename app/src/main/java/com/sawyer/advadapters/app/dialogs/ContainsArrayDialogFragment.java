@@ -31,6 +31,9 @@ import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+
 /**
  * Renders a dialog with all the options possible for checking a list for contents it may contain.
  * Implement the {@link EventListener} in order to receive back dialog results.
@@ -59,6 +62,20 @@ public class ContainsArrayDialogFragment extends CustomDialogFragment {
 		return frag;
 	}
 
+	@OnClick(R.id.movies_collection_btn)
+	public void onContainsCollectionClick(View v) {
+		if (mEventListener != null) {
+			mEventListener.onContainsMultipleMovieClick(mMovieItems.subList(1, 3));
+		}
+	}
+
+	@OnClick(R.id.movie_single_btn)
+	public void onContainsSingleClick(View v) {
+		if (mEventListener != null) {
+			mEventListener.onContainsSingleMovieClick(mMovieItems.get(0));
+		}
+	}
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -71,23 +88,27 @@ public class ContainsArrayDialogFragment extends CustomDialogFragment {
 		Dialog dialog = super.onCreateDialog(savedInstanceState);
 		dialog.setContentView(R.layout.dialog_contains_array);
 		dialog.setTitle(R.string.title_dialog_contains_movies);
-
-		Button btn = (Button) dialog.findViewById(R.id.movie_single_btn);
-		btn.setOnClickListener(new OnContainsSingleClickListener());
-		TextView tv = (TextView) dialog.findViewById(R.id.movie_single_txt);
-		tv.setText("- " + mMovieItems.get(0).title);
+		ButterKnife.inject(this, dialog);
 
 		int visibility = mIsContainsAllEnabled ? View.VISIBLE : View.GONE;
-		btn = (Button) dialog.findViewById(R.id.movies_collection_btn);
-		btn.setOnClickListener(new OnContainsCollectionClickListener());
+		Button btn = ButterKnife.findById(dialog, R.id.movies_collection_btn);
 		btn.setVisibility(visibility);
-		tv = (TextView) dialog.findViewById(R.id.movie_multi_txt1);
+
+		TextView tv = ButterKnife.findById(dialog, R.id.movie_single_txt);
+		tv.setText("- " + mMovieItems.get(0).title);
+		tv = ButterKnife.findById(dialog, R.id.movie_multi_txt1);
 		tv.setText("- " + mMovieItems.get(1).title);
 		((View) tv.getParent()).setVisibility(visibility);
-		tv = (TextView) dialog.findViewById(R.id.movie_multi_txt2);
+		tv = ButterKnife.findById(dialog, R.id.movie_multi_txt2);
 		tv.setText("- " + mMovieItems.get(2).title);
 
 		return dialog;
+	}
+
+	@Override
+	public void onDestroyView() {
+		super.onDestroyView();
+		ButterKnife.reset(this);
 	}
 
 	public void setEnableContainsAll(boolean enable) {
@@ -103,23 +124,5 @@ public class ContainsArrayDialogFragment extends CustomDialogFragment {
 		public void onContainsMultipleMovieClick(List<MovieItem> movies);
 
 		public void onContainsSingleMovieClick(MovieItem movie);
-	}
-
-	private class OnContainsCollectionClickListener implements View.OnClickListener {
-		@Override
-		public void onClick(View v) {
-			if (mEventListener != null) {
-				mEventListener.onContainsMultipleMovieClick(mMovieItems.subList(1, 3));
-			}
-		}
-	}
-
-	private class OnContainsSingleClickListener implements View.OnClickListener {
-		@Override
-		public void onClick(View v) {
-			if (mEventListener != null) {
-				mEventListener.onContainsSingleMovieClick(mMovieItems.get(0));
-			}
-		}
 	}
 }

@@ -17,7 +17,6 @@
 package com.sawyer.advadapters.app.dialogs;
 
 import android.app.Dialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -51,12 +50,6 @@ public class ChoiceModeDialogFragment extends CustomDialogFragment {
 	}
 
 	@Override
-	public void onCancel(DialogInterface dialog) {
-		ButterKnife.reset(this);
-		super.onCancel(dialog);
-	}
-
-	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
 		Dialog dialog = super.onCreateDialog(savedInstanceState);
 		dialog.setContentView(R.layout.dialog_choice_mode);
@@ -67,9 +60,9 @@ public class ChoiceModeDialogFragment extends CustomDialogFragment {
 	}
 
 	@Override
-	public void onDismiss(DialogInterface dialog) {
+	public void onDestroyView() {
+		super.onDestroyView();
 		ButterKnife.reset(this);
-		super.onDismiss(dialog);
 	}
 
 	@OnClick(R.id.ok)

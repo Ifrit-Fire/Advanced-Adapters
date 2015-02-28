@@ -24,8 +24,11 @@ import android.view.ViewGroup;
 
 import com.sawyer.advadapters.app.R;
 
+import butterknife.ButterKnife;
+
 /**
- * Customized dialog fragment that handles styling the dialog to a specific look
+ * Customized dialog fragment that handles styling the dialog to a specific look. All dialog
+ * fragments should subclass this.
  */
 abstract class CustomDialogFragment extends DialogFragment {
 	public CustomDialogFragment() {
@@ -46,11 +49,9 @@ abstract class CustomDialogFragment extends DialogFragment {
 	 */
 	private void setTitleBarColor() {
 		Dialog dialog = getDialog();
-		if (dialog == null) {
-			return;
-		}
+		if (dialog == null) return;
 
-		View v = dialog.findViewById(android.R.id.title);
+		View v = ButterKnife.findById(dialog, android.R.id.title);
 		if (v != null && v.getParent() instanceof ViewGroup) {
 			ViewGroup vg = (ViewGroup) v.getParent();
 			for (int index = 0; index < vg.getChildCount(); ++index) {

@@ -18,7 +18,6 @@ package com.sawyer.advadapters.app.dialogs;
 import android.app.Dialog;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
 
 import com.sawyer.advadapters.app.R;
@@ -27,9 +26,13 @@ import com.sawyer.advadapters.app.data.MovieItem;
 
 import java.util.Random;
 
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+
 /**
  * Renders a dialog with all the options possible for checking a list for contents it may contain.
- * Implement the {@link EventListener} in order to receive back dialog results.
+ * Implement the {@link EventListener} in order to receive back dialog results. For use specifically
+ * for SparseArray based adapters.
  */
 public class ContainsSparseDialogFragment extends CustomDialogFragment {
 	private static final String STATE_MOVIE = "State Movie";
@@ -40,13 +43,25 @@ public class ContainsSparseDialogFragment extends CustomDialogFragment {
 
 	public static ContainsSparseDialogFragment newInstance() {
 		ContainsSparseDialogFragment frag = new ContainsSparseDialogFragment();
-
 		Bundle bundle = new Bundle();
 		int index = new Random().nextInt(MovieContent.ITEM_SPARSE.size());
 		bundle.putParcelable(STATE_MOVIE, MovieContent.ITEM_SPARSE.valueAt(index));
 		frag.setArguments(bundle);
-
 		return frag;
+	}
+
+	@OnClick(R.id.movie_contains_id_btn)
+	public void onContainsIdClick(View v) {
+		if (mEventListener != null) {
+			mEventListener.onContainsIdClick(mMovieItem.barcode());
+		}
+	}
+
+	@OnClick(R.id.movie_contains_item_btn)
+	public void onContainsItemClick(View v) {
+		if (mEventListener != null) {
+			mEventListener.onContainsItemClick(mMovieItem);
+		}
 	}
 
 	@Override
@@ -60,18 +75,20 @@ public class ContainsSparseDialogFragment extends CustomDialogFragment {
 		Dialog dialog = super.onCreateDialog(savedInstanceState);
 		dialog.setContentView(R.layout.dialog_contains_sparse);
 		dialog.setTitle(R.string.title_dialog_contains_movies);
+		ButterKnife.inject(this, dialog);
 
-		Button btn = (Button) dialog.findViewById(R.id.movie_contains_id_btn);
-		btn.setOnClickListener(new OnContainsIdClickListener());
-		TextView tv = (TextView) dialog.findViewById(R.id.movie_single_txt1);
+		TextView tv = ButterKnife.findById(dialog, R.id.movie_single_txt1);
 		tv.setText("- " + mMovieItem.title);
-
-		btn = (Button) dialog.findViewById(R.id.movie_contains_item_btn);
-		btn.setOnClickListener(new OnContainsItemClickListener());
-		tv = (TextView) dialog.findViewById(R.id.movie_single_txt2);
+		tv = ButterKnife.findById(dialog, R.id.movie_single_txt2);
 		tv.setText("- " + mMovieItem.title);
 
 		return dialog;
+	}
+
+	@Override
+	public void onDestroyView() {
+		super.onDestroyView();
+		ButterKnife.reset(this);
 	}
 
 	public void setEventListener(EventListener listener) {
@@ -82,23 +99,5 @@ public class ContainsSparseDialogFragment extends CustomDialogFragment {
 		public void onContainsIdClick(int barcode);
 
 		public void onContainsItemClick(MovieItem movie);
-	}
-
-	private class OnContainsIdClickListener implements View.OnClickListener {
-		@Override
-		public void onClick(View v) {
-			if (mEventListener != null) {
-				mEventListener.onContainsIdClick(mMovieItem.barcode());
-			}
-		}
-	}
-
-	private class OnContainsItemClickListener implements View.OnClickListener {
-		@Override
-		public void onClick(View v) {
-			if (mEventListener != null) {
-				mEventListener.onContainsItemClick(mMovieItem);
-			}
-		}
 	}
 }

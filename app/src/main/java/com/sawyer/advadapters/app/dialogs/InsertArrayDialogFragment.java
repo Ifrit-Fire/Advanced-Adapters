@@ -33,6 +33,8 @@ import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
+import butterknife.ButterKnife;
+
 /**
  * Renders a dialog with all the options possible for inserting items into one of the adapters.
  * Implement the {@link EventListener} interface in order to receive back the dialog results.
@@ -45,6 +47,31 @@ public class InsertArrayDialogFragment extends CustomDialogFragment {
 
 	private boolean mIsInsertAllEnabled;
 	private List<MovieItem> mMovieItems;
+
+	public enum InsertLocation {
+		START,
+		RANDOM,
+		END;
+
+		public int toListPosition(int listCount) {
+			int position;
+
+			switch (this) {
+			case RANDOM:
+				//Trying to Random 0 will crash
+				position = (listCount == 0 ? 0 : new Random().nextInt(listCount));
+				break;
+			case END:
+				position = listCount;
+				break;
+			case START:
+			default:
+				position = 0;
+				break;
+			}
+			return position;
+		}
+	}
 
 	public static InsertArrayDialogFragment newInstance() {
 		InsertArrayDialogFragment frag = new InsertArrayDialogFragment();
@@ -74,28 +101,28 @@ public class InsertArrayDialogFragment extends CustomDialogFragment {
 		dialog.setContentView(R.layout.dialog_insert_array);
 		dialog.setTitle(R.string.title_dialog_insert_movies);
 
-		ViewGroup vg = (ViewGroup) dialog.findViewById(R.id.movie_single_button_bar);
-		Button btn = (Button) vg.findViewById(R.id.movie_insert_start_btn);
+		ViewGroup vg = ButterKnife.findById(dialog, R.id.movie_single_button_bar);
+		Button btn = ButterKnife.findById(vg, R.id.movie_insert_start_btn);
 		btn.setOnClickListener(new OnInsertSingleClickListener(InsertLocation.START));
-		btn = (Button) vg.findViewById(R.id.movie_insert_random_btn);
+		btn = ButterKnife.findById(vg, R.id.movie_insert_random_btn);
 		btn.setOnClickListener(new OnInsertSingleClickListener(InsertLocation.RANDOM));
-		btn = (Button) vg.findViewById(R.id.movie_insert_end_btn);
+		btn = ButterKnife.findById(vg, R.id.movie_insert_end_btn);
 		btn.setOnClickListener(new OnInsertSingleClickListener(InsertLocation.END));
-		TextView tv = (TextView) dialog.findViewById(R.id.movie_single_txt);
+		TextView tv = ButterKnife.findById(dialog, R.id.movie_single_txt);
 		tv.setText("- " + mMovieItems.get(0).title);
 
 		int visibility = mIsInsertAllEnabled ? View.VISIBLE : View.GONE;
-		vg = (ViewGroup) dialog.findViewById(R.id.movie_collection_button_bar);
+		vg = ButterKnife.findById(dialog, R.id.movie_collection_button_bar);
 		vg.setVisibility(visibility);
-		btn = (Button) vg.findViewById(R.id.movie_insert_start_btn);
+		btn = ButterKnife.findById(vg, R.id.movie_insert_start_btn);
 		btn.setOnClickListener(new OnInsertCollectionClickListener(InsertLocation.START));
-		btn = (Button) vg.findViewById(R.id.movie_insert_random_btn);
+		btn = ButterKnife.findById(vg, R.id.movie_insert_random_btn);
 		btn.setOnClickListener(new OnInsertCollectionClickListener(InsertLocation.RANDOM));
-		btn = (Button) vg.findViewById(R.id.movie_insert_end_btn);
+		btn = ButterKnife.findById(vg, R.id.movie_insert_end_btn);
 		btn.setOnClickListener(new OnInsertCollectionClickListener(InsertLocation.END));
-		tv = (TextView) dialog.findViewById(R.id.movie_multi_txt1);
+		tv = ButterKnife.findById(dialog, R.id.movie_multi_txt1);
 		tv.setText("- " + mMovieItems.get(1).title);
-		tv = (TextView) dialog.findViewById(R.id.movie_multi_txt2);
+		tv = ButterKnife.findById(dialog, R.id.movie_multi_txt2);
 		tv.setText("- " + mMovieItems.get(2).title);
 		((View) tv.getParent()).setVisibility(visibility);
 
@@ -110,31 +137,6 @@ public class InsertArrayDialogFragment extends CustomDialogFragment {
 
 	public void setEventListener(EventListener listener) {
 		mEventListener = listener;
-	}
-
-	public enum InsertLocation {
-		START,
-		RANDOM,
-		END;
-
-		public int toListPosition(int listCount) {
-			int position;
-
-			switch (this) {
-			case RANDOM:
-				//Trying to Random 0 will crash
-				position = (listCount == 0 ? 0 : new Random().nextInt(listCount));
-				break;
-			case END:
-				position = listCount;
-				break;
-			case START:
-			default:
-				position = 0;
-				break;
-			}
-			return position;
-		}
 	}
 
 	public interface EventListener {
