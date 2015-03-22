@@ -1,34 +1,206 @@
 <!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml">
 <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
-    <meta name="author" content="">
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="A suite of adapters designed to provide alternatives to Android's provided adapters.">
+	<meta name="author" content="JaySoyer">
 
-    <link rel="icon" href="graphics/icon.png">
-    <title>My Test Pages</title>
+	<!-- <link rel="icon" href="graphics/icon.png"> -->
+	<title>Advanced-Adapters</title>
 
-    <!-- Bootstrap core CSS -->
-    <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Bootstrap theme -->
-    <link href="bootstrap/css/bootstrap-theme.min.css" rel="stylesheet">
-    <!-- Custom styles for this template -->
-    <link href="theme.css" rel="stylesheet">
+	<!-- Bootstrap core CSS -->
+	<link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
+	<!-- Bootstrap theme -->
+	<link href="bootstrap/css/bootstrap-theme.min.css" rel="stylesheet">
+	<!-- Custom styles for this template -->
+	<link href="theme.css" rel="stylesheet">
 </head>
 
 <body role="document">
+	<div class="container">
+		<div class="header clearfix">
+			<nav>
+				<ul class="nav nav-pills pull-right">
+					<li role="presentation"><a href="https://github.com/JaySoyer/Advanced-Adapters">Fork Me</a></li>
+					<li role="presentation"><a href="#">JavaDoc</a></li>
+					<li role="presentation"><a href="http://stackoverflow.com/questions/ask?tags=advanced-adapters&tags=android">StackOverflow</a></li>
+					<li role="presentation"><a href="http://www.jaysoyer.com/">Blog</a></li>
+				</ul>
+				<h3 class="text-muted">Advanced-Adapters</h3>
+			</nav>
+		</div>
 
-    <p><code>Hello</code> abnormal <strong>World</strong></p>
+		<div class="jumbotron" id="my_jumbotron">
+			<img class="img-responsive img-rounded-large" src="https://raw.githubusercontent.com/JaySoyer/Advanced-Adapters/master/app/src/main/feature-graphic.png" alt="Advanced-Adapters" />
+		</div>
+
+		<summary>
+			
+			<p>A suite of adapters designed to provide alternatives to Android’s provided adapters. From standard <code>ArrayAdapters</code> to <code>RolodexAdapters</code> (sectioned adapters); They provide customizable filtering solutions which can be safely mutated during any filtering operation. Don’t need filtering? No problem, we have those specific kind as well.</p>
+
+<p>All the adapters created were meant to fill the void where you need to build a custom adapter from scratch but don’t want to worry about the data management part. Below are some code examples with simple explanations of what they provide.</p>
+
+		</summary>
+
+		<div class="panel panel-default">
+			<p class="my-tab-header">FILTERABLE ADAPTERS</p>
+			<ul class="nav nav-tabs nav-justified">
+				<li class="active"><a data-toggle="tab" href="#AbsArrayAdapter"><strong>AbsArrayAdapter</strong></a></li>
+				<li><a data-toggle="tab" href="#SparseAdapter"><strong>SparseAdapter</strong></a></li>
+				<li><a data-toggle="tab" href="#JSONAdapter"><strong>JSONAdapter</strong></a></li>
+				<li><a data-toggle="tab" href="#RolodexArrayAdapter"><strong>RolodexArrayAdapter</strong></a></li>
+			</ul>
+			<div class="tab-content">
+				<div id="AbsArrayAdapter" class="tab-pane fade in active">
+					<div class="my-tab-content">
+						
+						<h4 id="compared-to-androids-arrayadapter">Compared to Android’s <code>ArrayAdapter</code>:</h4>
+
+<ul>
+  <li><strong>Filtering Logic</strong> You provide the how, adapter takes care of the rest.</li>
+  <li><strong>Active Filtering</strong> Mutating adapter will re-filters data on the fly.</li>
+  <li><strong>Resolves Bugs</strong> <a href="https://code.google.com/p/android/issues/detail?id=9666">9666</a>, <a href="https://code.google.com/p/android/issues/detail?id=69179">69179</a></li>
+  <li><strong>More List Implementations</strong>
+    <ul>
+      <li><code>contains()</code>, <code>containsAll()</code></li>
+      <li><code>removeAll()</code>, <code>retainAll()</code></li>
+      <li><code>update()</code></li>
+    </ul>
+  </li>
+  <li><strong>Convenience methods</strong>
+    <ul>
+      <li><code>getFilteredList()</code></li>
+      <li><code>getList()</code>, <code>setList()</code></li>
+    </ul>
+  </li>
+  <li><strong>LayoutInflater</strong> Passed down to both <code>getView()</code> and <code>getDropDownView()</code></li>
+  <li>
+    <p><strong>Slightly smarter</strong> internal <code>notifyDataSetChanged()</code> invocations</p>
+
+    <p><br /></p>
+  </li>
+</ul>
+
+<h4 id="code-example">Code Example</h4>
+
+<pre><code>    public class MovieAdapter extends AbsArrayAdapter&lt;MovieItem&gt; {
+        MovieAdapter(Context activity) {
+            super(activity);
+        }
+
+        @Override
+        public View getView(LayoutInflater inflater, int position, View convertView, ViewGroup parent) {
+            if (convertView == null) {
+                //Inflate your view
+            }
+
+            //Fill your view with data
+            return convertView;
+        }
+
+        //Easily customize your filtered results here.  Too easy!
+        @Override
+        protected boolean isFilteredOut(MovieItem movie, CharSequence constraint) {
+            return !movie.title.toLowerCase(Locale.US).contains(
+                    constraint.toString().toLowerCase(Locale.US));
+        }
+    }
+</code></pre>
 
 
-      <!-- Bootstrap core JavaScript
-      ================================================== -->
-      <!-- Placed at the end of the document so the pages load faster -->
-      <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-      <script src="bootstrap/js/bootstrap.min.js"></script>
-      <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-      <script src="bootstrap/js/ie10-viewport-bug-workaround.js"></script>
+					</div>
+				</div>
+				<div id="SparseAdapter" class="tab-pane fade">
+
+				</div>
+				<div id="JSONAdapter" class="tab-pane fade">
+
+				</div>
+				<div class="RolodexArrayAdapter" class="tab-pane fade">
+
+				</div>
+			</div>
+		</div>	<!-- /filterable tab panel -->
+
+		<div class="panel panel-default">
+			<p class="my-tab-header">NON-FILTERABLE ADAPTERS</p>
+			<ul class="nav nav-tabs nav-justified">
+				<li class="active"><a data-toggle="tab" href="#NFArrayAdapter"><strong>NFArrayAdapter</strong></a></li>
+				<li><a data-toggle="tab" href="#NFSparseAdapter"><strong>NFSparseAdapter</strong></a></li>
+				<li><a data-toggle="tab" href="#NFJSONAdapter"><strong>NFJSONAdapter</strong></a></li>
+				<li><a data-toggle="tab" href="#NFRolodexArrayAdapter"><strong>NFRolodexArrayAdapter</strong></a></li>
+			</ul>
+			<div class="tab-content">
+				<div id="NFArrayAdapter" class="tab-pane fade in active">
+					<div class="my-tab-content">
+						
+						<h4 id="compared-to-androids-arrayadapter">Compared to Android’s <code>ArrayAdapter</code>:</h4>
+
+<ul>
+  <li><strong>Filtering Removed</strong> So no internal synchronized blocks to slow things down.</li>
+  <li><strong>More List Implementations</strong>
+    <ul>
+      <li><code>contains()</code>, <code>containsAll()</code></li>
+      <li><code>removeAll()</code>, <code>retainAll()</code></li>
+      <li><code>update()</code>, <code>insertAll()</code></li>
+    </ul>
+  </li>
+  <li><strong>Convenience methods</strong>
+    <ul>
+      <li><code>getList()</code>, <code>setList()</code></li>
+    </ul>
+  </li>
+  <li><strong>LayoutInflater</strong> Passed down to both <code>getView()</code> and <code>getDropDownView()</code></li>
+  <li>
+    <p><strong>Slightly smarter</strong> internal <code>notifyDataSetChanged()</code> invocations</p>
+
+    <p><br /></p>
+  </li>
+</ul>
+
+<h4 id="code-example">Code Example</h4>
+
+<pre><code>    public class MovieAdapter extends NFArrayAdapter&lt;MovieItem&gt; {
+        MovieAdapter(Context activity) {
+            super(activity);
+        }
+
+        @Override
+        public View getView(LayoutInflater inflater, int position, View convertView, ViewGroup parent) {
+            if (convertView == null) {
+                //Inflate your view
+            }
+
+            //Fill your view with data
+            return convertView;
+        }
+    }
+</code></pre>
+
+					</div>
+				</div>
+				<div id="NFSparseAdapter" class="tab-pane fade">
+
+				</div>
+				<div id="NFJSONAdapter" class="tab-pane fade">
+
+				</div>
+				<div class="NFRolodexArrayAdapter" class="tab-pane fade">
+
+				</div>
+			</div>
+		</div>	<!-- /non-filterable tab panel -->
+
+	</div> <!-- /container -->
+
+	<!-- Bootstrap core JavaScript
+	================================================== -->
+	<!-- Placed at the end of the document so the pages load faster -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+	<script src="bootstrap/js/bootstrap.min.js"></script>
+	<!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+	<script src="bootstrap/js/ie10-viewport-bug-workaround.js"></script>
 </body>
 </html>

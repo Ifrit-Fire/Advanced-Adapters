@@ -1,0 +1,89 @@
+/**********************************/
+/* OVERRIDES FOR BOOTSTRAP THEMES */
+/**********************************/
+/* Customize container */
+@media (min-width: 768px) {
+    .container {
+        max-width: 730px;
+        height: 100%;
+    }
+}
+
+html, body {
+    /*background-color: rgba(255, 255, 255, 1);*/
+    height: 100%;
+    background: rgba(245,234,250,1);/* Old Browsers */
+    background: -moz-linear-gradient(left, rgba(245,234,250,1) 0%, rgba(255,255,255,1) 25%, rgba(255,255,255,1) 75%, rgba(245,234,250,1) 100%);/* FF3.6+ */
+    background: -webkit-gradient(left top, right top, color-stop(0%, rgba(245,234,250,1)), color-stop(25%, rgba(255,255,255,1)), color-stop(75%, rgba(255,255,255,1)), color-stop(100%, rgba(245,234,250,1)));/* Chrome, Safari4+ */
+    background: -webkit-linear-gradient(left, rgba(245,234,250,1) 0%, rgba(255,255,255,1) 25%, rgba(255,255,255,1) 75%, rgba(245,234,250,1) 100%);
+    /* Chrome10+,Safari5.1+ */background: -o-linear-gradient(left, rgba(245,234,250,1) 0%, rgba(255,255,255,1) 25%, rgba(255,255,255,1) 75%, rgba(245,234,250,1) 100%);
+    /* Opera 11.10+ */background: -ms-linear-gradient(left, rgba(245,234,250,1) 0%, rgba(255,255,255,1) 25%, rgba(255,255,255,1) 75%, rgba(245,234,250,1) 100%);
+    /* IE 10+ */background: linear-gradient(to right, rgba(245,234,250,1) 0%, rgba(255,255,255,1) 25%, rgba(255,255,255,1) 75%, rgba(245,234,250,1) 100%);
+    /* W3C */filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f5eafa', endColorstr='#f5eafa', GradientType=1 );
+    /* IE6-9 */
+}
+
+/* Everything but the jumbotron gets side spacing for mobile first views */
+.header,
+.marketing,
+.footer {
+    padding-right: 15px;
+    padding-left: 15px;
+}
+
+/* Custom page header */
+.header {
+    margin-bottom: 16px;
+    border-bottom: 1px solid #e5e5e5;
+}
+/* Make the masthead heading the same height as the navigation */
+.header h3 {
+    margin-top: 0;
+    margin-bottom: 0;
+    line-height: 40px;
+}
+
+/* We will use an img instead of a background color for our jumbotron */
+.jumbotron {
+    background-color: transparent;
+}
+.jumbotron img {
+    /*border-radius: 16px;*/
+}
+
+.content {
+    background-color: rgb(245, 234, 250);
+}
+
+/* Forces tabs to not go hidden. Prevents tab-pane from resizing as different tabs are selected. */
+.tab-content > .tab-pane {
+    display: block;
+}
+
+
+/****************************************/
+/* CUSTOM THEMING FOR CLASSES, IDS, ETC */
+/****************************************/
+.img-rounded-large {
+    border-radius: 12px;
+}
+
+.my-tab-header {
+    font-style: italic;
+    font-weight: 700;
+    color: #959595;
+    font-size: 12px;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+.my-tab-content {
+    margin: 10px;
+}
+
+/*Need the higher specificity to override certain jumbotron attributes */
+#my_jumbotron {
+    padding: 0;
+    -webkit-box-shadow: 2px 2px 4px 0px rgba(63,60,64,1);
+    -moz-box-shadow: 2px 2px 4px 0px rgba(63,60,64,1);
+    box-shadow: 2px 2px 4px 0px rgba(63,60,64,1);
+}
