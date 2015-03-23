@@ -51,13 +51,12 @@
 			</ul>
 			<div class="tab-content">
 				<div id="AbsArrayAdapter" class="tab-pane fade in active">
-					<div class="my-tab-content">
-						{% capture AbsArrayAdapter %}{% include AbsArrayAdapter.md %}{% endcapture %}
-						{{ AbsArrayAdapter | markdownify }}
-					</div>
+					{% capture AbsArrayAdapter %}{% include AbsArrayAdapter.md %}{% endcapture %}
+					{{ AbsArrayAdapter | markdownify }}
 				</div>
 				<div id="SparseAdapter" class="tab-pane fade">
-
+					{% capture SparseAdapter %}{% include SparseAdapter.md %}{% endcapture %}
+					{{ SparseAdapter | markdownify }}
 				</div>
 				<div id="JSONAdapter" class="tab-pane fade">
 
@@ -78,13 +77,12 @@
 			</ul>
 			<div class="tab-content">
 				<div id="NFArrayAdapter" class="tab-pane fade in active">
-					<div class="my-tab-content">
-						{% capture NFArrayAdapter %}{% include NFArrayAdapter.md %}{% endcapture %}
-						{{ NFArrayAdapter | markdownify }}
-					</div>
+					{% capture NFArrayAdapter %}{% include NFArrayAdapter.md %}{% endcapture %}
+					{{ NFArrayAdapter | markdownify }}
 				</div>
 				<div id="NFSparseAdapter" class="tab-pane fade">
-
+					{% capture NFSparseAdapter %}{% include NFSparseAdapter.md %}{% endcapture %}
+					{{ NFSparseAdapter | markdownify }}
 				</div>
 				<div id="NFJSONAdapter" class="tab-pane fade">
 

@@ -54,13 +54,12 @@
 			</ul>
 			<div class="tab-content">
 				<div id="AbsArrayAdapter" class="tab-pane fade in active">
-					<div class="my-tab-content">
-						
-						<h4 id="compared-to-androids-arrayadapter">Compared to Android’s <code>ArrayAdapter</code>:</h4>
+					
+					<h4 id="compared-to-androids-arrayadapter">Compared to Android’s <code>ArrayAdapter</code>:</h4>
 
 <ul>
   <li><strong>Filtering Logic</strong> You provide the how, adapter takes care of the rest.</li>
-  <li><strong>Active Filtering</strong> Mutating adapter will re-filters data on the fly.</li>
+  <li><strong>Active Filtering</strong> Mutating adapter will re-filter data on the fly.</li>
   <li><strong>Resolves Bugs</strong> <a href="https://code.google.com/p/android/issues/detail?id=9666">9666</a>, <a href="https://code.google.com/p/android/issues/detail?id=69179">69179</a></li>
   <li><strong>More List Implementations</strong>
     <ul>
@@ -110,9 +109,54 @@
 </code></pre>
 
 
-					</div>
 				</div>
 				<div id="SparseAdapter" class="tab-pane fade">
+					
+					<h4 id="perks">Perks:</h4>
+
+<ul>
+  <li><strong>SparseArray Backed</strong> Based on and designed to work only with Android’s <code>SparseArray</code></li>
+  <li><strong>SparseArray Implementation</strong> Unlike a typical array based adapter, all interactions with this adapter are akin to working with a <code>SparseArray</code>.</li>
+  <li><strong>Filtering Logic</strong> You provide the how, adapter takes care of the rest.</li>
+  <li><strong>Active Filtering</strong> Mutating adapter will re-filter data on the fly.</li>
+  <li><strong>Convenience methods</strong>
+    <ul>
+      <li><code>getFilteredSparseArray()</code></li>
+      <li><code>getSparseArray()</code>, <code>setSparseArray()</code></li>
+    </ul>
+  </li>
+  <li>
+    <p><strong>LayoutInflater</strong> Passed down to both <code>getView()</code> and <code>getDropDownView()</code></p>
+
+    <p><br /></p>
+  </li>
+</ul>
+
+<h4 id="code-example">Code Example</h4>
+
+<pre><code>    public class MovieAdapter extends SparseAdapter&lt;MovieItem&gt; {
+        MovieAdapter(Context activity) {
+            super(activity);
+        }
+
+        @Override
+        public View getView(LayoutInflater inflater, int position, View convertView, ViewGroup parent) {
+            if (convertView == null) {
+                //Inflate your view
+            }
+
+            //Fill your view with data
+            return convertView;
+        }
+
+        //Easily customize your filtered results here.  Too easy!
+        @Override
+        protected boolean isFilteredOut(int keyId, MovieItem item, CharSequence constraint) {
+            return !item.title.toLowerCase(Locale.US)
+            .contains(constraint.toString().toLowerCase(Locale.US));
+        }
+    }
+</code></pre>
 
 				</div>
 				<div id="JSONAdapter" class="tab-pane fade">
@@ -134,9 +178,8 @@
 			</ul>
 			<div class="tab-content">
 				<div id="NFArrayAdapter" class="tab-pane fade in active">
-					<div class="my-tab-content">
-						
-						<h4 id="compared-to-androids-arrayadapter">Compared to Android’s <code>ArrayAdapter</code>:</h4>
+					
+					<h4 id="compared-to-androids-arrayadapter">Compared to Android’s <code>ArrayAdapter</code>:</h4>
 
 <ul>
   <li><strong>Filtering Removed</strong> So no internal synchronized blocks to slow things down.</li>
@@ -179,9 +222,46 @@
     }
 </code></pre>
 
-					</div>
 				</div>
 				<div id="NFSparseAdapter" class="tab-pane fade">
+					
+					<h4 id="perks">Perks:</h4>
+
+<ul>
+  <li><strong>SparseArray Backed</strong> Based on and designed to work only with Android’s <code>SparseArray</code></li>
+  <li><strong>SparseArray Implementation</strong> Unlike a typical array based adapter, all interactions with this adapter are akin to working with a <code>SparseArray</code>.</li>
+  <li><strong>Filtering Removed</strong> So no internal synchronized blocks to slow things down.</li>
+  <li><strong>Convenience methods</strong>
+    <ul>
+      <li><code>getFilteredSparseArray()</code></li>
+      <li><code>getSparseArray()</code>, <code>setSparseArray()</code></li>
+    </ul>
+  </li>
+  <li>
+    <p><strong>LayoutInflater</strong> Passed down to both <code>getView()</code> and <code>getDropDownView()</code></p>
+
+    <p><br /></p>
+  </li>
+</ul>
+
+<h4 id="code-example">Code Example</h4>
+
+<pre><code>    public class MovieAdapter extends NFSparseAdapter&lt;MovieItem&gt; {
+        MovieAdapter(Context activity) {
+            super(activity);
+        }
+
+        @Override
+        public View getView(LayoutInflater inflater, int position, View convertView, ViewGroup parent) {
+            if (convertView == null) {
+                //Inflate your view
+            }
+
+            //Fill your view with data
+            return convertView;
+        }
+    }
+</code></pre>
 
 				</div>
 				<div id="NFJSONAdapter" class="tab-pane fade">

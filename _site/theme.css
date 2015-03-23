@@ -55,9 +55,8 @@ html, body {
     background-color: rgb(245, 234, 250);
 }
 
-/* Forces tabs to not go hidden. Prevents tab-pane from resizing as different tabs are selected. */
-.tab-content > .tab-pane {
-    display: block;
+.tab-pane {
+    margin: 10px;
 }
 
 
@@ -77,7 +76,7 @@ html, body {
     margin-right: 10px;
 }
 .my-tab-content {
-    margin: 10px;
+
 }
 
 /*Need the higher specificity to override certain jumbotron attributes */
