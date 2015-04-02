@@ -399,11 +399,12 @@ public abstract class PatchedExpandableListAdapter extends BaseExpandableListAda
 		return mContext;
 	}
 
+	@SuppressWarnings("ObjectEquality")
 	@Override
 	public final View getGroupView(int groupPosition, boolean isExpanded, View convertView,
 								   ViewGroup parent) {
 		ExpandableListView lv = mExpandableListView.get();
-		if (lv == null) {
+		if (lv == null || parent != lv) {
 			if (parent instanceof ExpandableListView) {
 				lv = (ExpandableListView) parent;
 				if (lv.getChoiceMode() != AbsListView.CHOICE_MODE_NONE) {
