@@ -152,14 +152,62 @@
         //Easily customize your filtered results here.  Too easy!
         @Override
         protected boolean isFilteredOut(int keyId, MovieItem item, CharSequence constraint) {
-            return !item.title.toLowerCase(Locale.US)
-            .contains(constraint.toString().toLowerCase(Locale.US));
+            return !item.title.toLowerCase(Locale.US).
+                    contains(constraint.toString().toLowerCase(Locale.US));
         }
     }
 </code></pre>
 
 				</div>
 				<div id="JSONAdapter" class="tab-pane fade">
+					
+					<h4 id="perks">Perks:</h4>
+
+<ul>
+  <li><strong>JSONArray Backed</strong> Based on and designed to work only with Android’s <code>JSONArray</code></li>
+  <li><strong>JSONArray Implementation</strong> Unlike a typical array based adapter, all interactions with this adapter are akin to working with a <code>JSONArray</code>.</li>
+  <li><strong>Filtering Logic</strong> You provide the how, adapter takes care of the rest.</li>
+  <li><strong>Manage Type Filtering</strong> Storing multiple types of objects? No problem, you can create a specific filtering logic for each data type.  Even for your own custom classes.</li>
+  <li><strong>Built-in Filters</strong> Default filtering logic supplied for <code>Boolean</code>, <code>Double</code>, <code>Integer</code>, <code>Long</code> and <code>String</code> data types. Can optionally override these with your own behavior.</li>
+  <li><strong>Active Filtering</strong> Mutating adapter will re-filter data on the fly.</li>
+  <li><strong>Convenience methods</strong>
+    <ul>
+      <li><code>getFilteredJSONArray()</code></li>
+      <li><code>getJSONArray()</code>, <code>setJSONArray()</code></li>
+    </ul>
+  </li>
+  <li>
+    <p><strong>LayoutInflater</strong> Passed down to both <code>getView()</code> and <code>getDropDownView()</code></p>
+
+    <p><br /></p>
+  </li>
+</ul>
+
+<h4 id="code-example">Code Example</h4>
+
+<pre><code>    public class MovieAdapter extends JSONAdapter&lt;MovieItem&gt; {
+        MovieAdapter(Context activity) {
+            super(activity);
+        }
+
+        @Override
+        public View getView(LayoutInflater inflater, int position, View convertView, ViewGroup parent) {
+            if (convertView == null) {
+                //Inflate your view
+            }
+
+            //Fill your view with data
+            return convertView;
+        }
+
+        //Easily customize your filtered results here.  Too easy!
+        @Override
+        protected boolean isFilteredOut(Object item, CharSequence constraint) {
+            return !item.toString().toLowerCase(Locale.US).
+                    contains(constraint.toString().toLowerCase(Locale.US));
+        }
+    }
+</code></pre>
 
 				</div>
 				<div class="RolodexArrayAdapter" class="tab-pane fade">
@@ -265,6 +313,44 @@
 
 				</div>
 				<div id="NFJSONAdapter" class="tab-pane fade">
+					
+					<h4 id="perks">Perks:</h4>
+
+<ul>
+  <li><strong>JSONArray Backed</strong> Based on and designed to work only with Android’s <code>JSONArray</code></li>
+  <li><strong>JSONArray Implementation</strong> Unlike a typical array based adapter, all interactions with this adapter are akin to working with a <code>JSONArray</code>.</li>
+  <li><strong>Filtering Removed</strong> So no internal synchronized blocks to slow things down.</li>
+  <li><strong>Convenience methods</strong>
+    <ul>
+      <li><code>getFilteredJSONArray()</code></li>
+      <li><code>getJSONArray()</code>, <code>setJSONArray()</code></li>
+    </ul>
+  </li>
+  <li>
+    <p><strong>LayoutInflater</strong> Passed down to both <code>getView()</code> and <code>getDropDownView()</code></p>
+
+    <p><br /></p>
+  </li>
+</ul>
+
+<h4 id="code-example">Code Example</h4>
+
+<pre><code>    public class MovieAdapter extends JSONAdapter&lt;MovieItem&gt; {
+        MovieAdapter(Context activity) {
+            super(activity);
+        }
+
+        @Override
+        public View getView(LayoutInflater inflater, int position, View convertView, ViewGroup parent) {
+            if (convertView == null) {
+                //Inflate your view
+            }
+
+            //Fill your view with data
+            return convertView;
+        }
+    }
+</code></pre>
 
 				</div>
 				<div class="NFRolodexArrayAdapter" class="tab-pane fade">

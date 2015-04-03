@@ -59,7 +59,8 @@
 					{{ SparseAdapter | markdownify }}
 				</div>
 				<div id="JSONAdapter" class="tab-pane fade">
-
+					{% capture JSONAdapter %}{% include JSONAdapter.md %}{% endcapture %}
+					{{ JSONAdapter | markdownify }}
 				</div>
 				<div class="RolodexArrayAdapter" class="tab-pane fade">
 
@@ -85,7 +86,8 @@
 					{{ NFSparseAdapter | markdownify }}
 				</div>
 				<div id="NFJSONAdapter" class="tab-pane fade">
-
+					{% capture NFJSONAdapter %}{% include NFJSONAdapter.md %}{% endcapture %}
+					{{ NFJSONAdapter | markdownify }}
 				</div>
 				<div class="NFRolodexArrayAdapter" class="tab-pane fade">
 
