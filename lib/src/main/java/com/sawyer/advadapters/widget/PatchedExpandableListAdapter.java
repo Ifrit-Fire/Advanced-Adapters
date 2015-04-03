@@ -45,9 +45,10 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * Meant to replace the {@link BaseExpandableListAdapter} as the starting point for building a
- * specialized adapter for the {@link ExpandableListView}. It provides convenient capabilities
- * lacking in the ExpandableListView; as well as patching it's broken choice mode functionality.
+ * Meant to replace the {@link android.widget.BaseExpandableListAdapter} as the starting point for
+ * building a specialized adapter for the {@link android.widget.ExpandableListView}. It provides
+ * convenient capabilities lacking in the ExpandableListView; as well as patching it's broken choice
+ * mode functionality.
  * <p/>
  * <b>New Capabilities:</b><ul><li>Expand/Collapse All Groups</li> <li>Auto Expanding
  * Groups</li><li>Define individual group selectability</li><li>Four Available Choice
@@ -61,10 +62,10 @@ import java.util.Set;
  * Activity recreation with {@link #onRestoreInstanceState(Parcelable)}.
  * <p/>
  * <b>Ownership:</b> This adapter will take ownership of an ExpandableListView's {@link
- * ExpandableListView.OnGroupClickListener}, {@link ExpandableListView.OnChildClickListener}, and
- * {@link ExpandableListView.MultiChoiceModeListener}. Attempting to set those listeners directly
- * through the ExpandableListView is an error and will fail to function correctly. Additionally all
- * choice mode interactions must be conducted through this adapter.
+ * android.widget.ExpandableListView.OnGroupClickListener}, {@link android.widget.ExpandableListView.OnChildClickListener},
+ * and {@link android.widget.AbsListView.MultiChoiceModeListener}. Attempting to set those listeners
+ * directly through the ExpandableListView is an error and will fail to function correctly.
+ * Additionally all choice mode interactions must be conducted through this adapter.
  * <p/>
  */
 public abstract class PatchedExpandableListAdapter extends BaseExpandableListAdapter {
@@ -73,7 +74,7 @@ public abstract class PatchedExpandableListAdapter extends BaseExpandableListAda
 	private final OnDisableTouchListener mDisableTouchListener = new OnDisableTouchListener();
 	private final OnChoiceModeClickListener mChoiceModeClickListener = new OnChoiceModeClickListener();
 
-	/** Controls if/how the user may activate items in the {@link ExpandableListView}. */
+	/** Controls if/how the user may activate items in the {@link android.widget.ExpandableListView}. */
 	ChoiceMode mChoiceMode;
 	/** The ActionMode CAB used during any choice mode MODALs. Null when inactive. */
 	ActionMode mChoiceActionMode;
@@ -88,7 +89,10 @@ public abstract class PatchedExpandableListAdapter extends BaseExpandableListAda
 	 */
 	CheckedState mCheckStates;
 
-	/** {@link WeakReference} to {@link ExpandableListView} which the adapter is currently attached. */
+	/**
+	 * {@link WeakReference} to {@link android.widget.ExpandableListView} which the adapter is
+	 * currently attached.
+	 */
 	WeakReference<ExpandableListView> mExpandableListView;
 	/** User defined callback to be invoked when a group view has been clicked. */
 	ExpandableListView.OnGroupClickListener mOnGroupClickListener;
@@ -106,8 +110,9 @@ public abstract class PatchedExpandableListAdapter extends BaseExpandableListAda
 	private Set<QueueAction> mQueueAction;
 
 	/**
-	 * Defines the various behaviors supported for use with {@link ExpandableListView}. While
-	 * similar to those found within {@link AbsListView} they are not equivalent.
+	 * Defines the various behaviors supported for use with {@link android.widget.ExpandableListView}.
+	 * While similar to those found within {@link android.widget.AbsListView} they are not
+	 * equivalent.
 	 *
 	 * @see #setChoiceMode(ChoiceMode) setChoiceMode()
 	 */
@@ -243,8 +248,8 @@ public abstract class PatchedExpandableListAdapter extends BaseExpandableListAda
 	 * Returns the number of child items currently checked. This will only be valid if the choice
 	 * mode is not {@link ChoiceMode#NONE NONE} (default).
 	 * <p/>
-	 * To determine the specific items that are currently checked, use one of the
-	 * <code>getChecked*</code> methods.
+	 * To determine the specific items that are currently checked, use one of the {@code
+	 * getChecked*} methods.
 	 *
 	 * @return The number of children currently checked.
 	 *
@@ -286,8 +291,8 @@ public abstract class PatchedExpandableListAdapter extends BaseExpandableListAda
 	 * Returns the number of group items currently checked. This will only be valid if the choice
 	 * mode is not {@link ChoiceMode#NONE NONE} (default).
 	 * <p/>
-	 * <p>To determine the specific items that are currently checked, use one of the
-	 * <code>getChecked*</code> methods.
+	 * <p>To determine the specific items that are currently checked, use one of the {@code
+	 * getChecked*} methods.
 	 *
 	 * @return The number of items currently checked
 	 *
@@ -355,7 +360,8 @@ public abstract class PatchedExpandableListAdapter extends BaseExpandableListAda
 	}
 
 	/**
-	 * @return The current choice mode to be applied to the attached {@link ExpandableListView}
+	 * @return The current choice mode to be applied to the attached {@link
+	 * android.widget.ExpandableListView}
 	 */
 	@NonNull
 	public ChoiceMode getChoiceMode() {
@@ -363,15 +369,15 @@ public abstract class PatchedExpandableListAdapter extends BaseExpandableListAda
 	}
 
 	/**
-	 * Defines the choice behavior for the attached {@link ExpandableListView}. By default, this
-	 * adapter does not have any choice behavior ({@link ChoiceMode#NONE NONE}) set. By setting the
-	 * choiceMode to {@link ChoiceMode#SINGLE SINGLE}, the ExpandableListView allows up to one item
-	 * to be in an activation state. By setting the choiceMode to {@link ChoiceMode#MULTIPLE
-	 * MULTIPLE}, the ExpandableListView allows any number of items to be chosen. Any of the MODAL
-	 * variants will show a custom CAB when an item is long pressed.
+	 * Defines the choice behavior for the attached {@link android.widget.ExpandableListView}. By
+	 * default, this adapter does not have any choice behavior ({@link ChoiceMode#NONE NONE}) set.
+	 * By setting the choiceMode to {@link ChoiceMode#SINGLE SINGLE}, the ExpandableListView allows
+	 * up to one item to be in an activation state. By setting the choiceMode to {@link
+	 * ChoiceMode#MULTIPLE MULTIPLE}, the ExpandableListView allows any number of items to be
+	 * chosen. Any of the MODAL variants will show a custom CAB when an item is long pressed.
 	 * <p/>
-	 * Use this method instead of {@link ExpandableListView#setChoiceMode(int)}. This adapter will
-	 * take over and emulate the behavior instead.
+	 * Use this method instead of {@link android.widget.ExpandableListView#setChoiceMode(int)}. This
+	 * adapter will take over and emulate the behavior instead.
 	 *
 	 * @param choiceMode One of the {@link ChoiceMode NONE} options
 	 */
@@ -508,7 +514,7 @@ public abstract class PatchedExpandableListAdapter extends BaseExpandableListAda
 	 *
 	 * @param groupPosition The position of the group item
 	 *
-	 * @return The group item's checked state or <code>false</code> if choice mode is disabled.
+	 * @return The group item's checked state or {@code false} if choice mode is disabled.
 	 *
 	 * @see #setChoiceMode(ChoiceMode) setChoiceMode
 	 */
@@ -578,7 +584,6 @@ public abstract class PatchedExpandableListAdapter extends BaseExpandableListAda
 		}
 		ss.inActionMode = (mChoiceActionMode != null);
 		ss.choiceMode = mChoiceMode;
-		return ss;
 	}
 
 	/**
@@ -737,9 +742,9 @@ public abstract class PatchedExpandableListAdapter extends BaseExpandableListAda
 
 	/**
 	 * Set a {@link PatchedExpandableListAdapter.ChoiceModeListener ChoiceModeListener} that will
-	 * manage the lifecycle of the selection {@link ActionMode}. Only used when the choice mode is
-	 * set to modal variant of {@link ChoiceMode ChoiceMode}. Eg {@link ChoiceMode#MULTIPLE_MODAL
-	 * MULITPLE_MODAL} or {@link ChoiceMode#SINGLE_MODAL SINGLE_MODAL}.
+	 * manage the lifecycle of the selection {@link android.view.ActionMode}. Only used when the
+	 * choice mode is set to modal variant of {@link ChoiceMode ChoiceMode}. Eg {@link
+	 * ChoiceMode#MULTIPLE_MODAL MULITPLE_MODAL} or {@link ChoiceMode#SINGLE_MODAL SINGLE_MODAL}.
 	 *
 	 * @param listener Callback that will manage the selection mode
 	 */
@@ -752,7 +757,7 @@ public abstract class PatchedExpandableListAdapter extends BaseExpandableListAda
 
 	/**
 	 * Register a callback to be invoked when a child item has been clicked. Whether a listener is
-	 * registered or not, this adapter takes ownership of the {@link ExpandableListView}'s
+	 * registered or not, this adapter takes ownership of the {@link android.widget.ExpandableListView}'s
 	 * equivalent listeners. Attempting to set the callback directly through the ExpandableListView
 	 * will not work.
 	 * <p/>
@@ -770,7 +775,7 @@ public abstract class PatchedExpandableListAdapter extends BaseExpandableListAda
 
 	/**
 	 * Register a callback to be invoked when a group item has been clicked. Whether a listener is
-	 * registered or not, this adapter takes ownership of the {@link ExpandableListView}'s
+	 * registered or not, this adapter takes ownership of the {@link android.widget.ExpandableListView}'s
 	 * equivalent listeners. Attempting to set the callback directly through the ExpandableListView
 	 * will not work.
 	 * <p/>
@@ -787,7 +792,8 @@ public abstract class PatchedExpandableListAdapter extends BaseExpandableListAda
 	}
 
 	/**
-	 * Start an {@link ActionMode}. Use this method instead of {@link ExpandableListView#startActionMode(ActionMode.Callback)
+	 * Start an {@link android.view.ActionMode}. Use this method instead of {@link
+	 * android.widget.ExpandableListView#startActionMode(android.view.ActionMode.Callback)
 	 * ExpandableListView.startActionMode()}.
 	 */
 	public void startActionMode() {
@@ -891,22 +897,22 @@ public abstract class PatchedExpandableListAdapter extends BaseExpandableListAda
 
 	/**
 	 * An interface definition for callbacks that receive events for {@link ChoiceMode ChoiceMode}
-	 * modal variants. It acts as the {@link ActionMode.Callback} for the selection mode and also
-	 * receives checked state change events when the user selects and deselects groups or children
-	 * views.
+	 * modal variants. It acts as the {@link android.view.ActionMode.Callback} for the selection
+	 * mode and also receives checked state change events when the user selects and deselects groups
+	 * or children views.
 	 */
 	public static interface ChoiceModeListener extends ActionMode.Callback {
 
 		/**
 		 * Called when a child item is checked or unchecked during selection mode.
 		 *
-		 * @param mode          The {@link ActionMode} providing the selection mode
+		 * @param mode          The {@link android.view.ActionMode} providing the selection mode
 		 * @param childPosition Adapter position of the child item that was checked or unchecked
 		 * @param childId       Adapter ID of the child item that was checked or unchecked
 		 * @param groupPosition Adapter position of the group this child belongs to.
 		 * @param groupId       Adapter ID of the group this child belongs to.
-		 * @param checked       <code>true</code> if the item is now checked, <code>false</code> if
-		 *                      the item is now unchecked.
+		 * @param checked       {@code true} if the item is now checked, {@code false} if the item
+		 *                      is now unchecked.
 		 */
 		public void onChildCheckedStateChanged(@NonNull ActionMode mode, int groupPosition,
 											   long groupId, int childPosition, long childId,
@@ -918,11 +924,11 @@ public abstract class PatchedExpandableListAdapter extends BaseExpandableListAda
 		 * {@link #onChildCheckedStateChanged(ActionMode, int, long, int, long, boolean)
 		 * onChildCheckedStateChanged()} will be appropriately invoked for each.
 		 *
-		 * @param mode          The {@link ActionMode} providing the selection mode
+		 * @param mode          The {@link android.view.ActionMode} providing the selection mode
 		 * @param groupPosition Adapter position of the group item that was checked or unchecked
 		 * @param groupId       Adapter ID of the group item that was checked or unchecked
-		 * @param checked       <code>true</code> if the item is now checked, <code>false</code> if
-		 *                      the item is now unchecked.
+		 * @param checked       {@code true} if the item is now checked, {@code false} if the item
+		 *                      is now unchecked.
 		 */
 		public void onGroupCheckedStateChanged(@NonNull ActionMode mode, int groupPosition,
 											   long groupId, boolean checked);
