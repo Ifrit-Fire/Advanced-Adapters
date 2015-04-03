@@ -584,6 +584,7 @@ public abstract class PatchedExpandableListAdapter extends BaseExpandableListAda
 		}
 		ss.inActionMode = (mChoiceActionMode != null);
 		ss.choiceMode = mChoiceMode;
+		return ss;
 	}
 
 	/**
