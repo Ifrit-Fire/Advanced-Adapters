@@ -32,18 +32,19 @@ import java.util.Collections;
 import java.util.Comparator;
 
 /**
- * A custom abstract {@link BaseAdapter} that is backed by an {@link ArrayList} of arbitrary
+ * <p>A custom abstract {@link BaseAdapter} that is backed by an {@link ArrayList} of arbitrary
  * objects.  By default this class delegates view generation and defining the filtering logic to
- * subclasses.
- * <p/>
- * Designed to be a more flexible and customizable solution then Android's ArrayAdapter class. It
+ * subclasses.</p>
+ *
+ * <p>Designed to be a more flexible and customizable solution then Android's ArrayAdapter class. It
  * provides extra features such as: supporting additional {@link ArrayList} methods, resolves
  * outstanding filtering bugs, makes smarter use of {@link #notifyDataSetChanged()}, and
- * conveniently passes along a layout inflater for view creation.
- * <p/>
- * Because of the background filtering process, all methods which mutates the underlying data are
+ * conveniently passes along a layout inflater for view creation.</p>
+ *
+ * <p>Because of the background filtering process, all methods which mutates the underlying data are
  * internally synchronized. This ensures a thread safe environment for internal write operations. If
- * filtering is not required, it's strongly recommended to use the {@link NFArrayAdapter} instead.
+ * filtering is not required, it's strongly recommended to use the {@link NFArrayAdapter}
+ * instead.</p>
  */
 public abstract class AbsArrayAdapter<T> extends BaseAdapter implements Filterable {
 	/**
@@ -128,7 +129,9 @@ public abstract class AbsArrayAdapter<T> extends BaseAdapter implements Filterab
 				mObjects.add(items);
 			}
 		}
-		if (mNotifyOnChange) notifyDataSetChanged();
+		if (mNotifyOnChange) {
+			notifyDataSetChanged();
+		}
 	}
 
 	/**
@@ -143,12 +146,16 @@ public abstract class AbsArrayAdapter<T> extends BaseAdapter implements Filterab
 		synchronized (mLock) {
 			if (mOriginalValues != null) {
 				isModified = mOriginalValues.addAll(items);
-				if (isModified) getFilter().filter(mLastConstraint);
+				if (isModified) {
+					getFilter().filter(mLastConstraint);
+				}
 			} else {
 				isModified = mObjects.addAll(items);
 			}
 		}
-		if (isModified && mNotifyOnChange) notifyDataSetChanged();
+		if (isModified && mNotifyOnChange) {
+			notifyDataSetChanged();
+		}
 	}
 
 	/**
@@ -164,12 +171,16 @@ public abstract class AbsArrayAdapter<T> extends BaseAdapter implements Filterab
 		synchronized (mLock) {
 			if (mOriginalValues != null) {
 				isModified = Collections.addAll(mOriginalValues, items);
-				if (isModified) getFilter().filter(mLastConstraint);
+				if (isModified) {
+					getFilter().filter(mLastConstraint);
+				}
 			} else {
 				isModified = Collections.addAll(mObjects, items);
 			}
 		}
-		if (isModified && mNotifyOnChange) notifyDataSetChanged();
+		if (isModified && mNotifyOnChange) {
+			notifyDataSetChanged();
+		}
 	}
 
 	/**
@@ -177,10 +188,14 @@ public abstract class AbsArrayAdapter<T> extends BaseAdapter implements Filterab
 	 */
 	public void clear() {
 		synchronized (mLock) {
-			if (mOriginalValues != null) mOriginalValues.clear();
+			if (mOriginalValues != null) {
+				mOriginalValues.clear();
+			}
 			mObjects.clear();
 		}
-		if (mNotifyOnChange) notifyDataSetChanged();
+		if (mNotifyOnChange) {
+			notifyDataSetChanged();
+		}
 	}
 
 	/**
@@ -312,7 +327,9 @@ public abstract class AbsArrayAdapter<T> extends BaseAdapter implements Filterab
 				mObjects.addAll(items);
 			}
 		}
-		if (mNotifyOnChange) notifyDataSetChanged();
+		if (mNotifyOnChange) {
+			notifyDataSetChanged();
+		}
 	}
 
 	/**
@@ -390,10 +407,14 @@ public abstract class AbsArrayAdapter<T> extends BaseAdapter implements Filterab
 		boolean isModified = false;
 
 		synchronized (mLock) {
-			if (mOriginalValues != null) isModified = mOriginalValues.remove(item);
+			if (mOriginalValues != null) {
+				isModified = mOriginalValues.remove(item);
+			}
 			isModified |= mObjects.remove(item);
 		}
-		if (isModified && mNotifyOnChange) notifyDataSetChanged();
+		if (isModified && mNotifyOnChange) {
+			notifyDataSetChanged();
+		}
 	}
 
 	/**
@@ -404,10 +425,14 @@ public abstract class AbsArrayAdapter<T> extends BaseAdapter implements Filterab
 	public void removeAll(@NonNull Collection<?> items) {
 		boolean isModified = false;
 		synchronized (mLock) {
-			if (mOriginalValues != null) isModified = mOriginalValues.removeAll(items);
+			if (mOriginalValues != null) {
+				isModified = mOriginalValues.removeAll(items);
+			}
 			isModified |= mObjects.removeAll(items);
 		}
-		if (isModified && mNotifyOnChange) notifyDataSetChanged();
+		if (isModified && mNotifyOnChange) {
+			notifyDataSetChanged();
+		}
 	}
 
 	/**
@@ -419,19 +444,23 @@ public abstract class AbsArrayAdapter<T> extends BaseAdapter implements Filterab
 		boolean isModified = false;
 
 		synchronized (mLock) {
-			if (mOriginalValues != null) isModified = mOriginalValues.retainAll(items);
+			if (mOriginalValues != null) {
+				isModified = mOriginalValues.retainAll(items);
+			}
 			isModified |= mObjects.retainAll(items);
 		}
-		if (isModified && mNotifyOnChange) notifyDataSetChanged();
+		if (isModified && mNotifyOnChange) {
+			notifyDataSetChanged();
+		}
 	}
 
 	/**
-	 * Control whether methods that change the list ({@link #add}, {@link #retainAll}, {@link
+	 * <p>Control whether methods that change the list ({@link #add}, {@link #retainAll}, {@link
 	 * #remove}, {@link #clear}) automatically call {@link #notifyDataSetChanged}.  If set to false,
 	 * caller must manually call notifyDataSetChanged() to have the changes reflected in the
-	 * attached view.
-	 * <p/>
-	 * The default is true, and calling notifyDataSetChanged() resets the flag to true.
+	 * attached view.</p>
+	 *
+	 * <p>The default is true, and calling notifyDataSetChanged() resets the flag to true.</p>
 	 *
 	 * @param notifyOnChange if true, modifications to the list will automatically call {@link
 	 *                       #notifyDataSetChanged}
@@ -470,7 +499,9 @@ public abstract class AbsArrayAdapter<T> extends BaseAdapter implements Filterab
 			}
 			Collections.sort(mObjects, comparator);
 		}
-		if (mNotifyOnChange) notifyDataSetChanged();
+		if (mNotifyOnChange) {
+			notifyDataSetChanged();
+		}
 	}
 
 	/**
@@ -493,7 +524,9 @@ public abstract class AbsArrayAdapter<T> extends BaseAdapter implements Filterab
 				mObjects.set(position, item);
 			}
 		}
-		if (mNotifyOnChange) notifyDataSetChanged();
+		if (mNotifyOnChange) {
+			notifyDataSetChanged();
+		}
 	}
 
 	/**

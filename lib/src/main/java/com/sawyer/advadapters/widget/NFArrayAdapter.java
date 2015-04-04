@@ -29,16 +29,17 @@ import java.util.Collections;
 import java.util.Comparator;
 
 /**
- * A non-filterable custom abstract {@link BaseAdapter} that is backed by an {@link ArrayList} of
- * arbitrary objects.  By default this class delegates view generation to subclasses.
- * <p/>
- * Designed to be a more flexible and customizable solution then Android's ArrayAdapter class but
+ * <p>A non-filterable custom abstract {@link BaseAdapter} that is backed by an {@link ArrayList} of
+ * arbitrary objects.  By default this class delegates view generation to subclasses.</p>
+ *
+ * <p>Designed to be a more flexible and customizable solution then Android's ArrayAdapter class but
  * without the filtering mechanism. As a result, there is no need for {@code synchronized} blocks
  * which may help those worried about performance. It provides extra features such as: supporting
  * additional {@link ArrayList} methods, makes smarter use of {@link #notifyDataSetChanged()}, and
- * conveniently passes along a layout inflater for view creation.
- * <p/>
- * If filtering is required, it's strongly recommended to use the {@link AbsArrayAdapter} instead.
+ * conveniently passes along a layout inflater for view creation.</p>
+ *
+ * <p>If filtering is required, it's strongly recommended to use the {@link AbsArrayAdapter}
+ * instead.</p>
  */
 public abstract class NFArrayAdapter<T> extends BaseAdapter {
 	/** LayoutInflater created from the constructing context */
@@ -93,7 +94,9 @@ public abstract class NFArrayAdapter<T> extends BaseAdapter {
 	 */
 	public void add(@Nullable T item) {
 		mObjects.add(item);
-		if (mNotifyOnChange) notifyDataSetChanged();
+		if (mNotifyOnChange) {
+			notifyDataSetChanged();
+		}
 	}
 
 	/**
@@ -103,7 +106,9 @@ public abstract class NFArrayAdapter<T> extends BaseAdapter {
 	 */
 	public void addAll(@NonNull Collection<? extends T> items) {
 		boolean isModified = mObjects.addAll(items);
-		if (isModified && mNotifyOnChange) notifyDataSetChanged();
+		if (isModified && mNotifyOnChange) {
+			notifyDataSetChanged();
+		}
 	}
 
 	/**
@@ -114,7 +119,9 @@ public abstract class NFArrayAdapter<T> extends BaseAdapter {
 	@SafeVarargs
 	public final void addAll(@NonNull T... items) {
 		boolean isModified = Collections.addAll(mObjects, items);
-		if (isModified && mNotifyOnChange) notifyDataSetChanged();
+		if (isModified && mNotifyOnChange) {
+			notifyDataSetChanged();
+		}
 	}
 
 	/**
@@ -122,7 +129,9 @@ public abstract class NFArrayAdapter<T> extends BaseAdapter {
 	 */
 	public void clear() {
 		mObjects.clear();
-		if (mNotifyOnChange) notifyDataSetChanged();
+		if (mNotifyOnChange) {
+			notifyDataSetChanged();
+		}
 	}
 
 	/**
@@ -216,7 +225,9 @@ public abstract class NFArrayAdapter<T> extends BaseAdapter {
 	public void setList(@NonNull Collection<? extends T> items) {
 		mObjects.clear();
 		mObjects.addAll(items);
-		if (mNotifyOnChange) notifyDataSetChanged();
+		if (mNotifyOnChange) {
+			notifyDataSetChanged();
+		}
 	}
 
 	/**
@@ -273,7 +284,9 @@ public abstract class NFArrayAdapter<T> extends BaseAdapter {
 	 */
 	public void insert(int index, @Nullable T item) {
 		mObjects.add(index, item);
-		if (mNotifyOnChange) notifyDataSetChanged();
+		if (mNotifyOnChange) {
+			notifyDataSetChanged();
+		}
 	}
 
 	/**
@@ -285,7 +298,9 @@ public abstract class NFArrayAdapter<T> extends BaseAdapter {
 	 */
 	public void insertAll(int index, @NonNull Collection<? extends T> items) {
 		boolean isModified = mObjects.addAll(index, items);
-		if (isModified && mNotifyOnChange) notifyDataSetChanged();
+		if (isModified && mNotifyOnChange) {
+			notifyDataSetChanged();
+		}
 	}
 
 	@Override
@@ -301,7 +316,9 @@ public abstract class NFArrayAdapter<T> extends BaseAdapter {
 	 */
 	public void remove(@Nullable T item) {
 		boolean isModified = mObjects.remove(item);
-		if (isModified && mNotifyOnChange) notifyDataSetChanged();
+		if (isModified && mNotifyOnChange) {
+			notifyDataSetChanged();
+		}
 	}
 
 	/**
@@ -311,7 +328,9 @@ public abstract class NFArrayAdapter<T> extends BaseAdapter {
 	 */
 	public void removeAll(@NonNull Collection<?> items) {
 		boolean isModified = mObjects.removeAll(items);
-		if (isModified && mNotifyOnChange) notifyDataSetChanged();
+		if (isModified && mNotifyOnChange) {
+			notifyDataSetChanged();
+		}
 	}
 
 	/**
@@ -321,16 +340,18 @@ public abstract class NFArrayAdapter<T> extends BaseAdapter {
 	 */
 	public void retainAll(@NonNull Collection<?> items) {
 		boolean isModified = mObjects.retainAll(items);
-		if (isModified && mNotifyOnChange) notifyDataSetChanged();
+		if (isModified && mNotifyOnChange) {
+			notifyDataSetChanged();
+		}
 	}
 
 	/**
-	 * Control whether methods that change the list ({@link #add}, {@link #insert}, {@link #remove},
-	 * {@link #clear}) automatically call {@link #notifyDataSetChanged}.  If set to false, caller
-	 * must manually call notifyDataSetChanged() to have the changes reflected in the attached
-	 * view.
-	 * <p/>
-	 * The default is true, and calling notifyDataSetChanged() resets the flag to true.
+	 * <p>Control whether methods that change the list ({@link #add}, {@link #insert}, {@link
+	 * #remove}, {@link #clear}) automatically call {@link #notifyDataSetChanged}.  If set to false,
+	 * caller must manually call notifyDataSetChanged() to have the changes reflected in the
+	 * attached view.</p>
+	 *
+	 * <p>The default is true, and calling notifyDataSetChanged() resets the flag to true.</p>
 	 *
 	 * @param notifyOnChange if true, modifications to the list will automatically call {@link
 	 *                       #notifyDataSetChanged}
@@ -364,7 +385,9 @@ public abstract class NFArrayAdapter<T> extends BaseAdapter {
 	 */
 	public void sort(@Nullable Comparator<? super T> comparator) {
 		Collections.sort(mObjects, comparator);
-		if (mNotifyOnChange) notifyDataSetChanged();
+		if (mNotifyOnChange) {
+			notifyDataSetChanged();
+		}
 	}
 
 	/**
@@ -376,6 +399,8 @@ public abstract class NFArrayAdapter<T> extends BaseAdapter {
 	 */
 	public void update(int position, @Nullable T item) {
 		mObjects.set(position, item);
-		if (mNotifyOnChange) notifyDataSetChanged();
+		if (mNotifyOnChange) {
+			notifyDataSetChanged();
+		}
 	}
 }

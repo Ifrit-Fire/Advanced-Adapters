@@ -25,17 +25,18 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
 /**
- * A non-filterable custom abstract {@link BaseAdapter} that is backed by a {@link SparseArray} of
- * arbitrary objects.  By default this class delegates view generation to subclasses.
- * <p/>
- * Designed to be a flexible and customizable solution for using SparseArray with an adapter but
+ * <p>A non-filterable custom abstract {@link BaseAdapter} that is backed by a {@link SparseArray}
+ * of arbitrary objects.  By default this class delegates view generation to subclasses.</p>
+ *
+ * <p>Designed to be a flexible and customizable solution for using SparseArray with an adapter but
  * without the filtering mechanism. As a result, there is no need for {@code synchronized} blocks
  * which may help those worried about performance.  It exposes most of the SparseArray methods, and
  * conveniently passes along a layout inflater for view creation. An adapter's row ID maps to the
  * SparseArray's key and vice versa. Any method requiring a key will have <i>"withId"</i> in the
- * name.
- * <p/>
- * If filtering is required, it's strongly recommended to use the {@link SparseAdapter} instead.
+ * name.</p>
+ *
+ * <p>If filtering is required, it's strongly recommended to use the {@link SparseAdapter}
+ * instead.</p>
  */
 public abstract class NFSparseAdapter<T> extends BaseAdapter {
 
@@ -120,12 +121,12 @@ public abstract class NFSparseAdapter<T> extends BaseAdapter {
 	}
 
 	/**
-	 * Determines if the specified item exists within the adapter. Be aware that this is a linear
+	 * <p>Determines if the specified item exists within the adapter. Be aware that this is a linear
 	 * search, unlike look-ups by key, and that multiple keys can map to the same value and this
-	 * will find only one of them.
-	 * <p/>
-	 * Note also that unlike most collections this method compares values using == rather than
-	 * equals...a result of how SparseArrays are implemented.
+	 * will find only one of them.</p>
+	 *
+	 * <p>Note also that unlike most collections this method compares values using == rather than
+	 * equals...a result of how SparseArrays are implemented.</p>
 	 *
 	 * @param item The item to search for
 	 *
@@ -192,12 +193,12 @@ public abstract class NFSparseAdapter<T> extends BaseAdapter {
 	}
 
 	/**
-	 * Returns the position of the specified item in the sparse array. Be aware that this is a
+	 * <p>Returns the position of the specified item in the sparse array. Be aware that this is a
 	 * linear search, unlike look-ups by key,and that multiple keys can map to the same value and
-	 * this will find only one of them.
-	 * <p/>
-	 * Note also that unlike most collections, this method compares values using == rather than
-	 * equals.
+	 * this will find only one of them.</p>
+	 *
+	 * <p>Note also that unlike most collections, this method compares values using == rather than
+	 * equals.</p>
 	 *
 	 * @param item The item to retrieve the position of.
 	 *
@@ -348,12 +349,12 @@ public abstract class NFSparseAdapter<T> extends BaseAdapter {
 	}
 
 	/**
-	 * Controls whether methods that change the list ({@link #appendWithId}, {@link #putWithId},
+	 * <p>Controls whether methods that change the list ({@link #appendWithId}, {@link #putWithId},
 	 * {@link #remove}, {@link #clear}) automatically call {@link #notifyDataSetChanged}.  If set to
 	 * false, caller must manually call notifyDataSetChanged() to have the changes reflected in the
-	 * attached view.
-	 * <p/>
-	 * The default is true, and calling notifyDataSetChanged() resets the flag to true.
+	 * attached view.</p>
+	 *
+	 * <p>The default is true, and calling notifyDataSetChanged() resets the flag to true.</p>
 	 *
 	 * @param notifyOnChange if true, modifications to the list will automatically call {@link
 	 *                       #notifyDataSetChanged}

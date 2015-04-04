@@ -35,27 +35,27 @@ import java.util.Map;
 import java.util.TreeMap;
 
 /**
- * For use with an {@link ExpandableListView}, The rolodex adapters are specifically designed to
+ * <p>For use with an {@link ExpandableListView}, The rolodex adapters are specifically designed to
  * tackle the problem of organizing existing data on the fly without the need to pre-compute the
  * groupings nor actually store the grouping data itself. Instead of having to organize your data
  * ahead of time, you can simply pass in a list of arbitrary data and provide one simple method
  * which determines the groupings it belongs to. Though not required, ideally this relationship
  * would be derived from the data itself. For example, populating the adapter with a list of Person
- * objects could derive it's groupings based on the last name. Just like an old-school rolodex.
- * <p/>
- * The RolodexArrayAdapter uses a {@link Map} to organize the data under each group. The children
+ * objects could derive it's groupings based on the last name. Just like an old-school rolodex.</p>
+ *
+ * <p>The RolodexArrayAdapter uses a {@link Map} to organize the data under each group. The children
  * within each grouping are backed by an {@link ArrayList}. The data can be easily modified and
  * filtered in various ways and allows numerous display and sorting options.  Additionally full
  * support for {@link ChoiceMode ChoiceMode} is available. By default this class delegates view
- * generation and defining the filtering logic to subclasses.
- * <p/>
- * Because of the background filtering process, all methods which mutates the underlying data are
+ * generation and defining the filtering logic to subclasses.</p>
+ *
+ * <p>Because of the background filtering process, all methods which mutates the underlying data are
  * internally synchronized. This ensures a thread safe environment for internal write operations. If
  * filtering is not required, it's strongly recommended to use the {@link NFRolodexArrayAdapter}
- * instead.
+ * instead.</p>
  */
-public abstract class RolodexArrayAdapter<G, C> extends PatchedExpandableListAdapter implements
-		Filterable {
+public abstract class RolodexArrayAdapter<G, C> extends PatchedExpandableListAdapter
+		implements Filterable {
 	/**
 	 * Lock used to modify the content of {@link #mObjects}. Any write operation performed on the
 	 * map should be synchronized on this lock. This lock is also used by the filter (see {@link
@@ -123,10 +123,11 @@ public abstract class RolodexArrayAdapter<G, C> extends PatchedExpandableListAda
 	@NonNull
 	private static <G, C> Map<G, ArrayList<C>> createNewMap(boolean areGroupsSorted,
 															@Nullable Map<G, ArrayList<C>> dataToCopy) {
-		if (dataToCopy == null)
+		if (dataToCopy == null) {
 			return areGroupsSorted ? new TreeMap<G, ArrayList<C>>() : new LinkedHashMap<G, ArrayList<C>>();
-		else
+		} else {
 			return areGroupsSorted ? new TreeMap<>(dataToCopy) : new LinkedHashMap<>(dataToCopy);
+		}
 	}
 
 	/**
@@ -179,7 +180,9 @@ public abstract class RolodexArrayAdapter<G, C> extends PatchedExpandableListAda
 				children.add(childItem);
 			}
 		}
-		if (mNotifyOnChange) notifyDataSetChanged();
+		if (mNotifyOnChange) {
+			notifyDataSetChanged();
+		}
 	}
 
 	/**
@@ -197,7 +200,9 @@ public abstract class RolodexArrayAdapter<G, C> extends PatchedExpandableListAda
 				addAllToObjects(childItems);
 			}
 		}
-		if (mNotifyOnChange) notifyDataSetChanged();
+		if (mNotifyOnChange) {
+			notifyDataSetChanged();
+		}
 	}
 
 	/**
@@ -216,7 +221,9 @@ public abstract class RolodexArrayAdapter<G, C> extends PatchedExpandableListAda
 				addAllToObjects(Arrays.asList(childItems));
 			}
 		}
-		if (mNotifyOnChange) notifyDataSetChanged();
+		if (mNotifyOnChange) {
+			notifyDataSetChanged();
+		}
 	}
 
 	private void addAllToObjects(@NonNull Collection<? extends C> childItems) {
@@ -275,7 +282,9 @@ public abstract class RolodexArrayAdapter<G, C> extends PatchedExpandableListAda
 			mObjects.clear();
 			mGroupObjects.clear();
 		}
-		if (mNotifyOnChange) notifyDataSetChanged();
+		if (mNotifyOnChange) {
+			notifyDataSetChanged();
+		}
 	}
 
 	/**
@@ -291,13 +300,13 @@ public abstract class RolodexArrayAdapter<G, C> extends PatchedExpandableListAda
 	}
 
 	/**
-	 * Creates a new group object which represents the parent of the given child item. This is used
-	 * to determine what group the child item will fall under. Do not attempt to return a cached
-	 * group object here. See {@link #getGroupFromCacheFor(Object)} for that behavior.
-	 * <p/>
-	 * It's recommended that the group object returned is immutable, or whose hashcode is based on
-	 * an immutable field(s). A mutable object is fine so long as it's not modified during the
-	 * lifespan of this adapter.
+	 * <p>Creates a new group object which represents the parent of the given child item. This is
+	 * used to determine what group the child item will fall under. Do not attempt to return a
+	 * cached group object here. See {@link #getGroupFromCacheFor(Object)} for that behavior.</p>
+	 *
+	 * <p>It's recommended that the group object returned is immutable, or whose hashcode is based
+	 * on an immutable field(s). A mutable object is fine so long as it's not modified during the
+	 * lifespan of this adapter.</p>
 	 *
 	 * @param childItem The child item for which a group instance will be created for.
 	 *
@@ -390,21 +399,21 @@ public abstract class RolodexArrayAdapter<G, C> extends PatchedExpandableListAda
 	}
 
 	/**
-	 * Override to provide a caching mechanism for retrieving a group item. Caching can help reduce
-	 * the number of {@link #createGroupFor(Object)} invocations. By default, no caching is provided
-	 * by the adapter. This method normally returns null.
-	 * <p/>
-	 * It's only recommended to implement this method if one of the following are true: <ul> <li>You
-	 * can pre-populate the cache with all the child to group relations.</li> <li>The cache will be
-	 * lazy-loaded and saved for later re-use.</li> <li>Instantiating your group object is a pretty
-	 * hefty call.</li> <li>You are constantly mutating the adapter. </li> </ul>
-	 * <p/>
-	 * Pulling from cache is primarily used when mutating the adapter. It is never used nor needed
-	 * by any of the getters.
-	 * <p/>
-	 * Additionally, the group object returned should be immutable, or whose hashcode is based on an
-	 * immutable field(s). A mutable object is fine so long as it's not modified during the lifespan
-	 * of this adapter.
+	 * <p>Override to provide a caching mechanism for retrieving a group item. Caching can help
+	 * reduce the number of {@link #createGroupFor(Object)} invocations. By default, no caching is
+	 * provided by the adapter. This method normally returns null.</p>
+	 *
+	 * It's only recommended to implement this method if one of the following are true: <ul>
+	 * <li>You can pre-populate the cache with all the child to group relations.</li> <li>The cache
+	 * will be lazy-loaded and saved for later re-use.</li> <li>Instantiating your group object is a
+	 * pretty hefty call.</li> <li>You are constantly mutating the adapter. </li> </ul>
+	 *
+	 * <p>Pulling from cache is primarily used when mutating the adapter. It is never used nor
+	 * needed by any of the getters.</p>
+	 *
+	 * <p>Additionally, the group object returned should be immutable, or whose hashcode is based on
+	 * an immutable field(s). A mutable object is fine so long as it's not modified during the
+	 * lifespan of this adapter.</p>
 	 *
 	 * @param childItem The child item for which a group object will be returned for.
 	 *
@@ -458,7 +467,9 @@ public abstract class RolodexArrayAdapter<G, C> extends PatchedExpandableListAda
 				addAllToObjects(childItems);
 			}
 		}
-		if (mNotifyOnChange) notifyDataSetChanged();
+		if (mNotifyOnChange) {
+			notifyDataSetChanged();
+		}
 	}
 
 	private void init(@NonNull Collection<C> objects) {
@@ -516,11 +527,15 @@ public abstract class RolodexArrayAdapter<G, C> extends PatchedExpandableListAda
 			G group = getGroupFor(childItem);
 			if (mOriginalValues != null) {
 				ArrayList<C> children = mOriginalValues.get(group);
-				if (children == null) return; //Can't find group, assume item doesn't exist
+				if (children == null) {
+					return; //Can't find group, assume item doesn't exist
+				}
 				isModified = children.remove(childItem);
 				if (children.isEmpty()) {
 					mOriginalValues.remove(group);
-					if (mObjects.remove(group) != null) mGroupObjects.remove(group);
+					if (mObjects.remove(group) != null) {
+						mGroupObjects.remove(group);
+					}
 					break SYNC_BLOCK;
 				}
 			}
@@ -528,14 +543,18 @@ public abstract class RolodexArrayAdapter<G, C> extends PatchedExpandableListAda
 			//mOriginalValues != null, then our group object will be correct. Otherwise, we may need
 			//to do a manual search.
 			ArrayList<C> children = mObjects.get(group);
-			if (children == null) return; //Can't find group, item already removed or doesn't exist
+			if (children == null) {
+				return; //Can't find group, item already removed or doesn't exist
+			}
 			isModified |= children.remove(childItem);
 			if (children.isEmpty()) {
 				mObjects.remove(group);
 				mGroupObjects.remove(group);
 			}
 		}
-		if (isModified && mNotifyOnChange) notifyDataSetChanged();
+		if (isModified && mNotifyOnChange) {
+			notifyDataSetChanged();
+		}
 	}
 
 	/**
@@ -552,7 +571,9 @@ public abstract class RolodexArrayAdapter<G, C> extends PatchedExpandableListAda
 				G group = getGroupFor(item);
 				if (mOriginalValues != null) {
 					ArrayList<C> children = mOriginalValues.get(group);
-					if (children == null) return; //Can't find group, assume item doesn't exist
+					if (children == null) {
+						return; //Can't find group, assume item doesn't exist
+					}
 					isModified = children.remove(item);
 					if (children.isEmpty()) {
 						mOriginalValues.remove(group);
@@ -564,13 +585,19 @@ public abstract class RolodexArrayAdapter<G, C> extends PatchedExpandableListAda
 				//mOriginalValues != null, then our group object will be correct. Otherwise, we may need
 				//to do a manual search.
 				ArrayList<C> children = mObjects.get(group);
-				if (children == null) return; //Can't find group, already removed or doesn't exist
+				if (children == null) {
+					return; //Can't find group, already removed or doesn't exist
+				}
 				isModified |= children.remove(item);
-				if (children.isEmpty()) mObjects.remove(group);
+				if (children.isEmpty()) {
+					mObjects.remove(group);
+				}
 			}
 			mGroupObjects = new ArrayList<>(mObjects.keySet());
 		}
-		if (isModified && mNotifyOnChange) notifyDataSetChanged();
+		if (isModified && mNotifyOnChange) {
+			notifyDataSetChanged();
+		}
 	}
 
 	/**
@@ -604,17 +631,21 @@ public abstract class RolodexArrayAdapter<G, C> extends PatchedExpandableListAda
 					it.remove();
 				}
 			}
-			if (isModified) mGroupObjects = new ArrayList<>(mObjects.keySet());
+			if (isModified) {
+				mGroupObjects = new ArrayList<>(mObjects.keySet());
+			}
 		}
-		if (isModified && mNotifyOnChange) notifyDataSetChanged();
+		if (isModified && mNotifyOnChange) {
+			notifyDataSetChanged();
+		}
 	}
 
 	/**
-	 * Controls whether methods that change the list ({@link #add}, {@link #remove}, {@link #clear})
-	 * automatically call {@link #notifyDataSetChanged}.  If set to false, caller must manually call
-	 * notifyDataSetChanged() to have the changes reflected in the attached view.
-	 * <p/>
-	 * The default is true, and calling notifyDataSetChanged() resets the flag to true.
+	 * <p>Controls whether methods that change the list ({@link #add}, {@link #remove}, {@link
+	 * #clear}) automatically call {@link #notifyDataSetChanged}.  If set to false, caller must
+	 * manually call notifyDataSetChanged() to have the changes reflected in the attached view.</p>
+	 *
+	 * <p>The default is true, and calling notifyDataSetChanged() resets the flag to true.</p>
 	 *
 	 * @param notifyOnChange if true, modifications to the list will automatically call {@link
 	 *                       #notifyDataSetChanged}
@@ -658,7 +689,9 @@ public abstract class RolodexArrayAdapter<G, C> extends PatchedExpandableListAda
 				Collections.sort(entry.getValue(), comparator);
 			}
 		}
-		if (mNotifyOnChange) notifyDataSetChanged();
+		if (mNotifyOnChange) {
+			notifyDataSetChanged();
+		}
 	}
 
 	/**
@@ -693,7 +726,9 @@ public abstract class RolodexArrayAdapter<G, C> extends PatchedExpandableListAda
 			}
 			Collections.sort(mObjects.get(group), comparator);
 		}
-		if (mNotifyOnChange) notifyDataSetChanged();
+		if (mNotifyOnChange) {
+			notifyDataSetChanged();
+		}
 	}
 
 	/**
@@ -765,7 +800,9 @@ public abstract class RolodexArrayAdapter<G, C> extends PatchedExpandableListAda
 				}
 			}
 		}
-		if (mNotifyOnChange) notifyDataSetChanged();
+		if (mNotifyOnChange) {
+			notifyDataSetChanged();
+		}
 	}
 
 	private class RolodexFilter extends Filter {

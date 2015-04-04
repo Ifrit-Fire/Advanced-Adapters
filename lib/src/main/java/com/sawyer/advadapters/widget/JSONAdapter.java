@@ -40,32 +40,34 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * A custom abstract {@link BaseAdapter} that is backed by a {@link JSONArray} of arbitrary objects.
- * By default this class delegates view generation and defining the filtering logic to subclasses.
- * <p/>
- * Designed to be a flexible and customizable solution for using JSONArray with an adapter. It
+ * <p>A custom abstract {@link BaseAdapter} that is backed by a {@link JSONArray} of arbitrary
+ * objects. By default this class delegates view generation and defining the filtering logic to
+ * subclasses.</p>
+ *
+ * <p>Designed to be a flexible and customizable solution for using JSONArray with an adapter. It
  * exposes most of the JSONArray methods, provides active filtering support, and conveniently passes
  * along a layout inflater for view creation. Keep in mind JSONArray itself has limited capabilities
- * which restricts what this adapter can do.
- * <p/>
- * Because of the background filtering process, all methods which mutates the underlying data are
+ * which restricts what this adapter can do.</p>
+ *
+ * <p>Because of the background filtering process, all methods which mutates the underlying data are
  * internally synchronized. This ensures a thread safe environment for internal write operations. If
  * filtering is not required, it's strongly recommended to use the {@link NFJSONArrayAdapter}
  * instead. In order to support the multitude of data types a JSONArray can store, the filtering
- * mechanism is built to be very robust.
- * <p/>
- * Only the {@link #isFilteredOut(Object, CharSequence)} is required to be implemented by
+ * mechanism is built to be very robust.</p>
+ *
+ * <p>Only the {@link #isFilteredOut(Object, CharSequence)} is required to be implemented by
  * subclasses. Pre-built methods for handing the logic for Boolean, Double, Integer, Long, and
  * String already exist. You may override them to provide an alternate behavior. In addition, you
  * can provide your own filtered methods for custom data types. During adapter construction, any
  * methods which match the {@code isFilteredOut} method signature are cached.  Then during a filter
- * operation, will be invoked via reflection when required.
- * <p/>
- * For example, lets say you created your own object type called Foo. You've stored several
+ * operation, will be invoked via reflection when required.</p>
+ *
+ * <p>For example, lets say you created your own object type called Foo. You've stored several
  * instances of Foo within the adapter along with JSONObjects, Integers, and Booleans. In order to
  * specifically support a {@code isFilteredOut} method for your Foo object, have your subclass
  * implement a {@code isFilteredOut(Foo, CharSequence)}. Then during a filter operation, any Foo
- * object detected will have that method invoke to determine whether it passes the filter or not.
+ * object detected will have that method invoke to determine whether it passes the filter or
+ * not.</p>
  */
 public abstract class JSONAdapter extends BaseAdapter implements Filterable {
 	/**
@@ -213,7 +215,9 @@ public abstract class JSONAdapter extends BaseAdapter implements Filterable {
 				mObjects.put(item);
 			}
 		}
-		if (mNotifyOnChange) notifyDataSetChanged();
+		if (mNotifyOnChange) {
+			notifyDataSetChanged();
+		}
 	}
 
 	/**
@@ -233,7 +237,9 @@ public abstract class JSONAdapter extends BaseAdapter implements Filterable {
 				mObjects.put(item);
 			}
 		}
-		if (mNotifyOnChange) notifyDataSetChanged();
+		if (mNotifyOnChange) {
+			notifyDataSetChanged();
+		}
 	}
 
 	/**
@@ -251,7 +257,9 @@ public abstract class JSONAdapter extends BaseAdapter implements Filterable {
 				mObjects.put(item);
 			}
 		}
-		if (mNotifyOnChange) notifyDataSetChanged();
+		if (mNotifyOnChange) {
+			notifyDataSetChanged();
+		}
 	}
 
 	/**
@@ -269,7 +277,9 @@ public abstract class JSONAdapter extends BaseAdapter implements Filterable {
 				mObjects.put(item);
 			}
 		}
-		if (mNotifyOnChange) notifyDataSetChanged();
+		if (mNotifyOnChange) {
+			notifyDataSetChanged();
+		}
 	}
 
 	/**
@@ -287,7 +297,9 @@ public abstract class JSONAdapter extends BaseAdapter implements Filterable {
 				mObjects.put(item);
 			}
 		}
-		if (mNotifyOnChange) notifyDataSetChanged();
+		if (mNotifyOnChange) {
+			notifyDataSetChanged();
+		}
 	}
 
 	/**
@@ -310,7 +322,9 @@ public abstract class JSONAdapter extends BaseAdapter implements Filterable {
 				}
 			}
 		}
-		if (mNotifyOnChange) notifyDataSetChanged();
+		if (mNotifyOnChange) {
+			notifyDataSetChanged();
+		}
 	}
 
 	/**
@@ -333,7 +347,9 @@ public abstract class JSONAdapter extends BaseAdapter implements Filterable {
 				}
 			}
 		}
-		if (mNotifyOnChange) notifyDataSetChanged();
+		if (mNotifyOnChange) {
+			notifyDataSetChanged();
+		}
 	}
 
 	/**
@@ -376,7 +392,9 @@ public abstract class JSONAdapter extends BaseAdapter implements Filterable {
 		Method[] methods = c.getMethods();
 		for (Method m : methods) {
 			String key = getFilterMethodKey(m);
-			if (key != null) mFilterMethods.put(key, m);
+			if (key != null) {
+				mFilterMethods.put(key, m);
+			}
 		}
 
 		//Scan non-public methods next
@@ -398,10 +416,14 @@ public abstract class JSONAdapter extends BaseAdapter implements Filterable {
 	 */
 	public void clear() {
 		synchronized (mLock) {
-			if (mOriginalValues != null) mOriginalValues = new JSONArray();
+			if (mOriginalValues != null) {
+				mOriginalValues = new JSONArray();
+			}
 			mObjects = new JSONArray();
 		}
-		if (mNotifyOnChange) notifyDataSetChanged();
+		if (mNotifyOnChange) {
+			notifyDataSetChanged();
+		}
 	}
 
 	/**
@@ -613,7 +635,9 @@ public abstract class JSONAdapter extends BaseAdapter implements Filterable {
 				mObjects = generateCopy(items);
 			}
 		}
-		if (mNotifyOnChange) notifyDataSetChanged();
+		if (mNotifyOnChange) {
+			notifyDataSetChanged();
+		}
 	}
 
 	/**
@@ -941,11 +965,11 @@ public abstract class JSONAdapter extends BaseAdapter implements Filterable {
 	}
 
 	/**
-	 * Control whether methods that change the list ({@link #add}, {@link #clear}) automatically
+	 * <p>Control whether methods that change the list ({@link #add}, {@link #clear}) automatically
 	 * call {@link #notifyDataSetChanged}.  If set to false, caller must manually call
-	 * notifyDataSetChanged() to have the changes reflected in the attached view.
-	 * <p/>
-	 * The default is true, and calling notifyDataSetChanged() resets the flag to true.
+	 * notifyDataSetChanged() to have the changes reflected in the attached view.</p>
+	 *
+	 * <p>The default is true, and calling notifyDataSetChanged() resets the flag to true.</p>
 	 *
 	 * @param notifyOnChange if true, modifications to the list will automatically call {@link
 	 *                       #notifyDataSetChanged}
@@ -955,17 +979,17 @@ public abstract class JSONAdapter extends BaseAdapter implements Filterable {
 	}
 
 	/**
-	 * A JSONArray filter constrains the content of the adapter. Whether an item is constrained or
-	 * not is delegated to subclasses through the default {@link JSONAdapter#isFilteredOut(Object,
+	 * <p>A JSONArray filter constrains the content of the adapter. Whether an item is constrained
+	 * or not is delegated to subclasses through the default {@link JSONAdapter#isFilteredOut(Object,
 	 * CharSequence)}. However the filter will first attempt to find the best matching {@code
 	 * isFilteredOut} method based on the type of object stored at a given location. For instance,
 	 * if the object is an Integer, then the {@link JSONAdapter#isFilteredOut(Integer,
-	 * CharSequence)} will be invoked instead.
-	 * <p/>
-	 * It's possible for subclasses to define their own {@code isFilteredOut} methods for their own
-	 * custom classes. So if the object stored is of type {@code Foo} and the subclassed adapter has
-	 * defined an {@code isFilteredOut(Foo, CharSequence)}} method, then that  will be invoked
-	 * instead of the default {@link JSONAdapter#isFilteredOut(Object, CharSequence)}.
+	 * CharSequence)} will be invoked instead.</p>
+	 *
+	 * <p>It's possible for subclasses to define their own {@code isFilteredOut} methods for their
+	 * own custom classes. So if the object stored is of type {@code Foo} and the subclassed adapter
+	 * has defined an {@code isFilteredOut(Foo, CharSequence)}} method, then that  will be invoked
+	 * instead of the default {@link JSONAdapter#isFilteredOut(Object, CharSequence)}.</p>
 	 */
 	private class JSONArrayFilter extends Filter {
 		@Override
@@ -999,20 +1023,25 @@ public abstract class JSONAdapter extends BaseAdapter implements Filterable {
 				if (m != null) {
 					varargs[0] = value;
 					try {
-						boolean result = (boolean) m
-								.invoke(JSONAdapter.this, varargs);
-						if (!result) newValues.put(value);
+						boolean result = (boolean) m.invoke(JSONAdapter.this, varargs);
+						if (!result) {
+							newValues.put(value);
+						}
 					} catch (IllegalAccessException e) {
 						Log.w(m.getName(),
 							  "Method not accessible. Using `isFilteredOut(Object)` instead");
-						if (!isFilteredOut(value, constraint)) newValues.put(value);
+						if (!isFilteredOut(value, constraint)) {
+							newValues.put(value);
+						}
 					} catch (InvocationTargetException e) {
 						Log.w(m.getName(), "Exception thrown by method. Gracefully skipping " +
 										   mObjects.toString());
 					}
 				} else {
 					Log.v("No method defined for", value.getClass().getName());
-					if (!isFilteredOut(value, constraint)) newValues.put(value);
+					if (!isFilteredOut(value, constraint)) {
+						newValues.put(value);
+					}
 				}
 			}
 
