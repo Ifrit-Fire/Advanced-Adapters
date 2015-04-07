@@ -44,6 +44,10 @@
 
 		</summary>
 
+		
+<div class="highlight"><pre><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kt">void</span> <span class="nf">foo</span><span class="o">(</span><span class="kt">int</span> <span class="n">test</span><span class="o">);</span></code></pre></div>
+
+
 		<div class="panel panel-default">
 			<p class="my-tab-header">FILTERABLE ADAPTERS</p>
 			<ul class="nav nav-tabs nav-justified">
@@ -84,29 +88,28 @@
 
 <h4 id="code-example">Code Example</h4>
 
-<pre><code>    public class MovieAdapter extends AbsArrayAdapter&lt;MovieItem&gt; {
-        MovieAdapter(Context activity) {
-            super(activity);
-        }
+<div class="highlight"><pre><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">MovieAdapter</span> <span class="kd">extends</span> <span class="n">AbsArrayAdapter</span><span class="o">&lt;</span><span class="n">MovieItem</span><span class="o">&gt;</span> <span class="o">{</span>
+            <span class="n">MovieAdapter</span><span class="o">(</span><span class="n">Context</span> <span class="n">activity</span><span class="o">)</span> <span class="o">{</span>
+                <span class="kd">super</span><span class="o">(</span><span class="n">activity</span><span class="o">);</span>
+            <span class="o">}</span>
 
-        @Override
-        public View getView(LayoutInflater inflater, int position, View convertView, ViewGroup parent) {
-            if (convertView == null) {
-                //Inflate your view
-            }
+            <span class="nd">@Override</span>
+            <span class="kd">public</span> <span class="n">View</span> <span class="nf">getView</span><span class="o">(</span><span class="n">LayoutInflater</span> <span class="n">inflater</span><span class="o">,</span> <span class="kt">int</span> <span class="n">position</span><span class="o">,</span> <span class="n">View</span> <span class="n">convertView</span><span class="o">,</span> <span class="n">ViewGroup</span> <span class="n">parent</span><span class="o">)</span> <span class="o">{</span>
+                <span class="k">if</span> <span class="o">(</span><span class="n">convertView</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+                    <span class="c1">//Inflate your view</span>
+                <span class="o">}</span>
 
-            //Fill your view with data
-            return convertView;
-        }
+                <span class="c1">//Fill your view with data</span>
+                <span class="k">return</span> <span class="n">convertView</span><span class="o">;</span>
+            <span class="o">}</span>
 
-        //Easily customize your filtered results here.  Too easy!
-        @Override
-        protected boolean isFilteredOut(MovieItem movie, CharSequence constraint) {
-            return !movie.title.toLowerCase(Locale.US).contains(
-                    constraint.toString().toLowerCase(Locale.US));
-        }
-    }
-</code></pre>
+            <span class="c1">//Easily customize your filtered results here.  Too easy!</span>
+            <span class="nd">@Override</span>
+            <span class="kd">protected</span> <span class="kt">boolean</span> <span class="nf">isFilteredOut</span><span class="o">(</span><span class="n">MovieItem</span> <span class="n">movie</span><span class="o">,</span> <span class="n">CharSequence</span> <span class="n">constraint</span><span class="o">)</span> <span class="o">{</span>
+                <span class="k">return</span> <span class="o">!</span><span class="n">movie</span><span class="o">.</span><span class="na">title</span><span class="o">.</span><span class="na">toLowerCase</span><span class="o">(</span><span class="n">Locale</span><span class="o">.</span><span class="na">US</span><span class="o">).</span><span class="na">contains</span><span class="o">(</span>
+                        <span class="n">constraint</span><span class="o">.</span><span class="na">toString</span><span class="o">().</span><span class="na">toLowerCase</span><span class="o">(</span><span class="n">Locale</span><span class="o">.</span><span class="na">US</span><span class="o">));</span>
+            <span class="o">}</span>
+        <span class="o">}</span></code></pre></div>
 
 
 				</div>
