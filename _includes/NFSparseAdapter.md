@@ -4,7 +4,6 @@
 - **SparseArray Implementation** Unlike a typical array based adapter, all interactions with this adapter are akin to working with a `SparseArray`.
 - **Filtering Removed** So no internal synchronized blocks to slow things down.
 - **Convenience methods**
-  - `getFilteredSparseArray()`
   - `getSparseArray()`, `setSparseArray()`
 - **LayoutInflater** Passed down to both `getView()` and `getDropDownView()`
 

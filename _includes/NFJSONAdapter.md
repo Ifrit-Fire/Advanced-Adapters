@@ -4,7 +4,6 @@
 - **JSONArray Implementation** Unlike a typical array based adapter, all interactions with this adapter are akin to working with a `JSONArray`.
 - **Filtering Removed** So no internal synchronized blocks to slow things down.
 - **Convenience methods**
-  - `getFilteredJSONArray()`
   - `getJSONArray()`, `setJSONArray()`
 - **LayoutInflater** Passed down to both `getView()` and `getDropDownView()`
 

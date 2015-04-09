@@ -22,7 +22,7 @@
 		(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
 		m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
 		})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-	
+
 		ga('create', 'UA-37289721-2', 'auto');
 		ga('send', 'pageview');
 	</script>
@@ -72,8 +72,9 @@
 					{% capture JSONAdapter %}{% include JSONAdapter.md %}{% endcapture %}
 					{{ JSONAdapter | markdownify }}
 				</div>
-				<div class="RolodexArrayAdapter" class="tab-pane fade">
-
+				<div id="RolodexArrayAdapter" class="tab-pane fade">
+					{% capture RolodexArrayAdapter %}{% include RolodexArrayAdapter.md %}{% endcapture %}
+					{{ RolodexArrayAdapter | markdownify }}
 				</div>
 			</div>
 		</div>	<!-- /filterable tab panel -->
@@ -99,8 +100,9 @@
 					{% capture NFJSONAdapter %}{% include NFJSONAdapter.md %}{% endcapture %}
 					{{ NFJSONAdapter | markdownify }}
 				</div>
-				<div class="NFRolodexArrayAdapter" class="tab-pane fade">
-
+				<div id="NFRolodexArrayAdapter" class="tab-pane fade">
+					{% capture NFRolodexArrayAdapter %}{% include NFRolodexArrayAdapter.md %}{% endcapture %}
+					{{ NFRolodexArrayAdapter | markdownify }}
 				</div>
 			</div>
 		</div>	<!-- /non-filterable tab panel -->
