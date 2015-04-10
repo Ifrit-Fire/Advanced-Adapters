@@ -8,7 +8,7 @@
 	<meta name="author" content="{{ page.author }}">
 
 	<!-- <link rel="icon" href="graphics/icon.png"> -->
-	<title>{{ page.title }}</title>
+	<title>{{ site.github.project_title }}</title>
 
 	<!-- Bootstrap core CSS -->
 	<link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -38,12 +38,12 @@
 					<li role="presentation"><a href="{{ page.so_url }}">StackOverflow</a></li>
 					<li role="presentation"><a href="{{ page.blog_url }}">Blog</a></li>
 				</ul>
-				<h3 class="text-muted">{{ page.title }}</h3>
+				<h3 class="text-muted">{{ site.github.project_title }}</h3>
 			</nav>
 		</div>
 
 		<div class="jumbotron" id="my_jumbotron">
-			<img class="img-responsive img-rounded-large" src="{{ page.banner }}" alt="{{ page.title }}" />
+			<img class="img-responsive img-rounded-large" src="{{ page.banner }}" alt="{{ site.github.project_title }}" />
 		</div>
 
 		<summary>
