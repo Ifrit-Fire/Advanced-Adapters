@@ -37,8 +37,8 @@ ul.nav.nav-tabs.nav-justified > li > a:hover, ul.nav.nav-tabs.nav-justified > li
     background-color: #ccffcc;
 }
 
-/* Update coloring for links */
-a:link, a:visited {
+/* Update coloring for misc elements */
+a:link, a:visited, h3.text-muted {
     color: #5e1f7f;
 }
 
