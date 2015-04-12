@@ -107,6 +107,19 @@
 			</div>
 		</div>	<!-- /non-filterable tab panel -->
 
+		<div class="panel panel-default">
+			<p class="my-tab-header">MISCELLANEOUS ADAPTERS</p>
+			<ul class="nav nav-tabs nav-justified">
+				<li class="active"><a data-toggle="tab" href="#PatchedExpandableListAdapter"><strong>PatchedExpandableListAdapter</strong></a></li>
+			</ul>
+			<div class="tab-content">
+				<div id="PatchedExpandableListAdapter" class="tab-pane fade in active">
+					{% capture PatchedExpandableListAdapter %}{% include PatchedExpandableListAdapter.md %}{% endcapture %}
+					{{ PatchedExpandableListAdapter | markdownify }}
+				</div>
+			</div>
+		</div>	<!-- /misc tab panel -->
+
 	</div> <!-- /container -->
 
 	<!-- Bootstrap core JavaScript
