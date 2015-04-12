@@ -23,6 +23,31 @@ html, body {
     /* IE6-9 */
 }
 
+/* Update all tabs background, and highlight colorings */
+ul.nav.nav-tabs.nav-justified > li.active > a:hover, ul.nav.nav-tabs.nav-justified > li.active > a,
+ul.nav.nav-tabs.nav-justified > li.active > a:focus {
+    background-color: transparent;
+    color:#669900;
+}
+ul.nav.nav-tabs.nav-justified > li > a:hover, ul.nav.nav-tabs.nav-justified > li > a:focus {
+    background-color: #ccffcc;
+    border: 1px solid rgba(102, 53, 0, .1);
+}
+.nav-pills > li > a:hover, .nav-pills > li > a:focus {
+    background-color: #ccffcc;
+}
+
+/* Update coloring for links */
+a:link, a:visited {
+    color: #5e1f7f;
+}
+
+/* Update coloring for code snippets */
+p > code, li > code, h4 > code {
+    color: #5e1f7f;
+    background-color: rgba(102, 53, 0, .1);
+}
+
 /* Everything but the jumbotron gets side spacing for mobile first views */
 .header,
 .marketing,
