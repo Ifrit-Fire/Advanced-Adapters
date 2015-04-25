@@ -1,9 +1,6 @@
 /local.properties
 /.idea/workspace.xml
-*.apk
-*.ap_
-*.dex
-*.class
+*.iml
 bin/
 gen/
 local.properties
