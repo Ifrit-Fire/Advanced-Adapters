@@ -1,13 +1,14 @@
 Change Log
 ==========
 
-# Version 15.3.0 *(?? Month 2015)*
+# Version 15.3.0 *(25 May 2015)*
 **Milestone:** Polish
  - New: Version naming no longer based on date of release.
  - New: Incorporated support annotations.
  - New: Demo dialog classes are now using Butterknife
  - New: Instantiating an adapter with static array no longer yields an immutable adapter.
  - New: Added this changelog.
+ - New: AAR of lib is now in jCenter
  - Fix: All Filter classes now synchronizes `mObjects` in `publishResults()`.
  - Fix: *"Selected"* text is now localized for all modal CABs.
 

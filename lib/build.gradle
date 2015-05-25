@@ -7,8 +7,8 @@ android {
 	defaultConfig {
 		minSdkVersion 15
 		targetSdkVersion 22
-		versionCode 4
-		versionName "15.02.7"
+		versionCode project.PUBLISH_VERSION_CODE
+		versionName project.PUBLISH_VERSION_NAME
 	}
 	compileOptions {
 		sourceCompatibility JavaVersion.VERSION_1_7
@@ -24,5 +24,7 @@ android {
 
 dependencies {
 	compile fileTree(include: ['*.jar'], dir: 'libs')
-	compile 'com.android.support:support-annotations:22.0.0'
+	compile 'com.android.support:support-annotations:22.1.1'
 }
+
+apply from: "$rootDir/lib/aar.gradle"

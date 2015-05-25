@@ -8,8 +8,8 @@ android {
 		applicationId "com.sawyer.advadapters.app"
 		minSdkVersion 15
 		targetSdkVersion 22
-		versionCode 4
-		versionName "15.02.7"
+		versionCode project.PUBLISH_VERSION_CODE
+		versionName project.PUBLISH_VERSION_NAME
 	}
 	compileOptions {
 		sourceCompatibility JavaVersion.VERSION_1_7
@@ -21,7 +21,9 @@ android {
 			proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
 		}
 	}
-	productFlavors {
+
+	lintOptions {
+		abortOnError false
 	}
 }
 
@@ -29,6 +31,6 @@ dependencies {
 	compile fileTree(include: ['*.jar'], dir: 'libs')
 	compile project(':lib')
 	compile 'com.jakewharton:butterknife:6.1.0'
-	compile 'com.android.support:support-v4:22.0.0'
-	compile 'com.android.support:appcompat-v7:22.0.0'
+	compile 'com.android.support:support-v4:22.1.1'
+	compile 'com.android.support:appcompat-v7:22.1.1'
 }

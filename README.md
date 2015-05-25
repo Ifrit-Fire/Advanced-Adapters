@@ -65,7 +65,13 @@ public class MovieAdapter extends AbsArrayAdapter<MovieItem> {
 Thats it!
 
 ### Adding To Your Project
-All adapters are found within the `lib` directory. Once the repo is cloned, you can import the module directly into your app. If using Eclipse, you'll need to manually copy each class file over to your code. For additional help refer to the [Getting Started](https://github.com/JaySoyer/Advanced-Adapters/wiki/Getting-Started) wiki.
+You can use the following to retrieve the AAR from jCenter.
+
+	dependencies {
+		compile 'com.jaysoyer.lib:advanced-adapters:15.3'
+	}
+
+Alternatively, all adapters are found within the `lib` directory. Once the repo is cloned, you can import the module directly into your app. If using Eclipse, you'll need to manually copy each class file over to your code. For additional help refer to the [Getting Started](https://github.com/JaySoyer/Advanced-Adapters/wiki/Getting-Started) wiki.
 
 Everything found within `app` is the source code for the Google Play store [demo app](https://play.google.com/store/apps/details?id=com.sawyer.advadapters.app&hl=en "Advanced-Adapters Demo App"). You can also use it for seeing how to use the adapters.
 
