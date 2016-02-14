@@ -16,6 +16,7 @@
 package com.sawyer.advadapters.app.adapters.nfarrayadapter;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,7 +39,8 @@ class MovieNFArrayAdapter extends NFArrayAdapter<MovieItem> {
 	}
 
 	@Override
-	public View getView(LayoutInflater inflater, int position, View convertView, ViewGroup parent) {
+	public View getView(@NonNull LayoutInflater inflater, int position, View convertView,
+						@NonNull ViewGroup parent) {
 		MovieViewHolder vh;
 		if (convertView == null) {
 			convertView = inflater.inflate(R.layout.item_movie1, parent, false);

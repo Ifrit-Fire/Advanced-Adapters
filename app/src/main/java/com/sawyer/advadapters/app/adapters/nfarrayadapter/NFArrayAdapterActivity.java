@@ -68,8 +68,7 @@ public class NFArrayAdapterActivity extends AdapterBaseActivity implements
 	protected void initFrags() {
 		super.initFrags();
 		FragmentManager manager = getFragmentManager();
-		mListFragment = (NFArrayAdapterFragment) manager
-				.findFragmentByTag(TAG_ADAPTER_FRAG);
+		mListFragment = (NFArrayAdapterFragment) manager.findFragmentByTag(TAG_ADAPTER_FRAG);
 		if (mListFragment == null) {
 			mListFragment = NFArrayAdapterFragment.newInstance();
 			FragmentTransaction transaction = manager.beginTransaction();

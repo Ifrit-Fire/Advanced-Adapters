@@ -87,12 +87,15 @@ public class NFArrayAdapterFragment extends ListFragment {
 		if (savedInstanceState != null) {
 			ArrayList<MovieItem> checkItems = savedInstanceState
 					.getParcelableArrayList(STATE_CAB_CHECKED_ITEMS);
-			mCheckedItems.addAll(checkItems);
-			ArrayList<MovieItem> list = savedInstanceState.getParcelableArrayList(STATE_LIST);
-			setListAdapter(new MovieNFArrayAdapter(getActivity(), list));
-		} else {
-			setListAdapter(new MovieNFArrayAdapter(getActivity()));
+			if (checkItems != null) {
+				mCheckedItems.addAll(checkItems);
+				ArrayList<MovieItem> list = savedInstanceState.getParcelableArrayList(STATE_LIST);
+				setListAdapter(new MovieNFArrayAdapter(getActivity(), list));
+				return;
+			}
 		}
+
+		setListAdapter(new MovieNFArrayAdapter(getActivity()));
 	}
 
 	@Override
@@ -137,7 +140,7 @@ public class NFArrayAdapterFragment extends ListFragment {
 	}
 
 	public interface EventListener {
-		public void onAdapterCountUpdated();
+		void onAdapterCountUpdated();
 	}
 
 	private class OnCabMultiChoiceModeListener implements AbsListView.MultiChoiceModeListener {
