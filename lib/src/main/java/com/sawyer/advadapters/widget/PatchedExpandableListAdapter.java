@@ -1026,11 +1026,11 @@ public abstract class PatchedExpandableListAdapter extends BaseExpandableListAda
 			}
 			List list = source.readArrayList(Integer.class.getClassLoader());
 			if (list != null) {
-				groupPositions = new HashSet<Integer>(list);
+				groupPositions = new HashSet<>(list);
 			}
 			list = source.readArrayList(Long.class.getClassLoader());
 			if (list != null) {
-				childPositions = new HashSet<Long>(list);
+				childPositions = new HashSet<>(list);
 			}
 			inActionMode = (source.readByte() != 0);
 			choiceMode = ChoiceMode.values()[source.readInt()];
