@@ -17,6 +17,7 @@ package com.sawyer.advadapters.app.data;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -42,7 +43,8 @@ public class MovieItem implements Comparable<MovieItem>, Parcelable {
 	public static final String KEY_IS_RECOMMENDED = JSON_IS_RECOMMENDED;
 	public static final String KEY_BARCODE = JSON_BARCODE;
 
-	public static final String[] MAP_KEYS = {JSON_TITLE, JSON_YEAR, JSON_IS_RECOMMENDED, JSON_BARCODE};
+	public static final String[] MAP_KEYS = {JSON_TITLE, JSON_YEAR, JSON_IS_RECOMMENDED,
+											 JSON_BARCODE};
 
 	private static Random sRand = new Random();
 
@@ -64,7 +66,8 @@ public class MovieItem implements Comparable<MovieItem>, Parcelable {
 	}
 
 	private static String getStringToCompare(String text) {
-		if (TextUtils.isEmpty(text)) return "";
+		if (TextUtils.isEmpty(text))
+			return "";
 
 		String compare = text.toLowerCase(Locale.US);
 		compare = compare.replace("the ", "").replace("a ", "").replace("an ", "");
@@ -80,7 +83,7 @@ public class MovieItem implements Comparable<MovieItem>, Parcelable {
 	}
 
 	@Override
-	public int compareTo(MovieItem another) {
+	public int compareTo(@NonNull MovieItem another) {
 		if (TextUtils.isEmpty(title)) {
 			return (TextUtils.isEmpty(another.title)) ? Integer.valueOf(year).compareTo(year) : 1;
 		}
@@ -95,7 +98,8 @@ public class MovieItem implements Comparable<MovieItem>, Parcelable {
 
 	@Override
 	public boolean equals(Object o) {
-		if (!(o instanceof MovieItem)) return false;
+		if (!(o instanceof MovieItem))
+			return false;
 		MovieItem other = (MovieItem) o;
 		return mBarcode == other.mBarcode;
 	}
