@@ -55,8 +55,7 @@ public class NFSparseAdapterFragment extends ListFragment {
 			super.setListAdapter(adapter);
 		} else {
 			throw new ClassCastException(
-					"Adapter must be of type " +
-					MovieNFSparseAdapter.class.getSimpleName());
+					"Adapter must be of type " + MovieNFSparseAdapter.class.getSimpleName());
 		}
 	}
 
@@ -83,8 +82,7 @@ public class NFSparseAdapterFragment extends ListFragment {
 
 		if (savedInstanceState != null) {
 			mCheckedItems = savedInstanceState.getSparseParcelableArray(STATE_CAB_CHECKED_ITEMS);
-			SparseArray<MovieItem> list = savedInstanceState
-					.getSparseParcelableArray(STATE_LIST);
+			SparseArray<MovieItem> list = savedInstanceState.getSparseParcelableArray(STATE_LIST);
 			setListAdapter(new MovieNFSparseAdapter(getActivity(), list));
 		} else {
 			setListAdapter(new MovieNFSparseAdapter(getActivity()));
@@ -132,7 +130,7 @@ public class NFSparseAdapterFragment extends ListFragment {
 	}
 
 	public interface EventListener {
-		public void onAdapterCountUpdated();
+		void onAdapterCountUpdated();
 	}
 
 	private class OnCabMultiChoiceModeListener implements AbsListView.MultiChoiceModeListener {

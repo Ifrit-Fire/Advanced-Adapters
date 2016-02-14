@@ -67,8 +67,7 @@ public class NFSparseAdapterActivity extends AdapterBaseActivity implements
 		super.initFrags();
 		FragmentManager manager = getFragmentManager();
 
-		mListFragment = (NFSparseAdapterFragment) manager
-				.findFragmentByTag(TAG_ADAPTER_FRAG);
+		mListFragment = (NFSparseAdapterFragment) manager.findFragmentByTag(TAG_ADAPTER_FRAG);
 		if (mListFragment == null) {
 			mListFragment = NFSparseAdapterFragment.newInstance();
 			FragmentTransaction transaction = manager.beginTransaction();
