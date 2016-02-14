@@ -72,8 +72,7 @@ public class SparseAdapterActivity extends AdapterBaseActivity implements
 		super.initFrags();
 		FragmentManager manager = getFragmentManager();
 
-		mListFragment = (SparseAdapterFragment) manager
-				.findFragmentByTag(TAG_ADAPTER_FRAG);
+		mListFragment = (SparseAdapterFragment) manager.findFragmentByTag(TAG_ADAPTER_FRAG);
 		if (mListFragment == null) {
 			mListFragment = SparseAdapterFragment.newInstance();
 			FragmentTransaction transaction = manager.beginTransaction();

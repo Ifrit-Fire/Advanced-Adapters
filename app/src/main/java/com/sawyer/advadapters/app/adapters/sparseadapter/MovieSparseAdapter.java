@@ -16,6 +16,7 @@
 package com.sawyer.advadapters.app.adapters.sparseadapter;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -37,8 +38,10 @@ class MovieSparseAdapter extends SparseAdapter<MovieItem> {
 		super(activity, items);
 	}
 
+	@NonNull
 	@Override
-	public View getView(LayoutInflater inflater, int position, View convertView, ViewGroup parent) {
+	public View getView(@NonNull LayoutInflater inflater, int position, View convertView,
+						@NonNull ViewGroup parent) {
 		MovieViewHolder vh;
 		if (convertView == null) {
 			convertView = inflater.inflate(R.layout.item_movie1, parent, false);
@@ -58,8 +61,8 @@ class MovieSparseAdapter extends SparseAdapter<MovieItem> {
 	}
 
 	@Override
-	protected boolean isFilteredOut(int keyId, MovieItem item, CharSequence constraint) {
+	protected boolean isFilteredOut(int keyId, MovieItem item, @NonNull CharSequence constraint) {
 		return !item.title.toLowerCase(Locale.US)
-						 .contains(constraint.toString().toLowerCase(Locale.US));
+				.contains(constraint.toString().toLowerCase(Locale.US));
 	}
 }

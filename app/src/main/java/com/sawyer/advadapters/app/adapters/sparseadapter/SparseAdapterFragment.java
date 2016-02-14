@@ -82,8 +82,7 @@ public class SparseAdapterFragment extends ListFragment {
 
 		if (savedInstanceState != null) {
 			mCheckedItems = savedInstanceState.getSparseParcelableArray(STATE_CAB_CHECKED_ITEMS);
-			SparseArray<MovieItem> list = savedInstanceState
-					.getSparseParcelableArray(STATE_LIST);
+			SparseArray<MovieItem> list = savedInstanceState.getSparseParcelableArray(STATE_LIST);
 			setListAdapter(new MovieSparseAdapter(getActivity(), list));
 		} else {
 			setListAdapter(new MovieSparseAdapter(getActivity()));
@@ -131,7 +130,7 @@ public class SparseAdapterFragment extends ListFragment {
 	}
 
 	public interface EventListener {
-		public void onAdapterCountUpdated();
+		void onAdapterCountUpdated();
 	}
 
 	private class OnCabMultiChoiceModeListener implements AbsListView.MultiChoiceModeListener {
