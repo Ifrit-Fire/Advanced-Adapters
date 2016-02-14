@@ -22,6 +22,7 @@ import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -50,7 +51,8 @@ public abstract class BasePickDemoActivity extends ExpandableListActivity implem
 
 	private void initActionBar() {
 		ActionBar actionBar = getActionBar();
-		if (actionBar == null) return;
+		if (actionBar == null)
+			return;
 		actionBar.setDisplayHomeAsUpEnabled(true);
 	}
 
@@ -80,7 +82,8 @@ public abstract class BasePickDemoActivity extends ExpandableListActivity implem
 		super.onCreate(savedInstanceState);
 		getExpandableListView().setGroupIndicator(null);
 		DemoAdapter adapter = new DemoAdapter(this, createIntentList());
-		if (adapter.getGroupCount() > 2) adapter.sortGroup(1, new IntentComparator());
+		if (adapter.getGroupCount() > 2)
+			adapter.sortGroup(1, new IntentComparator());
 		adapter.setOnChildClickListener(this);
 		setListAdapter(adapter);
 		initActionBar();
@@ -124,14 +127,17 @@ public abstract class BasePickDemoActivity extends ExpandableListActivity implem
 			return false;
 		}
 
+		@NonNull
 		@Override
 		public String createGroupFor(Intent child) {
 			return child.getStringExtra(EXTRA_GROUP_NAME);
 		}
 
+		@NonNull
 		@Override
-		public View getChildView(LayoutInflater inflater, int groupPosition, int childPosition,
-								 boolean isLastChild, View convertView, ViewGroup parent) {
+		public View getChildView(@NonNull LayoutInflater inflater, int groupPosition,
+								 int childPosition, boolean isLastChild, View convertView,
+								 @NonNull ViewGroup parent) {
 			if (convertView == null) {
 				convertView = inflater.inflate(R.layout.item_expandable_child1, parent, false);
 			}
@@ -141,9 +147,10 @@ public abstract class BasePickDemoActivity extends ExpandableListActivity implem
 			return convertView;
 		}
 
+		@NonNull
 		@Override
-		public View getGroupView(LayoutInflater inflater, int groupPosition, boolean isExpanded,
-								 View convertView, ViewGroup parent) {
+		public View getGroupView(@NonNull LayoutInflater inflater, int groupPosition,
+								 boolean isExpanded, View convertView, @NonNull ViewGroup parent) {
 			if (convertView == null) {
 				convertView = inflater.inflate(R.layout.item_expandable_group1, parent, false);
 			}
@@ -166,8 +173,8 @@ public abstract class BasePickDemoActivity extends ExpandableListActivity implem
 	private class IntentComparator implements Comparator<Intent> {
 		@Override
 		public int compare(Intent lhs, Intent rhs) {
-			return lhs.getStringExtra(EXTRA_INTENT_NAME).compareTo(
-					rhs.getStringExtra(EXTRA_INTENT_NAME));
+			return lhs.getStringExtra(EXTRA_INTENT_NAME)
+					.compareTo(rhs.getStringExtra(EXTRA_INTENT_NAME));
 		}
 	}
 }

@@ -40,6 +40,7 @@ public class ExpandableListFragment extends Fragment implements
 	private static final String STATE_EXPANDABLE_LISTVIEW = "State Expandable ListView";
 
 	@InjectView(android.R.id.list) ExpandableListView mExpandableListView;
+
 	private ExpandableListAdapter mAdapter;
 
 	public ExpandableListFragment() {
@@ -61,7 +62,8 @@ public class ExpandableListFragment extends Fragment implements
 	 */
 	public void setListAdapter(ExpandableListAdapter adapter) {
 		mAdapter = adapter;
-		if (mExpandableListView != null) mExpandableListView.setAdapter(adapter);
+		if (mExpandableListView != null)
+			mExpandableListView.setAdapter(adapter);
 	}
 
 	@Override
@@ -109,7 +111,8 @@ public class ExpandableListFragment extends Fragment implements
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 		//In case adapter set before ListView inflated
-		if (mAdapter != null) mExpandableListView.setAdapter(mAdapter);
+		if (mAdapter != null)
+			mExpandableListView.setAdapter(mAdapter);
 		if (mAdapter instanceof PatchedExpandableListAdapter) {
 			PatchedExpandableListAdapter adapter = (PatchedExpandableListAdapter) mAdapter;
 			adapter.setOnGroupClickListener(this);

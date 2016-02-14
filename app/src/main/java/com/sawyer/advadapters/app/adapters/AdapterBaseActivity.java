@@ -56,7 +56,8 @@ public abstract class AdapterBaseActivity extends Activity implements
 
 	private void initActionBar() {
 		ActionBar actionBar = getActionBar();
-		if (actionBar == null) return;
+		if (actionBar == null)
+			return;
 		actionBar.setDisplayHomeAsUpEnabled(true);
 	}
 
@@ -231,7 +232,8 @@ public abstract class AdapterBaseActivity extends Activity implements
 
 	protected void updateActionBar() {
 		String subtitle = (getListCount()) + " movies listed";
-		if (getActionBar() != null) getActionBar().setSubtitle(subtitle);
+		if (getActionBar() != null)
+			getActionBar().setSubtitle(subtitle);
 	}
 
 	private class OnSearchActionExpandListener implements MenuItem.OnActionExpandListener {
