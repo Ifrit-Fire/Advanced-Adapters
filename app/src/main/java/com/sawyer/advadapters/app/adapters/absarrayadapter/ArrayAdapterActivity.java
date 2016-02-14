@@ -70,8 +70,7 @@ public class ArrayAdapterActivity extends AdapterBaseActivity implements
 	protected void initFrags() {
 		super.initFrags();
 		FragmentManager manager = getFragmentManager();
-		mListFragment = (ArrayAdapterFragment) manager
-				.findFragmentByTag(TAG_ADAPTER_FRAG);
+		mListFragment = (ArrayAdapterFragment) manager.findFragmentByTag(TAG_ADAPTER_FRAG);
 		if (mListFragment == null) {
 			mListFragment = ArrayAdapterFragment.newInstance();
 			FragmentTransaction transaction = manager.beginTransaction();

@@ -16,6 +16,7 @@
 package com.sawyer.advadapters.app.adapters.absarrayadapter;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,7 +40,8 @@ class MovieArrayAdapter extends AbsArrayAdapter<MovieItem> {
 	}
 
 	@Override
-	public View getView(LayoutInflater inflater, int position, View convertView, ViewGroup parent) {
+	public View getView(@NonNull LayoutInflater inflater, int position, View convertView,
+						@NonNull ViewGroup parent) {
 		MovieViewHolder vh;
 		if (convertView == null) {
 			convertView = inflater.inflate(R.layout.item_movie1, parent, false);
@@ -59,7 +61,7 @@ class MovieArrayAdapter extends AbsArrayAdapter<MovieItem> {
 	}
 
 	@Override
-	protected boolean isFilteredOut(MovieItem movie, CharSequence constraint) {
+	protected boolean isFilteredOut(MovieItem movie, @NonNull CharSequence constraint) {
 		return !movie.title.toLowerCase(Locale.US)
 				.contains(constraint.toString().toLowerCase(Locale.US));
 	}
