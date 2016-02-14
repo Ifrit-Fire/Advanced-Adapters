@@ -60,8 +60,7 @@ public class AndroidAdapterFragment extends ListFragment {
 			super.setListAdapter(adapter);
 		} else {
 			throw new ClassCastException(
-					"Adapter must be of type " + AndroidArrayAdapter.class.getSimpleName()
-			);
+					"Adapter must be of type " + AndroidArrayAdapter.class.getSimpleName());
 		}
 	}
 
@@ -82,20 +81,22 @@ public class AndroidAdapterFragment extends ListFragment {
 		}
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
 		if (savedInstanceState != null) {
-			ArrayList<MovieItem> checkItems = savedInstanceState.getParcelableArrayList(
-					STATE_CAB_CHECKED_ITEMS);
-			mCheckedItems.addAll(checkItems);
-			ArrayList<MovieItem> list = savedInstanceState.getParcelableArrayList(STATE_LIST);
-			setListAdapter(new AndroidArrayAdapter(getActivity(), list));
-		} else {
-			setListAdapter(new AndroidArrayAdapter(getActivity()));
+			ArrayList<MovieItem> checkItems = savedInstanceState
+					.getParcelableArrayList(STATE_CAB_CHECKED_ITEMS);
+			if (checkItems != null) {
+				mCheckedItems.addAll(checkItems);
+				ArrayList<MovieItem> list = savedInstanceState.getParcelableArrayList(STATE_LIST);
+				setListAdapter(new AndroidArrayAdapter(getActivity(), list));
+				return;
+			}
 		}
+
+		setListAdapter(new AndroidArrayAdapter(getActivity()));
 	}
 
 	@Override
@@ -145,7 +146,7 @@ public class AndroidAdapterFragment extends ListFragment {
 	}
 
 	public interface EventListener {
-		public void onAdapterCountUpdated();
+		void onAdapterCountUpdated();
 	}
 
 	private class OnCabMultiChoiceModeListener implements AbsListView.MultiChoiceModeListener {
