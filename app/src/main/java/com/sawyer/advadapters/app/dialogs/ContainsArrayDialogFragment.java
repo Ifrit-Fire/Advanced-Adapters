@@ -121,8 +121,8 @@ public class ContainsArrayDialogFragment extends CustomDialogFragment {
 	}
 
 	public interface EventListener {
-		public void onContainsMultipleMovieClick(List<MovieItem> movies);
+		void onContainsMultipleMovieClick(List<MovieItem> movies);
 
-		public void onContainsSingleMovieClick(MovieItem movie);
+		void onContainsSingleMovieClick(MovieItem movie);
 	}
 }

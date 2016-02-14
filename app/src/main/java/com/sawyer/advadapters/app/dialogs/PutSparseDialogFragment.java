@@ -113,10 +113,10 @@ public class PutSparseDialogFragment extends CustomDialogFragment {
 	}
 
 	public interface EventListener {
-		public void onPutAllMoviesClick(SparseArray<MovieItem> movies);
+		void onPutAllMoviesClick(SparseArray<MovieItem> movies);
 
-		public void onPutMovieClick(MovieItem movie);
+		void onPutMovieClick(MovieItem movie);
 
-		public void onPutMovieWithIdClick(int barcode, MovieItem movieItem);
+		void onPutMovieWithIdClick(int barcode, MovieItem movieItem);
 	}
 }

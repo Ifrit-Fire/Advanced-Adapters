@@ -96,8 +96,8 @@ public class ContainsSparseDialogFragment extends CustomDialogFragment {
 	}
 
 	public interface EventListener {
-		public void onContainsIdClick(int barcode);
+		void onContainsIdClick(int barcode);
 
-		public void onContainsItemClick(MovieItem movie);
+		void onContainsItemClick(MovieItem movie);
 	}
 }

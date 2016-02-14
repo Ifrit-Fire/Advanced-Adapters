@@ -36,8 +36,7 @@ import butterknife.OnClick;
 public class ChoiceModeDialogFragment extends CustomDialogFragment {
 	private static final String ARG_INTENT = "Arg Intent";
 
-	@InjectView(R.id.radio_group)
-	RadioGroup mRadioGroup;
+	@InjectView(R.id.radio_group) RadioGroup mRadioGroup;
 
 	private EventListener mEventListener;
 
@@ -67,7 +66,8 @@ public class ChoiceModeDialogFragment extends CustomDialogFragment {
 
 	@OnClick(R.id.ok)
 	public void onOk(View v) {
-		if (mEventListener == null) return;
+		if (mEventListener == null)
+			return;
 		PatchedExpandableListAdapter.ChoiceMode choiceMode;
 		switch (mRadioGroup.getCheckedRadioButtonId()) {
 		case R.id.choice_mode_single:
@@ -96,7 +96,7 @@ public class ChoiceModeDialogFragment extends CustomDialogFragment {
 	}
 
 	public interface EventListener {
-		public void onSelectedChoiceMode(PatchedExpandableListAdapter.ChoiceMode choiceMode,
-										 Intent intent);
+		void onSelectedChoiceMode(PatchedExpandableListAdapter.ChoiceMode choiceMode,
+								  Intent intent);
 	}
 }

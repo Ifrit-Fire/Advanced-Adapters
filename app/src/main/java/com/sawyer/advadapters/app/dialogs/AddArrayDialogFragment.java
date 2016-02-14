@@ -127,10 +127,10 @@ public class AddArrayDialogFragment extends CustomDialogFragment {
 	}
 
 	public interface EventListener {
-		public void onAddMultipleMoviesClick(List<MovieItem> movies);
+		void onAddMultipleMoviesClick(List<MovieItem> movies);
 
-		public void onAddSingleMovieClick(MovieItem movie);
+		void onAddSingleMovieClick(MovieItem movie);
 
-		public void onAddVarargsMovieClick(MovieItem... movies);
+		void onAddVarargsMovieClick(MovieItem... movies);
 	}
 }

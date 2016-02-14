@@ -68,8 +68,7 @@ public class AppendSparseDialogFragment extends CustomDialogFragment {
 	@OnClick(R.id.movie_append_id_btn)
 	public void onAppendMovieWithIdClick(View v) {
 		if (mEventListener != null) {
-			mEventListener.onAppendMovieWithIdClick(mMovieItems.keyAt(0),
-													mMovieItems.valueAt(0));
+			mEventListener.onAppendMovieWithIdClick(mMovieItems.keyAt(0), mMovieItems.valueAt(0));
 		}
 	}
 
@@ -107,8 +106,8 @@ public class AppendSparseDialogFragment extends CustomDialogFragment {
 	}
 
 	public interface EventListener {
-		public void onAppendAllMoviesClick(SparseArray<MovieItem> movies);
+		void onAppendAllMoviesClick(SparseArray<MovieItem> movies);
 
-		public void onAppendMovieWithIdClick(int barcode, MovieItem movieItem);
+		void onAppendMovieWithIdClick(int barcode, MovieItem movieItem);
 	}
 }

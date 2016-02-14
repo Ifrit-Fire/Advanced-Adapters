@@ -145,10 +145,10 @@ public class AddJSONArrayDialogFragment extends CustomDialogFragment {
 	}
 
 	public interface EventListener {
-		public void onAddMultipleMoviesClick(JSONArray movies);
+		void onAddMultipleMoviesClick(JSONArray movies);
 
-		public void onAddSingleMovieClick(JSONObject movie);
+		void onAddSingleMovieClick(JSONObject movie);
 
-		public void onAddVarargsMovieClick(JSONObject... movies);
+		void onAddVarargsMovieClick(JSONObject... movies);
 	}
 }

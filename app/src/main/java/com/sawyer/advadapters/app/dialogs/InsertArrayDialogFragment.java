@@ -126,7 +126,6 @@ public class InsertArrayDialogFragment extends CustomDialogFragment {
 		tv.setText("- " + mMovieItems.get(2).title);
 		((View) tv.getParent()).setVisibility(visibility);
 
-
 		return dialog;
 	}
 
@@ -140,9 +139,9 @@ public class InsertArrayDialogFragment extends CustomDialogFragment {
 	}
 
 	public interface EventListener {
-		public void onInsertMultipleMoviesClick(List<MovieItem> movies, InsertLocation location);
+		void onInsertMultipleMoviesClick(List<MovieItem> movies, InsertLocation location);
 
-		public void onInsertSingleMovieClick(MovieItem movie, InsertLocation location);
+		void onInsertSingleMovieClick(MovieItem movie, InsertLocation location);
 	}
 
 	private class OnInsertCollectionClickListener implements View.OnClickListener {
