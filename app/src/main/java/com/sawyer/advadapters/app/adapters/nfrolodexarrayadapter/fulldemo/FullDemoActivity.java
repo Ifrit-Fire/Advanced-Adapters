@@ -35,9 +35,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class FullDemoActivity extends AdapterBaseActivity implements
-		FullDemoFragment.EventListener, AddArrayDialogFragment.EventListener,
-		ContainsArrayDialogFragment.EventListener {
+public class FullDemoActivity extends AdapterBaseActivity implements FullDemoFragment.EventListener,
+		AddArrayDialogFragment.EventListener, ContainsArrayDialogFragment.EventListener {
 	private static final String TAG_ADAPTER_FRAG = "Tag Adapter Frag";
 	private static final String TAG_ADD_DIALOG_FRAG = "Tag Add Dialog Frag";
 	private static final String TAG_CONTAINS_DIALOG_FRAG = "Tag Contains Dialog Frag";
@@ -84,8 +83,7 @@ public class FullDemoActivity extends AdapterBaseActivity implements
 	protected void initFrags() {
 		super.initFrags();
 		FragmentManager manager = getFragmentManager();
-		mListFragment = (FullDemoFragment) manager
-				.findFragmentByTag(TAG_ADAPTER_FRAG);
+		mListFragment = (FullDemoFragment) manager.findFragmentByTag(TAG_ADAPTER_FRAG);
 		if (mListFragment == null) {
 			mListFragment = FullDemoFragment.newInstance();
 			FragmentTransaction transaction = manager.beginTransaction();

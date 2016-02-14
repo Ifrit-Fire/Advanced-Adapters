@@ -19,6 +19,7 @@ package com.sawyer.advadapters.app.adapters.nfrolodexarrayadapter.advancedemo;
 import android.app.ExpandableListActivity;
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -83,6 +84,7 @@ public class MultiSelectActivity extends ExpandableListActivity {
 			super(activity, movies);
 		}
 
+		@NonNull
 		@Override
 		public Integer createGroupFor(MovieItem childItem) {
 			return childItem.year;
@@ -103,9 +105,11 @@ public class MultiSelectActivity extends ExpandableListActivity {
 			return getChild(groupPosition, childPosition).barcode();
 		}
 
+		@NonNull
 		@Override
-		public View getChildView(LayoutInflater inflater, int groupPosition, int childPosition,
-								 boolean isLastChild, View convertView, ViewGroup parent) {
+		public View getChildView(@NonNull LayoutInflater inflater, int groupPosition,
+								 int childPosition, boolean isLastChild, View convertView,
+								 @NonNull ViewGroup parent) {
 			if (convertView == null) {
 				convertView = inflater.inflate(R.layout.item_expandable_child2, parent, false);
 			}
@@ -129,9 +133,10 @@ public class MultiSelectActivity extends ExpandableListActivity {
 			return Long.valueOf(getGroup(groupPosition));
 		}
 
+		@NonNull
 		@Override
-		public View getGroupView(LayoutInflater inflater, int groupPosition, boolean isExpanded,
-								 View convertView, ViewGroup parent) {
+		public View getGroupView(@NonNull LayoutInflater inflater, int groupPosition,
+								 boolean isExpanded, View convertView, @NonNull ViewGroup parent) {
 			if (convertView == null) {
 				convertView = inflater.inflate(R.layout.item_expandable_group3, parent, false);
 			}

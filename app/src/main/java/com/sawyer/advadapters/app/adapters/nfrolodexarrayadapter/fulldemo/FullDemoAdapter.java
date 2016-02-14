@@ -17,6 +17,7 @@
 package com.sawyer.advadapters.app.adapters.nfrolodexarrayadapter.fulldemo;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,6 +40,7 @@ class FullDemoAdapter extends NFRolodexArrayAdapter<Integer, MovieItem> {
 		super(activity, list);
 	}
 
+	@NonNull
 	@Override
 	public Integer createGroupFor(MovieItem childItem) {
 		return childItem.year;
@@ -59,9 +61,10 @@ class FullDemoAdapter extends NFRolodexArrayAdapter<Integer, MovieItem> {
 		return getChild(groupPosition, childPosition).barcodeLong();
 	}
 
+	@NonNull
 	@Override
-	public View getChildView(LayoutInflater inflater, int groupPosition, int childPosition,
-							 boolean isLastChild, View convertView, ViewGroup parent) {
+	public View getChildView(@NonNull LayoutInflater inflater, int groupPosition, int childPosition,
+							 boolean isLastChild, View convertView, @NonNull ViewGroup parent) {
 		MovieNoSubViewHolder vh;
 		if (convertView == null) {
 			convertView = inflater.inflate(R.layout.item_movie2, parent, false);
@@ -94,9 +97,10 @@ class FullDemoAdapter extends NFRolodexArrayAdapter<Integer, MovieItem> {
 		return getGroup(groupPosition);
 	}
 
+	@NonNull
 	@Override
-	public View getGroupView(LayoutInflater inflater, int groupPosition, boolean isExpanded,
-							 View convertView, ViewGroup parent) {
+	public View getGroupView(@NonNull LayoutInflater inflater, int groupPosition,
+							 boolean isExpanded, View convertView, @NonNull ViewGroup parent) {
 		if (convertView == null) {
 			convertView = inflater.inflate(R.layout.item_expandable_group2, parent, false);
 		}

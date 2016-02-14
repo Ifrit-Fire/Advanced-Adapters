@@ -19,6 +19,7 @@ package com.sawyer.advadapters.app.adapters.nfrolodexarrayadapter.basicdemo;
 import android.app.ExpandableListActivity;
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -108,7 +109,8 @@ public class AddItemsActivity extends ExpandableListActivity {
 		super.onRestoreInstanceState(state);
 		DemoAdapter adapter = (DemoAdapter) getExpandableListAdapter();
 		ArrayList<MovieItem> list = state.getParcelableArrayList(STATE_LIST);
-		adapter.setList(list);
+		if (list != null)
+			adapter.setList(list);
 	}
 
 	@Override
@@ -123,14 +125,17 @@ public class AddItemsActivity extends ExpandableListActivity {
 			super(activity);
 		}
 
+		@NonNull
 		@Override
 		public Integer createGroupFor(MovieItem childItem) {
 			return childItem.year;
 		}
 
+		@NonNull
 		@Override
-		public View getChildView(LayoutInflater inflater, int groupPosition, int childPosition,
-								 boolean isLastChild, View convertView, ViewGroup parent) {
+		public View getChildView(@NonNull LayoutInflater inflater, int groupPosition,
+								 int childPosition, boolean isLastChild, View convertView,
+								 @NonNull ViewGroup parent) {
 			if (convertView == null) {
 				convertView = inflater.inflate(R.layout.item_expandable_child1, parent, false);
 			}
@@ -139,9 +144,10 @@ public class AddItemsActivity extends ExpandableListActivity {
 			return convertView;
 		}
 
+		@NonNull
 		@Override
-		public View getGroupView(LayoutInflater inflater, int groupPosition, boolean isExpanded,
-								 View convertView, ViewGroup parent) {
+		public View getGroupView(@NonNull LayoutInflater inflater, int groupPosition,
+								 boolean isExpanded, View convertView, @NonNull ViewGroup parent) {
 			if (convertView == null) {
 				convertView = inflater.inflate(R.layout.item_expandable_group1, parent, false);
 			}

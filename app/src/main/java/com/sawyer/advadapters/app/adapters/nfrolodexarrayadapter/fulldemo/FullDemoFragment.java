@@ -18,6 +18,7 @@ package com.sawyer.advadapters.app.adapters.nfrolodexarrayadapter.fulldemo;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.view.ActionMode;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -135,9 +136,9 @@ public class FullDemoFragment extends ExpandableListFragment {
 	}
 
 	public interface EventListener {
-		public PatchedExpandableListAdapter.ChoiceMode getChoiceMode();
+		PatchedExpandableListAdapter.ChoiceMode getChoiceMode();
 
-		public void onAdapterCountUpdated();
+		void onAdapterCountUpdated();
 	}
 
 	/**
@@ -211,16 +212,19 @@ public class FullDemoFragment extends ExpandableListFragment {
 		}
 
 		@Override
-		public void onChildCheckedStateChanged(ActionMode mode, int groupPosition, long groupId,
-											   int childPosition, long childId, boolean checked) {
-			mode.setTitle(getListAdapter().getCheckedChildCount() + getString(R.string.desc_selected));
+		public void onChildCheckedStateChanged(@NonNull ActionMode mode, int groupPosition,
+											   long groupId, int childPosition, long childId,
+											   boolean checked) {
+			mode.setTitle(
+					getListAdapter().getCheckedChildCount() + getString(R.string.desc_selected));
 		}
 
 		@Override
 		public boolean onCreateActionMode(ActionMode mode, Menu menu) {
 			MenuInflater inflater = mode.getMenuInflater();
 			inflater.inflate(R.menu.cab_array, menu);
-			mode.setTitle(getListAdapter().getCheckedChildCount() + getString(R.string.desc_selected));
+			mode.setTitle(
+					getListAdapter().getCheckedChildCount() + getString(R.string.desc_selected));
 			return true;
 		}
 
@@ -229,12 +233,14 @@ public class FullDemoFragment extends ExpandableListFragment {
 		}
 
 		@Override
-		public void onGroupCheckedStateChanged(ActionMode mode, int groupPosition, long groupId,
-											   boolean checked) {
+		public void onGroupCheckedStateChanged(@NonNull ActionMode mode, int groupPosition,
+											   long groupId, boolean checked) {
 			//If group is expanded, then the onChildCheckedStateChanged method will be invoked. Which
 			//means it'll safely take care of updating our screen.
-			if (getExpandableListView().isGroupExpanded(groupPosition)) return;
-			mode.setTitle(getListAdapter().getCheckedChildCount() + getString(R.string.desc_selected));
+			if (getExpandableListView().isGroupExpanded(groupPosition))
+				return;
+			mode.setTitle(
+					getListAdapter().getCheckedChildCount() + getString(R.string.desc_selected));
 		}
 
 		@Override
