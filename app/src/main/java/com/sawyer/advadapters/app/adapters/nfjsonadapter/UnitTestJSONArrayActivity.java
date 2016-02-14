@@ -103,8 +103,7 @@ public class UnitTestJSONArrayActivity extends AdapterBaseActivity implements
 	protected void initFrags() {
 		super.initFrags();
 		FragmentManager manager = getFragmentManager();
-		mListFragment = (UnitTestJSONArrayFragment) manager
-				.findFragmentByTag(TAG_ADAPTER_FRAG);
+		mListFragment = (UnitTestJSONArrayFragment) manager.findFragmentByTag(TAG_ADAPTER_FRAG);
 		if (mListFragment == null) {
 			mListFragment = UnitTestJSONArrayFragment.newInstance();
 			FragmentTransaction transaction = manager.beginTransaction();

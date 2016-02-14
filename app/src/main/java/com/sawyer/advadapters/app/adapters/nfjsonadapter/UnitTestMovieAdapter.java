@@ -16,6 +16,7 @@
 package com.sawyer.advadapters.app.adapters.nfjsonadapter;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,8 +36,10 @@ class UnitTestMovieAdapter extends NFJSONArrayAdapter {
 		super(activity, list);
 	}
 
+	@NonNull
 	@Override
-	public View getView(LayoutInflater inflater, int position, View convertView, ViewGroup parent) {
+	public View getView(@NonNull LayoutInflater inflater, int position, View convertView,
+						ViewGroup parent) {
 		UnitTestViewHolder vh;
 		if (convertView == null) {
 			convertView = inflater.inflate(android.R.layout.two_line_list_item, parent, false);

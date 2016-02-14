@@ -69,8 +69,7 @@ public class UnitTestJSONArrayFragment extends ListFragment {
 			super.setListAdapter(adapter);
 		} else {
 			throw new ClassCastException(
-					"Adapter must be of type " +
-					UnitTestMovieAdapter.class.getSimpleName());
+					"Adapter must be of type " + UnitTestMovieAdapter.class.getSimpleName());
 		}
 	}
 
@@ -123,7 +122,8 @@ public class UnitTestJSONArrayFragment extends ListFragment {
 	@Override
 	public void onListItemClick(ListView l, View v, int position, long id) {
 		Object item = getListAdapter().optItem(position);
-		if (item == null) return;
+		if (item == null)
+			return;
 		try {
 			if (item instanceof Integer) {
 				getListAdapter().update(position, new Random().nextInt());
@@ -142,8 +142,8 @@ public class UnitTestJSONArrayFragment extends ListFragment {
 				getListAdapter().update(position, new JSONArray(
 						Arrays.asList(getString(), getString(), getString())));
 			} else if (item instanceof JSONObject) {
-				getListAdapter().update(position, MovieContent.ITEM_JSON.opt(new Random().nextInt(
-						MovieContent.ITEM_JSON.length())));
+				getListAdapter().update(position, MovieContent.ITEM_JSON
+						.opt(new Random().nextInt(MovieContent.ITEM_JSON.length())));
 			} else {
 				Log.e("Unknown Object In Click", item.getClass().getSimpleName());
 			}
@@ -164,7 +164,7 @@ public class UnitTestJSONArrayFragment extends ListFragment {
 	}
 
 	public interface EventListener {
-		public void onAdapterCountUpdated();
+		void onAdapterCountUpdated();
 	}
 
 	private class OnCabMultiChoiceModeListener implements AbsListView.MultiChoiceModeListener {

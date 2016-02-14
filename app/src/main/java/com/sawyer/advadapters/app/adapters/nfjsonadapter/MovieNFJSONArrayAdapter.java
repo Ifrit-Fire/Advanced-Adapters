@@ -16,6 +16,7 @@
 package com.sawyer.advadapters.app.adapters.nfjsonadapter;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -40,8 +41,10 @@ class MovieNFJSONArrayAdapter extends NFJSONArrayAdapter {
 		super(activity, list);
 	}
 
+	@NonNull
 	@Override
-	public View getView(LayoutInflater inflater, int position, View convertView, ViewGroup parent) {
+	public View getView(@NonNull LayoutInflater inflater, int position, View convertView,
+						ViewGroup parent) {
 		MovieViewHolder vh;
 		if (convertView == null) {
 			convertView = inflater.inflate(R.layout.item_movie1, parent, false);
@@ -56,8 +59,8 @@ class MovieNFJSONArrayAdapter extends NFJSONArrayAdapter {
 			if (movie != null) {
 				vh.title.setText(movie.getString(MovieItem.JSON_TITLE));
 				vh.subtitle.setText(movie.getString(MovieItem.JSON_YEAR));
-				vh.icon.setImageResource((movie.getBoolean(MovieItem.JSON_IS_RECOMMENDED))
-												 ? R.drawable.ic_rating_good : R.drawable.ic_rating_bad);
+				vh.icon.setImageResource((movie.getBoolean(MovieItem.JSON_IS_RECOMMENDED)) ?
+										 R.drawable.ic_rating_good : R.drawable.ic_rating_bad);
 			}
 		} catch (JSONException e) {
 			Log.e(MovieNFJSONArrayAdapter.class.getSimpleName(), "GetView error", e);

@@ -60,8 +60,7 @@ public class NFJSONAdapterFragment extends ListFragment {
 			super.setListAdapter(adapter);
 		} else {
 			throw new ClassCastException(
-					"Adapter must be of type " +
-					MovieNFJSONArrayAdapter.class.getSimpleName());
+					"Adapter must be of type " + MovieNFJSONArrayAdapter.class.getSimpleName());
 		}
 	}
 
@@ -92,8 +91,7 @@ public class NFJSONAdapterFragment extends ListFragment {
 				JSONArray list = new JSONArray(savedInstanceState.getString(STATE_LIST));
 				setListAdapter(new MovieNFJSONArrayAdapter(getActivity(), list));
 			} catch (JSONException e) {
-				Log.e(NFJSONAdapterFragment.class.getSimpleName(), "OnRestore Error",
-					  e);
+				Log.e(NFJSONAdapterFragment.class.getSimpleName(), "OnRestore Error", e);
 				mCheckedCount = 0;
 				setListAdapter(new MovieNFJSONArrayAdapter(getActivity()));
 			}
@@ -116,7 +114,8 @@ public class NFJSONAdapterFragment extends ListFragment {
 		//Granted, making a whole new instance is not even necessary here.
 		//However I wanted to demonstrate updating with an entirely different instance.
 		JSONObject oldMovie = getListAdapter().optItemJSONObject(position);
-		if (oldMovie == null) return;
+		if (oldMovie == null)
+			return;
 		MovieItem newMovie = new MovieItem(oldMovie.optInt(MovieItem.JSON_BARCODE));
 		newMovie.title = new StringBuilder(oldMovie.optString(MovieItem.JSON_TITLE, "")).reverse()
 				.toString();
@@ -141,7 +140,7 @@ public class NFJSONAdapterFragment extends ListFragment {
 	}
 
 	public interface EventListener {
-		public void onAdapterCountUpdated();
+		void onAdapterCountUpdated();
 	}
 
 	private class OnCabMultiChoiceModeListener implements AbsListView.MultiChoiceModeListener {

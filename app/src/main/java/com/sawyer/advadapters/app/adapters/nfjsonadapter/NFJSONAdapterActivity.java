@@ -64,8 +64,7 @@ public class NFJSONAdapterActivity extends AdapterBaseActivity implements
 	protected void initFrags() {
 		super.initFrags();
 		FragmentManager manager = getFragmentManager();
-		mListFragment = (NFJSONAdapterFragment) manager
-				.findFragmentByTag(TAG_ADAPTER_FRAG);
+		mListFragment = (NFJSONAdapterFragment) manager.findFragmentByTag(TAG_ADAPTER_FRAG);
 		if (mListFragment == null) {
 			mListFragment = NFJSONAdapterFragment.newInstance();
 			FragmentTransaction transaction = manager.beginTransaction();
