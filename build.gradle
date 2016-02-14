@@ -1,8 +1,8 @@
 ext {
 	PUBLISH_GROUP_ID = 'com.jaysoyer.lib'
 	PUBLISH_ARTIFACT_ID = "advanced-adapters"
-	PUBLISH_VERSION_NAME = "15.3"
-	PUBLISH_VERSION_CODE = 5
+	PUBLISH_VERSION_NAME = "15.3.1"
+	PUBLISH_VERSION_CODE = 6
 }
 
 buildscript {
@@ -10,7 +10,7 @@ buildscript {
 		jcenter()
 	}
 	dependencies {
-		classpath 'com.android.tools.build:gradle:1.2.3'
+		classpath 'com.android.tools.build:gradle:1.5.0'
 	}
 }
 

@@ -1,6 +1,10 @@
 Change Log
 ==========
 
+# Version 15.3.1 *( )*
+**Milestone** 
+ - Mod: Bumped Gradle, SDK, Tools
+
 # Version 15.3.0 *(25 May 2015)*
 **Milestone:** Polish
  - New: Version naming no longer based on date of release.
