@@ -19,6 +19,7 @@ package com.sawyer.advadapters.app.adapters.rolodexarrayadapter.advancedemo;
 import android.app.ExpandableListActivity;
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.view.ActionMode;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -94,6 +95,7 @@ public class ActionModeActivity extends ExpandableListActivity {
 			super(activity, movies);
 		}
 
+		@NonNull
 		@Override
 		public Integer createGroupFor(MovieItem childItem) {
 			return childItem.year;
@@ -114,9 +116,11 @@ public class ActionModeActivity extends ExpandableListActivity {
 			return getChild(groupPosition, childPosition).barcode();
 		}
 
+		@NonNull
 		@Override
-		public View getChildView(LayoutInflater inflater, int groupPosition, int childPosition,
-								 boolean isLastChild, View convertView, ViewGroup parent) {
+		public View getChildView(@NonNull LayoutInflater inflater, int groupPosition,
+								 int childPosition, boolean isLastChild, View convertView,
+								 @NonNull ViewGroup parent) {
 			if (convertView == null) {
 				convertView = inflater.inflate(R.layout.item_expandable_child1, parent, false);
 			}
@@ -140,9 +144,10 @@ public class ActionModeActivity extends ExpandableListActivity {
 			return getGroup(groupPosition);
 		}
 
+		@NonNull
 		@Override
-		public View getGroupView(LayoutInflater inflater, int groupPosition, boolean isExpanded,
-								 View convertView, ViewGroup parent) {
+		public View getGroupView(@NonNull LayoutInflater inflater, int groupPosition,
+								 boolean isExpanded, View convertView, @NonNull ViewGroup parent) {
 			if (convertView == null) {
 				convertView = inflater.inflate(R.layout.item_expandable_group2, parent, false);
 			}
@@ -163,13 +168,14 @@ public class ActionModeActivity extends ExpandableListActivity {
 		}
 
 		@Override
-		protected boolean isChildFilteredOut(MovieItem childItem, CharSequence constraint) {
+		protected boolean isChildFilteredOut(MovieItem childItem,
+											 @NonNull CharSequence constraint) {
 			//Not worried about filtering for this demo
 			return false;
 		}
 
 		@Override
-		protected boolean isGroupFilteredOut(Integer groupItem, CharSequence constraint) {
+		protected boolean isGroupFilteredOut(Integer groupItem, @NonNull CharSequence constraint) {
 			//Not worried about filtering for this demo
 			return false;
 		}
@@ -202,8 +208,9 @@ public class ActionModeActivity extends ExpandableListActivity {
 		}
 
 		@Override
-		public void onChildCheckedStateChanged(ActionMode mode, int groupPosition, long groupId,
-											   int childPosition, long childId, boolean checked) {
+		public void onChildCheckedStateChanged(@NonNull ActionMode mode, int groupPosition,
+											   long groupId, int childPosition, long childId,
+											   boolean checked) {
 			DemoAdapter adapter = (DemoAdapter) getExpandableListAdapter();
 			mode.setTitle(adapter.getCheckedChildCount() + getString(R.string.desc_selected));
 		}
@@ -222,11 +229,12 @@ public class ActionModeActivity extends ExpandableListActivity {
 		}
 
 		@Override
-		public void onGroupCheckedStateChanged(ActionMode mode, int groupPosition, long groupId,
-											   boolean checked) {
+		public void onGroupCheckedStateChanged(@NonNull ActionMode mode, int groupPosition,
+											   long groupId, boolean checked) {
 			//If group is expanded, then the onChildCheckedStateChanged method will be invoked. Which
 			//means it'll safely take care of updating our screen.
-			if (getExpandableListView().isGroupExpanded(groupPosition)) return;
+			if (getExpandableListView().isGroupExpanded(groupPosition))
+				return;
 
 			//If group is NOT expanded, then the onChildCheckedStateChanged method will NOT be invoked.
 			//which means we need to take care of updating our screen here.

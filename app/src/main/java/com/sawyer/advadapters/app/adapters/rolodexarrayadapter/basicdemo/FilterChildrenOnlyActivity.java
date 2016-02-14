@@ -19,6 +19,7 @@ package com.sawyer.advadapters.app.adapters.rolodexarrayadapter.basicdemo;
 import android.app.ExpandableListActivity;
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -100,14 +101,17 @@ public class FilterChildrenOnlyActivity extends ExpandableListActivity implement
 			super(activity, movies);
 		}
 
+		@NonNull
 		@Override
 		public Integer createGroupFor(MovieItem childItem) {
 			return childItem.year;
 		}
 
+		@NonNull
 		@Override
-		public View getChildView(LayoutInflater inflater, int groupPosition, int childPosition,
-								 boolean isLastChild, View convertView, ViewGroup parent) {
+		public View getChildView(@NonNull LayoutInflater inflater, int groupPosition,
+								 int childPosition, boolean isLastChild, View convertView,
+								 @NonNull ViewGroup parent) {
 			if (convertView == null) {
 				convertView = inflater.inflate(R.layout.item_expandable_child1, parent, false);
 			}
@@ -116,9 +120,10 @@ public class FilterChildrenOnlyActivity extends ExpandableListActivity implement
 			return convertView;
 		}
 
+		@NonNull
 		@Override
-		public View getGroupView(LayoutInflater inflater, int groupPosition, boolean isExpanded,
-								 View convertView, ViewGroup parent) {
+		public View getGroupView(@NonNull LayoutInflater inflater, int groupPosition,
+								 boolean isExpanded, View convertView, @NonNull ViewGroup parent) {
 			if (convertView == null) {
 				convertView = inflater.inflate(R.layout.item_expandable_group1, parent, false);
 			}
@@ -134,14 +139,14 @@ public class FilterChildrenOnlyActivity extends ExpandableListActivity implement
 		}
 
 		@Override
-		protected boolean isChildFilteredOut(MovieItem movie, CharSequence constraint) {
+		protected boolean isChildFilteredOut(MovieItem movie, @NonNull CharSequence constraint) {
 			//Lets filter by movie title
-			return !movie.title.toLowerCase(Locale.US).contains(
-					constraint.toString().toLowerCase(Locale.US));
+			return !movie.title.toLowerCase(Locale.US)
+					.contains(constraint.toString().toLowerCase(Locale.US));
 		}
 
 		@Override
-		protected boolean isGroupFilteredOut(Integer year, CharSequence constraint) {
+		protected boolean isGroupFilteredOut(Integer year, @NonNull CharSequence constraint) {
 			//We are purposely ignoring groups for filtering in this demo.
 			return false;
 		}

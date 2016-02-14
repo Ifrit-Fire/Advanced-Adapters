@@ -19,6 +19,7 @@ package com.sawyer.advadapters.app.adapters.rolodexarrayadapter.basicdemo;
 import android.app.ExpandableListActivity;
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -86,14 +87,17 @@ public class SortAllChildrenActivity extends ExpandableListActivity {
 			return false;
 		}
 
+		@NonNull
 		@Override
 		public Integer createGroupFor(MovieItem childItem) {
 			return childItem.year;
 		}
 
+		@NonNull
 		@Override
-		public View getChildView(LayoutInflater inflater, int groupPosition, int childPosition,
-								 boolean isLastChild, View convertView, ViewGroup parent) {
+		public View getChildView(@NonNull LayoutInflater inflater, int groupPosition,
+								 int childPosition, boolean isLastChild, View convertView,
+								 @NonNull ViewGroup parent) {
 			if (convertView == null) {
 				convertView = inflater.inflate(R.layout.item_expandable_child1, parent, false);
 			}
@@ -102,9 +106,10 @@ public class SortAllChildrenActivity extends ExpandableListActivity {
 			return convertView;
 		}
 
+		@NonNull
 		@Override
-		public View getGroupView(LayoutInflater inflater, int groupPosition, boolean isExpanded,
-								 View convertView, ViewGroup parent) {
+		public View getGroupView(@NonNull LayoutInflater inflater, int groupPosition,
+								 boolean isExpanded, View convertView, @NonNull ViewGroup parent) {
 			if (convertView == null) {
 				convertView = inflater.inflate(R.layout.item_expandable_group1, parent, false);
 			}
@@ -120,13 +125,14 @@ public class SortAllChildrenActivity extends ExpandableListActivity {
 		}
 
 		@Override
-		protected boolean isChildFilteredOut(MovieItem childItem, CharSequence constraint) {
+		protected boolean isChildFilteredOut(MovieItem childItem,
+											 @NonNull CharSequence constraint) {
 			//Not worried about filtering for this demo
 			return false;
 		}
 
 		@Override
-		protected boolean isGroupFilteredOut(Integer groupItem, CharSequence constraint) {
+		protected boolean isGroupFilteredOut(Integer groupItem, @NonNull CharSequence constraint) {
 			//Not worried about filtering for this demo
 			return false;
 		}

@@ -18,6 +18,7 @@ package com.sawyer.advadapters.app.adapters.rolodexarrayadapter.advancedemo;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
@@ -69,7 +70,8 @@ public class NavigationDrawerActivity extends ActionBarActivity implements
 
 	private void initActionBar() {
 		ActionBar actionBar = getSupportActionBar();
-		if (actionBar == null) return;
+		if (actionBar == null)
+			return;
 		actionBar.setDisplayHomeAsUpEnabled(true);
 		actionBar.setHomeButtonEnabled(true);
 	}
@@ -191,6 +193,7 @@ public class NavigationDrawerActivity extends ActionBarActivity implements
 			super(activity, movies);
 		}
 
+		@NonNull
 		@Override
 		public Integer createGroupFor(MovieItem childItem) {
 			return childItem.year;
@@ -211,9 +214,11 @@ public class NavigationDrawerActivity extends ActionBarActivity implements
 			return getChild(groupPosition, childPosition).barcode();
 		}
 
+		@NonNull
 		@Override
-		public View getChildView(LayoutInflater inflater, int groupPosition, int childPosition,
-								 boolean isLastChild, View convertView, ViewGroup parent) {
+		public View getChildView(@NonNull LayoutInflater inflater, int groupPosition,
+								 int childPosition, boolean isLastChild, View convertView,
+								 @NonNull ViewGroup parent) {
 			if (convertView == null) {
 				convertView = inflater.inflate(R.layout.item_expandable_child1, parent, false);
 			}
@@ -237,9 +242,10 @@ public class NavigationDrawerActivity extends ActionBarActivity implements
 			return Long.valueOf(getGroup(groupPosition));
 		}
 
+		@NonNull
 		@Override
-		public View getGroupView(LayoutInflater inflater, int groupPosition, boolean isExpanded,
-								 View convertView, ViewGroup parent) {
+		public View getGroupView(@NonNull LayoutInflater inflater, int groupPosition,
+								 boolean isExpanded, View convertView, @NonNull ViewGroup parent) {
 			if (convertView == null) {
 				convertView = inflater.inflate(R.layout.item_expandable_group2, parent, false);
 			}
@@ -266,13 +272,14 @@ public class NavigationDrawerActivity extends ActionBarActivity implements
 		}
 
 		@Override
-		protected boolean isChildFilteredOut(MovieItem childItem, CharSequence constraint) {
+		protected boolean isChildFilteredOut(MovieItem childItem,
+											 @NonNull CharSequence constraint) {
 			//Not worried about filtering for this demo
 			return false;
 		}
 
 		@Override
-		protected boolean isGroupFilteredOut(Integer groupItem, CharSequence constraint) {
+		protected boolean isGroupFilteredOut(Integer groupItem, @NonNull CharSequence constraint) {
 			//Not worried about filtering for this demo
 			return false;
 		}
@@ -291,13 +298,19 @@ public class NavigationDrawerActivity extends ActionBarActivity implements
 		@Override
 		public void onDrawerClosed(View drawerView) {
 			super.onDrawerClosed(drawerView);
-			getSupportActionBar().setTitle(R.string.activity_rolodex_navigation_drawer);
+			ActionBar ab = getSupportActionBar();
+			if (ab != null) {
+				ab.setTitle(R.string.activity_rolodex_navigation_drawer);
+			}
 		}
 
 		@Override
 		public void onDrawerOpened(View drawerView) {
 			super.onDrawerOpened(drawerView);
-			getSupportActionBar().setTitle(R.string.title_navigation_drawer_open);
+			ActionBar ab = getSupportActionBar();
+			if (ab != null) {
+				ab.setTitle(R.string.title_navigation_drawer_open);
+			}
 		}
 	}
 }
