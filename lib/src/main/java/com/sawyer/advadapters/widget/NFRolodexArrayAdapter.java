@@ -309,10 +309,10 @@ public abstract class NFRolodexArrayAdapter<G, C> extends PatchedExpandableListA
 	 * reduce the number of {@link #createGroupFor(Object)} invocations. By default, no caching is
 	 * provided by the adapter. This method normally returns null.</p>
 	 *
-	 * It's only recommended to implement this method if one of the following are true: <ul>
-	 * <li>You can pre-populate the cache with all the child to group relations.</li> <li>The cache
-	 * will be lazy-loaded and saved for later re-use.</li> <li>Instantiating your group object is a
-	 * pretty hefty call.</li> <li>You are constantly mutating the adapter. </li> </ul>
+	 * It's only recommended to implement this method if one of the following are true: <ul> <li>You
+	 * can pre-populate the cache with all the child to group relations.</li> <li>The cache will be
+	 * lazy-loaded and saved for later re-use.</li> <li>Instantiating your group object is a pretty
+	 * hefty call.</li> <li>You are constantly mutating the adapter. </li> </ul>
 	 *
 	 * <p>Pulling from cache is primarily used when mutating the adapter. It is never used nor
 	 * needed by any of the getters.</p>

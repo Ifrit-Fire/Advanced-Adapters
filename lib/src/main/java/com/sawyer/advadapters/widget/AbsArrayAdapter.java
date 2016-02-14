@@ -422,7 +422,7 @@ public abstract class AbsArrayAdapter<T> extends BaseAdapter implements Filterab
 	 *
 	 * @param items The collection of items to remove
 	 */
-	public void removeAll(@NonNull Collection<?> items) {
+	public void removeAll(@NonNull Collection<? extends T> items) {
 		boolean isModified = false;
 		synchronized (mLock) {
 			if (mOriginalValues != null) {

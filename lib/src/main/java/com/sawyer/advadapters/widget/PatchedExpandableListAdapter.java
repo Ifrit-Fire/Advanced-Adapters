@@ -115,7 +115,7 @@ public abstract class PatchedExpandableListAdapter extends BaseExpandableListAda
 	 *
 	 * @see #setChoiceMode(ChoiceMode) setChoiceMode()
 	 */
-	public static enum ChoiceMode {
+	public enum ChoiceMode {
 		/** Normal ExpandableListView that does not indicate choices. */
 		NONE,
 		/** The ExpandableListView allows up to one choice. */
@@ -149,7 +149,7 @@ public abstract class PatchedExpandableListAdapter extends BaseExpandableListAda
 	 * reference to it's {@link ExpandableListView}. This may occur for various reasons since the
 	 * ExpandableListView is not known until View generation.
 	 */
-	private static enum QueueAction {
+	private enum QueueAction {
 		DO_NOTHING,
 		COLLAPSE_ALL,
 		EXPAND_ALL,
@@ -939,7 +939,7 @@ public abstract class PatchedExpandableListAdapter extends BaseExpandableListAda
 	 * mode and also receives checked state change events when the user selects and deselects groups
 	 * or children views.
 	 */
-	public static interface ChoiceModeListener extends ActionMode.Callback {
+	public interface ChoiceModeListener extends ActionMode.Callback {
 
 		/**
 		 * Called when a child item is checked or unchecked during selection mode.
@@ -952,9 +952,8 @@ public abstract class PatchedExpandableListAdapter extends BaseExpandableListAda
 		 * @param checked       {@code true} if the item is now checked, {@code false} if the item
 		 *                      is now unchecked.
 		 */
-		public void onChildCheckedStateChanged(@NonNull ActionMode mode, int groupPosition,
-											   long groupId, int childPosition, long childId,
-											   boolean checked);
+		void onChildCheckedStateChanged(@NonNull ActionMode mode, int groupPosition, long groupId,
+										int childPosition, long childId, boolean checked);
 
 		/**
 		 * Called when a group item is checked or unchecked during selection mode. If the group is
@@ -968,8 +967,8 @@ public abstract class PatchedExpandableListAdapter extends BaseExpandableListAda
 		 * @param checked       {@code true} if the item is now checked, {@code false} if the item
 		 *                      is now unchecked.
 		 */
-		public void onGroupCheckedStateChanged(@NonNull ActionMode mode, int groupPosition,
-											   long groupId, boolean checked);
+		void onGroupCheckedStateChanged(@NonNull ActionMode mode, int groupPosition, long groupId,
+										boolean checked);
 	}
 
 	private static class OnDisableTouchListener implements View.OnTouchListener {
@@ -1222,8 +1221,9 @@ public abstract class PatchedExpandableListAdapter extends BaseExpandableListAda
 		}
 
 		@Override
-		public void onChildCheckedStateChanged(ActionMode mode, int groupPosition, long groupId,
-											   int childPosition, long childId, boolean checked) {
+		public void onChildCheckedStateChanged(@NonNull ActionMode mode, int groupPosition,
+											   long groupId, int childPosition, long childId,
+											   boolean checked) {
 			mWrapped.onChildCheckedStateChanged(mode, groupPosition, groupId, childPosition,
 												childId, checked);
 			if (mCheckStates.getCheckedChildCount() + mCheckStates.getCheckedGroupCount() == 0) {
@@ -1248,8 +1248,8 @@ public abstract class PatchedExpandableListAdapter extends BaseExpandableListAda
 		}
 
 		@Override
-		public void onGroupCheckedStateChanged(ActionMode mode, int groupPosition, long groupId,
-											   boolean checked) {
+		public void onGroupCheckedStateChanged(@NonNull ActionMode mode, int groupPosition,
+											   long groupId, boolean checked) {
 			mWrapped.onGroupCheckedStateChanged(mode, groupPosition, groupId, checked);
 			if (mCheckStates.getCheckedChildCount() + mCheckStates.getCheckedGroupCount() == 0) {
 				mode.finish();
@@ -1272,8 +1272,7 @@ public abstract class PatchedExpandableListAdapter extends BaseExpandableListAda
 	 * during this period.
 	 */
 	private class OnChoiceModeClickListener implements ExpandableListView.OnChildClickListener,
-													   ExpandableListView.OnGroupClickListener,
-													   AdapterView.OnItemLongClickListener {
+			ExpandableListView.OnGroupClickListener, AdapterView.OnItemLongClickListener {
 		@Override
 		public boolean onChildClick(ExpandableListView parent, View v, int groupPosition,
 									int childPosition, long id) {

@@ -86,7 +86,9 @@ public abstract class NFSparseAdapter<T> extends BaseAdapter {
 		for (int index = 0; index < items.size(); ++index) {
 			mObjects.append(items.keyAt(index), items.valueAt(index));
 		}
-		if (mNotifyOnChange) notifyDataSetChanged();
+		if (mNotifyOnChange) {
+			notifyDataSetChanged();
+		}
 	}
 
 	/**
@@ -98,7 +100,9 @@ public abstract class NFSparseAdapter<T> extends BaseAdapter {
 	 */
 	public void appendWithId(int keyId, @Nullable T item) {
 		mObjects.append(keyId, item);
-		if (mNotifyOnChange) notifyDataSetChanged();
+		if (mNotifyOnChange) {
+			notifyDataSetChanged();
+		}
 	}
 
 	/**
@@ -106,7 +110,9 @@ public abstract class NFSparseAdapter<T> extends BaseAdapter {
 	 */
 	public void clear() {
 		mObjects.clear();
-		if (mNotifyOnChange) notifyDataSetChanged();
+		if (mNotifyOnChange) {
+			notifyDataSetChanged();
+		}
 	}
 
 	/**
@@ -236,7 +242,9 @@ public abstract class NFSparseAdapter<T> extends BaseAdapter {
 	public void setSparseArray(@NonNull SparseArray<T> items) {
 		mObjects.clear();
 		mObjects = items.clone();
-		if (mNotifyOnChange) notifyDataSetChanged();
+		if (mNotifyOnChange) {
+			notifyDataSetChanged();
+		}
 	}
 
 	/**
@@ -291,7 +299,9 @@ public abstract class NFSparseAdapter<T> extends BaseAdapter {
 	 */
 	public void put(int position, @Nullable T item) {
 		mObjects.setValueAt(position, item);
-		if (mNotifyOnChange) notifyDataSetChanged();
+		if (mNotifyOnChange) {
+			notifyDataSetChanged();
+		}
 	}
 
 	/**
@@ -304,7 +314,9 @@ public abstract class NFSparseAdapter<T> extends BaseAdapter {
 		for (int index = 0; index < items.size(); ++index) {
 			mObjects.put(items.keyAt(index), items.valueAt(index));
 		}
-		if (mNotifyOnChange) notifyDataSetChanged();
+		if (mNotifyOnChange) {
+			notifyDataSetChanged();
+		}
 	}
 
 	/**
@@ -313,7 +325,9 @@ public abstract class NFSparseAdapter<T> extends BaseAdapter {
 	 */
 	public void putWithId(int keyId, @Nullable T item) {
 		mObjects.put(keyId, item);
-		if (mNotifyOnChange) notifyDataSetChanged();
+		if (mNotifyOnChange) {
+			notifyDataSetChanged();
+		}
 	}
 
 	/**
@@ -323,7 +337,9 @@ public abstract class NFSparseAdapter<T> extends BaseAdapter {
 	 */
 	public void remove(int position) {
 		mObjects.removeAt(position);
-		if (mNotifyOnChange) notifyDataSetChanged();
+		if (mNotifyOnChange) {
+			notifyDataSetChanged();
+		}
 	}
 
 	/**
@@ -335,7 +351,9 @@ public abstract class NFSparseAdapter<T> extends BaseAdapter {
 		for (int index = 0; index < items.size(); ++index) {
 			mObjects.delete(items.keyAt(index));
 		}
-		if (mNotifyOnChange) notifyDataSetChanged();
+		if (mNotifyOnChange) {
+			notifyDataSetChanged();
+		}
 	}
 
 	/**
@@ -345,7 +363,9 @@ public abstract class NFSparseAdapter<T> extends BaseAdapter {
 	 */
 	public void removeWithId(int keyId) {
 		mObjects.delete(keyId);
-		if (mNotifyOnChange) notifyDataSetChanged();
+		if (mNotifyOnChange) {
+			notifyDataSetChanged();
+		}
 	}
 
 	/**

@@ -326,7 +326,7 @@ public abstract class NFArrayAdapter<T> extends BaseAdapter {
 	 *
 	 * @param items The collection of items to remove
 	 */
-	public void removeAll(@NonNull Collection<?> items) {
+	public void removeAll(@NonNull Collection<? extends T> items) {
 		boolean isModified = mObjects.removeAll(items);
 		if (isModified && mNotifyOnChange) {
 			notifyDataSetChanged();

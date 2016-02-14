@@ -187,6 +187,7 @@ public abstract class JSONAdapter extends BaseAdapter implements Filterable {
 	 * @return String value of a filtered methods 1st parameter. Null if the method does not have
 	 * the proper signature.
 	 */
+	@SuppressWarnings("EqualsBetweenInconvertibleTypes")
 	@Nullable
 	private static String getFilterMethodKey(@NonNull Method m) {
 		if ("isFilteredOut".equals(m.getName()) && m.getGenericReturnType().equals(boolean.class)) {
