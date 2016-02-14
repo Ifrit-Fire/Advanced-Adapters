@@ -152,11 +152,9 @@ public class AndroidExpandableFragment extends ExpandableListFragment {
 			List<List<Map<String, String>>> childData = (List<List<Map<String, String>>>) savedInstanceState
 					.getSerializable(STATE_CHILD_LIST);
 			//Yup this isn't confusing or complicated. Not one bit.
-			setListAdapter(new AndroidExpandableAdapter(getActivity(),
-														groupData,
+			setListAdapter(new AndroidExpandableAdapter(getActivity(), groupData,
 														android.R.layout.simple_expandable_list_item_1,
-														mGroupKeys, mGroupIds,
-														childData,
+														mGroupKeys, mGroupIds, childData,
 														android.R.layout.simple_expandable_list_item_2,
 														mChildKeys, mChildIds));
 		} else {
@@ -189,16 +187,17 @@ public class AndroidExpandableFragment extends ExpandableListFragment {
 
 	public void reset() {
 		//Can anyone say, convoluted constructor?
-		setListAdapter(new AndroidExpandableAdapter(getActivity(),
-													getGroupData(MovieContent.ITEM_LIST),
-													android.R.layout.simple_expandable_list_item_1,
-													mGroupKeys, mGroupIds,
-													getChildData(MovieContent.ITEM_LIST),
-													android.R.layout.simple_expandable_list_item_2,
-													mChildKeys, mChildIds));
+		setListAdapter(
+				new AndroidExpandableAdapter(getActivity(), getGroupData(MovieContent.ITEM_LIST),
+											 android.R.layout.simple_expandable_list_item_1,
+											 mGroupKeys, mGroupIds,
+											 getChildData(MovieContent.ITEM_LIST),
+											 android.R.layout.simple_expandable_list_item_2,
+											 mChildKeys, mChildIds));
 	}
 
-	private class OnCabMultiChoiceModeListener implements ExpandableListView.MultiChoiceModeListener {
+	private class OnCabMultiChoiceModeListener implements
+			ExpandableListView.MultiChoiceModeListener {
 		@Override
 		public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
 			return false;

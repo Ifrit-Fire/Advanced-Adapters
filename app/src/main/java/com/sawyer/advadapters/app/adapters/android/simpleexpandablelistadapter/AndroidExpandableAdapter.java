@@ -29,13 +29,11 @@ import java.util.Map;
  */
 public class AndroidExpandableAdapter extends SimpleExpandableListAdapter {
 
-	public AndroidExpandableAdapter(Context context,
-									List<? extends Map<String, ?>> groupData,
+	public AndroidExpandableAdapter(Context context, List<? extends Map<String, ?>> groupData,
 									int groupLayout, String[] groupFrom, int[] groupTo,
 									List<? extends List<? extends Map<String, ?>>> childData,
 									int childLayout, String[] childFrom, int[] childTo) {
 		super(context, groupData, groupLayout, groupFrom, groupTo, childData, childLayout,
-			  childFrom,
-			  childTo);
+			  childFrom, childTo);
 	}
 }

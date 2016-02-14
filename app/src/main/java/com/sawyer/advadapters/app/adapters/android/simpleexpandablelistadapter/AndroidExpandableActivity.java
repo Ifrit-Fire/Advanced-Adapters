@@ -73,8 +73,7 @@ public class AndroidExpandableActivity extends AdapterBaseActivity {
 	protected void initFrags() {
 		super.initFrags();
 		FragmentManager manager = getFragmentManager();
-		mListFragment = (AndroidExpandableFragment) manager
-				.findFragmentByTag(TAG_ADAPTER_FRAG);
+		mListFragment = (AndroidExpandableFragment) manager.findFragmentByTag(TAG_ADAPTER_FRAG);
 		if (mListFragment == null) {
 			mListFragment = AndroidExpandableFragment.newInstance();
 			FragmentTransaction transaction = manager.beginTransaction();
