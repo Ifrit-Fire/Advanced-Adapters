@@ -69,8 +69,7 @@ public class JSONAdapterActivity extends AdapterBaseActivity implements
 	protected void initFrags() {
 		super.initFrags();
 		FragmentManager manager = getFragmentManager();
-		mListFragment = (JSONAdapterFragment) manager
-				.findFragmentByTag(TAG_ADAPTER_FRAG);
+		mListFragment = (JSONAdapterFragment) manager.findFragmentByTag(TAG_ADAPTER_FRAG);
 		if (mListFragment == null) {
 			mListFragment = JSONAdapterFragment.newInstance();
 			FragmentTransaction transaction = manager.beginTransaction();

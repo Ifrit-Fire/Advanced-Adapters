@@ -16,6 +16,7 @@
 package com.sawyer.advadapters.app.adapters.jsonadapter;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -42,8 +43,10 @@ class MovieJSONAdapter extends JSONAdapter {
 		super(activity, list);
 	}
 
+	@NonNull
 	@Override
-	public View getView(LayoutInflater inflater, int position, View convertView, ViewGroup parent) {
+	public View getView(@NonNull LayoutInflater inflater, int position, View convertView,
+						@NonNull ViewGroup parent) {
 		MovieViewHolder vh;
 		if (convertView == null) {
 			convertView = inflater.inflate(R.layout.item_movie1, parent, false);
@@ -58,8 +61,8 @@ class MovieJSONAdapter extends JSONAdapter {
 			if (movie != null) {
 				vh.title.setText(movie.getString(MovieItem.JSON_TITLE));
 				vh.subtitle.setText(movie.getString(MovieItem.JSON_YEAR));
-				vh.icon.setImageResource((movie.getBoolean(MovieItem.JSON_IS_RECOMMENDED))
-												 ? R.drawable.ic_rating_good : R.drawable.ic_rating_bad);
+				vh.icon.setImageResource((movie.getBoolean(MovieItem.JSON_IS_RECOMMENDED)) ?
+										 R.drawable.ic_rating_good : R.drawable.ic_rating_bad);
 			}
 		} catch (JSONException e) {
 			Log.e(MovieJSONAdapter.class.getSimpleName(), "GetView error", e);
@@ -69,7 +72,7 @@ class MovieJSONAdapter extends JSONAdapter {
 	}
 
 	@Override
-	protected boolean isFilteredOut(Object item, CharSequence constraint) {
+	protected boolean isFilteredOut(Object item, @NonNull CharSequence constraint) {
 		//We are expecting the adapter to only ever contain JSONObjects. So we are specifically letting
 		//the JSONObject filter handle it.
 		return false;

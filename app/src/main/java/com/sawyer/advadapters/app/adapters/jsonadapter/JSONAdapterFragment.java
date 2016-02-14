@@ -58,8 +58,7 @@ public class JSONAdapterFragment extends ListFragment {
 			super.setListAdapter(adapter);
 		} else {
 			throw new ClassCastException(
-					"Adapter must be of type " +
-					MovieJSONAdapter.class.getSimpleName());
+					"Adapter must be of type " + MovieJSONAdapter.class.getSimpleName());
 		}
 	}
 
@@ -125,7 +124,7 @@ public class JSONAdapterFragment extends ListFragment {
 	}
 
 	public interface EventListener {
-		public void onAdapterCountUpdated();
+		void onAdapterCountUpdated();
 	}
 
 	private class OnCabMultiChoiceModeListener implements AbsListView.MultiChoiceModeListener {

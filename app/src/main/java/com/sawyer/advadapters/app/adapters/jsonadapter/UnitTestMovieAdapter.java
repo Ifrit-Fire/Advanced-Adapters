@@ -16,6 +16,7 @@
 package com.sawyer.advadapters.app.adapters.jsonadapter;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,8 +40,10 @@ class UnitTestMovieAdapter extends JSONAdapter {
 		super(activity, list);
 	}
 
+	@NonNull
 	@Override
-	public View getView(LayoutInflater inflater, int position, View convertView, ViewGroup parent) {
+	public View getView(@NonNull LayoutInflater inflater, int position, View convertView,
+						@NonNull ViewGroup parent) {
 		UnitTestViewHolder vh;
 		if (convertView == null) {
 			convertView = inflater.inflate(android.R.layout.two_line_list_item, parent, false);
@@ -58,19 +61,20 @@ class UnitTestMovieAdapter extends JSONAdapter {
 	}
 
 	@Override    //Default isFilteredOut, required by all subclasses to implement
-	protected boolean isFilteredOut(Object item, CharSequence constraint) {
+	protected boolean isFilteredOut(Object item, @NonNull CharSequence constraint) {
 		return !item.toString().toLowerCase(Locale.US)
 				.contains(constraint.toString().toLowerCase(Locale.US));
 	}
 
 	@Override //Predefined isFilteredOut, optionally overridden here to change the built in logic
-	protected boolean isFilteredOut(Long item, CharSequence constraint) {
+	protected boolean isFilteredOut(Long item, @NonNull CharSequence constraint) {
 		return !String.valueOf(item).toLowerCase(Locale.US)
 				.contains(constraint.toString().toLowerCase(Locale.US));
 	}
 
 	//Custom isFilteredOut, found on adapter construction and called reflexively for any MovieItem
 	//object found in adapter while filtering.
+	@SuppressWarnings("unused")
 	protected boolean isFilteredOut(MovieItem movie, CharSequence constraint) {
 		return !movie.title.toLowerCase(Locale.US)
 				.contains(constraint.toString().toLowerCase(Locale.US));
@@ -78,7 +82,7 @@ class UnitTestMovieAdapter extends JSONAdapter {
 
 	//Another custom isFilteredOut method. Be it private, public, protected or no modifier at all.
 	//JSONAdapter will still find it and invoke it appropriately
-	@SuppressWarnings("UnusedDeclaration")
+	@SuppressWarnings("unused")
 	private boolean isFilteredOut(JSONObject item, CharSequence constraint) {
 		String title = item.optString(MovieItem.JSON_TITLE).toLowerCase(Locale.US);
 		return !title.contains(constraint.toString().toLowerCase(Locale.US));
