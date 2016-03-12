@@ -17,7 +17,7 @@ jdk:
 
 script:
   - echo "Travis branch is $TRAVIS_BRANCH"
-  - android list sdk --no-ui --all --extended | grep -E '^id:' | awk -F '"' '{$1=""; print $2}
+  - android list sdk --no-ui --all --extended
   - ./gradlew clean check
   
 branches:
