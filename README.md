@@ -1,3 +1,7 @@
+[![license](http://img.shields.io/badge/license-apache_2.0-red.svg?style=flat)](https://raw.githubusercontent.com/JaySoyer/Advanced-Adapters/master/LICENSE)
+[![Download](https://api.bintray.com/packages/jaysoyer/maven/Advanced-Adapters/images/download.svg)](https://bintray.com/jaysoyer/maven/Advanced-Adapters/_latestVersion)
+[![Build Status](https://travis-ci.org/JaySoyer/Advanced-Adapters.svg?branch=master)](https://travis-ci.org/JaySoyer/Advanced-Adapters)
+
 <p align="center"><img src="https://raw.githubusercontent.com/JaySoyer/Advanced-Adapters/master/app/src/main/logo.png" width="256px" height="256px"/></p>
 # Advanced-Adapters
 Advanced-Adapters is a suite of adapters designed to offer additional alternatives to Android's provided adapters. Originally starting as a means to replace the flawed filtering logic for Android's ArrayAdapter; it has now expanded to provided a slew of different adapters backed by various data structures.
