@@ -15,16 +15,17 @@
   ~ limitations under the License.
   -->
 
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+	  xmlns:app="http://schemas.android.com/apk/res-auto">
 	<item
 		android:id="@+id/menu_action_expand"
 		android:orderInCategory="120"
-		android:showAsAction="never"
-		android:title="@string/menu_expand"/>
+		android:title="@string/menu_expand"
+		app:showAsAction="never"/>
 
 	<item
 		android:id="@+id/menu_action_collapse"
 		android:orderInCategory="120"
-		android:showAsAction="never"
-		android:title="@string/menu_collapse"/>
+		android:title="@string/menu_collapse"
+		app:showAsAction="never"/>
 </menu>

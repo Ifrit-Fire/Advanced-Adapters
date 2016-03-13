@@ -14,7 +14,11 @@ jdk:
 
 script:
   # - android list sdk --no-ui --all --extended # Displays all components supported in travis
+  - "echo Home is $HOME"
   - ./gradlew clean check
+  
+after_failure:
+  - "cat $HOME/build/JaySoyer/Advanced-Adapters/app/build/outputs/lint-results.xml"
   
 branches:
   except:
