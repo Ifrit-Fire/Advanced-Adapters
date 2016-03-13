@@ -67,8 +67,9 @@ public class ExpandCollapseAllActivity extends ExpandableListActivity {
 
 		//Only on first start up, expand all groups. Otherwise, allow ExpandableListView to
 		//appropriately reload which groups were expanded or collapsed
-		if (savedInstanceState == null)
+		if (savedInstanceState == null) {
 			adapter.expandAll();
+		}
 	}
 
 	@Override

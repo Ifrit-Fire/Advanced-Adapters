@@ -109,8 +109,9 @@ public class AddItemsActivity extends ExpandableListActivity {
 		super.onRestoreInstanceState(state);
 		DemoAdapter adapter = (DemoAdapter) getExpandableListAdapter();
 		ArrayList<MovieItem> list = state.getParcelableArrayList(STATE_LIST);
-		if (list != null)
+		if (list != null) {
 			adapter.setList(list);
+		}
 	}
 
 	@Override

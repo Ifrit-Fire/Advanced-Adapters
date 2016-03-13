@@ -71,8 +71,9 @@ public class MultiSelectActivity extends ExpandableListActivity {
 		parcelable. You must still manually call and save the ArrayList returned with getList().
 		*/
 		DemoAdapter adapter = (DemoAdapter) getExpandableListAdapter();
-		if (adapter != null)
+		if (adapter != null) {
 			outState.putParcelable(STATE_ADAPTER_SAVED_STATE, adapter.onSaveInstanceState());
+		}
 
 		//Because this demo doesn't ever modify the adapter once it's loaded...there's no need
 		//to save the state of the data in the adapter. Only the activation state as done above is
