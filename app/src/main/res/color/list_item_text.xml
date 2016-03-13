@@ -15,12 +15,12 @@
   ~ limitations under the License.
   -->
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
-	<item android:state_enabled="false" android:color="@android:color/primary_text_light_nodisable"/>
-	<item android:state_window_focused="false" android:state_activated="true" android:color="@android:color/primary_text_dark"/>
-	<item android:state_window_focused="false" android:color="@android:color/primary_text_light"/>
-	<item android:state_pressed="true" android:color="@android:color/primary_text_light"/>
-	<item android:state_selected="true" android:color="@android:color/primary_text_light"/>
-	<item android:state_activated="true" android:color="@android:color/primary_text_dark"/>
+	<item android:color="@android:color/primary_text_light_nodisable" android:state_enabled="false"/>
+	<item android:color="@android:color/primary_text_dark" android:state_activated="true" android:state_window_focused="false"/>
+	<item android:color="@android:color/primary_text_light" android:state_window_focused="false"/>
+	<item android:color="@android:color/primary_text_light" android:state_pressed="true"/>
+	<item android:color="@android:color/primary_text_light" android:state_selected="true"/>
+	<item android:color="@android:color/primary_text_dark" android:state_activated="true"/>
 	<item android:color="@android:color/primary_text_light"/>
 
 </selector>

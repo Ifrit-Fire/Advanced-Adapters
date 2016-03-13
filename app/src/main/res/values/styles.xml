@@ -21,6 +21,7 @@
 		<item name="android:textAppearance">?android:textAppearanceButton</item>
 		<item name="android:textColor">@color/btn_default_text</item>
 	</style>
+
 	<style name="ButtonBarStyle" parent="android:Holo.Light.ButtonBar">
 		<item name="android:background">@color/purple_medium60</item>
 	</style>
