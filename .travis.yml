@@ -8,6 +8,7 @@ android:
     - android-23
     - extra-android-m2repository
     - extra-android-support
+	- add-on
   licenses:
     - android-sdk-license-5be876d5
 
@@ -16,8 +17,8 @@ jdk:
   - oraclejdk7
 
 script:
-  - echo "Travis branch is $TRAVIS_BRANCH"
-  - android list sdk --no-ui --all --extended
+  # - android list sdk --no-ui --all --extended # Displays all components supported in travis
+  - echo "Home is $HOME"
   - ./gradlew clean check
   
 branches:
@@ -32,3 +33,4 @@ sudo: false
 cache:
   directories:
     - $HOME/.m2
+	- $HOME/.gradle
