@@ -67,11 +67,6 @@ public class ActionModeActivity extends ExpandableListActivity {
 	}
 
 	@Override
-	protected void onDestroy() {
-		super.onDestroy();
-	}
-
-	@Override
 	protected void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
 
