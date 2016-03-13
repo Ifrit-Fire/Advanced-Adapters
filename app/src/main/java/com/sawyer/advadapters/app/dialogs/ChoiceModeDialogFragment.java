@@ -66,8 +66,9 @@ public class ChoiceModeDialogFragment extends CustomDialogFragment {
 
 	@OnClick(R.id.ok)
 	public void onOk(View v) {
-		if (mEventListener == null)
+		if (mEventListener == null) {
 			return;
+		}
 		PatchedExpandableListAdapter.ChoiceMode choiceMode;
 		switch (mRadioGroup.getCheckedRadioButtonId()) {
 		case R.id.choice_mode_single:

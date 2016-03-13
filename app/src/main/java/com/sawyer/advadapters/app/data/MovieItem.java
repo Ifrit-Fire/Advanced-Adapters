@@ -66,8 +66,9 @@ public class MovieItem implements Comparable<MovieItem>, Parcelable {
 	}
 
 	private static String getStringToCompare(String text) {
-		if (TextUtils.isEmpty(text))
+		if (TextUtils.isEmpty(text)) {
 			return "";
+		}
 
 		String compare = text.toLowerCase(Locale.US);
 		compare = compare.replace("the ", "").replace("a ", "").replace("an ", "");
@@ -98,8 +99,9 @@ public class MovieItem implements Comparable<MovieItem>, Parcelable {
 
 	@Override
 	public boolean equals(Object o) {
-		if (!(o instanceof MovieItem))
+		if (!(o instanceof MovieItem)) {
 			return false;
+		}
 		MovieItem other = (MovieItem) o;
 		return mBarcode == other.mBarcode;
 	}

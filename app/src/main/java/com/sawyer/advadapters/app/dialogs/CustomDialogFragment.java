@@ -49,8 +49,9 @@ abstract class CustomDialogFragment extends DialogFragment {
 	 */
 	private void setTitleBarColor() {
 		Dialog dialog = getDialog();
-		if (dialog == null)
+		if (dialog == null) {
 			return;
+		}
 
 		View v = ButterKnife.findById(dialog, android.R.id.title);
 		if (v != null && v.getParent() instanceof ViewGroup) {
