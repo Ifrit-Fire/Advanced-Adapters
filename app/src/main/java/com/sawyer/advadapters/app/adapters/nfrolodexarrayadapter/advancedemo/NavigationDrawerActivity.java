@@ -56,7 +56,7 @@ import butterknife.InjectView;
  */
 public class NavigationDrawerActivity extends AppCompatActivity implements
 		ExpandableListView.OnGroupClickListener, ExpandableListView.OnChildClickListener {
-	private static String STATE_ADAPTER_SAVED_STATE = "State Adapter Saved State";
+	private static final String STATE_ADAPTER_SAVED_STATE = "State Adapter Saved State";
 
 	@InjectView(android.R.id.list) ExpandableListView mDrawerExpandableList;
 	@InjectView(R.id.nav_drawer) DrawerLayout mDrawerLayout;
@@ -81,7 +81,7 @@ public class NavigationDrawerActivity extends AppCompatActivity implements
 		mDrawerAdapter.setChoiceMode(DemoAdapter.ChoiceMode.SINGLE);
 		mDrawerExpandableList.setAdapter(mDrawerAdapter);
 		mDrawerToggle = new DrawerToggle();
-		mDrawerLayout.setDrawerListener(mDrawerToggle);
+		mDrawerLayout.addDrawerListener(mDrawerToggle);
 	}
 
 	@Override
@@ -140,6 +140,7 @@ public class NavigationDrawerActivity extends AppCompatActivity implements
 	protected void onDestroy() {
 		ButterKnife.reset(this);
 		super.onDestroy();
+		mDrawerLayout.removeDrawerListener(mDrawerToggle);
 	}
 
 	@Override
@@ -279,8 +280,8 @@ public class NavigationDrawerActivity extends AppCompatActivity implements
 			//String resId here are for accessibility devices. It is not used for changing ActionBar title.
 			//That must be manually done in the onDrawerClosed/Opened methods.
 			super(NavigationDrawerActivity.this, mDrawerLayout,
-					R.string.title_navigation_drawer_open,
-					R.string.activity_rolodex_navigation_drawer);
+				  R.string.title_navigation_drawer_open,
+				  R.string.activity_rolodex_navigation_drawer);
 		}
 
 		@Override

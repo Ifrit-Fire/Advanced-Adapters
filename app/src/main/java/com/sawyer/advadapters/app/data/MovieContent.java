@@ -28,13 +28,13 @@ import java.util.List;
 public class MovieContent {
 
 	/** An array of sample (movie) items. */
-	public static List<MovieItem> ITEM_LIST = new ArrayList<>();
+	public static final List<MovieItem> ITEM_LIST = new ArrayList<>();
 
 	/** A sparse array of sample (movie) items */
-	public static SparseArray<MovieItem> ITEM_SPARSE = new SparseArray<>();
+	public static final SparseArray<MovieItem> ITEM_SPARSE = new SparseArray<>();
 
 	/** A JSON array of sample (movie) items */
-	public static JSONArray ITEM_JSON = new JSONArray();
+	public static final JSONArray ITEM_JSON = new JSONArray();
 
 	static {
 		addItem(newMovie("Primer", 2004, true));

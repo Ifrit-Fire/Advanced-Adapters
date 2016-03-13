@@ -48,7 +48,7 @@ import java.util.List;
  * ChoiceMode with the adapter but also set the custom {@link com.sawyer.advadapters.widget.PatchedExpandableListAdapter.ChoiceModeListener}.
  */
 public class ActionModeActivity extends ExpandableListActivity {
-	private static String STATE_ADAPTER_SAVED_STATE = "State Adapter Saved State";
+	private static final String STATE_ADAPTER_SAVED_STATE = "State Adapter Saved State";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {

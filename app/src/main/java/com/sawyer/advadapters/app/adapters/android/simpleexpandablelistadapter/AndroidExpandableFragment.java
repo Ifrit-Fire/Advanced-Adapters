@@ -42,10 +42,10 @@ public class AndroidExpandableFragment extends ExpandableListFragment {
 	private static final String STATE_GROUP_LIST = "State Group List";
 	private static final String STATE_CHILD_LIST = "State Child List";
 
-	private String[] mGroupKeys = {"KEY_YEAR"};
-	private String[] mChildKeys = {MovieItem.MAP_KEYS[0], MovieItem.MAP_KEYS[1]};
-	private int[] mGroupIds = {android.R.id.text1};
-	private int[] mChildIds = {android.R.id.text1, android.R.id.text2};
+	private final String[] mGroupKeys = {"KEY_YEAR"};
+	private final String[] mChildKeys = {MovieItem.MAP_KEYS[0], MovieItem.MAP_KEYS[1]};
+	private final int[] mGroupIds = {android.R.id.text1};
+	private final int[] mChildIds = {android.R.id.text1, android.R.id.text2};
 
 	public static AndroidExpandableFragment newInstance() {
 		return new AndroidExpandableFragment();

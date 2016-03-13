@@ -43,8 +43,8 @@ import butterknife.OnClick;
  * another is not.
  */
 public class ContainsItemActivity extends ExpandableListActivity {
-	MovieItem mContainsMovie = MovieContent.ITEM_LIST.get(1);
-	MovieItem mMissingMovie = MovieContent.ITEM_LIST.get(4);
+	private final MovieItem mContainsMovie = MovieContent.ITEM_LIST.get(1);
+	private final MovieItem mMissingMovie = MovieContent.ITEM_LIST.get(4);
 
 	@OnClick(android.R.id.button1)
 	public void onContainsItem(View v) {

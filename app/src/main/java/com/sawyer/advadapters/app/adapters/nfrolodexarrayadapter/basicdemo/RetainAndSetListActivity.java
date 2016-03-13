@@ -45,7 +45,7 @@ import butterknife.OnClick;
 public class RetainAndSetListActivity extends ExpandableListActivity {
 	private static final String STATE_LIST = "State List";
 
-	private List<MovieItem> mRetainMovies = MovieContent.ITEM_LIST.subList(3, 6);
+	private final List<MovieItem> mRetainMovies = MovieContent.ITEM_LIST.subList(3, 6);
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {

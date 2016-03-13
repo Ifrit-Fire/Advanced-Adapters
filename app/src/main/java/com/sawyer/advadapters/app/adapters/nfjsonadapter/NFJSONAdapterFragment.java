@@ -69,8 +69,7 @@ public class NFJSONAdapterFragment extends ListFragment {
 		super.onActivityCreated(savedInstanceState);
 		getListView().setAdapter(getListAdapter());
 	}
-
-	@SuppressWarnings("deprecation")
+	
 	@Override
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);

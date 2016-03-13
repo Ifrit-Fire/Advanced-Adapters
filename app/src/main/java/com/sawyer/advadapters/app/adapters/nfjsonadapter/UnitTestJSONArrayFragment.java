@@ -79,7 +79,6 @@ public class UnitTestJSONArrayFragment extends ListFragment {
 		getListView().setAdapter(getListAdapter());
 	}
 
-	@SuppressWarnings("deprecation")
 	@Override
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
@@ -141,8 +140,8 @@ public class UnitTestJSONArrayFragment extends ListFragment {
 				getListAdapter().update(position, MovieContent.ITEM_LIST
 						.get(new Random().nextInt(MovieContent.ITEM_LIST.size())));
 			} else if (item instanceof JSONArray) {
-				getListAdapter().update(position,
-						new JSONArray(Arrays.asList(getString(), getString(), getString())));
+				getListAdapter().update(position, new JSONArray(
+						Arrays.asList(getString(), getString(), getString())));
 			} else if (item instanceof JSONObject) {
 				getListAdapter().update(position, MovieContent.ITEM_JSON
 						.opt(new Random().nextInt(MovieContent.ITEM_JSON.length())));

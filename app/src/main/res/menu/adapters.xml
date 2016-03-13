@@ -16,7 +16,8 @@
   -->
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
 	  xmlns:tools="http://schemas.android.com/tools"
-	  tools:context="com.sawyer.advadapters.app.adapters.AdapterActivity">
+	  tools:context="com.sawyer.advadapters.app.adapters.AdapterActivity"
+	  tools:ignore="AppCompatResource">
 
 	<item
 		android:id="@+id/menu_action_search"
@@ -24,7 +25,8 @@
 		android:icon="@drawable/ic_action_action_search"
 		android:orderInCategory="100"
 		android:showAsAction="always|collapseActionView"
-		android:title="@string/menu_search"/>
+		android:title="@string/menu_search"
+		/>
 
 	<item
 		android:id="@+id/menu_action_sort"

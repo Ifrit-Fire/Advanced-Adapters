@@ -39,7 +39,7 @@ import java.util.List;
  * ExpandableListView itself will cause the app to crash.
  */
 public class MultiSelectActivity extends ExpandableListActivity {
-	private static String STATE_ADAPTER_SAVED_STATE = "State Adapter Saved State";
+	private static final String STATE_ADAPTER_SAVED_STATE = "State Adapter Saved State";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {

@@ -413,8 +413,7 @@ public abstract class PatchedExpandableListAdapter extends BaseExpandableListAda
 	public Context getContext() {
 		return mContext;
 	}
-
-	@SuppressWarnings("ObjectEquality")
+	
 	@Override
 	public final View getGroupView(int groupPosition, boolean isExpanded, View convertView,
 								   ViewGroup parent) {

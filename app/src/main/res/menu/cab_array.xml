@@ -24,5 +24,4 @@
 		android:id="@+id/menu_context_retain"
 		android:icon="@drawable/ic_action_retain"
 		android:title="@string/menu_retain"/>
-
 </menu>

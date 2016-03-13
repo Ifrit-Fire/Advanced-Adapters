@@ -41,7 +41,7 @@ public class NFArrayAdapterFragment extends ListFragment {
 	private static final String STATE_CAB_CHECKED_ITEMS = "State Cab Checked Items";
 	private static final String STATE_LIST = "State List";
 
-	private Set<MovieItem> mCheckedItems = new HashSet<>();
+	private final Set<MovieItem> mCheckedItems = new HashSet<>();
 	private EventListener mEventListener;
 
 	public static NFArrayAdapterFragment newInstance() {

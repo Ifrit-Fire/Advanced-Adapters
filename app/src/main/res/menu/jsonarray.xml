@@ -16,10 +16,12 @@
   ~ limitations under the License.
   -->
 
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+	  xmlns:tools="http://schemas.android.com/tools">
 	<item
 		android:id="@+id/menu_action_unit_test"
 		android:orderInCategory="210"
 		android:showAsAction="never"
-		android:title="@string/menu_unit_test"/>
+		android:title="@string/menu_unit_test"
+		tools:ignore="AppCompatResource"/>
 </menu>

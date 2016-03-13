@@ -133,11 +133,11 @@ public class NFSparseAdapterActivity extends AdapterBaseActivity implements
 		mAppendDialogFragment.dismiss();
 	}
 
+	@SuppressWarnings("ConstantConditions")
 	@Override
 	public void onContainsIdClick(int barcode) {
 		if (mListFragment.getListAdapter().containsId(barcode)) {
-			@SuppressWarnings("ConstantConditions")    //IF contains covers our NULL case
-					String text = mListFragment.getListAdapter().getItemWithId(barcode).title;
+			String text = mListFragment.getListAdapter().getItemWithId(barcode).title;
 			ToastHelper.showContainsTrue(this, text);
 		} else {
 			String text = MovieContent.ITEM_SPARSE.get(barcode).title;

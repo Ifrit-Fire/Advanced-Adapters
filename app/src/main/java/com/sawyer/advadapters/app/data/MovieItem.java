@@ -46,7 +46,7 @@ public class MovieItem implements Comparable<MovieItem>, Parcelable {
 	public static final String[] MAP_KEYS = {JSON_TITLE, JSON_YEAR, JSON_IS_RECOMMENDED,
 											 JSON_BARCODE};
 
-	private static Random sRand = new Random();
+	private static final Random sRand = new Random();
 
 	public String title;
 	public int year;

@@ -145,7 +145,7 @@ public class InsertArrayDialogFragment extends CustomDialogFragment {
 	}
 
 	private class OnInsertCollectionClickListener implements View.OnClickListener {
-		private InsertLocation mInsertLocation;
+		private final InsertLocation mInsertLocation;
 
 		public OnInsertCollectionClickListener(InsertLocation insertLocation) {
 			mInsertLocation = insertLocation;
@@ -161,7 +161,7 @@ public class InsertArrayDialogFragment extends CustomDialogFragment {
 	}
 
 	private class OnInsertSingleClickListener implements View.OnClickListener {
-		private InsertLocation mInsertLocation;
+		private final InsertLocation mInsertLocation;
 
 		public OnInsertSingleClickListener(InsertLocation insertLocation) {
 			mInsertLocation = insertLocation;
