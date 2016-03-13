@@ -31,17 +31,16 @@ import org.json.JSONTokener;
 import java.util.Collection;
 
 /**
- * <p>A non-filterable custom abstract {@link BaseAdapter} that is backed by a {@link JSONArray} of
- * arbitrary objects. By default this class delegates view generation to subclasses.</p>
- *
- * <p>Designed to be a flexible and customizable solution for using JSONArray with an adapter but
+ * A non-filterable custom abstract {@link BaseAdapter} that is backed by a {@link JSONArray} of
+ * arbitrary objects. By default this class delegates view generation to subclasses.
+ * <p/>
+ * Designed to be a flexible and customizable solution for using JSONArray with an adapter but
  * without the filtering mechanism. As a result, there is no need for {@code synchronized} blocks
  * which may help those worried about performance. It exposes most of the JSONArray methods and
  * conveniently passes along a layout inflater for view creation. Keep in mind JSONArray itself has
- * limited capabilities which restricts what this adapter can do.</p>
- *
- * <p>If filtering is required, it's strongly recommended to use the {@link JSONAdapter}
- * instead.</p>
+ * limited capabilities which restricts what this adapter can do.
+ * <p/>
+ * If filtering is required, it's strongly recommended to use the {@link JSONAdapter} instead.
  */
 public abstract class NFJSONArrayAdapter extends BaseAdapter {
 	/** LayoutInflater created from the constructing context */
@@ -608,11 +607,11 @@ public abstract class NFJSONArrayAdapter extends BaseAdapter {
 	}
 
 	/**
-	 * <p>Control whether methods that change the list ({@link #add}, {@link #clear}) automatically
+	 * Control whether methods that change the list ({@link #add}, {@link #clear}) automatically
 	 * call {@link #notifyDataSetChanged}.  If set to false, caller must manually call
-	 * notifyDataSetChanged() to have the changes reflected in the attached view.</p>
-	 *
-	 * <p>The default is true, and calling notifyDataSetChanged() resets the flag to true.</p>
+	 * notifyDataSetChanged() to have the changes reflected in the attached view.
+	 * <p/>
+	 * The default is true, and calling notifyDataSetChanged() resets the flag to true.
 	 *
 	 * @param notifyOnChange if true, modifications to the list will automatically call {@link
 	 *                       #notifyDataSetChanged}

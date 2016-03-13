@@ -28,19 +28,18 @@ import android.widget.Filter;
 import android.widget.Filterable;
 
 /**
- * <p>A custom abstract {@link BaseAdapter} that is backed by a {@link SparseArray} of arbitrary
+ * A custom abstract {@link BaseAdapter} that is backed by a {@link SparseArray} of arbitrary
  * objects.  By default this class delegates view generation and defining the filtering logic to
- * subclasses.</p>
- *
- * <p>Designed to be a flexible and customizable solution for using SparseArray with an adapter. It
+ * subclasses.
+ * <p/>
+ * Designed to be a flexible and customizable solution for using SparseArray with an adapter. It
  * exposes most of the SparseArray methods, provides active filtering support, and conveniently
  * passes along a layout inflater for view creation. An adapter's row ID maps to the SparseArray's
- * key and vice versa. Any method requiring a key will have <i>"withId"</i> in the name.</p>
- *
- * <p>Because of the background filtering process, all methods which mutates the underlying data are
+ * key and vice versa. Any method requiring a key will have <i>"withId"</i> in the name.
+ * <p/>
+ * Because of the background filtering process, all methods which mutates the underlying data are
  * internally synchronized. This ensures a thread safe environment for internal write operations. If
- * filtering is not required, it's strongly recommended to use the {@link NFSparseAdapter}
- * instead.</p>
+ * filtering is not required, it's strongly recommended to use the {@link NFSparseAdapter} instead.
  */
 public abstract class SparseAdapter<T> extends BaseAdapter implements Filterable {
 	/**
@@ -173,12 +172,12 @@ public abstract class SparseAdapter<T> extends BaseAdapter implements Filterable
 	}
 
 	/**
-	 * <p>Determines if the specified item exists within the adapter. Be aware that this is a linear
+	 * Determines if the specified item exists within the adapter. Be aware that this is a linear
 	 * search, unlike look-ups by key, and that multiple keys can map to the same value and this
-	 * will find only one of them.</p>
-	 *
-	 * <p>Note also that unlike most collections this method compares values using == rather than
-	 * equals...a result of how SparseArrays are implemented.</p>
+	 * will find only one of them.
+	 * <p/>
+	 * Note also that unlike most collections this method compares values using == rather than
+	 * equals...a result of how SparseArrays are implemented.
 	 *
 	 * @param item The item to search for
 	 *
@@ -202,8 +201,8 @@ public abstract class SparseAdapter<T> extends BaseAdapter implements Filterable
 	}
 
 	/**
-	 * <p>Get a {@link android.view.View} that displays in the drop down popup the data at the
-	 * specified position in the data set.</p>
+	 * Get a {@link android.view.View} that displays in the drop down popup the data at the
+	 * specified position in the data set.
 	 *
 	 * @param inflater    the LayoutInflater object that can be used to inflate each view.
 	 * @param position    index of the item whose view we want.
@@ -267,12 +266,12 @@ public abstract class SparseAdapter<T> extends BaseAdapter implements Filterable
 	}
 
 	/**
-	 * <p>Returns the position of the specified item in the sparse array. Be aware that this is a
+	 * Returns the position of the specified item in the sparse array. Be aware that this is a
 	 * linear search, unlike look-ups by key,and that multiple keys can map to the same value and
-	 * this will find only one of them.</p>
-	 *
-	 * <p>Note also that unlike most collections, this method compares values using == rather than
-	 * equals.</p>
+	 * this will find only one of them.
+	 * <p/>
+	 * Note also that unlike most collections, this method compares values using == rather than
+	 * equals.
 	 *
 	 * @param item The item to retrieve the position of.
 	 *
@@ -518,12 +517,12 @@ public abstract class SparseAdapter<T> extends BaseAdapter implements Filterable
 	}
 
 	/**
-	 * <p>Controls whether methods that change the list ({@link #appendWithId}, {@link #putWithId},
+	 * Controls whether methods that change the list ({@link #appendWithId}, {@link #putWithId},
 	 * {@link #remove}, {@link #clear}) automatically call {@link #notifyDataSetChanged}.  If set to
 	 * false, caller must manually call notifyDataSetChanged() to have the changes reflected in the
-	 * attached view.</p>
-	 *
-	 * <p>The default is true, and calling notifyDataSetChanged() resets the flag to true.</p>
+	 * attached view.
+	 * <p/>
+	 * The default is true, and calling notifyDataSetChanged() resets the flag to true.
 	 *
 	 * @param notifyOnChange if true, modifications to the list will automatically call {@link
 	 *                       #notifyDataSetChanged}

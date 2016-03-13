@@ -29,17 +29,16 @@ import java.util.Collections;
 import java.util.Comparator;
 
 /**
- * <p>A non-filterable custom abstract {@link BaseAdapter} that is backed by an {@link ArrayList} of
- * arbitrary objects.  By default this class delegates view generation to subclasses.</p>
- *
- * <p>Designed to be a more flexible and customizable solution then Android's ArrayAdapter class but
+ * A non-filterable custom abstract {@link BaseAdapter} that is backed by an {@link ArrayList} of
+ * arbitrary objects.  By default this class delegates view generation to subclasses.
+ * <p/>
+ * Designed to be a more flexible and customizable solution then Android's ArrayAdapter class but
  * without the filtering mechanism. As a result, there is no need for {@code synchronized} blocks
  * which may help those worried about performance. It provides extra features such as: supporting
  * additional {@link ArrayList} methods, makes smarter use of {@link #notifyDataSetChanged()}, and
- * conveniently passes along a layout inflater for view creation.</p>
- *
- * <p>If filtering is required, it's strongly recommended to use the {@link AbsArrayAdapter}
- * instead.</p>
+ * conveniently passes along a layout inflater for view creation.
+ * <p/>
+ * If filtering is required, it's strongly recommended to use the {@link AbsArrayAdapter} instead.
  */
 public abstract class NFArrayAdapter<T> extends BaseAdapter {
 	/** LayoutInflater created from the constructing context */
@@ -346,12 +345,12 @@ public abstract class NFArrayAdapter<T> extends BaseAdapter {
 	}
 
 	/**
-	 * <p>Control whether methods that change the list ({@link #add}, {@link #insert}, {@link
-	 * #remove}, {@link #clear}) automatically call {@link #notifyDataSetChanged}.  If set to false,
-	 * caller must manually call notifyDataSetChanged() to have the changes reflected in the
-	 * attached view.</p>
-	 *
-	 * <p>The default is true, and calling notifyDataSetChanged() resets the flag to true.</p>
+	 * Control whether methods that change the list ({@link #add}, {@link #insert}, {@link #remove},
+	 * {@link #clear}) automatically call {@link #notifyDataSetChanged}.  If set to false, caller
+	 * must manually call notifyDataSetChanged() to have the changes reflected in the attached
+	 * view.
+	 * <p/>
+	 * The default is true, and calling notifyDataSetChanged() resets the flag to true.
 	 *
 	 * @param notifyOnChange if true, modifications to the list will automatically call {@link
 	 *                       #notifyDataSetChanged}
