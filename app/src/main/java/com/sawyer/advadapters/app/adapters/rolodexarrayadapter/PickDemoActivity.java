@@ -57,13 +57,13 @@ public class PickDemoActivity extends BasePickDemoActivity {
 		/* Basic Examples - This group will be sorted. */
 		intent = new Intent(this, NeverCollapseGroupActivity.class);
 		intent.putExtra(EXTRA_INTENT_NAME,
-				getString(R.string.activity_rolodex_never_collapse_groups));
+						getString(R.string.activity_rolodex_never_collapse_groups));
 		intent.putExtra(EXTRA_GROUP_NAME, getString(R.string.title_group_basic_demos));
 		intents.add(intent);
 
 		intent = new Intent(this, NeverCollapseGroupUnsortedActivity.class);
 		intent.putExtra(EXTRA_INTENT_NAME,
-				getString(R.string.activity_rolodex_never_collapse_groups_unsorted));
+						getString(R.string.activity_rolodex_never_collapse_groups_unsorted));
 		intent.putExtra(EXTRA_GROUP_NAME, getString(R.string.title_group_basic_demos));
 		intents.add(intent);
 
@@ -94,7 +94,7 @@ public class PickDemoActivity extends BasePickDemoActivity {
 
 		intent = new Intent(this, ExpandCollapseAllActivity.class);
 		intent.putExtra(EXTRA_INTENT_NAME,
-				getString(R.string.activity_rolodex_expand_collapse_all));
+						getString(R.string.activity_rolodex_expand_collapse_all));
 		intent.putExtra(EXTRA_GROUP_NAME, getString(R.string.title_group_basic_demos));
 		intents.add(intent);
 
@@ -110,13 +110,13 @@ public class PickDemoActivity extends BasePickDemoActivity {
 
 		intent = new Intent(this, FilterChildrenOnlyActivity.class);
 		intent.putExtra(EXTRA_INTENT_NAME,
-				getString(R.string.activity_rolodex_filter_children_only));
+						getString(R.string.activity_rolodex_filter_children_only));
 		intent.putExtra(EXTRA_GROUP_NAME, getString(R.string.title_group_basic_demos));
 		intents.add(intent);
 
 		intent = new Intent(this, FilterChildrenGroupsActivity.class);
 		intent.putExtra(EXTRA_INTENT_NAME,
-				getString(R.string.activity_rolodex_filter_children_groups));
+						getString(R.string.activity_rolodex_filter_children_groups));
 		intent.putExtra(EXTRA_GROUP_NAME, getString(R.string.title_group_basic_demos));
 		intents.add(intent);
 

@@ -69,7 +69,7 @@ public class NFJSONAdapterFragment extends ListFragment {
 		super.onActivityCreated(savedInstanceState);
 		getListView().setAdapter(getListAdapter());
 	}
-	
+
 	@Override
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
