@@ -51,8 +51,9 @@ public abstract class BasePickDemoActivity extends ExpandableListActivity implem
 
 	private void initActionBar() {
 		ActionBar actionBar = getActionBar();
-		if (actionBar == null)
+		if (actionBar == null) {
 			return;
+		}
 		actionBar.setDisplayHomeAsUpEnabled(true);
 	}
 
@@ -82,8 +83,9 @@ public abstract class BasePickDemoActivity extends ExpandableListActivity implem
 		super.onCreate(savedInstanceState);
 		getExpandableListView().setGroupIndicator(null);
 		DemoAdapter adapter = new DemoAdapter(this, createIntentList());
-		if (adapter.getGroupCount() > 2)
+		if (adapter.getGroupCount() > 2) {
 			adapter.sortGroup(1, new IntentComparator());
+		}
 		adapter.setOnChildClickListener(this);
 		setListAdapter(adapter);
 		initActionBar();

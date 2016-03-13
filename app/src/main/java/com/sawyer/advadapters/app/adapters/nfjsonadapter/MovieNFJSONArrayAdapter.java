@@ -60,7 +60,7 @@ class MovieNFJSONArrayAdapter extends NFJSONArrayAdapter {
 				vh.title.setText(movie.getString(MovieItem.JSON_TITLE));
 				vh.subtitle.setText(movie.getString(MovieItem.JSON_YEAR));
 				vh.icon.setImageResource((movie.getBoolean(MovieItem.JSON_IS_RECOMMENDED)) ?
-										 R.drawable.ic_rating_good : R.drawable.ic_rating_bad);
+						R.drawable.ic_rating_good : R.drawable.ic_rating_bad);
 			}
 		} catch (JSONException e) {
 			Log.e(MovieNFJSONArrayAdapter.class.getSimpleName(), "GetView error", e);

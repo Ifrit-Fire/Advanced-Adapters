@@ -70,6 +70,7 @@ public class NFJSONAdapterFragment extends ListFragment {
 		getListView().setAdapter(getListAdapter());
 	}
 
+	@SuppressWarnings("deprecation")
 	@Override
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
@@ -114,8 +115,9 @@ public class NFJSONAdapterFragment extends ListFragment {
 		//Granted, making a whole new instance is not even necessary here.
 		//However I wanted to demonstrate updating with an entirely different instance.
 		JSONObject oldMovie = getListAdapter().optItemJSONObject(position);
-		if (oldMovie == null)
+		if (oldMovie == null) {
 			return;
+		}
 		MovieItem newMovie = new MovieItem(oldMovie.optInt(MovieItem.JSON_BARCODE));
 		newMovie.title = new StringBuilder(oldMovie.optString(MovieItem.JSON_TITLE, "")).reverse()
 				.toString();
