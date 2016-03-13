@@ -11,11 +11,12 @@ android:
  
 jdk:
   - oraclejdk8
-  - oraclejdk7
-  - openjdk7
+  # Uncomment below for testing
+  # - oraclejdk7
+  # - openjdk7
 
 script:
-  - android list sdk --no-ui --all --extended # Displays all components supported in travis
+  # - android list sdk --no-ui --all --extended # Displays all components supported in travis
   - "echo Home is $HOME"
   - ./gradlew clean check
   
