@@ -1,10 +1,32 @@
-*.iml
+# Build Files
+*.apk
+*.ap_
+*.dex
+
+# Generated Files
+*.class
 bin/
 gen/
-local.properties
-Thumbs.db
-.DS_Store
-.idea
-#.idea/workspace.xml - remove # and delete .idea if it better suit your needs.
+out/
+
+# Configuration Files
 .gradle
 build/
+local.properties
+
+# File System Junk
+Thumbs.db
+.DS_Store
+
+# Android Studio
+*.iml
+.idea/*
+!.idea/codeStyleSettings.xml
+.navigation
+captures/
+
+# Misc
+*.jks
+*.log
+proguard/
+

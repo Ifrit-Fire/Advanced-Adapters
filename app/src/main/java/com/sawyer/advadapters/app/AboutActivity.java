@@ -26,8 +26,9 @@ import butterknife.ButterKnife;
 public class AboutActivity extends Activity {
 	private void initActionbar() {
 		ActionBar actionBar = getActionBar();
-		if (actionBar == null)
+		if (actionBar == null) {
 			return;
+		}
 		actionBar.setDisplayHomeAsUpEnabled(true);
 	}
 

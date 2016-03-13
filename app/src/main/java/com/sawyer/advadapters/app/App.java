@@ -38,7 +38,7 @@ public class App extends Application {
 
 		try {
 			versionCode = sContext.getPackageManager()
-								  .getPackageInfo(sContext.getPackageName(), 0).versionCode;
+					.getPackageInfo(sContext.getPackageName(), 0).versionCode;
 		} catch (PackageManager.NameNotFoundException e) {
 			Log.e(TAG, "No package info found");
 			versionCode = -1;
@@ -50,7 +50,7 @@ public class App extends Application {
 		String versionName;
 		try {
 			versionName = sContext.getPackageManager()
-								  .getPackageInfo(sContext.getPackageName(), 0).versionName;
+					.getPackageInfo(sContext.getPackageName(), 0).versionName;
 		} catch (PackageManager.NameNotFoundException e) {
 			Log.e(TAG, "No version name found");
 			versionName = "Error";
