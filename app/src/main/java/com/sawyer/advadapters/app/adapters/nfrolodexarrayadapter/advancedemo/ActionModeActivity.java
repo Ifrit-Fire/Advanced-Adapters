@@ -81,8 +81,9 @@ public class ActionModeActivity extends ExpandableListActivity {
 		parcelable. You must still manually call and save the ArrayList returned with getList().
 		*/
 		DemoAdapter adapter = (DemoAdapter) getExpandableListAdapter();
-		if (adapter != null)
+		if (adapter != null) {
 			outState.putParcelable(STATE_ADAPTER_SAVED_STATE, adapter.onSaveInstanceState());
+		}
 
 		//Because this demo doesn't ever modify the adapter once it's loaded...there's no need
 		//to save the state of the data in the adapter. Only the activation state as done above is
@@ -219,8 +220,9 @@ public class ActionModeActivity extends ExpandableListActivity {
 											   long groupId, boolean checked) {
 			//If group is expanded, then the onChildCheckedStateChanged method will be invoked. Which
 			//means it'll safely take care of updating our screen.
-			if (getExpandableListView().isGroupExpanded(groupPosition))
+			if (getExpandableListView().isGroupExpanded(groupPosition)) {
 				return;
+			}
 
 			//If group is NOT expanded, then the onChildCheckedStateChanged method will NOT be invoked.
 			//which means we need to take care of updating our screen here.

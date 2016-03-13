@@ -76,8 +76,9 @@ public class FullDemoFragment extends ExpandableListFragment {
 	public boolean onChildClick(ExpandableListView parent, View v, int groupPosition,
 								int childPosition, long id) {
 		//Only modal should update child click.  All others should just cause activation state change
-		if (!mEventListener.getChoiceMode().isModal())
+		if (!mEventListener.getChoiceMode().isModal()) {
 			return false;
+		}
 
 		//Granted, making a whole new instance is not even necessary here.
 		//However I wanted to demonstrate updating with an entirely different instance.
@@ -110,8 +111,9 @@ public class FullDemoFragment extends ExpandableListFragment {
 			setListAdapter(new FullDemoAdapter(getActivity()));
 		}
 		PatchedExpandableListAdapter.ChoiceMode choiceMode = mEventListener.getChoiceMode();
-		if (choiceMode.isModal())
+		if (choiceMode.isModal()) {
 			getListAdapter().setMultiChoiceModeListener(new DemoChoiceModeListener());
+		}
 		getListAdapter().setChoiceMode(choiceMode);
 		return v;
 	}
@@ -237,8 +239,9 @@ public class FullDemoFragment extends ExpandableListFragment {
 											   long groupId, boolean checked) {
 			//If group is expanded, then the onChildCheckedStateChanged method will be invoked. Which
 			//means it'll safely take care of updating our screen.
-			if (getExpandableListView().isGroupExpanded(groupPosition))
+			if (getExpandableListView().isGroupExpanded(groupPosition)) {
 				return;
+			}
 			mode.setTitle(
 					getListAdapter().getCheckedChildCount() + getString(R.string.desc_selected));
 		}

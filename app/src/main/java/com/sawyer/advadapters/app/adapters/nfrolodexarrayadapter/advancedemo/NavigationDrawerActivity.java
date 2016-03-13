@@ -58,20 +58,18 @@ public class NavigationDrawerActivity extends AppCompatActivity implements
 		ExpandableListView.OnGroupClickListener, ExpandableListView.OnChildClickListener {
 	private static String STATE_ADAPTER_SAVED_STATE = "State Adapter Saved State";
 
-	@InjectView(android.R.id.list)
-	ExpandableListView mDrawerExpandableList;
-	@InjectView(R.id.nav_drawer)
-	DrawerLayout mDrawerLayout;
-	@InjectView(android.R.id.text1)
-	TextView mTextView;
+	@InjectView(android.R.id.list) ExpandableListView mDrawerExpandableList;
+	@InjectView(R.id.nav_drawer) DrawerLayout mDrawerLayout;
+	@InjectView(android.R.id.text1) TextView mTextView;
 
 	private DemoAdapter mDrawerAdapter;
 	private ActionBarDrawerToggle mDrawerToggle;
 
 	private void initActionBar() {
 		ActionBar actionBar = getSupportActionBar();
-		if (actionBar == null)
+		if (actionBar == null) {
 			return;
+		}
 		actionBar.setDisplayHomeAsUpEnabled(true);
 		actionBar.setHomeButtonEnabled(true);
 	}
@@ -94,8 +92,9 @@ public class NavigationDrawerActivity extends AppCompatActivity implements
 		mTextView.setText(movie.title);
 
 		//In case user reselected the same child...let's re-activate it.
-		if (mDrawerAdapter.getCheckedChildCount() == 0)
+		if (mDrawerAdapter.getCheckedChildCount() == 0) {
 			mDrawerAdapter.setChildChecked(groupPosition, childPosition, true);
+		}
 
 		return true;
 	}
@@ -150,8 +149,9 @@ public class NavigationDrawerActivity extends AppCompatActivity implements
 		mTextView.setText(group.toString());
 
 		//In case user reselected the same group...let's re-activate it.
-		if (mDrawerAdapter.getCheckedGroupCount() == 0)
+		if (mDrawerAdapter.getCheckedGroupCount() == 0) {
 			mDrawerAdapter.setGroupChecked(groupPosition, true);
+		}
 
 		return true;
 	}
@@ -180,8 +180,9 @@ public class NavigationDrawerActivity extends AppCompatActivity implements
 		It's important to note that the adapter will NOT place it's internal item data into this
 		parcelable. You must still manually call and save the ArrayList returned with getList().
 		*/
-		if (mDrawerAdapter != null)
+		if (mDrawerAdapter != null) {
 			outState.putParcelable(STATE_ADAPTER_SAVED_STATE, mDrawerAdapter.onSaveInstanceState());
+		}
 
 		//Because this demo doesn't ever modify the adapter once it's loaded...there's no need
 		//To save the state of the data in the adapter. Only the activation state as done above is
@@ -278,8 +279,8 @@ public class NavigationDrawerActivity extends AppCompatActivity implements
 			//String resId here are for accessibility devices. It is not used for changing ActionBar title.
 			//That must be manually done in the onDrawerClosed/Opened methods.
 			super(NavigationDrawerActivity.this, mDrawerLayout,
-				  R.string.title_navigation_drawer_open,
-				  R.string.activity_rolodex_navigation_drawer);
+					R.string.title_navigation_drawer_open,
+					R.string.activity_rolodex_navigation_drawer);
 		}
 
 		@Override

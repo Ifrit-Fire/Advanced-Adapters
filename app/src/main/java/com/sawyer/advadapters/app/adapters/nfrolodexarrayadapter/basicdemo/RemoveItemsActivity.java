@@ -77,8 +77,9 @@ public class RemoveItemsActivity extends ExpandableListActivity {
 	@OnClick(android.R.id.button1)
 	public void onRemoveFirst(View v) {
 		DemoAdapter adapter = (DemoAdapter) getExpandableListAdapter();
-		if (adapter.getGroupCount() == 0)
+		if (adapter.getGroupCount() == 0) {
 			return;    //No more items to remove
+		}
 		MovieItem movie = adapter.getChild(0, 0);
 		adapter.remove(movie);
 	}
@@ -88,8 +89,9 @@ public class RemoveItemsActivity extends ExpandableListActivity {
 		//Lets pick the first two movies from the list, and remove them
 		DemoAdapter adapter = (DemoAdapter) getExpandableListAdapter();
 		List<MovieItem> movies = adapter.getList();
-		if (movies.size() < 2)
+		if (movies.size() < 2) {
 			return;    //No more items to remove
+		}
 		movies = movies.subList(0, 2);
 		adapter.removeAll(movies);
 	}
