@@ -1,19 +1,21 @@
 apply plugin: 'com.android.library'
 
 android {
-	compileSdkVersion 23
-	buildToolsVersion '23.0.1'
+	compileSdkVersion BUILD_COMPILE_SDK
+	buildToolsVersion BUILD_TOOLS_VERSION
 
 	defaultConfig {
-		minSdkVersion 15
-		targetSdkVersion 23
-		versionCode project.PUBLISH_VERSION_CODE
-		versionName project.PUBLISH_VERSION_NAME
+		minSdkVersion BUILD_MIN_SDK
+		targetSdkVersion BUILD_TARGET_SDK
+		versionCode PUBLISH_VERSION_CODE
+		versionName PUBLISH_VERSION_NAME
 	}
+
 	compileOptions {
-		sourceCompatibility JavaVersion.VERSION_1_7
-		targetCompatibility JavaVersion.VERSION_1_7
+		sourceCompatibility BUILD_JAVA_SOURCE_VERSION
+		targetCompatibility BUILD_JAVA_TARGET_VERSION
 	}
+
 	buildTypes {
 		release {
 			minifyEnabled false
@@ -23,7 +25,6 @@ android {
 }
 
 dependencies {
-	compile fileTree(include: ['*.jar'], dir: 'libs')
 	compile 'com.android.support:support-annotations:23.2.1'
 }
 

@@ -22,6 +22,7 @@ Thumbs.db
 *.iml
 .idea/*
 !.idea/codeStyleSettings.xml
+!.idea/dynamic.xml
 .navigation
 captures/
 
