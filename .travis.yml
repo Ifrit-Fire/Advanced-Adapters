@@ -10,9 +10,9 @@ android:
     - extra-android-m2repository    
  
 jdk:
-  - oraclejdk8
+  - oraclejdk7
   # Uncomment below for testing
-  # - oraclejdk7
+  # oraclejdk8
   # - openjdk7
 
 script:
