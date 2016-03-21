@@ -11,10 +11,12 @@ android {
 		versionCode PUBLISH_VERSION_CODE
 		versionName PUBLISH_VERSION_NAME
 	}
+
 	compileOptions {
 		sourceCompatibility BUILD_JAVA_SOURCE_VERSION
 		targetCompatibility BUILD_JAVA_TARGET_VERSION
 	}
+
 	buildTypes {
 		release {
 			minifyEnabled true

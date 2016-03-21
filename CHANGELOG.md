@@ -2,8 +2,12 @@ Change Log
 ==========
 
 # Version 15.3.1 *( )*
-**Milestone** 
+**Milestone:** Continuous Integration
+ - New: Builds with Travis CI
+ - New: IDEA project configs added
  - Mod: Bumped Gradle, SDK, Tools
+ - Mod: Cleaned up Gradle and various
+ - Mod: Various minor modications throughout codebase
 
 # Version 15.3.0 *(25 May 2015)*
 **Milestone:** Polish
@@ -21,7 +25,7 @@ Change Log
 - New: Introducing the PatchedExpandableListAdapter
 - New: Introducing the RolodexArrayAdapter
 - New: Introducing the NFRolodexArrayAdapter
-- New: Demo app overhauled with a  navigable look and a horde of examples for the new adapters.
+- New: Demo app overhauled with a navigable look and a horde of examples for the new adapters.
 
 # Version 14.11.9 *(09 November 2014)*
 **Milestones:** JSONArray Backed Adapters, Overhaul
